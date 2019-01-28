@@ -16,12 +16,19 @@ import android.widget.Toast;
 import com.capstone.self_training.R;
 import com.capstone.self_training.adapter.SuggestionAdapter;
 import com.capstone.self_training.model.Suggestion;
+import com.capstone.self_training.service.apiservice.ApiService;
+import com.capstone.self_training.service.dataservice.DataService;
 import com.capstone.self_training.util.CheckConnection;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class SuggestionListActi extends AppCompatActivity {
@@ -63,6 +70,21 @@ public class SuggestionListActi extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getApplicationContext(),SuggestionDetailActi.class);
                 startActivity(intent);
+            }
+        });
+    }
+    private void getData(){
+        ApiService apiService = DataService.getService();
+        Call<List<Suggestion>> suggestionList = apiService.getSuggestionList();
+        suggestionList.enqueue(new Callback<List<Suggestion>>() {
+            @Override
+            public void onResponse(Call<List<Suggestion>> call, Response<List<Suggestion>> response) {
+                ArrayList<Suggestion> suggestion = (ArrayList<Suggestion>) response.body();
+            }
+
+            @Override
+            public void onFailure(Call<List<Suggestion>> call, Throwable t) {
+
             }
         });
     }

@@ -1,8 +1,13 @@
 package com.capstone.self_training.model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 public class SuggestionDetail implements Serializable {
+
+
     private int id;
     private String imgUrl;
     private String imgStandardUrl;
