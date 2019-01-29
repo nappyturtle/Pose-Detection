@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd"
+             version="2.2">
+
+    <persistence-unit name="NewPersistenceUnit">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <mapping-file>com/pdst/pdstserver/models/DBMapping.xml</mapping-file>
+        <class>com.pdst.pdstserver.models.Account</class>
+        <class>com.pdst.pdstserver.models.Category</class>
+        <class>com.pdst.pdstserver.models.Role</class>
+        <class>com.pdst.pdstserver.models.Suggestion</class>
+        <class>com.pdst.pdstserver.models.SuggestionDetail</class>
+        <class>com.pdst.pdstserver.models.Video</class>
+
+
+        <properties>
+            <property name="hibernate.connection.url" value="jdbc:sqlserver://localhost:1433;database=PDSTDB"/>
+            <property name="hibernate.connection.driver_class" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+            <property name="hibernate.connection.username" value="sa"/>
+            <property name="hibernate.connection.password" value="lethinhphat23"/>
+            <property name="hibernate.archive.autodetection" value="class"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <property name="hbm2ddl.auto" value="update"/>
+        </properties>
+    </persistence-unit>
+</persistence>
