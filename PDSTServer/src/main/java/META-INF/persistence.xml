@@ -19,7 +19,7 @@
             <property name="hibernate.connection.url" value="jdbc:sqlserver://localhost:1433;database=PDSTDB"/>
             <property name="hibernate.connection.driver_class" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
             <property name="hibernate.connection.username" value="sa"/>
-            <property name="hibernate.connection.password" value="lethinhphat23"/>
+            <property name="hibernate.connection.password" value="sa12345678"/>
             <property name="hibernate.archive.autodetection" value="class"/>
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>

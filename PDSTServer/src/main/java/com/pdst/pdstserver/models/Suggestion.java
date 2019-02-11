@@ -1,5 +1,7 @@
 package com.pdst.pdstserver.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Collection;
@@ -109,6 +111,7 @@ public class Suggestion {
 
     @ManyToOne
     @JoinColumn(name = "account_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JsonBackReference
     public Account getAccountByAccountId() {
         return accountByAccountId;
     }
@@ -119,6 +122,7 @@ public class Suggestion {
 
     @ManyToOne
     @JoinColumn(name = "video_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JsonBackReference
     public Video getVideoByVideoId() {
         return videoByVideoId;
     }

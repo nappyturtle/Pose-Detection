@@ -4,9 +4,11 @@ import com.pdst.pdstserver.models.Video;
 import com.pdst.pdstserver.services.videoservice.VideoService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(VideoController.BASE_URL)
@@ -26,5 +28,11 @@ public class VideoController {
     @GetMapping("getAllVideosByDate")
     public List<Video> getAllVideoByDate(){
         return videoService.getAllVideosOrderByDate();
+    }
+
+
+    @GetMapping("getVideo")
+    public Optional<Video> getVideoById(@RequestParam(value = "id") Integer id){
+        return videoService.getVideoById(id);
     }
 }
