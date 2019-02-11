@@ -9,4 +9,6 @@ public interface VideoService {
     List<Video> getAllVideos();
     List<Video> getAllVideosOrderByDate();
     Optional<Video> getVideoById(Integer id);
+    Video createVideo(Video video);
+
 }

@@ -111,7 +111,7 @@ public class Suggestion {
 
     @ManyToOne
     @JoinColumn(name = "account_id", referencedColumnName = "id", insertable = false, updatable = false)
-    @JsonBackReference
+    @JsonBackReference(value = "getAccountByAccountId")
     public Account getAccountByAccountId() {
         return accountByAccountId;
     }
@@ -122,7 +122,7 @@ public class Suggestion {
 
     @ManyToOne
     @JoinColumn(name = "video_id", referencedColumnName = "id", insertable = false, updatable = false)
-    @JsonBackReference
+    @JsonBackReference(value = "getVideoByVideoId")
     public Video getVideoByVideoId() {
         return videoByVideoId;
     }

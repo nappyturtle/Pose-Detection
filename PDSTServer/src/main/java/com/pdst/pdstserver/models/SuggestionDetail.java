@@ -120,7 +120,7 @@ public class SuggestionDetail {
 
     @ManyToOne
     @JoinColumn(name = "suggestion_id", referencedColumnName = "id", insertable = false, updatable = false)
-    @JsonBackReference
+    @JsonBackReference(value = "getSuggestionBySuggestionId")
     public Suggestion getSuggestionBySuggestionId() {
         return suggestionBySuggestionId;
     }
