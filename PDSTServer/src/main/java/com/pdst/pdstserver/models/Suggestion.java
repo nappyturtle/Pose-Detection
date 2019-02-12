@@ -1,15 +1,12 @@
 package com.pdst.pdstserver.models;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
 public class Suggestion {
-    private int id;
+    private Integer id;
     private String name;
     private Integer accountId;
     private Integer videoId;
@@ -20,11 +17,11 @@ public class Suggestion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -93,7 +90,7 @@ public class Suggestion {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Suggestion that = (Suggestion) o;
-        return id == that.id &&
+        return Objects.equals(id, that.id) &&
                 Objects.equals(name, that.name) &&
                 Objects.equals(accountId, that.accountId) &&
                 Objects.equals(videoId, that.videoId) &&
@@ -104,6 +101,7 @@ public class Suggestion {
 
     @Override
     public int hashCode() {
+
         return Objects.hash(id, name, accountId, videoId, status, createdTime, updatedTime);
     }
 }

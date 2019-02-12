@@ -3,17 +3,12 @@ package com.pdst.pdstserver.services.videoservice;
 import com.pdst.pdstserver.handlers.SendRequest;
 import com.pdst.pdstserver.models.Video;
 import com.pdst.pdstserver.repositories.VideoRepository;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,11 +42,13 @@ public class VideoServiceImpl implements VideoService {
 //        EntityManager entityManager = entityManagerFactory.createEntityManager();
 
         Video videoRequest = videoRepository.save(video);
+//
 //        entityManager.getTransaction().begin();
 //        entityManager.persist(videoRequest);
 //        entityManager.getTransaction().commit();
-        SendRequest sendRequest = new SendRequest();
-        sendRequest.sendRequestToSliceService(videoRequest);
+
+       /* SendRequest sendRequest = new SendRequest();
+        sendRequest.sendRequestToSliceService(videoRequest);*/
 
         return videoRequest;
 

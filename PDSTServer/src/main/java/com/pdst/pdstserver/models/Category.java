@@ -1,15 +1,12 @@
 package com.pdst.pdstserver.models;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
 public class Category {
-    private int id;
+    private Integer id;
     private String name;
     private String status;
     private Timestamp createdTime;
@@ -18,11 +15,11 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -71,7 +68,7 @@ public class Category {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Category category = (Category) o;
-        return id == category.id &&
+        return Objects.equals(id, category.id) &&
                 Objects.equals(name, category.name) &&
                 Objects.equals(status, category.status) &&
                 Objects.equals(createdTime, category.createdTime) &&
@@ -80,6 +77,7 @@ public class Category {
 
     @Override
     public int hashCode() {
+
         return Objects.hash(id, name, status, createdTime, updatedTime);
     }
 }
