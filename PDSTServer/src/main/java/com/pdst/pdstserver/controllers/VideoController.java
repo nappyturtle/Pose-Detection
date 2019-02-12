@@ -2,6 +2,7 @@ package com.pdst.pdstserver.controllers;
 
 import com.pdst.pdstserver.models.Video;
 import com.pdst.pdstserver.services.videoservice.VideoService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,25 +21,27 @@ public class VideoController {
     }
 
     @GetMapping("getAllVideos")
-    public List<Video> getAllVideos(){
+    public List<Video> getAllVideos() {
         return videoService.getAllVideos();
     }
 
     @GetMapping("getAllVideosByDate")
-    public List<Video> getAllVideoByDate(){
+    public List<Video> getAllVideoByDate() {
         return videoService.getAllVideosOrderByDate();
     }
 
 
     @GetMapping("/getVideo")
-    public Optional<Video> getVideoById(@RequestParam(value = "id") Integer id){
+    public Optional<Video> getVideoById(@RequestParam(value = "id") Integer id) {
         return videoService.getVideoById(id);
     }
 
     @PostMapping(value = "/createVideo")
-    public Video createVideo(@RequestBody Video video){
+    public ResponseEntity<Video> createVideo(@RequestBody Video video) {
+
         System.out.println("da vao day");
-        System.out.println("title = "+video.getTitle());
-        return videoService.createVideo(video);
+        System.out.println("title = " + video.getTitle());
+        Video response = videoService.createVideo(video);
+        return new ResponseEntity<Video>(response, HttpStatus.OK);
     }
 }

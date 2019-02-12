@@ -1,11 +1,15 @@
 package com.pdst.pdstserver.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-public class Account {
+public class Account implements Serializable {
     private int id;
     private String username;
     private String password;
@@ -19,6 +23,9 @@ public class Account {
     private String status;
     private Timestamp createdTime;
     private Timestamp updatedTime;
+    private Role roleByRoleId;
+    private Collection<Suggestion> suggestionsById;
+    private Collection<Video> videosById;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -174,5 +181,34 @@ public class Account {
     @Override
     public int hashCode() {
         return Objects.hash(id, username, password, email, phone, gender, imgUrl, address, numOfFollow, roleId, status, createdTime, updatedTime);
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "role_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JsonBackReference(value = "getRoleByRoleId")
+    public Role getRoleByRoleId() {
+        return roleByRoleId;
+    }
+
+    public void setRoleByRoleId(Role roleByRoleId) {
+        this.roleByRoleId = roleByRoleId;
+    }
+
+    @OneToMany(mappedBy = "accountByAccountId")
+    public Collection<Suggestion> getSuggestionsById() {
+        return suggestionsById;
+    }
+
+    public void setSuggestionsById(Collection<Suggestion> suggestionsById) {
+        this.suggestionsById = suggestionsById;
+    }
+
+    @OneToMany(mappedBy = "accountByAccountId")
+    public Collection<Video> getVideosById() {
+        return videosById;
+    }
+
+    public void setVideosById(Collection<Video> videosById) {
+        this.videosById = videosById;
     }
 }
