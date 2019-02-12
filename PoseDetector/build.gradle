@@ -28,5 +28,6 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-tomcat', version: '1.2.1.RELEASE'
     compile group: 'javax.servlet', name: 'jstl', version: '1.2'
     compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-jasper', version: '9.0.14'
+    compile 'redis.clients:jedis:2.7.0'
 
 }

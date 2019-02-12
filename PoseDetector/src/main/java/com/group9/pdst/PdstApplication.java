@@ -3,9 +3,10 @@ package com.group9.pdst;
 import com.group9.pdst.utils.ConstantUtilities;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
+
 import org.springframework.util.ResourceUtils;
+import org.yaml.snakeyaml.scanner.Constant;
+import redis.clients.jedis.Jedis;
 
 import java.io.*;
 
@@ -17,6 +18,7 @@ public class PdstApplication {
         SpringApplication.run(PdstApplication.class, args);
     }
     private static void getConfig() {
+        ConstantUtilities.jedis = new Jedis("localhost");
         BufferedReader br = null;
         FileReader fr = null;
         try {
@@ -28,7 +30,6 @@ public class PdstApplication {
                 int splitPosition = line.indexOf("=");
                 String key = line.substring(0, splitPosition);
                 String value = line.substring(splitPosition+1, line.length());
-                System.out.println("Value: " + value);
                 switch (key) {
                     case "imgSize":
                         ConstantUtilities.imgSize = Integer.parseInt(value);

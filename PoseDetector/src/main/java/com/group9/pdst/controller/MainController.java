@@ -1,20 +1,14 @@
 package com.group9.pdst.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.group9.pdst.handler.PoseMatchingHandler;
-import com.group9.pdst.model.*;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
+import com.group9.pdst.utils.OpenBrowserUtilities;
 import org.springframework.web.bind.annotation.*;
-import java.io.IOException;
 
 
-@Controller
+@RestController
 public class MainController {
-    @RequestMapping(value = "/getPairOfImages", method = RequestMethod.GET)
-    public String welcome(@RequestParam("img") String img, @RequestParam("simg") String simg, ModelMap model) {
-        model.addAttribute("img", img);
-        model.addAttribute("simg", simg);
-        return "poseDetect";
+
+    @RequestMapping(value = "/getPairOfImageLists", method = RequestMethod.GET)
+    public void getPairOfImageLists(@RequestParam("listImg") String listImg, @RequestParam("listSimg") String listSimg, @RequestParam("suggestionId") String suggestionId) {
+        OpenBrowserUtilities.openBrowser("http://localhost:8080/getImageLists.html?listImg=" + listImg + "&listSimg=" + listSimg + "&suggestionId=" + suggestionId);
     }
 }

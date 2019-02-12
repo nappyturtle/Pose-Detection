@@ -11,8 +11,11 @@ public class MatchingPoseResult {
     public MatchingPoseResult(String imgUrl, String standardImgUrl, String description, double matchingPercentage) {
         this.imgUrl = imgUrl;
         this.standardImgUrl = standardImgUrl;
-        this.matchingPercentage = matchingPercentage;
         this.description = description;
+        this.matchingPercentage = matchingPercentage;
+    }
+
+    public MatchingPoseResult() {
     }
 
     public String getDescription() {

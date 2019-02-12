@@ -1,0 +1,84 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Get Image List</title>
+
+    <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyCBKsbivTw6LRS95Ozb-5S5ivLTBUY2jYg",
+            authDomain: "mon-super-project-27e2b.firebaseapp.com",
+            databaseURL: "https://mon-super-project-27e2b.firebaseio.com",
+            projectId: "mon-super-project-27e2b",
+            storageBucket: "gs://mon-super-project-27e2b.appspot.com",
+            messagingSenderId: "1099210452571"
+        };
+        firebase.initializeApp(config);
+    </script>
+
+    <script language="JavaScript" type="text/javascript">
+        var listImgKey = new Array();
+        var listSimgKey = new Array();
+        var suggestionId = getParams("suggestionId");
+        function getParams(key) {
+            var params = {};
+            location.search.replace(/[?&;]+([^=]+)=([^&;]*)/gi, function (s, key, value) {
+                params[key] = value
+            })
+            return key ? params[key] : params;
+        }
+
+        function getImageList() {
+            var flag1 = false;
+            var flag2 = false;
+            listImg = getParams("listImg");
+            listSimg = getParams("listSimg");
+            listSimgQuery = firebase.database().ref(listSimg).orderByKey();
+            listSimgQuery.once("value")
+                .then(function (snapshot) {
+                    snapshot.forEach(function (childSnapshot) {
+                        listSimgKey.push(childSnapshot.key)
+                    });
+                    flag1 = true;
+                });
+
+            listImgQuery = firebase.database().ref(listImg).orderByKey();
+            listImgQuery.once("value")
+                .then(function (snapshot) {
+                    snapshot.forEach(function (childSnapshot) {
+                        listImgKey.push(childSnapshot.key);
+                    });
+                    flag2 = true;
+                });
+            var readyStateCheckInterval = setInterval(function () {
+                if (flag1 && flag2) {
+                    clearInterval(readyStateCheckInterval);
+                    sendImageLists();
+                }
+            }, 10);
+        }
+        function sendImageLists() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    window.close();
+                }
+            };
+            xhttp.open("POST", "http://localhost:8080/matchVideo", true);
+            xhttp.setRequestHeader("Content-type", "application/json");
+            var imageListArr  = [listSimgKey, listImgKey, suggestionId];
+            xhttp.send(JSON.stringify(imageListArr));
+        }
+    </script>
+
+</head>
+
+<body onload="getImageList()">
+</body>
+
+</html>
+
+

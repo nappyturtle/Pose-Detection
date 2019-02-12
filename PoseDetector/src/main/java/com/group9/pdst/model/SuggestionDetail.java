@@ -4,13 +4,13 @@ public class SuggestionDetail {
     private String imgUrl;
     private String standardImgUrl;
     private String description;
-    private double matchingPerentage;
+    private String suggestionId;
 
-    public SuggestionDetail(String imgUrl, String standardImgUrl, String description, double matchingPerentage) {
+    public SuggestionDetail(String imgUrl, String standardImgUrl, String description, String suggestionId) {
         this.imgUrl = imgUrl;
         this.standardImgUrl = standardImgUrl;
         this.description = description;
-        this.matchingPerentage = matchingPerentage;
+        this.suggestionId = suggestionId;
     }
 
     public String getImgUrl() {
@@ -37,11 +37,20 @@ public class SuggestionDetail {
         this.description = description;
     }
 
-    public double getMatchingPerentage() {
-        return matchingPerentage;
+    public String getSuggestionId() {
+        return suggestionId;
     }
 
-    public void setMatchingPerentage(double matchingPerentage) {
-        this.matchingPerentage = matchingPerentage;
+    public void setSuggestionId(String suggestionId) {
+        this.suggestionId = suggestionId;
+    }
+
+    @Override
+    public String toString() {
+        return "SuggetionDetail: " +
+                "\nSuggestionId:" + suggestionId +
+                "\nStandard Image: " + standardImgUrl +
+                "\nImage: " + imgUrl +
+                "\nDescription: " + description;
     }
 }
