@@ -1,8 +1,9 @@
 package com.pdst.pdstserver.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.sql.Timestamp;
 import java.util.Objects;
 
@@ -16,7 +17,6 @@ public class SuggestionDetail {
     private String status;
     private Timestamp createdTime;
     private Timestamp updatedTime;
-    private Suggestion suggestionBySuggestionId;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -117,16 +117,5 @@ public class SuggestionDetail {
     @Override
     public int hashCode() {
         return Objects.hash(id, imgUrl, standardImgUrl, description, suggestionId, status, createdTime, updatedTime);
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "suggestion_id", referencedColumnName = "id", insertable = false, updatable = false)
-    @JsonBackReference(value = "getSuggestionBySuggestionId")
-    public Suggestion getSuggestionBySuggestionId() {
-        return suggestionBySuggestionId;
-    }
-
-    public void setSuggestionBySuggestionId(Suggestion suggestionBySuggestionId) {
-        this.suggestionBySuggestionId = suggestionBySuggestionId;
     }
 }

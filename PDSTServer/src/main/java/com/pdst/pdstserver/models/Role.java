@@ -1,8 +1,10 @@
 package com.pdst.pdstserver.models;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.sql.Timestamp;
-import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -12,7 +14,6 @@ public class Role {
     private String status;
     private Timestamp createdTime;
     private Timestamp updatedTime;
-    private Collection<Account> accountsById;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -80,14 +81,5 @@ public class Role {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, status, createdTime, updatedTime);
-    }
-
-    @OneToMany(mappedBy = "roleByRoleId")
-    public Collection<Account> getAccountsById() {
-        return accountsById;
-    }
-
-    public void setAccountsById(Collection<Account> accountsById) {
-        this.accountsById = accountsById;
     }
 }

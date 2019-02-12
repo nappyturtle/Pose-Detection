@@ -1,5 +1,9 @@
 package com.pdst.pdstserver.models;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,7 +13,6 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.Timestamp;
-import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -24,9 +27,6 @@ public class Video implements Serializable {
     private String status;
     private Timestamp createdTime;
     private Timestamp updatedTime;
-    private Collection<Suggestion> suggestionsById;
-    private Account accountByAccountId;
-    private Category categoryByCategoryId;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -149,37 +149,6 @@ public class Video implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(id, title, thumnailUrl, contentUrl, accountId, categoryId, numOfView, status, createdTime, updatedTime);
-    }
-
-    @OneToMany(mappedBy = "videoByVideoId")
-    public Collection<Suggestion> getSuggestionsById() {
-        return suggestionsById;
-    }
-
-    public void setSuggestionsById(Collection<Suggestion> suggestionsById) {
-        this.suggestionsById = suggestionsById;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "account_id", referencedColumnName = "id", insertable = false, updatable = false)
-    @JsonBackReference(value = "getAccountByAccountId")
-    public Account getAccountByAccountId() {
-        return accountByAccountId;
-    }
-
-    public void setAccountByAccountId(Account accountByAccountId) {
-        this.accountByAccountId = accountByAccountId;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "category_id", referencedColumnName = "id", insertable = false, updatable = false)
-    @JsonBackReference(value = "getCategoryByCategoryId")
-    public Category getCategoryByCategoryId() {
-        return categoryByCategoryId;
-    }
-
-    public void setCategoryByCategoryId(Category categoryByCategoryId) {
-        this.categoryByCategoryId = categoryByCategoryId;
     }
 
 //    @PrePersist

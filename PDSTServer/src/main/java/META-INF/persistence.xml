@@ -6,7 +6,6 @@
 
     <persistence-unit name="NewPersistenceUnit">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <mapping-file>com/pdst/pdstserver/models/DBMapping.xml</mapping-file>
         <class>com.pdst.pdstserver.models.Account</class>
         <class>com.pdst.pdstserver.models.Category</class>
         <class>com.pdst.pdstserver.models.Role</class>
@@ -14,12 +13,11 @@
         <class>com.pdst.pdstserver.models.SuggestionDetail</class>
         <class>com.pdst.pdstserver.models.Video</class>
 
-
         <properties>
             <property name="hibernate.connection.url" value="jdbc:sqlserver://localhost:1433;database=PDSTDB"/>
             <property name="hibernate.connection.driver_class" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
             <property name="hibernate.connection.username" value="sa"/>
-            <property name="hibernate.connection.password" value="sa12345678"/>
+            <property name="hibernate.connection.password" value="lethinhphat23"/>
             <property name="hibernate.archive.autodetection" value="class"/>
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>

@@ -1,8 +1,10 @@
 package com.pdst.pdstserver.models;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.sql.Timestamp;
-import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -12,7 +14,6 @@ public class Category {
     private String status;
     private Timestamp createdTime;
     private Timestamp updatedTime;
-    private Collection<Video> videosById;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -80,14 +81,5 @@ public class Category {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, status, createdTime, updatedTime);
-    }
-
-    @OneToMany(mappedBy = "categoryByCategoryId")
-    public Collection<Video> getVideosById() {
-        return videosById;
-    }
-
-    public void setVideosById(Collection<Video> videosById) {
-        this.videosById = videosById;
     }
 }

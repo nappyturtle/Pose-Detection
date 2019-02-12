@@ -1,10 +1,10 @@
 package com.pdst.pdstserver.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.sql.Timestamp;
-import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -16,9 +16,6 @@ public class Suggestion {
     private String status;
     private Timestamp createdTime;
     private Timestamp updatedTime;
-    private Account accountByAccountId;
-    private Video videoByVideoId;
-    private Collection<SuggestionDetail> suggestionDetailsById;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -108,36 +105,5 @@ public class Suggestion {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, accountId, videoId, status, createdTime, updatedTime);
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "account_id", referencedColumnName = "id", insertable = false, updatable = false)
-    @JsonBackReference(value = "getAccountByAccountId")
-    public Account getAccountByAccountId() {
-        return accountByAccountId;
-    }
-
-    public void setAccountByAccountId(Account accountByAccountId) {
-        this.accountByAccountId = accountByAccountId;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "video_id", referencedColumnName = "id", insertable = false, updatable = false)
-    @JsonBackReference(value = "getVideoByVideoId")
-    public Video getVideoByVideoId() {
-        return videoByVideoId;
-    }
-
-    public void setVideoByVideoId(Video videoByVideoId) {
-        this.videoByVideoId = videoByVideoId;
-    }
-
-    @OneToMany(mappedBy = "suggestionBySuggestionId")
-    public Collection<SuggestionDetail> getSuggestionDetailsById() {
-        return suggestionDetailsById;
-    }
-
-    public void setSuggestionDetailsById(Collection<SuggestionDetail> suggestionDetailsById) {
-        this.suggestionDetailsById = suggestionDetailsById;
     }
 }
