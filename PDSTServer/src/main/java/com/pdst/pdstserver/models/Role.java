@@ -1,12 +1,13 @@
 package com.pdst.pdstserver.models;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
-public class Role {
-    private Integer id;
+public class Role implements Serializable {
+    private int id;
     private String name;
     private String status;
     private Timestamp createdTime;
@@ -15,11 +16,11 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -68,7 +69,7 @@ public class Role {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Role role = (Role) o;
-        return Objects.equals(id, role.id) &&
+        return id == role.id &&
                 Objects.equals(name, role.name) &&
                 Objects.equals(status, role.status) &&
                 Objects.equals(createdTime, role.createdTime) &&
@@ -77,7 +78,6 @@ public class Role {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(id, name, status, createdTime, updatedTime);
     }
 }

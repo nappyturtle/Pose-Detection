@@ -1,12 +1,13 @@
 package com.pdst.pdstserver.models;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
-public class Category {
-    private Integer id;
+public class Category implements Serializable {
+    private int id;
     private String name;
     private String status;
     private Timestamp createdTime;
@@ -15,11 +16,11 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -68,7 +69,7 @@ public class Category {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Category category = (Category) o;
-        return Objects.equals(id, category.id) &&
+        return id == category.id &&
                 Objects.equals(name, category.name) &&
                 Objects.equals(status, category.status) &&
                 Objects.equals(createdTime, category.createdTime) &&
@@ -77,7 +78,6 @@ public class Category {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(id, name, status, createdTime, updatedTime);
     }
 }

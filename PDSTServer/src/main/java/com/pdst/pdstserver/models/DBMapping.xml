@@ -47,10 +47,7 @@
             <many-to-one name="roleByRoleId" optional="true" target-entity="com.pdst.pdstserver.models.Role">
                 <join-column name="role_id" nullable="false" referenced-column-name="id"/>
             </many-to-one>
-            <one-to-many name="suggestionsById" mapped-by="accountByAccountId"
-                         target-entity="com.pdst.pdstserver.models.Suggestion"/>
-            <one-to-many name="videosById" mapped-by="accountByAccountId"
-                         target-entity="com.pdst.pdstserver.models.Video"/>
+
         </attributes>
     </entity>
     <entity class="com.pdst.pdstserver.models.Category">
@@ -71,8 +68,7 @@
             <basic name="updatedTime">
                 <column name="updated_time"/>
             </basic>
-            <one-to-many name="videosById" mapped-by="categoryByCategoryId"
-                         target-entity="com.pdst.pdstserver.models.Video"/>
+
         </attributes>
     </entity>
     <entity class="com.pdst.pdstserver.models.Role">
@@ -93,9 +89,7 @@
             <basic name="updatedTime">
                 <column name="updated_time"/>
             </basic>
-            <one-to-many name="accountsById" mapped-by="roleByRoleId"
-                         target-entity="com.pdst.pdstserver.models.Account"/>
-        </attributes>
+                    </attributes>
     </entity>
     <entity class="com.pdst.pdstserver.models.Suggestion">
         <table name="Suggestion" schema="dbo" catalog="PDSTDB"/>
@@ -121,14 +115,7 @@
             <basic name="updatedTime">
                 <column name="updated_time"/>
             </basic>
-            <many-to-one name="accountByAccountId" optional="true" target-entity="com.pdst.pdstserver.models.Account">
-                <join-column name="account_id" nullable="false" referenced-column-name="id"/>
-            </many-to-one>
-            <many-to-one name="videoByVideoId" optional="true" target-entity="com.pdst.pdstserver.models.Video">
-                <join-column name="video_id" nullable="false" referenced-column-name="id"/>
-            </many-to-one>
-            <one-to-many name="suggestionDetailsById" mapped-by="suggestionBySuggestionId"
-                         target-entity="com.pdst.pdstserver.models.SuggestionDetail"/>
+
         </attributes>
     </entity>
     <entity class="com.pdst.pdstserver.models.SuggestionDetail">
@@ -158,11 +145,7 @@
             <basic name="updatedTime">
                 <column name="updated_time"/>
             </basic>
-            <many-to-one name="suggestionBySuggestionId" optional="true"
-                         target-entity="com.pdst.pdstserver.models.Suggestion">
-                <join-column name="suggestion_id" nullable="false" referenced-column-name="id"/>
-            </many-to-one>
-        </attributes>
+            </attributes>
     </entity>
     <entity class="com.pdst.pdstserver.models.Video">
         <table name="Video" schema="dbo" catalog="PDSTDB"/>
@@ -197,15 +180,6 @@
             <basic name="updatedTime">
                 <column name="updated_time"/>
             </basic>
-            <many-to-one name="accountByAccountId" optional="true" target-entity="com.pdst.pdstserver.models.Account">
-                <join-column name="account_id" nullable="false" referenced-column-name="id"/>
-            </many-to-one>
-            <many-to-one name="categoryByCategoryId" optional="true"
-                         target-entity="com.pdst.pdstserver.models.Category">
-                <join-column name="category_id" nullable="false" referenced-column-name="id"/>
-            </many-to-one>
-            <one-to-many name="suggestionsById" mapped-by="videoByVideoId"
-                         target-entity="com.pdst.pdstserver.models.Suggestion"/>
-        </attributes>
+            </attributes>
     </entity>
 </entity-mappings>

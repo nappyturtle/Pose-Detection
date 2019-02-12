@@ -3,19 +3,20 @@ package com.pdst.pdstserver.models;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
-public class Video {
-    private Integer id;
+public class Video implements Serializable {
+    private int id;
     private String title;
     private String thumnailUrl;
     private String contentUrl;
@@ -25,15 +26,16 @@ public class Video {
     private String status;
     private Timestamp createdTime;
     private Timestamp updatedTime;
+    private String folderName;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -132,7 +134,7 @@ public class Video {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Video video = (Video) o;
-        return Objects.equals(id, video.id) &&
+        return id == video.id &&
                 Objects.equals(title, video.title) &&
                 Objects.equals(thumnailUrl, video.thumnailUrl) &&
                 Objects.equals(contentUrl, video.contentUrl) &&
@@ -146,9 +148,19 @@ public class Video {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(id, title, thumnailUrl, contentUrl, accountId, categoryId, numOfView, status, createdTime, updatedTime);
     }
+
+    @Basic
+    @Column(name = "folder_name")
+    public String getFolderName() {
+        return folderName;
+    }
+
+    public void setFolderName(String folderName) {
+        this.folderName = folderName;
+    }
+
     @PrePersist
     public void prePersist() {
         System.out.println("pre persist!");

@@ -1,12 +1,13 @@
 package com.pdst.pdstserver.models;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
-public class SuggestionDetail {
-    private Integer id;
+public class SuggestionDetail implements Serializable {
+    private int id;
     private String imgUrl;
     private String standardImgUrl;
     private String description;
@@ -18,11 +19,11 @@ public class SuggestionDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -101,7 +102,7 @@ public class SuggestionDetail {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SuggestionDetail that = (SuggestionDetail) o;
-        return Objects.equals(id, that.id) &&
+        return id == that.id &&
                 Objects.equals(imgUrl, that.imgUrl) &&
                 Objects.equals(standardImgUrl, that.standardImgUrl) &&
                 Objects.equals(description, that.description) &&
@@ -113,7 +114,6 @@ public class SuggestionDetail {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(id, imgUrl, standardImgUrl, description, suggestionId, status, createdTime, updatedTime);
     }
 }

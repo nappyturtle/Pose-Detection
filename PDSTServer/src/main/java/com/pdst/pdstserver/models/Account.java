@@ -1,12 +1,13 @@
 package com.pdst.pdstserver.models;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
-public class Account {
-    private Integer id;
+public class Account implements Serializable {
+    private int id;
     private String username;
     private String password;
     private String email;
@@ -23,11 +24,11 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -156,7 +157,7 @@ public class Account {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Account account = (Account) o;
-        return Objects.equals(id, account.id) &&
+        return id == account.id &&
                 Objects.equals(username, account.username) &&
                 Objects.equals(password, account.password) &&
                 Objects.equals(email, account.email) &&
@@ -173,7 +174,6 @@ public class Account {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(id, username, password, email, phone, gender, imgUrl, address, numOfFollow, roleId, status, createdTime, updatedTime);
     }
 }
