@@ -38,13 +38,15 @@ public class SuggestionDetailServcieImpl implements SuggestionDetailServcie {
         BeanWrapper beanWrapper = new BeanWrapperImpl(new SuggestionDetail());
         beanWrapper.setPropertyValue(field, value);
         SuggestionDetail suggestionDetail = (SuggestionDetail) beanWrapper.getWrappedInstance();
-        Example<SuggestionDetail> suggestionDetailExample = Example.of(suggestionDetail, ExampleMatcher.matchingAny());
+        suggestionDetail.setStatus("active");
+        Example<SuggestionDetail> suggestionDetailExample = Example.of(suggestionDetail, ExampleMatcher.matchingAll().withIgnorePaths("id"));
         List<SuggestionDetail> suggestionDetails = suggestionDetailRepository.findAll(suggestionDetailExample, new Sort(Sort.Direction.DESC, "createdTime"));
         return suggestionDetails;
     }
 
     @Override
     public SuggestionDetail createSuggestionDetail(SuggestionDetail suggestionDetail) {
+        suggestionDetail.setStatus("active");
         return suggestionDetailRepository.saveAndFlush(suggestionDetail);
     }
 }
