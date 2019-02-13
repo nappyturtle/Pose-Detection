@@ -13,8 +13,8 @@ public class SuggestionDetail implements Serializable {
     private String description;
     private Integer suggestionId;
     private String status;
-    private Timestamp createdTime;
-    private Timestamp updatedTime;
+    private String createdTime;
+    private String updatedTime;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -77,26 +77,6 @@ public class SuggestionDetail implements Serializable {
         this.status = status;
     }
 
-    @Basic
-    @Column(name = "created_time")
-    public Timestamp getCreatedTime() {
-        return createdTime;
-    }
-
-    public void setCreatedTime(Timestamp createdTime) {
-        this.createdTime = createdTime;
-    }
-
-    @Basic
-    @Column(name = "updated_time")
-    public Timestamp getUpdatedTime() {
-        return updatedTime;
-    }
-
-    public void setUpdatedTime(Timestamp updatedTime) {
-        this.updatedTime = updatedTime;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -115,5 +95,25 @@ public class SuggestionDetail implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(id, imgUrl, standardImgUrl, description, suggestionId, status, createdTime, updatedTime);
+    }
+
+    @Basic
+    @Column(name = "created_time")
+    public String getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(String createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    @Basic
+    @Column(name = "updated_time")
+    public String getUpdatedTime() {
+        return updatedTime;
+    }
+
+    public void setUpdatedTime(String updatedTime) {
+        this.updatedTime = updatedTime;
     }
 }

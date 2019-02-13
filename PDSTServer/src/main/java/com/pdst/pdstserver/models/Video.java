@@ -24,9 +24,10 @@ public class Video implements Serializable {
     private Integer categoryId;
     private Integer numOfView;
     private String status;
-    private Timestamp createdTime;
-    private Timestamp updatedTime;
+
     private String folderName;
+    private String createdTime;
+    private String updatedTime;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -109,26 +110,6 @@ public class Video implements Serializable {
         this.status = status;
     }
 
-    @Basic
-    @Column(name = "created_time")
-    public Timestamp getCreatedTime() {
-        return createdTime;
-    }
-
-    public void setCreatedTime(Timestamp createdTime) {
-        this.createdTime = createdTime;
-    }
-
-    @Basic
-    @Column(name = "updated_time")
-    public Timestamp getUpdatedTime() {
-        return updatedTime;
-    }
-
-    public void setUpdatedTime(Timestamp updatedTime) {
-        this.updatedTime = updatedTime;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -165,6 +146,7 @@ public class Video implements Serializable {
     public void prePersist() {
         System.out.println("pre persist!");
     }
+
     @PostPersist
     public void postPersist() {
         try {
@@ -208,5 +190,25 @@ public class Video implements Serializable {
             e.printStackTrace();
         }
         System.out.println("aaaaaaaaaaaaaaaaaaaa");
+    }
+
+    @Basic
+    @Column(name = "created_time")
+    public String getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(String createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    @Basic
+    @Column(name = "updated_time")
+    public String getUpdatedTime() {
+        return updatedTime;
+    }
+
+    public void setUpdatedTime(String updatedTime) {
+        this.updatedTime = updatedTime;
     }
 }
