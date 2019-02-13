@@ -30,4 +30,12 @@ dependencies {
     compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-jasper', version: '9.0.14'
     compile 'redis.clients:jedis:2.7.0'
 
+    compile group: 'org.jcodec', name: 'jcodec', version:'0.2.3'
+    compile group: 'com.google.cloud', name: 'gcloud-java-nio', version:'0.2.8'
+
+    // https://mvnrepository.com/artifact/com.google.firebase/firebase-server-sdk
+    compile group: 'com.google.firebase', name: 'firebase-server-sdk', version: '3.0.1'
+    // https://mvnrepository.com/artifact/commons-io/commons-io
+    compile group: 'commons-io', name: 'commons-io', version: '2.4'
+
 }

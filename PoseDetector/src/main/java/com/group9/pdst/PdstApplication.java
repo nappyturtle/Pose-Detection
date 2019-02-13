@@ -1,6 +1,8 @@
 package com.group9.pdst;
 
+import com.group9.pdst.service.FileStorage;
 import com.group9.pdst.utils.ConstantUtilities;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -11,8 +13,10 @@ import redis.clients.jedis.Jedis;
 import java.io.*;
 
 @SpringBootApplication
-public class PdstApplication {
+public class PdstApplication implements CommandLineRunner {
 
+    @javax.annotation.Resource
+    FileStorage fileStorage;
     public static void main(String[] args) {
         getConfig();
         SpringApplication.run(PdstApplication.class, args);
@@ -40,6 +44,12 @@ public class PdstApplication {
         catch(IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+        fileStorage.deleteAll();
+        fileStorage.init();
     }
 
 }
