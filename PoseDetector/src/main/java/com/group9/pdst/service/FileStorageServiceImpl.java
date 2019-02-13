@@ -84,6 +84,7 @@ public class FileStorageServiceImpl implements FileStorage{
         return list;
     }
 
+
     @Override
     public void deleteAll() {
 
@@ -133,7 +134,7 @@ public class FileStorageServiceImpl implements FileStorage{
     }
 
     @Override
-    public void slideImageToImageFrames(String urlVideo,String folderName) {
+    public void slideImageToCreateDataset(String urlVideo,String folderName) {
         VideoFrameExtracter videoFrameExtracter = new VideoFrameExtracter();
 
         System.out.println("da vao slideImage Hanlder = " + urlVideo);
@@ -142,7 +143,29 @@ public class FileStorageServiceImpl implements FileStorage{
             URL url = new URL(urlVideo);
             File file = new File(fileStorageLocation+"/"+ folderName + "\\"+"test.mp4");
             FileUtils.copyURLToFile(url, file);
-            File imageFrame = videoFrameExtracter.createThumbnailFromVideo(file, Paths.get(fileStorageLocation + "/" + folderName));
+            File imageFrame = videoFrameExtracter.createImageToCreateDataset(file, Paths.get(fileStorageLocation + "/" + folderName));
+            System.out.println("input file name : " + file.getAbsolutePath());
+            System.out.println("output video frame file name  : " + imageFrame.getAbsolutePath());
+        } catch (JCodecException e) {
+            System.out.println("JCodec error occurred while extracting image : " + e.getMessage());
+        } catch (MalformedURLException e) {
+            System.out.println("MalformedURLException error occurred while extracting image : " + e.getMessage());
+        } catch (IOException e) {
+            System.out.println("IO error occurred while extracting image : " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void slideImageToSuggest(String urlVideo,String folderName) {
+        VideoFrameExtracter videoFrameExtracter = new VideoFrameExtracter();
+
+        System.out.println("da vao slideImage Hanlder = " + urlVideo);
+        try {
+
+            URL url = new URL(urlVideo);
+            File file = new File(fileStorageLocation+"/"+ folderName + "\\"+"test.mp4");
+            FileUtils.copyURLToFile(url, file);
+            File imageFrame = videoFrameExtracter.createImageToSuggest(file, Paths.get(fileStorageLocation + "/" + folderName));
             System.out.println("input file name : " + file.getAbsolutePath());
             System.out.println("output video frame file name  : " + imageFrame.getAbsolutePath());
         } catch (JCodecException e) {

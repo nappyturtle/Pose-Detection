@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>JSP Page</title>
+
+    <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        // TODO: Replace with your project's customized code snippet
+        var config = {
+            apiKey: "AIzaSyCmhAJD-slGnxQohv96J0MFRkN9vqi4gJg",
+            authDomain: "demouploadvideo-bdc04.firebaseapp.com",
+            databaseURL: "https://demouploadvideo-bdc04.firebaseio.com",
+            projectId: "demouploadvideo-bdc04",
+            storageBucket: "gs://demouploadvideo-bdc04.appspot.com",
+            messagingSenderId: "404242634566"
+        };
+        firebase.initializeApp(config);
+    </script>
+
+    <script language="JavaScript" type="text/javascript">
+        function uploadImage() {
+
+            var foldernameTrainer = getParams('trainer');
+            var foldernameTrainee = getParams('trainee');
+            var suggestionId = getParams('suggestionId');
+            console.log('foldernameTrainer = ' + foldernameTrainer);
+            console.log('foldernameTrainee = ' + foldernameTrainee);
+            console.log('suggestionId = ' + suggestionId);
+
+            sendVideoUrl(foldernameTrainee);
+        }
+
+        function getParams(key) {
+            var params = {};
+            location.search.replace(/[?&;]+([^=]+)=([^&;]*)/gi, function (s, key, value) {
+                params[key] = value
+            })
+            return key ? params[key] : params;
+        }
+
+
+        function sendVideoUrl(folderName) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    console.log(xhttp);
+                    var jsonArray = xhttp.response;
+                    var contentType = 'image/png';
+                    console.log('foldername = '+jsonArray[0].foldername);
+
+                    for (var i = 0; i < jsonArray.length; i++) {
+                        var fileImage = jsonArray[i];
+                        var blob = b64toBlob(fileImage.content, contentType);
+                        var blobUrl = URL.createObjectURL(blob);
+
+                        var x = document.createElement("IMG");
+                        x.setAttribute('crossOrigin', 'anonymous');
+                        x.setAttribute("src", blobUrl);
+                        x.setAttribute("width", "304");
+                        x.setAttribute("height", "228");
+                        document.body.appendChild(x);
+                        uploadToStorage(blob, fileImage.filename, fileImage.foldername);
+                    }
+                }
+            };
+            xhttp.open("GET", "/uploadImage?name="+folderName, true);
+            xhttp.responseType = "json";
+            xhttp.send();
+        }
+
+
+        function uploadImageToStorage() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    console.log(xhttp);
+                    var jsonArray = xhttp.response;
+                    //var test = b64DecodeUnicode(xhttp.response.fileString);
+                    var contentType = 'image/png';
+                    for (var i = 0; i < jsonArray.length; i++) {
+                        var fileImage = jsonArray[i];
+                        var blob = b64toBlob(fileImage.content, contentType);
+                        var blobUrl = URL.createObjectURL(blob);
+
+                        var x = document.createElement("IMG");
+                        x.setAttribute('crossOrigin', 'anonymous');
+                        x.setAttribute("src", blobUrl);
+                        x.setAttribute("width", "304");
+                        x.setAttribute("height", "228");
+                        document.body.appendChild(x);
+                        uploadToStorage(blob, fileImage.filename, fileImage.foldername);
+                    }
+                }
+
+            };
+            xhttp.open("GET", "/uploadImage", true);
+            xhttp.responseType = "json"
+            xhttp.send();
+        }
+
+        function b64toBlob(b64Data, contentType, sliceSize) {
+            contentType = contentType || '';
+            sliceSize = sliceSize || 512;
+
+            var byteCharacters = atob(b64Data);
+            var byteArrays = [];
+
+            for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+                var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+                var byteNumbers = new Array(slice.length);
+                for (var i = 0; i < slice.length; i++) {
+                    byteNumbers[i] = slice.charCodeAt(i);
+                }
+
+                var byteArray = new Uint8Array(byteNumbers);
+
+                byteArrays.push(byteArray);
+            }
+
+            var blob = new Blob(byteArrays, {type: contentType});
+            return blob;
+        }
+
+
+        function uploadToStorage(file, filename, foldername) {
+
+// Create the file metadata
+            var metadata = {
+                contentType: 'image/png'
+            };
+            var storage = firebase.storage();
+            var storageRef = storage.ref();
+
+// Upload file and metadata to the object 'images/mountains.jpg'
+            var uploadTask = storageRef.child(foldername + '/Image/' + filename).put(file, metadata);
+
+// Listen for state changes, errors, and completion of the upload.
+            uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+                function (snapshot) {
+                    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                    var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    console.log('Upload is ' + progress + '% done');
+                    switch (snapshot.state) {
+                        case firebase.storage.TaskState.PAUSED: // or 'paused'
+                            console.log('Upload is paused');
+                            break;
+                        case firebase.storage.TaskState.RUNNING: // or 'running'
+                            console.log('Upload is running');
+                            break;
+                    }
+                }, function (error) {
+
+                    // A full list of error codes is available at
+                    // https://firebase.google.com/docs/storage/web/handle-errors
+                    switch (error.code) {
+                        case 'storage/unauthorized':
+                            // User doesn't have permission to access the object
+                            break;
+
+                        case 'storage/canceled':
+                            // User canceled the upload
+                            break;
+
+                        case 'storage/unknown':
+                            // Unknown error occurred, inspect error.serverResponse
+                            break;
+                    }
+
+                }, function () {
+                    // Upload completed successfully, now we can get the download URL
+
+                    uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+                        console.log('File available at', downloadURL);
+                        writeImageToDbFirebase(filename,foldername,downloadURL)
+                    });
+
+                });
+
+        }
+
+        function writeImageToDbFirebase(filename, foldername,imageUrl) {
+            var refDir = firebase.database().ref(foldername);
+
+            refDir.update({
+                [filename]:imageUrl
+            })
+
+        }
+
+    </script>
+    <style>
+
+        .imgDiv {
+            float: left;
+            position: relative;
+        }
+    </style>
+</head>
+
+<body onload="uploadImage()">
+</body>
+
+</html>
+
+

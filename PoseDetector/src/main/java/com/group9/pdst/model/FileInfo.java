@@ -8,6 +8,9 @@ public class FileInfo {
 	private String content;
 	private String videoName;
 	private String videoUrl;
+	private String foldernameTrainer;
+	private String foldernameTrainee;
+	private String suggestionId;
 	private String foldername;
 
 	public String getFoldername() {
@@ -16,6 +19,30 @@ public class FileInfo {
 
 	public void setFoldername(String foldername) {
 		this.foldername = foldername;
+	}
+
+	public String getSuggestionId() {
+		return suggestionId;
+	}
+
+	public void setSuggestionId(String suggestionId) {
+		this.suggestionId = suggestionId;
+	}
+
+	public String getFoldernameTrainee() {
+		return foldernameTrainee;
+	}
+
+	public void setFoldernameTrainee(String foldernameTrainee) {
+		this.foldernameTrainee = foldernameTrainee;
+	}
+
+	public String getFoldernameTrainer() {
+		return foldernameTrainer;
+	}
+
+	public void setFoldernameTrainer(String foldernameTrainer) {
+		this.foldernameTrainer = foldernameTrainer;
 	}
 
 	public FileInfo(String videoName, String videoUrl) {

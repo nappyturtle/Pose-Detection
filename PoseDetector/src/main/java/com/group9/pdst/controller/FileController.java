@@ -18,41 +18,10 @@ public class FileController {
     @Autowired
     private FileStorage fileStorageService;
 
-//    @RequestMapping(value = "/sliceVideo", method = RequestMethod.POST)
-//    public ResponseEntity<List<FileInfo>> sliceVideo(@RequestBody String jsonString) {
-//        ObjectMapper mapper = new ObjectMapper();
-//        System.out.println(" da vao getVideoUrl Controller ");
-//        List<FileInfo> list = null;
-//        try {
-//            FileInfo fileInfo = mapper.readValue(jsonString, FileInfo.class);
-//            System.out.println("videoUrl = " + fileInfo.getVideoUrl());
-//            System.out.println("videoName = " + fileInfo.getVideoName());
-//            String[] videoNameTmp = fileInfo.getVideoName().split("/");
-//            System.out.println(videoNameTmp[2]);
-//            String folderName = fileInfo.getVideoName().substring(0, fileInfo.getVideoName().indexOf("/", 1));
-//            System.out.println("folderName = " + folderName);
-//            // tạo folder KietPT-123456 trong thư mục filestorage
-//            fileStorageService.createFolder(folderName);
-//
-//            // cắt video vs 3 param
-//            // + url
-//            // + tên video
-//            // + tên folder(KietPT-123456)
-//            fileStorageService.slideImageToImageFrames(fileInfo.getVideoUrl(),videoNameTmp[2],folderName);
-//
-//            // lấy danh sách các file trong thư mục filestorage/KietPT-123456
-//            list = fileStorageService.getFileFromLocalStorage(folderName);
-//        } catch (IOException e) {
-//            logger.info("Something Wrong in /sliceVideo !!!! " + e.getMessage());
-//        }
-//
-//        return ResponseEntity.ok(list);
-//    }
-
 
     @PostMapping(value = "/sliceVideo")
     public String sliceVideo(@RequestBody FileInfo fileInfo) {
-        System.out.println("name = "+fileInfo.getFoldername());
+        System.out.println("name = "+fileInfo.getFoldernameTrainer());
         System.out.println("url = "+fileInfo.getVideoUrl());
 
         System.out.println(" da vao getVideoUrl Controller ");
@@ -61,17 +30,17 @@ public class FileController {
 
 
             // tạo folder KietPT-123456 trong thư mục filestorage
-            fileStorageService.createFolder(fileInfo.getFoldername());
+            fileStorageService.createFolder(fileInfo.getFoldernameTrainer());
 
             // cắt video vs 3 param
             // + url
             // + tên video
             // + tên folder(KietPT-123456)
-            fileStorageService.slideImageToImageFrames(fileInfo.getVideoUrl(),fileInfo.getFoldername());
+            fileStorageService.slideImageToCreateDataset(fileInfo.getVideoUrl(),fileInfo.getFoldernameTrainer());
 
             // lấy danh sách các file trong thư mục filestorage/KietPT-123456
             //list = fileStorageService.getFileFromLocalStorage(folderName);
-            OpenBrowserUtilities.openBrowser(ConstantUtilities.domain + "uploadImage.html?name=" + fileInfo.getFoldername());
+            OpenBrowserUtilities.openBrowser(ConstantUtilities.domain + "uploadImage.html?name=" + fileInfo.getFoldernameTrainer());
         } catch (Exception e) {
             logger.info("Something Wrong in /sliceVideo !!!! " + e.getMessage());
         }
@@ -84,6 +53,38 @@ public class FileController {
         System.out.println("folderName = "+folderName);
         List<FileInfo> list = fileStorageService.getFileFromLocalStorage(folderName);
         return ResponseEntity.ok(list);
+    }
+
+    @PostMapping(value = "/sliceVideoToSuggest")
+    public String sliceVideoToSuggest(@RequestBody FileInfo fileInfo) {
+        System.out.println("trainer = "+fileInfo.getFoldernameTrainer());
+        System.out.println("trainee = "+fileInfo.getFoldernameTrainee());
+        System.out.println("suggestionId = "+fileInfo.getSuggestionId());
+        System.out.println("url = "+fileInfo.getVideoUrl());
+
+        System.out.println(" da vao getVideoUrl Controller ");
+        //List<FileInfo> list = null;
+        try {
+
+
+            // tạo folder KietPT-123456 trong thư mục filestorage
+            fileStorageService.createFolder(fileInfo.getFoldernameTrainee());
+
+            // cắt video vs 3 param
+            // + url
+            // + tên video
+            // + tên folder(KietPT-123456)
+            fileStorageService.slideImageToSuggest(fileInfo.getVideoUrl(),fileInfo.getFoldernameTrainee());
+
+            // lấy danh sách các file trong thư mục filestorage/KietPT-123456
+            //list = fileStorageService.getFileFromLocalStorage(folderName);
+            OpenBrowserUtilities.openBrowser(ConstantUtilities.domain + "uploadImageToSuggest.html?trainer=" +
+                    fileInfo.getFoldernameTrainer()+"&trainee="+fileInfo.getFoldernameTrainee()
+            +"&suggestionId="+fileInfo.getSuggestionId());
+        } catch (Exception e) {
+            logger.info("Something Wrong in /sliceVideoToSuggest !!!! " + e.getMessage());
+        }
+        return "Successfully";
     }
 
 

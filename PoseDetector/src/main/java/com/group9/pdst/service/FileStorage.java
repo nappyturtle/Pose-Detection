@@ -8,6 +8,7 @@ public interface FileStorage {
     List<FileInfo> getFileFromLocalStorage(String folderName);
     void deleteAll();
     void createFolder(String folderName);
-    void slideImageToImageFrames(String urlVideo, String folderName);
+    void slideImageToCreateDataset(String urlVideo, String folderName);
+    void slideImageToSuggest(String urlVideo, String folderName);
     void init();
 }

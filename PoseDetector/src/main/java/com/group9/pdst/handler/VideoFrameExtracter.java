@@ -23,7 +23,7 @@ import java.nio.file.Path;
 public class VideoFrameExtracter {
 //
 
-    public File createThumbnailFromVideo(File file, Path path) throws IOException, JCodecException {
+    public File createImageToSuggest(File file, Path path) throws IOException, JCodecException {
         double frameRate = 0;
         try {
             System.out.println("da vao VideoFrameExtracter ");
@@ -37,13 +37,39 @@ public class VideoFrameExtracter {
         }
 
         File originalFile = file;
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < frameRate; i++) {
             //Picture frame = FrameGrab.getFrameFromFile(file, i);
             Picture frame = FrameGrab.getFrameAtSec(file, i);
             //originalFile = File.createTempFile("Frame_" + i + 1, "_.png", new File(String.valueOf(path)));
             originalFile = new File(path+"/Frame"+i+".png");
             //File f = new File(path+"/Frame"+i+".png");
             ImageIO.write(toBufferedImage(frame), "png", originalFile);
+        }
+        return originalFile;
+    }
+    public File createImageToCreateDataset(File file, Path path) throws IOException, JCodecException {
+        double frameRate = 0;
+        try {
+            System.out.println("da vao VideoFrameExtracter ");
+            SeekableByteChannel bc = NIOUtils.readableFileChannel(String.valueOf(file));
+            MP4Demuxer dm = new MP4Demuxer(bc);
+            DemuxerTrack vt = dm.getVideoTrack();
+            frameRate = vt.getMeta().getTotalDuration();
+            System.out.println("frame rate ===== " + frameRate);
+        } catch (Exception e) {
+
+        }
+
+        File originalFile = file;
+        for (int i = 0; i < frameRate/2; i++) {
+            //Picture frame = FrameGrab.getFrameFromFile(file, i);
+
+            Picture frame = FrameGrab.getFrameAtSec(file, i*2);
+            //originalFile = File.createTempFile("Frame_" + i + 1, "_.png", new File(String.valueOf(path)));
+            originalFile = new File(path+"/Frame"+i+".png");
+            //File f = new File(path+"/Frame"+i+".png");
+            ImageIO.write(toBufferedImage(frame), "png", originalFile);
+
         }
         return originalFile;
     }
@@ -98,21 +124,22 @@ public class VideoFrameExtracter {
 
 
     public static void main(String[] args) {
-        VideoFrameExtracter videoFrameExtracter = new VideoFrameExtracter();
+//        VideoFrameExtracter videoFrameExtracter = new VideoFrameExtracter();
+//
+//        try {
+//            URL url = new URL("https://firebasestorage.googleapis.com/v0/b/demouploadvideo-bdc04.appspot.com/o/KietPT-456789%2FVideo%2F1.mp4?alt=media&token=ea946831-2d01-4463-bbc1-dad770d7b5dc");
+//            File file = new File("D:\\Faculty\\Capstone Project\\Image2\\abc.mp4");
+//            System.out.println("aaaaaaaaaaaaaaaaa");
+//            FileUtils.copyURLToFile(url, file);
+//            File imageFrame = videoFrameExtracter.test(file);
+//            System.out.println("input file name : " + file.getAbsolutePath());
+//            System.out.println("output video frame file name  : " + imageFrame.getAbsolutePath());
+//        } catch (JCodecException e) {
+//            System.out.println("JCodec error occurred while extracting image : " + e.getMessage());
+//        } catch (IOException e) {
+//            System.out.println("IO error occurred while extracting image : " + e.getMessage());
+//        }
 
-        try {
-            URL url = new URL("https://firebasestorage.googleapis.com/v0/b/demouploadvideo-bdc04.appspot.com/o/KietPT-456789%2FVideo%2F1.mp4?alt=media&token=ea946831-2d01-4463-bbc1-dad770d7b5dc");
-            File file = new File("D:\\Faculty\\Capstone Project\\Image2\\abc.mp4");
-            System.out.println("aaaaaaaaaaaaaaaaa");
-            FileUtils.copyURLToFile(url, file);
-            File imageFrame = videoFrameExtracter.test(file);
-            System.out.println("input file name : " + file.getAbsolutePath());
-            System.out.println("output video frame file name  : " + imageFrame.getAbsolutePath());
-        } catch (JCodecException e) {
-            System.out.println("JCodec error occurred while extracting image : " + e.getMessage());
-        } catch (IOException e) {
-            System.out.println("IO error occurred while extracting image : " + e.getMessage());
-        }
     }
 
 
