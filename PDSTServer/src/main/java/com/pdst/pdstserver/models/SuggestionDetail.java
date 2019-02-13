@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
+@Table(name = "suggestiondetail")
 public class SuggestionDetail implements Serializable {
     private int id;
     private String imgUrl;

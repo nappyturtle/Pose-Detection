@@ -16,7 +16,7 @@ public class SuggestionDetailServcieImpl implements SuggestionDetailServcie {
     }
 
     @Override
-    public List<SuggestionDetail> getAllSuggestinDetails() {
+    public List<SuggestionDetail> getAllSuggestionDetails() {
         return suggestionDetailRepository.findAll();
     }
 }

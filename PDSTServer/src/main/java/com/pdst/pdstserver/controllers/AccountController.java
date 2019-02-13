@@ -21,10 +21,10 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-   /* @GetMapping("accounts")
+    @GetMapping("accounts")
     public List<Account> getAllAccounts() {
         return accountService.getAllAccounts();
-    }*/
+    }
 
     /*@PostMapping("signup")*/
    /* public ResponseEntity<Void> addArticle(@RequestBody Account account, UriComponentsBuilder builder) {

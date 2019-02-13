@@ -1,6 +1,5 @@
 package com.pdst.pdstserver.services.videoservice;
 
-import com.pdst.pdstserver.handlers.SendRequest;
 import com.pdst.pdstserver.models.Video;
 import com.pdst.pdstserver.repositories.VideoRepository;
 import org.springframework.data.domain.Sort;

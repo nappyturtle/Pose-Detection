@@ -5,5 +5,5 @@ import com.pdst.pdstserver.models.SuggestionDetail;
 import java.util.List;
 
 public interface SuggestionDetailServcie {
-    List<SuggestionDetail> getAllSuggestinDetails();
+    List<SuggestionDetail> getAllSuggestionDetails();
 }
