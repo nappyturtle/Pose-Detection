@@ -2,7 +2,8 @@ package com.group9.pdst.controller;
 
 import com.group9.pdst.model.FileInfo;
 import com.group9.pdst.service.FileStorage;
-import com.group9.pdst.utils.StartBrowser;
+import com.group9.pdst.utils.ConstantUtilities;
+import com.group9.pdst.utils.OpenBrowserUtilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,14 +71,10 @@ public class FileController {
 
             // lấy danh sách các file trong thư mục filestorage/KietPT-123456
             //list = fileStorageService.getFileFromLocalStorage(folderName);
-
-            StartBrowser browser = new StartBrowser();
-            browser.openBrowser(fileInfo.getFoldername());
+            OpenBrowserUtilities.openBrowser(ConstantUtilities.domain + "uploadImage.html?name=" + fileInfo.getFoldername());
         } catch (Exception e) {
             logger.info("Something Wrong in /sliceVideo !!!! " + e.getMessage());
         }
-
-
         return "Successfully";
     }
 

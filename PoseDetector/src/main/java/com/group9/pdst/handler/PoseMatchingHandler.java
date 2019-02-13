@@ -27,11 +27,10 @@ public class PoseMatchingHandler {
             MatchingPoseResult finalPoseResult = null;
             double maxPercent = 0;
             for (int j = 0; j < imgList.size(); j++) {
-                String uri = "http://localhost:8080/poseDetect.html";
+                String uri = ConstantUtilities.domain + "poseDetect.html";
                 String imgName = imgList.get(j);
                 uri+="?img=" + imgName + "&simg=" + simgName + "&imgSize=" + ConstantUtilities.imgSize + "&suggestionId=" + suggestionId;
                 OpenBrowserUtilities.openBrowser(uri);
-
                 while(true) {
                     try {
                         Thread.sleep(5000);
@@ -56,7 +55,7 @@ public class PoseMatchingHandler {
                 }
 
             }
-//            System.out.println("Max: " + maxPercent);
+
             String suggestion = "Tư thế của bạn khớp " + CalculationUtilities.roundingPercentage(finalPoseResult.getMatchingPercentage())
                     + "%\n" + finalPoseResult.getDescription();
             SuggestionDetail suggestionDetail = new SuggestionDetail(finalPoseResult.getImgUrl(), finalPoseResult.getStandardImgUrl(), suggestion, suggestionId);

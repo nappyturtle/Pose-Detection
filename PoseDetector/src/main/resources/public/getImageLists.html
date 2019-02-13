@@ -67,7 +67,7 @@
                     window.close();
                 }
             };
-            xhttp.open("POST", "http://localhost:8080/matchVideo", true);
+            xhttp.open("POST", "http://localhost:8090/matchVideo", true);
             xhttp.setRequestHeader("Content-type", "application/json");
             var imageListArr  = [listSimgKey, listImgKey, suggestionId];
             xhttp.send(JSON.stringify(imageListArr));

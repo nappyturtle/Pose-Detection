@@ -111,7 +111,7 @@
                     window.close();
                 }
             };
-            xhttp.open("POST", "http://localhost:8080/matchPose", true);
+            xhttp.open("POST", "http://localhost:8090/matchPose", true);
             xhttp.setRequestHeader("Content-type", "application/json");
             var poseArr = [JSON.stringify(poses.get("standard")), JSON.stringify(poses.get("normal")), suggestionId];
             xhttp.send(JSON.stringify(poseArr));

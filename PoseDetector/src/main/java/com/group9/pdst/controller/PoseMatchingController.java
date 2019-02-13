@@ -2,16 +2,11 @@ package com.group9.pdst.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.group9.pdst.handler.PoseMatchingHandler;
-import com.group9.pdst.model.MatchingPoseResult;
 import com.group9.pdst.model.Pose;
 import com.group9.pdst.model.SuggestionDetail;
-import com.group9.pdst.utils.CalculationUtilities;
 import com.group9.pdst.utils.ConstantUtilities;
-import com.group9.pdst.utils.OpenBrowserUtilities;
 import org.springframework.web.bind.annotation.*;
 import java.io.*;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -30,7 +25,6 @@ public class PoseMatchingController {
             String suggestionId = poses.get(2);
             PoseMatchingHandler handler = new PoseMatchingHandler();
             result = handler.matchPose(trainerPose, traineePose);
-//            System.out.println(result);
             ConstantUtilities.jedis.lpush(suggestionId, result);
         } catch (IOException e) {
             e.printStackTrace();
