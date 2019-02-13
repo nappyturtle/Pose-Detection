@@ -1,29 +1,34 @@
 package com.capstone.self_training.model;
 
-import java.io.Serializable;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
-public class Suggestion implements Serializable{
-    private int id;
+public class Suggestion {
+
+    @SerializedName("id")
+    @Expose
+    private Integer id;
+    @SerializedName("name")
+    @Expose
     private String name;
-    private int accountId;
-    private int videoId;
-    private String status;
-    private String createdTime;
-    private String updatedTime;
-    private String imgUrl;
-    public Suggestion(int id, String name, String createdTime, String imgUrl){
-        this.id = id;
-        this.name = name;
-        this.createdTime = createdTime;
-        this.imgUrl = imgUrl;
-    }
-    public Suggestion(){}
+    @SerializedName("accountId")
+    @Expose
+    private Integer accountId;
+    @SerializedName("videoId")
+    @Expose
+    private Integer videoId;
+    @SerializedName("createdTime")
+    @Expose
+    private Object createdTime;
+    @SerializedName("thumnailUrl")
+    @Expose
+    private String thumnailUrl;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -35,53 +40,36 @@ public class Suggestion implements Serializable{
         this.name = name;
     }
 
-    public int getAccountId() {
+    public Integer getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(int accountId) {
+    public void setAccountId(Integer accountId) {
         this.accountId = accountId;
     }
 
-    public int getVideoId() {
+    public Integer getVideoId() {
         return videoId;
     }
 
-    public void setVideoId(int videoId) {
+    public void setVideoId(Integer videoId) {
         this.videoId = videoId;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-
-
-    public String getImgUrl() {
-        return imgUrl;
-    }
-
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
-    }
-
-    public String getCreatedTime() {
+    public Object getCreatedTime() {
         return createdTime;
     }
 
-    public void setCreatedTime(String createdTime) {
+    public void setCreatedTime(Object createdTime) {
         this.createdTime = createdTime;
     }
 
-    public String getUpdatedTime() {
-        return updatedTime;
+    public String getThumnailUrl() {
+        return thumnailUrl;
     }
 
-    public void setUpdatedTime(String updatedTime) {
-        this.updatedTime = updatedTime;
+    public void setThumnailUrl(String thumnailUrl) {
+        this.thumnailUrl = thumnailUrl;
     }
+
 }

@@ -5,53 +5,95 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class SuggestionDetail implements Serializable {
+public class SuggestionDetail implements Serializable{
 
+@SerializedName("id")
+@Expose
+private Integer id;
+@SerializedName("imgUrl")
+@Expose
+private String imgUrl;
+@SerializedName("standardImgUrl")
+@Expose
+private String standardImgUrl;
+@SerializedName("description")
+@Expose
+private String description;
+@SerializedName("suggestionId")
+@Expose
+private Integer suggestionId;
+@SerializedName("status")
+@Expose
+private String status;
+@SerializedName("createdTime")
+@Expose
+private String createdTime;
+@SerializedName("updatedTime")
+@Expose
+private Object updatedTime;
 
-    private int id;
-    private String imgUrl;
-    private String imgStandardUrl;
-    private String result;
+public Integer getId() {
+return id;
+}
 
+public void setId(Integer id) {
+this.id = id;
+}
 
+public String getImgUrl() {
+return imgUrl;
+}
 
-    public SuggestionDetail(int id, String imgUrl, String imgStandardUrl, String result) {
-      this.setId(id);
-      this.setImgUrl(imgUrl);
-      this.setImgStandardUrl(imgStandardUrl);
-      this.setResult(result);
-    }
+public void setImgUrl(String imgUrl) {
+this.imgUrl = imgUrl;
+}
 
+public String getStandardImgUrl() {
+return standardImgUrl;
+}
 
-    public int getId() {
-        return id;
-    }
+public void setStandardImgUrl(String standardImgUrl) {
+this.standardImgUrl = standardImgUrl;
+}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+public String getDescription() {
+return description;
+}
 
-    public String getImgUrl() {
-        return imgUrl;
-    }
+public void setDescription(String description) {
+this.description = description;
+}
 
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
-    }
+public Integer getSuggestionId() {
+return suggestionId;
+}
 
-    public String getImgStandardUrl() {
-        return imgStandardUrl;
-    }
+public void setSuggestionId(Integer suggestionId) {
+this.suggestionId = suggestionId;
+}
 
-    public void setImgStandardUrl(String imgStandardUrl) {
-        this.imgStandardUrl = imgStandardUrl;
-    }
+public String getStatus() {
+return status;
+}
 
-    public String getResult() {
-        return result;
-    }
+public void setStatus(String status) {
+this.status = status;
+}
 
-    public void setResult(String result) {
-        this.result = result;
-    }
+public String getCreatedTime() {
+return createdTime;
+}
+
+public void setCreatedTime(String createdTime) {
+this.createdTime = createdTime;
+}
+
+public Object getUpdatedTime() {
+return updatedTime;
+}
+
+public void setUpdatedTime(Object updatedTime) {
+this.updatedTime = updatedTime;
+}
+
 }

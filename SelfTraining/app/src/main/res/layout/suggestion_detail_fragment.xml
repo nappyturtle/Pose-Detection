@@ -1,51 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<android.support.v4.widget.NestedScrollView
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
-    <TextView
-        android:layout_marginTop="15sp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Hình từ video mẫu của chúng tôi"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        />
-    <ImageView
-        android:id="@+id/suggestionDetail_imageView_id_trainer"
-        android:layout_width="300dp"
-        android:layout_height="180dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Hình từ video của bạn"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:layout_marginTop="15sp"
-        />
-    <ImageView
-        android:id="@+id/suggestionDetail_imageView_id_trainee"
-        android:layout_width="300dp"
-        android:layout_height="180dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        />
-    <TextView
-        android:id="@+id/suggestionDetail_resultComment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Tư thế của bạn khớp 80%"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:layout_marginTop="15sp"
-        android:textStyle="bold"
-        android:textColor="#ff1119"
-        />
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15sp"
+            android:text="Hình từ video mẫu của chúng tôi"
+            android:textAlignment="center"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/suggestionDetail_imageView_id_trainer"
+            android:layout_width="300dp"
+            android:layout_height="180dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15sp"
+            android:text="Hình từ video của bạn"
+            android:textAlignment="center"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/suggestionDetail_imageView_id_trainee"
+            android:layout_width="300dp"
+            android:layout_height="180dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:id="@+id/suggestionDetail_resultComment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginTop="15sp"
+            android:text="Tư thế của bạn khớp 80%"
+            android:textAlignment="center"
+            android:textColor="#ff1119"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
 </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

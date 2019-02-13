@@ -1,5 +1,6 @@
 package com.capstone.self_training.activity;
 
+import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,23 +9,33 @@ import android.view.View;
 
 import com.capstone.self_training.R;
 import com.capstone.self_training.adapter.MainSuggestionDetailAdapter;
+import com.capstone.self_training.adapter.SuggestionAdapter;
 import com.capstone.self_training.fragment.SuggestionDetailFragment;
+import com.capstone.self_training.model.Suggestion;
 import com.capstone.self_training.model.SuggestionDetail;
+import com.capstone.self_training.service.apiservice.ApiService;
+import com.capstone.self_training.service.dataservice.DataService;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SuggestionDetailActi extends AppCompatActivity {
 
     Toolbar toolbar;
     ViewPager viewPager;
-
+    ArrayList<SuggestionDetail> suggestionDetails;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_suggestion_detail);
         reflect();
         displayToolBar();
-        init();
+        //init();
+        getData();
     }
 
     private void displayToolBar() {
@@ -38,33 +49,35 @@ public class SuggestionDetailActi extends AppCompatActivity {
         });
     }
 
-    private void init() {
-        MainSuggestionDetailAdapter main = new MainSuggestionDetailAdapter(getSupportFragmentManager());
-        ArrayList<SuggestionDetail> list = new ArrayList<>();
-        list.add(new SuggestionDetail(1,"https://firebasestorage.googleapis.com/v0/b/demouploadvideo-bdc04.appspot.com/o/images.jpg?alt=media&token=354c2c23-27f8-4498-8783-faf0c4952afc",
-                "https://firebasestorage.googleapis.com/v0/b/demouploadvideo-bdc04.appspot.com/o/images%20(2).jpg?alt=media&token=00f422f6-36bc-44d8-8b75-85986d92dee7",
-                "Hình của bạn chỉ đúng 20%"));
-        list.add(new SuggestionDetail(2,"https://firebasestorage.googleapis.com/v0/b/demouploadvideo-bdc04.appspot.com/o/download.jpg?alt=media&token=f003f004-b713-4cf4-91ea-6894e13bdaac",
-                "https://firebasestorage.googleapis.com/v0/b/demouploadvideo-bdc04.appspot.com/o/images.jpg?alt=media&token=354c2c23-27f8-4498-8783-faf0c4952afc",
-                "Hình của bạn chỉ đúng 30%"));
-        list.add(new SuggestionDetail(3,"https://firebasestorage.googleapis.com/v0/b/demouploadvideo-bdc04.appspot.com/o/images.jpg?alt=media&token=354c2c23-27f8-4498-8783-faf0c4952afc",
-                "https://firebasestorage.googleapis.com/v0/b/demouploadvideo-bdc04.appspot.com/o/images%20(1).jpg?alt=media&token=b270aaef-6cf2-4a08-8ce9-40ef57734a19",
-                "Hình của bạn chỉ đúng 40%"));
-        list.add(new SuggestionDetail(4,"https://firebasestorage.googleapis.com/v0/b/demouploadvideo-bdc04.appspot.com/o/download12.jpg?alt=media&token=3bb18243-9aea-4521-8a28-99202d404177",
-                "https://firebasestorage.googleapis.com/v0/b/demouploadvideo-bdc04.appspot.com/o/images.jpg?alt=media&token=354c2c23-27f8-4498-8783-faf0c4952afc",
-                "Hình của bạn chỉ đúng 50%"));
+    private void getData(){
+        Intent intent = getIntent();
+        int suggestionId = intent.getIntExtra("suggestionId",1);
+        ApiService apiService = DataService.getService();
+        Call<List<SuggestionDetail>> callBack = apiService.getSuggestionDetail(suggestionId);
+        callBack.enqueue(new Callback<List<SuggestionDetail>>() {
+            @Override
+            public void onResponse(Call<List<SuggestionDetail>> call, Response<List<SuggestionDetail>> response) {
+                suggestionDetails = (ArrayList<SuggestionDetail>)response.body();
+                MainSuggestionDetailAdapter main = new MainSuggestionDetailAdapter(getSupportFragmentManager());
+                for (int i = 0; i < suggestionDetails.size(); i++) {
 
-        for (int i = 0; i < list.size(); i++) {
+                    SuggestionDetailFragment fragment = SuggestionDetailFragment.newInstance(suggestionDetails.get(i));
+                    main.addFragment(fragment);
+                    viewPager.setAdapter(main);
 
-        SuggestionDetailFragment fragment = SuggestionDetailFragment.newInstance(list.get(i));
-            main.addFragment(fragment);
-            viewPager.setAdapter(main);
+                }
+            }
 
-        }
+            @Override
+            public void onFailure(Call<List<SuggestionDetail>> call, Throwable t) {
+
+            }
+        });
     }
 
     private void reflect() {
         toolbar = (Toolbar) findViewById(R.id.suggestionDetail_toolbar_id);
         viewPager = (ViewPager) findViewById(R.id.suggestionDetail_viewPager_id);
+        suggestionDetails = new ArrayList<>();
     }
 }

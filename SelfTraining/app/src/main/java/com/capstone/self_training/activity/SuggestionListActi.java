@@ -6,6 +6,7 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
@@ -33,9 +34,9 @@ import retrofit2.Response;
 
 public class SuggestionListActi extends AppCompatActivity {
 
-    private Toolbar toolbar;
-    private ListView listView;
-    private ArrayList<Suggestion> suggestionList;
+    Toolbar toolbar;
+    ListView listView;
+    ArrayList<Suggestion> suggestionList;
     SuggestionAdapter suggestionAdapter;
     View footerView; // progressbar
     boolean isLoading = false;
@@ -48,9 +49,11 @@ public class SuggestionListActi extends AppCompatActivity {
             reflect();
             displayToolBar();
             getSuggestionItem();
-            getMoreData();
+            getData();
+            //getMoreData();
         }else{
             CheckConnection.showConnection(this,"Xin vui lòng kiểm tra kết nối internet !!! ");
+            finish();
         }
 
     }
@@ -69,17 +72,20 @@ public class SuggestionListActi extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getApplicationContext(),SuggestionDetailActi.class);
+                intent.putExtra("suggestionId",suggestionList.get(i).getId());
                 startActivity(intent);
             }
         });
     }
     private void getData(){
         ApiService apiService = DataService.getService();
-        Call<List<Suggestion>> suggestionList = apiService.getSuggestionList();
-        suggestionList.enqueue(new Callback<List<Suggestion>>() {
+        Call<List<Suggestion>> callBack = apiService.getSuggestionList();
+        callBack.enqueue(new Callback<List<Suggestion>>() {
             @Override
             public void onResponse(Call<List<Suggestion>> call, Response<List<Suggestion>> response) {
-                ArrayList<Suggestion> suggestion = (ArrayList<Suggestion>) response.body();
+                suggestionList = (ArrayList<Suggestion>)response.body();
+                suggestionAdapter = new SuggestionAdapter(getApplicationContext(),R.layout.suggestion_list_item,suggestionList);
+                listView.setAdapter(suggestionAdapter);
             }
 
             @Override
@@ -93,24 +99,10 @@ public class SuggestionListActi extends AppCompatActivity {
         toolbar = (Toolbar)findViewById(R.id.suggestionList_toolbar_id);
         listView = (ListView) findViewById(R.id.suggestionList_listview);
         suggestionList = new ArrayList<>();
-        Date c = Calendar.getInstance().getTime();
-        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-        String formattedDate = df.format(c);
-        Toast.makeText(this, "date = "+formattedDate, Toast.LENGTH_SHORT).show();
-        suggestionList.add(new Suggestion(1,"Động tác cơ bản dành cho dân văn phòng công sở",formattedDate,"https://firebasestorage.googleapis.com/v0/b/demouploadvideo-bdc04.appspot.com/o/images.jpg?alt=media&token=354c2c23-27f8-4498-8783-faf0c4952afc"));
-        suggestionList.add(new Suggestion(2,"Động tác cơ bản dành cho dân văn phòng công sở",formattedDate,"https://firebasestorage.googleapis.com/v0/b/demouploadvideo-bdc04.appspot.com/o/images.jpg?alt=media&token=354c2c23-27f8-4498-8783-faf0c4952afc"));
-        suggestionList.add(new Suggestion(3,"Động tác cơ bản dành cho dân văn phòng công sở",formattedDate,"https://firebasestorage.googleapis.com/v0/b/demouploadvideo-bdc04.appspot.com/o/images.jpg?alt=media&token=354c2c23-27f8-4498-8783-faf0c4952afc"));
-        suggestionList.add(new Suggestion(4,"Động tác cơ bản dành cho dân văn phòng công sở",formattedDate,"https://firebasestorage.googleapis.com/v0/b/demouploadvideo-bdc04.appspot.com/o/images.jpg?alt=media&token=354c2c23-27f8-4498-8783-faf0c4952afc"));
-        suggestionList.add(new Suggestion(5,"Động tác cơ bản dành cho dân văn phòng công sở",formattedDate,"https://firebasestorage.googleapis.com/v0/b/demouploadvideo-bdc04.appspot.com/o/images.jpg?alt=media&token=354c2c23-27f8-4498-8783-faf0c4952afc"));
-        suggestionList.add(new Suggestion(6,"Động tác cơ bản dành cho dân văn phòng công sở",formattedDate,"https://firebasestorage.googleapis.com/v0/b/demouploadvideo-bdc04.appspot.com/o/images.jpg?alt=media&token=354c2c23-27f8-4498-8783-faf0c4952afc"));
-        suggestionList.add(new Suggestion(7,"Động tác cơ bản dành cho dân văn phòng công sở",formattedDate,"https://firebasestorage.googleapis.com/v0/b/demouploadvideo-bdc04.appspot.com/o/images.jpg?alt=media&token=354c2c23-27f8-4498-8783-faf0c4952afc"));
 
 
-        suggestionAdapter = new SuggestionAdapter(this,R.layout.suggestion_list_item,suggestionList);
-        listView.setAdapter(suggestionAdapter);
-
-        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        footerView = inflater.inflate(R.layout.progressbar,null);
+//        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+//        footerView = inflater.inflate(R.layout.progressbar,null);
     }
 
     public void getMoreData() {
@@ -140,16 +132,7 @@ public class SuggestionListActi extends AppCompatActivity {
                     listView.addFooterView(footerView);
                     break;
                 case 1:
-                    suggestionList.add(new Suggestion(8,"bài tập cơ bản","12-3-2018","https://firebasestorage.googleapis.com/v0/b/demouploadvideo-bdc04.appspot.com/o/images.jpg?alt=media&token=354c2c23-27f8-4498-8783-faf0c4952afc"));
-                    suggestionList.add(new Suggestion(9,"bài tập cơ bản","12-3-2018","https://firebasestorage.googleapis.com/v0/b/demouploadvideo-bdc04.appspot.com/o/images.jpg?alt=media&token=354c2c23-27f8-4498-8783-faf0c4952afc"));
-                    suggestionList.add(new Suggestion(10,"bài tập cơ bản","12-3-2018","https://firebasestorage.googleapis.com/v0/b/demouploadvideo-bdc04.appspot.com/o/images.jpg?alt=media&token=354c2c23-27f8-4498-8783-faf0c4952afc"));
-                    suggestionList.add(new Suggestion(11,"bài tập cơ bản","12-3-2018","https://firebasestorage.googleapis.com/v0/b/demouploadvideo-bdc04.appspot.com/o/images.jpg?alt=media&token=354c2c23-27f8-4498-8783-faf0c4952afc"));
-                    suggestionList.add(new Suggestion(12,"bài tập cơ bản","12-3-2018","https://firebasestorage.googleapis.com/v0/b/demouploadvideo-bdc04.appspot.com/o/images.jpg?alt=media&token=354c2c23-27f8-4498-8783-faf0c4952afc"));
-                    suggestionList.add(new Suggestion(13,"bài tập cơ bản","12-3-2018","https://firebasestorage.googleapis.com/v0/b/demouploadvideo-bdc04.appspot.com/o/images.jpg?alt=media&token=354c2c23-27f8-4498-8783-faf0c4952afc"));
-                    suggestionList.add(new Suggestion(14,"bài tập cơ bản","12-3-2018","https://firebasestorage.googleapis.com/v0/b/demouploadvideo-bdc04.appspot.com/o/images.jpg?alt=media&token=354c2c23-27f8-4498-8783-faf0c4952afc"));
-                    suggestionList.add(new Suggestion(15,"bài tập cơ bản","12-3-2018","https://firebasestorage.googleapis.com/v0/b/demouploadvideo-bdc04.appspot.com/o/images.jpg?alt=media&token=354c2c23-27f8-4498-8783-faf0c4952afc"));
-                    suggestionAdapter = new SuggestionAdapter(getApplicationContext(),R.layout.suggestion_list_item,suggestionList);
-                    listView.setAdapter(suggestionAdapter);
+
                     isLoading = false;
 
                     break;

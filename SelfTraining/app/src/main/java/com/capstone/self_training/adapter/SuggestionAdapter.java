@@ -63,7 +63,7 @@ public class SuggestionAdapter extends BaseAdapter {
         }
         // gán giá trị
         Suggestion suggestion = suggestionList.get(position);
-        Picasso.get().load(suggestion.getImgUrl()).placeholder(R.drawable.error).
+        Picasso.get().load(suggestion.getThumnailUrl()).placeholder(R.drawable.error).
                 error(R.drawable.errors).into(viewHolder.suggestion_image);
 
         viewHolder.suggestion_name.setText(suggestion.getName().toString());

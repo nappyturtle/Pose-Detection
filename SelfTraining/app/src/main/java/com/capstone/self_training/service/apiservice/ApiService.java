@@ -7,13 +7,13 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
-import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface ApiService {
-    @GET("")
-    Call<List<SuggestionDetail>> getSuggestionDetail();
+    @GET("suggestiondetail/getSuggestionDetailsBySuggestion")
+    Call<List<SuggestionDetail>> getSuggestionDetail(@Query("suggestionId") int suggestionId);
 
-    @GET("")
+    @GET("suggestion/suggestions")
     Call<List<Suggestion>> getSuggestionList();
 
 
