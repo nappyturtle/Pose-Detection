@@ -142,55 +142,55 @@ public class Video implements Serializable {
         this.folderName = folderName;
     }
 
-    @PrePersist
-    public void prePersist() {
-        System.out.println("pre persist!");
-    }
-
-    @PostPersist
-    public void postPersist() {
-        try {
-            System.out.println("da vao de gui url");
-            URL url = new URL("http://localhost:8090/sliceVideo");
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setDoOutput(true);
-            con.setDoInput(true);
-            con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-            con.setRequestProperty("Accept", "application/json");
-            con.setRequestMethod("POST");
-
-            JSONObject fileInfo = new JSONObject();
-
-            fileInfo.put("videoName","KietPT-456789/Video/1.mp4");
-            fileInfo.put("videoUrl",this.getContentUrl());
-
-
-            OutputStream os = con.getOutputStream();
-            os.write(fileInfo.toString().getBytes("UTF-8"));
-            //os.close();
-
-            StringBuilder sb = new StringBuilder();
-            int HttpResult = con.getResponseCode();
-            if (HttpResult == HttpURLConnection.HTTP_OK) {
-                BufferedReader br = new BufferedReader(
-                        new InputStreamReader(con.getInputStream(), "utf-8"));
-                String line = null;
-                while ((line = br.readLine()) != null) {
-                    sb.append(line + "\n");
-                }
-                br.close();
-                System.out.println("" + sb.toString());
-            } else {
-                System.out.println(con.getResponseMessage());
-            }
-            os.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        System.out.println("aaaaaaaaaaaaaaaaaaaa");
-    }
+//    @PrePersist
+//    public void prePersist() {
+//        System.out.println("pre persist!");
+//    }
+//
+//    @PostPersist
+//    public void postPersist() {
+//        try {
+//            System.out.println("da vao de gui url");
+//            URL url = new URL("http://localhost:8090/sliceVideo");
+//            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+//            con.setDoOutput(true);
+//            con.setDoInput(true);
+//            con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+//            con.setRequestProperty("Accept", "application/json");
+//            con.setRequestMethod("POST");
+//
+//            JSONObject fileInfo = new JSONObject();
+//
+//            fileInfo.put("videoName","KietPT-456789/Video/1.mp4");
+//            fileInfo.put("videoUrl",this.getContentUrl());
+//
+//
+//            OutputStream os = con.getOutputStream();
+//            os.write(fileInfo.toString().getBytes("UTF-8"));
+//            //os.close();
+//
+//            StringBuilder sb = new StringBuilder();
+//            int HttpResult = con.getResponseCode();
+//            if (HttpResult == HttpURLConnection.HTTP_OK) {
+//                BufferedReader br = new BufferedReader(
+//                        new InputStreamReader(con.getInputStream(), "utf-8"));
+//                String line = null;
+//                while ((line = br.readLine()) != null) {
+//                    sb.append(line + "\n");
+//                }
+//                br.close();
+//                System.out.println("" + sb.toString());
+//            } else {
+//                System.out.println(con.getResponseMessage());
+//            }
+//            os.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        System.out.println("aaaaaaaaaaaaaaaaaaaa");
+//    }
 
     @Basic
     @Column(name = "created_time")

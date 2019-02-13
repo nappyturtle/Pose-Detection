@@ -1,6 +1,7 @@
 package com.pdst.pdstserver.controllers;
 
 import com.pdst.pdstserver.models.Suggestion;
+import com.pdst.pdstserver.models.SuggestionTemp;
 import com.pdst.pdstserver.services.SuggestionService.SugggestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +21,7 @@ public class SuggestionController {
         this.sugggestionService = sugggestionService;
     }
     @GetMapping("suggestions")
-    public List<Suggestion> getAllSuggestions() {
+    public List<SuggestionTemp> getAllSuggestions() {
         return sugggestionService.getAllSuggestions();
     }
 }

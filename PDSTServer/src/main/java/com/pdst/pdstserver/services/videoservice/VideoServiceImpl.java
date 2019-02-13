@@ -1,5 +1,6 @@
 package com.pdst.pdstserver.services.videoservice;
 
+import com.pdst.pdstserver.handlers.SendRequest;
 import com.pdst.pdstserver.models.Video;
 import com.pdst.pdstserver.repositories.VideoRepository;
 import org.springframework.data.domain.Sort;
@@ -46,8 +47,8 @@ public class VideoServiceImpl implements VideoService {
 //        entityManager.persist(videoRequest);
 //        entityManager.getTransaction().commit();
 
-       /* SendRequest sendRequest = new SendRequest();
-        sendRequest.sendRequestToSliceService(videoRequest);*/
+       SendRequest sendRequest = new SendRequest();
+        sendRequest.sendRequestToCreateDataset(videoRequest);
 
         return videoRequest;
 

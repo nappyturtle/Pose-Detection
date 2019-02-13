@@ -1,5 +1,6 @@
 package com.pdst.pdstserver.controllers;
 
+import com.pdst.pdstserver.models.Suggestion;
 import com.pdst.pdstserver.models.Video;
 import com.pdst.pdstserver.services.videoservice.VideoService;
 import org.springframework.http.HttpStatus;
@@ -35,7 +36,7 @@ public class VideoController {
         return videoService.getVideoById(id);
     }
 
-    @PostMapping(value = "/createVideo")
+    @PostMapping(value = "/createDataset")
     public ResponseEntity<Video> createVideo(@RequestBody Video video) {
 
         System.out.println("da vao day");
@@ -43,4 +44,5 @@ public class VideoController {
         Video response = videoService.createVideo(video);
         return new ResponseEntity<Video>(response, HttpStatus.OK);
     }
+
 }
