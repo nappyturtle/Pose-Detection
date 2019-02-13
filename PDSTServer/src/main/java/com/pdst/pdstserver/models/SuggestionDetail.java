@@ -1,5 +1,7 @@
 package com.pdst.pdstserver.models;
 
+import org.springframework.scheduling.annotation.Async;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -117,4 +119,5 @@ public class SuggestionDetail implements Serializable {
     public void setUpdatedTime(String updatedTime) {
         this.updatedTime = updatedTime;
     }
+
 }
