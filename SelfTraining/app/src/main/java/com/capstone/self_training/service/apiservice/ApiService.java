@@ -7,6 +7,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 
 public interface ApiService {
     @GET("")
@@ -14,4 +15,6 @@ public interface ApiService {
 
     @GET("")
     Call<List<Suggestion>> getSuggestionList();
+
+
 }

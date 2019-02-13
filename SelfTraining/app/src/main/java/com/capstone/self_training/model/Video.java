@@ -1,4 +1,107 @@
 package com.capstone.self_training.model;
 
-public class Video {
+import java.io.Serializable;
+
+public class Video implements Serializable{
+    private int id;
+    private String title;
+    private String thumnailUrl;
+    private String contentUrl;
+    private Integer accountId;
+    private Integer categoryId;
+    private Integer numOfView;
+    private String status;
+
+    private String folderName;
+    private String createdTime;
+    private String updatedTime;
+    public Video(){}
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getThumnailUrl() {
+        return thumnailUrl;
+    }
+
+    public void setThumnailUrl(String thumnailUrl) {
+        this.thumnailUrl = thumnailUrl;
+    }
+
+    public String getContentUrl() {
+        return contentUrl;
+    }
+
+    public void setContentUrl(String contentUrl) {
+        this.contentUrl = contentUrl;
+    }
+
+    public int getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(int accountId) {
+        this.accountId = accountId;
+    }
+
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public int getNumOfView() {
+        return numOfView;
+    }
+
+    public void setNumOfView(int numOfView) {
+        this.numOfView = numOfView;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getFolderName() {
+        return folderName;
+    }
+
+    public void setFolderName(String folderName) {
+        this.folderName = folderName;
+    }
+
+    public String getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(String createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    public String getUpdatedTime() {
+        return updatedTime;
+    }
+
+    public void setUpdatedTime(String updatedTime) {
+        this.updatedTime = updatedTime;
+    }
 }
