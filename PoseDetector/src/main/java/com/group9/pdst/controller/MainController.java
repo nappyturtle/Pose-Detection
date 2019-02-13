@@ -12,4 +12,5 @@ public class MainController {
     public void getPairOfImageLists(@RequestParam("listImg") String listImg, @RequestParam("listSimg") String listSimg, @RequestParam("suggestionId") String suggestionId) {
         OpenBrowserUtilities.openBrowser(ConstantUtilities.domain + "getImageLists.html?listImg=" + listImg + "&listSimg=" + listSimg + "&suggestionId=" + suggestionId);
     }
+
 }

@@ -6,6 +6,8 @@ import com.group9.pdst.model.Pose;
 import com.group9.pdst.model.SuggestionDetail;
 import com.group9.pdst.utils.ConstantUtilities;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+
 import java.io.*;
 import java.util.List;
 
@@ -44,10 +46,13 @@ public class PoseMatchingController {
             String suggestionId = (String) imageLists.get(2);
             PoseMatchingHandler handler = new PoseMatchingHandler();
             finalResult = handler.makeSuggestionDetails(simgList, imgList, suggestionId);
-            for (int i = 0; i < finalResult.size(); i++) {
-                System.out.println(finalResult.get(i));
-                System.out.println("\n===============\n");
-            }
+            RestTemplate restTemplate = new RestTemplate();
+            String result = restTemplate.postForObject("http://localhost:8080/suggestiondetail/createSuggestionDetails", finalResult, String.class);
+            System.out.println(result);
+//            for (int i = 0; i < finalResult.size(); i++) {
+//                System.out.println(finalResult.get(i));
+//                System.out.println("\n===============\n");
+//            }
         } catch (IOException e) {
             e.printStackTrace();
         }
