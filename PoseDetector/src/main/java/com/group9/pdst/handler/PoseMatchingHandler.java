@@ -18,7 +18,7 @@ public class PoseMatchingHandler {
     //allowable deviation range
     private double standardDeviation = CalculationUtilities.calculateStandardDeviation(0, ConstantUtilities.imgSize);
 
-    public List<SuggestionDetail> makeSuggestionDetails(List<String> simgList, List<String> imgList, String suggestionId) {
+    public List<SuggestionDetail> makeSuggestionDetails(List<String> simgList, List<String> imgList, String suggestionId, String trainerFolder, String traineeFolder) {
         List<SuggestionDetail> finalResult = new ArrayList<>();
         ObjectMapper mapper = new ObjectMapper();
         String matchingResultJSON;
@@ -29,11 +29,15 @@ public class PoseMatchingHandler {
             for (int j = 0; j < imgList.size(); j++) {
                 String uri = ConstantUtilities.domain + "poseDetect.html";
                 String imgName = imgList.get(j);
-                uri+="?img=" + imgName + "&simg=" + simgName + "&imgSize=" + ConstantUtilities.imgSize + "&suggestionId=" + suggestionId;
+                uri+="?img=" + imgName + "&simg=" + simgName
+                        + "&imgSize=" + ConstantUtilities.imgSize
+                        + "&suggestionId=" + suggestionId
+                        + "&trainerFolder=" + trainerFolder
+                        + "&traineeFolder=" + traineeFolder;
                 OpenBrowserUtilities.openBrowser(uri);
                 while(true) {
                     try {
-                        Thread.sleep(5000);
+                        Thread.sleep(2000);
                         matchingResultJSON = ConstantUtilities.jedis.lpop(suggestionId);
                         if(matchingResultJSON != null) {
                             MatchingPoseResult matchingResult = mapper.readValue(matchingResultJSON, MatchingPoseResult.class);

@@ -20,15 +20,15 @@
     </script>
 
     <script language="JavaScript" type="text/javascript">
+        var foldernameTrainee = getParams('trainee');
+        var suggestionId = getParams('suggestionId');
+        var foldernameTrainer = getParams('trainer');
+        var count = 0;
         function uploadImage() {
 
-            var foldernameTrainer = getParams('trainer');
-            var foldernameTrainee = getParams('trainee');
-            var suggestionId = getParams('suggestionId');
-            console.log('foldernameTrainer = ' + foldernameTrainer);
-            console.log('foldernameTrainee = ' + foldernameTrainee);
-            console.log('suggestionId = ' + suggestionId);
-
+            // console.log('foldernameTrainer = ' + foldernameTrainer);
+            // console.log('foldernameTrainee = ' + foldernameTrainee);
+            // console.log('suggestionId = ' + suggestionId);
             sendVideoUrl(foldernameTrainee);
         }
 
@@ -41,7 +41,7 @@
         }
 
 
-        function sendVideoUrl(folderName) {
+        function sendVideoUrl() {
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
@@ -63,43 +63,22 @@
                         document.body.appendChild(x);
                         uploadToStorage(blob, fileImage.filename, fileImage.foldername);
                     }
+
+                    var readyStateCheckInterval = setInterval(function () {
+                        console.log(jsonArray.length);
+                        console.log(count);
+                        if (count === jsonArray.length) {
+                            clearInterval(readyStateCheckInterval);
+                            window.location = "http://localhost:8090/getPairOfImageLists?listImg=" + foldernameTrainee +
+                                "&listSimg=" + foldernameTrainer + "&suggestionId=" + suggestionId;
+                        }
+                    }, 10);
                 }
             };
-            xhttp.open("GET", "/uploadImage?name="+folderName, true);
+            xhttp.open("GET", "/uploadImage?name="+foldernameTrainee, true);
             xhttp.responseType = "json";
             xhttp.send();
         }
-
-
-        function uploadImageToStorage() {
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    console.log(xhttp);
-                    var jsonArray = xhttp.response;
-                    //var test = b64DecodeUnicode(xhttp.response.fileString);
-                    var contentType = 'image/png';
-                    for (var i = 0; i < jsonArray.length; i++) {
-                        var fileImage = jsonArray[i];
-                        var blob = b64toBlob(fileImage.content, contentType);
-                        var blobUrl = URL.createObjectURL(blob);
-
-                        var x = document.createElement("IMG");
-                        x.setAttribute('crossOrigin', 'anonymous');
-                        x.setAttribute("src", blobUrl);
-                        x.setAttribute("width", "304");
-                        x.setAttribute("height", "228");
-                        document.body.appendChild(x);
-                        uploadToStorage(blob, fileImage.filename, fileImage.foldername);
-                    }
-                }
-
-            };
-            xhttp.open("GET", "/uploadImage", true);
-            xhttp.responseType = "json"
-            xhttp.send();
-        }
-
         function b64toBlob(b64Data, contentType, sliceSize) {
             contentType = contentType || '';
             sliceSize = sliceSize || 512;
@@ -186,6 +165,8 @@
 
             refDir.update({
                 [filename]:imageUrl
+            }).then(function () {
+                count++;
             })
 
         }

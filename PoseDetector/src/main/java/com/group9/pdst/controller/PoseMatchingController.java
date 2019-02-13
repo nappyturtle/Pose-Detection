@@ -44,15 +44,17 @@ public class PoseMatchingController {
             List<String> simgList = (List<String>) imageLists.get(0);
             List<String> imgList = (List<String>) imageLists.get(1);
             String suggestionId = (String) imageLists.get(2);
+            String trainerFolder = (String) imageLists.get(3);
+            String traineeFolder = (String) imageLists.get(4);
             PoseMatchingHandler handler = new PoseMatchingHandler();
-            finalResult = handler.makeSuggestionDetails(simgList, imgList, suggestionId);
+            finalResult = handler.makeSuggestionDetails(simgList, imgList, suggestionId, trainerFolder, traineeFolder);
             RestTemplate restTemplate = new RestTemplate();
             String result = restTemplate.postForObject("http://localhost:8080/suggestiondetail/createSuggestionDetails", finalResult, String.class);
             System.out.println(result);
-//            for (int i = 0; i < finalResult.size(); i++) {
-//                System.out.println(finalResult.get(i));
-//                System.out.println("\n===============\n");
-//            }
+            for (int i = 0; i < finalResult.size(); i++) {
+                System.out.println(finalResult.get(i));
+                System.out.println("\n===============\n");
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

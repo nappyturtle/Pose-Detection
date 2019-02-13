@@ -14,12 +14,12 @@
         // Initialize Firebase
         // TODO: Replace with your project's customized code snippet
         var config = {
-            apiKey: "AIzaSyCBKsbivTw6LRS95Ozb-5S5ivLTBUY2jYg",
-            authDomain: "mon-super-project-27e2b.firebaseapp.com",
-            databaseURL: "https://mon-super-project-27e2b.firebaseio.com",
-            projectId: "mon-super-project-27e2b",
-            storageBucket: "gs://mon-super-project-27e2b.appspot.com",
-            messagingSenderId: "1099210452571"
+            apiKey: "AIzaSyCmhAJD-slGnxQohv96J0MFRkN9vqi4gJg",
+            authDomain: "demouploadvideo-bdc04.firebaseapp.com",
+            databaseURL: "https://demouploadvideo-bdc04.firebaseio.com",
+            projectId: "demouploadvideo-bdc04",
+            storageBucket: "gs://demouploadvideo-bdc04.appspot.com",
+            messagingSenderId: "404242634566"
         };
         firebase.initializeApp(config);
     </script>
@@ -27,9 +27,11 @@
     <script language="JavaScript" type="text/javascript">
         var poses = new Map();
         var suggestionId = getParams("suggestionId");
+        var trainerFolder = getParams("trainerFolder");
+        var traineeFolder = getParams("traineeFolder");
         function getPoses() {
-            imgName = getParams("img") + ".png";
-            simgName = getParams("simg") + ".png";
+            imgName = getParams("img");
+            simgName = getParams("simg");
             imgSize = getParams("imgSize");
             getImageFromStorage(imgName, false);
             getImageFromStorage(simgName, true);
@@ -48,6 +50,13 @@
         }
 
         function getImageFromStorage(imgName, standard) {
+            var folder;
+            if(standard) {
+                folder = trainerFolder;
+            }
+            else {
+                folder = traineeFolder;
+            }
             var storage = firebase.storage();
             var storageRef = storage.ref();
             var imageElement = document.createElement("img");
@@ -60,7 +69,7 @@
             imageElement.id = imgName;
             var divArr = document.getElementsByClassName("imgDiv");
             var position = divArr.length-1;
-            storageRef.child(imgName).getDownloadURL().then(function (url) {
+            storageRef.child(folder + "/Image/" + imgName).getDownloadURL().then(function (url) {
                 imageElement.src = url;
                 divArr[position].appendChild(imageElement);
                 // document.getElementsByTagName('body')[0].appendChild(imageElement);

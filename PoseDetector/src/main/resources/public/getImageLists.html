@@ -9,12 +9,12 @@
     <script>
         // Initialize Firebase
         var config = {
-            apiKey: "AIzaSyCBKsbivTw6LRS95Ozb-5S5ivLTBUY2jYg",
-            authDomain: "mon-super-project-27e2b.firebaseapp.com",
-            databaseURL: "https://mon-super-project-27e2b.firebaseio.com",
-            projectId: "mon-super-project-27e2b",
-            storageBucket: "gs://mon-super-project-27e2b.appspot.com",
-            messagingSenderId: "1099210452571"
+            apiKey: "AIzaSyCmhAJD-slGnxQohv96J0MFRkN9vqi4gJg",
+            authDomain: "demouploadvideo-bdc04.firebaseapp.com",
+            databaseURL: "https://demouploadvideo-bdc04.firebaseio.com",
+            projectId: "demouploadvideo-bdc04",
+            storageBucket: "gs://demouploadvideo-bdc04.appspot.com",
+            messagingSenderId: "404242634566"
         };
         firebase.initializeApp(config);
     </script>
@@ -22,6 +22,8 @@
     <script language="JavaScript" type="text/javascript">
         var listImgKey = new Array();
         var listSimgKey = new Array();
+        listImg = getParams("listImg");
+        listSimg = getParams("listSimg");
         var suggestionId = getParams("suggestionId");
         function getParams(key) {
             var params = {};
@@ -34,8 +36,6 @@
         function getImageList() {
             var flag1 = false;
             var flag2 = false;
-            listImg = getParams("listImg");
-            listSimg = getParams("listSimg");
             listSimgQuery = firebase.database().ref(listSimg).orderByKey();
             listSimgQuery.once("value")
                 .then(function (snapshot) {
@@ -69,7 +69,7 @@
             };
             xhttp.open("POST", "http://localhost:8090/matchVideo", true);
             xhttp.setRequestHeader("Content-type", "application/json");
-            var imageListArr  = [listSimgKey, listImgKey, suggestionId];
+            var imageListArr  = [listSimgKey, listImgKey, suggestionId, listSimg, listImg];
             xhttp.send(JSON.stringify(imageListArr));
         }
     </script>
