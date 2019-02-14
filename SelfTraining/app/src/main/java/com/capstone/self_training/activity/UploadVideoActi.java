@@ -152,6 +152,7 @@ public class UploadVideoActi extends AppCompatActivity {
     }
 
     private void uploadFileToFirebase(){
+        final String[] test = {""};
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Uploading");
         progressDialog.show();
@@ -162,7 +163,8 @@ public class UploadVideoActi extends AppCompatActivity {
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 //progressDialog.dismiss();
                 Toast.makeText(UploadVideoActi.this, "File Uploaded", Toast.LENGTH_SHORT).show();
-                Toast.makeText(UploadVideoActi.this, taskSnapshot.getDownloadUrl().toString(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(UploadVideoActi.this, taskSnapshot.getDownloadUrl().toString(), Toast.LENGTH_SHORT).show();
+                test[0] = taskSnapshot.getDownloadUrl().toString();
 //                Video video = new Video(textView.getText().toString(),taskSnapshot.getDownloadUrl().toString());
 //                String uploadId = mDatabase.push().getKey();
 //                mDatabase.child(uploadId).setValue(video);
@@ -180,6 +182,7 @@ public class UploadVideoActi extends AppCompatActivity {
                 progressDialog.setMessage("Uploaded "+(int)progress + "%...");
             }
         });
+        Toast.makeText(this, test[0]+"+++++++++++", Toast.LENGTH_SHORT).show();
 
     }
 
