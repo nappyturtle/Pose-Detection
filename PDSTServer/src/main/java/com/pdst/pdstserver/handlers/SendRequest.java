@@ -56,7 +56,7 @@ public class SendRequest {
     }
 
 
-    public void sendRequestToSuggestion(Video videoRequest,String foldernameTrainee,int suggestionId){
+    public void sendRequestToSuggest(Video videoRequest,String foldernameTrainee,int suggestionId){
         try {
             System.out.println("da vao de gui url");
             URL url = new URL("http://localhost:8090/sliceVideoToSuggest");

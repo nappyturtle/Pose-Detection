@@ -1,10 +1,9 @@
 package com.pdst.pdstserver.services.SuggestionService;
 
-import com.pdst.pdstserver.models.Suggestion;
-import com.pdst.pdstserver.models.SuggestionTemp;
+import com.pdst.pdstserver.dtos.SuggestionDTO;
 
 import java.util.List;
 
 public interface SugggestionService  {
-    List<SuggestionTemp> getAllSuggestions();
+    List<SuggestionDTO> getAllSuggestions();
 }

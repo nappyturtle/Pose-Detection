@@ -1,15 +1,13 @@
 package com.pdst.pdstserver.services.SuggestionService;
 
 import com.pdst.pdstserver.models.Suggestion;
-import com.pdst.pdstserver.models.SuggestionTemp;
-import com.pdst.pdstserver.models.Video;
+import com.pdst.pdstserver.dtos.SuggestionDTO;
 import com.pdst.pdstserver.repositories.SuggestionRepository;
 import com.pdst.pdstserver.repositories.VideoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class SugggestionServiceImpl implements SugggestionService {
@@ -22,9 +20,9 @@ public class SugggestionServiceImpl implements SugggestionService {
     }
 
     @Override
-    public List<SuggestionTemp> getAllSuggestions() {
+    public List<SuggestionDTO> getAllSuggestions() {
         List<Suggestion> list = suggestionRepository.findAll();
-        List<SuggestionTemp> listTemp = new ArrayList<>();
+        List<SuggestionDTO> listTemp = new ArrayList<>();
         String videoThumnail = null;
         try {
             for (int i = 0; i < list.size(); i++) {
@@ -33,7 +31,7 @@ public class SugggestionServiceImpl implements SugggestionService {
 
                 videoThumnail = videoRepository.findById(suggestion.getVideoId()).get().getThumnailUrl();
                 System.out.println("test = " + videoThumnail);
-                SuggestionTemp tmp = new SuggestionTemp();
+                SuggestionDTO tmp = new SuggestionDTO();
                 tmp.setId(suggestion.getId());
                 tmp.setAccountId(suggestion.getAccountId());
                 tmp.setName(suggestion.getName());

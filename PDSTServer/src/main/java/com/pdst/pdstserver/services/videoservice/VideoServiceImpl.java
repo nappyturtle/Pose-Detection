@@ -28,7 +28,7 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public List<Video> getAllVideosOrderByDate() {
-        return videoRepository.findAll(new Sort(Sort.Direction.DESC,"createdTime"));
+        return videoRepository.findAll(new Sort(Sort.Direction.DESC, "createdTime"));
     }
 
 
@@ -38,18 +38,25 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public Video createVideo(Video video) {
-//        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("NewPersistenceUnit");
-//        EntityManager entityManager = entityManagerFactory.createEntityManager();
-
+        // lưu video vào db
         Video videoRequest = videoRepository.save(video);
-//
-//        entityManager.getTransaction().begin();
-//        entityManager.persist(videoRequest);
-//        entityManager.getTransaction().commit();
 
-       SendRequest sendRequest = new SendRequest();
-        sendRequest.sendRequestToCreateDataset(videoRequest);
-
+        // gửi request đến service để cắt video
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(3000);
+                    SendRequest sendRequest = new SendRequest();
+                    sendRequest.sendRequestToCreateDataset(videoRequest);
+                    System.out.println("da goi request to create data set");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        t.start();
+        System.out.println("da insert xong");
         return videoRequest;
 
 
