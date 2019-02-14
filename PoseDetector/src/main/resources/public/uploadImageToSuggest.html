@@ -29,7 +29,7 @@
             // console.log('foldernameTrainer = ' + foldernameTrainer);
             // console.log('foldernameTrainee = ' + foldernameTrainee);
             // console.log('suggestionId = ' + suggestionId);
-            sendVideoUrl();
+            sendVideoUrl(foldernameTrainee);
         }
 
         function getParams(key) {
@@ -70,7 +70,7 @@
                         if (count === jsonArray.length) {
                             clearInterval(readyStateCheckInterval);
                             window.location = "http://localhost:8090/getPairOfImageLists?listImg=" + foldernameTrainee +
-                                "&listSimg=" + foldernameTrainer + "&suggestionId=" + String.valueOf(suggestionId);
+                                "&listSimg=" + foldernameTrainer + "&suggestionId=" + suggestionId;
                         }
                     }, 10);
                 }
