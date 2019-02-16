@@ -15,7 +15,6 @@ public class Account implements Serializable {
     private String gender;
     private String imgUrl;
     private String address;
-    private Integer numOfFollow;
     private Integer roleId;
     private String status;
     private String createdTime;
@@ -103,16 +102,6 @@ public class Account implements Serializable {
     }
 
     @Basic
-    @Column(name = "num_of_follow")
-    public Integer getNumOfFollow() {
-        return numOfFollow;
-    }
-
-    public void setNumOfFollow(Integer numOfFollow) {
-        this.numOfFollow = numOfFollow;
-    }
-
-    @Basic
     @Column(name = "role_id")
     public Integer getRoleId() {
         return roleId;
@@ -145,7 +134,6 @@ public class Account implements Serializable {
                 Objects.equals(gender, account.gender) &&
                 Objects.equals(imgUrl, account.imgUrl) &&
                 Objects.equals(address, account.address) &&
-                Objects.equals(numOfFollow, account.numOfFollow) &&
                 Objects.equals(roleId, account.roleId) &&
                 Objects.equals(status, account.status) &&
                 Objects.equals(createdTime, account.createdTime) &&
@@ -154,7 +142,7 @@ public class Account implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password, email, phone, gender, imgUrl, address, numOfFollow, roleId, status, createdTime, updatedTime);
+        return Objects.hash(id, username, password, email, phone, gender, imgUrl, address, roleId, status, createdTime, updatedTime);
     }
 
     @Basic
