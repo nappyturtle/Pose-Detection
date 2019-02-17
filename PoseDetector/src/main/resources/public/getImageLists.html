@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,6 +21,8 @@
     <script language="JavaScript" type="text/javascript">
         var listImgKey = new Array();
         var listSimgKey = new Array();
+        var simgSample;
+        var imgSample;
         listImg = getParams("listImg");
         listSimg = getParams("listSimg");
         var suggestionId = getParams("suggestionId");
@@ -40,7 +41,8 @@
             listSimgQuery.once("value")
                 .then(function (snapshot) {
                     snapshot.forEach(function (childSnapshot) {
-                        listSimgKey.push(childSnapshot.key)
+                        listSimgKey.push(childSnapshot.key);
+                        // simgSample = childSnapshot.val();
                     });
                     flag1 = true;
                 });
@@ -50,6 +52,7 @@
                 .then(function (snapshot) {
                     snapshot.forEach(function (childSnapshot) {
                         listImgKey.push(childSnapshot.key);
+                        // imgSample = childSnapshot.val();
                     });
                     flag2 = true;
                 });
@@ -69,6 +72,7 @@
             };
             xhttp.open("POST", "http://localhost:8090/matchVideo", true);
             xhttp.setRequestHeader("Content-type", "application/json");
+            //listSimg is Trainer folder name; listImg is Trainee folder
             var imageListArr  = [listSimgKey, listImgKey, suggestionId, listSimg, listImg];
             xhttp.send(JSON.stringify(imageListArr));
         }

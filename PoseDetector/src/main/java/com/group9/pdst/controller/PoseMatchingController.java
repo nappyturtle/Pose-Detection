@@ -5,11 +5,17 @@ import com.group9.pdst.handler.PoseMatchingHandler;
 import com.group9.pdst.model.Pose;
 import com.group9.pdst.model.SuggestionDetail;
 import com.group9.pdst.utils.ConstantUtilities;
+import org.jcodec.common.model.Picture;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
+import java.net.URL;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class PoseMatchingController {
@@ -22,12 +28,18 @@ public class PoseMatchingController {
         List<String> poses;
         try {
             poses = mapper.readValue(jsonPoses, List.class);
-            Pose trainerPose = mapper.readValue(poses.get(0), Pose.class);
-            Pose traineePose = mapper.readValue(poses.get(1), Pose.class);
-            String suggestionId = poses.get(2);
-            PoseMatchingHandler handler = new PoseMatchingHandler();
-            result = handler.matchPose(trainerPose, traineePose);
-            ConstantUtilities.jedis.lpush(suggestionId, result);
+            if(poses.size() > 1) {
+                Pose trainerPose = mapper.readValue(poses.get(0), Pose.class);
+                Pose traineePose = mapper.readValue(poses.get(1), Pose.class);
+                String suggestionId = poses.get(2);
+                PoseMatchingHandler handler = new PoseMatchingHandler();
+                result = handler.matchPose(trainerPose, traineePose);
+                ConstantUtilities.jedis.lpush(suggestionId, result);
+            }
+            else {
+                String suggestionId = poses.get(0);
+                ConstantUtilities.jedis.lpush(suggestionId, result);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -51,10 +63,10 @@ public class PoseMatchingController {
             RestTemplate restTemplate = new RestTemplate();
             String result = restTemplate.postForObject("http://localhost:8080/suggestiondetail/createSuggestionDetails", finalResult, String.class);
             System.out.println(result);
-            for (int i = 0; i < finalResult.size(); i++) {
-                System.out.println(finalResult.get(i));
-                System.out.println("\n===============\n");
-            }
+//            for (int i = 0; i < finalResult.size(); i++) {
+//                System.out.println(finalResult.get(i));
+//                System.out.println("\n===============\n");
+//            }
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -23,31 +23,31 @@ import java.nio.file.Path;
 public class VideoFrameExtracter {
 //
 
-    public File createImageToSuggest(File file, Path path) throws IOException, JCodecException {
-        double frameRate = 0;
-        try {
-            System.out.println("da vao VideoFrameExtracter ");
-            SeekableByteChannel bc = NIOUtils.readableFileChannel(String.valueOf(file));
-            MP4Demuxer dm = new MP4Demuxer(bc);
-            DemuxerTrack vt = dm.getVideoTrack();
-            frameRate = vt.getMeta().getTotalDuration();
-            System.out.println("frame rate ===== " + frameRate);
-        } catch (Exception e) {
-
-        }
-
-        File originalFile = file;
-        for (int i = 0; i < frameRate; i++) {
-            //Picture frame = FrameGrab.getFrameFromFile(file, i);
-            Picture frame = FrameGrab.getFrameAtSec(file, i);
-            //originalFile = File.createTempFile("Frame_" + i + 1, "_.png", new File(String.valueOf(path)));
-            originalFile = new File(path+"/Frame"+i+".png");
-            //File f = new File(path+"/Frame"+i+".png");
-            ImageIO.write(toBufferedImage(frame), "png", originalFile);
-        }
-        return originalFile;
-    }
-    public File createImageToCreateDataset(File file, Path path) throws IOException, JCodecException {
+//    public File createImageToSuggest(File file, Path path) throws IOException, JCodecException {
+//        double frameRate = 0;
+//        try {
+//            System.out.println("da vao VideoFrameExtracter ");
+//            SeekableByteChannel bc = NIOUtils.readableFileChannel(String.valueOf(file));
+//            MP4Demuxer dm = new MP4Demuxer(bc);
+//            DemuxerTrack vt = dm.getVideoTrack();
+//            frameRate = vt.getMeta().getTotalDuration();
+//            System.out.println("frame rate ===== " + frameRate);
+//        } catch (Exception e) {
+//
+//        }
+//
+//        File originalFile = file;
+//        for (int i = 0; i < frameRate; i++) {
+//            //Picture frame = FrameGrab.getFrameFromFile(file, i);
+//            Picture frame = FrameGrab.getFrameAtSec(file, i);
+//            //originalFile = File.createTempFile("Frame_" + i + 1, "_.png", new File(String.valueOf(path)));
+//            originalFile = new File(path+"/Frame"+i+".png");
+//            //File f = new File(path+"/Frame"+i+".png");
+//            ImageIO.write(toBufferedImage(frame), "png", originalFile);
+//        }
+//        return originalFile;
+//    }
+    public File createImage(File file, Path path) throws IOException, JCodecException {
         double frameRate = 0;
         try {
             System.out.println("da vao VideoFrameExtracter ");
@@ -66,7 +66,8 @@ public class VideoFrameExtracter {
 
             Picture frame = FrameGrab.getFrameAtSec(file, i*2);
             //originalFile = File.createTempFile("Frame_" + i + 1, "_.png", new File(String.valueOf(path)));
-            originalFile = new File(path+"/Frame"+i+".png");
+            String frameIndex = i < 10 ? "0" + i : "" + i;
+            originalFile = new File(path+"/Frame"+frameIndex+".png");
             //File f = new File(path+"/Frame"+i+".png");
             ImageIO.write(toBufferedImage(frame), "png", originalFile);
 

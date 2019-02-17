@@ -40,10 +40,12 @@ public class PoseMatchingHandler {
                         Thread.sleep(2000);
                         matchingResultJSON = ConstantUtilities.jedis.lpop(suggestionId);
                         if(matchingResultJSON != null) {
-                            MatchingPoseResult matchingResult = mapper.readValue(matchingResultJSON, MatchingPoseResult.class);
-                            if(maxPercent < matchingResult.getMatchingPercentage()) {
-                                maxPercent = matchingResult.getMatchingPercentage();
-                                finalPoseResult = matchingResult;
+                            if(!matchingResultJSON.isEmpty()) {
+                                MatchingPoseResult matchingResult = mapper.readValue(matchingResultJSON, MatchingPoseResult.class);
+                                if (maxPercent < matchingResult.getMatchingPercentage()) {
+                                    maxPercent = matchingResult.getMatchingPercentage();
+                                    finalPoseResult = matchingResult;
+                                }
                             }
                             break;
                         }
@@ -59,11 +61,12 @@ public class PoseMatchingHandler {
                 }
 
             }
-
-            String suggestion = "Tư thế của bạn khớp " + CalculationUtilities.roundingPercentage(finalPoseResult.getMatchingPercentage())
-                    + "%\n" + finalPoseResult.getDescription();
-            SuggestionDetail suggestionDetail = new SuggestionDetail(finalPoseResult.getImgUrl(), finalPoseResult.getStandardImgUrl(), suggestion, suggestionId);
-            finalResult.add(suggestionDetail);
+            if(finalPoseResult != null) {
+                String suggestion = "Tư thế của bạn khớp " + CalculationUtilities.roundingPercentage(finalPoseResult.getMatchingPercentage())
+                        + "%\n" + finalPoseResult.getDescription();
+                SuggestionDetail suggestionDetail = new SuggestionDetail(finalPoseResult.getImgUrl(), finalPoseResult.getStandardImgUrl(), suggestion, suggestionId);
+                finalResult.add(suggestionDetail);
+            }
         }
         return finalResult;
     }

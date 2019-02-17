@@ -36,7 +36,7 @@ public class FileController {
             // + url
             // + tên video
             // + tên folder(KietPT-123456)
-            fileStorageService.slideImageToCreateDataset(fileInfo.getVideoUrl(),fileInfo.getFoldernameTrainer());
+            fileStorageService.sliceImage(fileInfo.getVideoUrl(),fileInfo.getFoldernameTrainer());
 
             // lấy danh sách các file trong thư mục filestorage/KietPT-123456
             //list = fileStorageService.getFileFromLocalStorage(folderName);
@@ -74,7 +74,7 @@ public class FileController {
             // + url
             // + tên video
             // + tên folder(KietPT-123456)
-            fileStorageService.slideImageToSuggest(fileInfo.getVideoUrl(),fileInfo.getFoldernameTrainee());
+            fileStorageService.sliceImage(fileInfo.getVideoUrl(),fileInfo.getFoldernameTrainee());
 
             // lấy danh sách các file trong thư mục filestorage/KietPT-123456
             //list = fileStorageService.getFileFromLocalStorage(folderName);

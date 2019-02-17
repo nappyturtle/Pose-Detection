@@ -60,23 +60,23 @@
             var storage = firebase.storage();
             var storageRef = storage.ref();
             var imageElement = document.createElement("img");
-            var div = document.createElement("div");
-            document.getElementsByTagName('body')[0].appendChild(div);
-            div.className = "imgDiv";
+            // var div = document.createElement("div");
+            // document.getElementsByTagName('body')[0].appendChild(div);
+            // div.className = "imgDiv";
             imageElement.crossOrigin = "anonymous";
             imageElement.width = imgSize;
             imageElement.height = imageElement.width;
             imageElement.id = imgName;
-            var divArr = document.getElementsByClassName("imgDiv");
-            var position = divArr.length-1;
+            // var divArr = document.getElementsByClassName("imgDiv");
+            // var position = divArr.length-1;
             storageRef.child(folder + "/Image/" + imgName).getDownloadURL().then(function (url) {
                 imageElement.src = url;
-                divArr[position].appendChild(imageElement);
+                // divArr[position].appendChild(imageElement);
                 // document.getElementsByTagName('body')[0].appendChild(imageElement);
                 var readyStateCheckInterval = setInterval(function () {
                     if (imageElement.complete === true) {
                         clearInterval(readyStateCheckInterval);
-                        getPoseOfImage(imageElement, standard, position, url);
+                        getPoseOfImage(imageElement, standard, url);
                     }
                 }, 10);
             }).catch(function (error) {
@@ -84,32 +84,36 @@
             });
         }
 
-        function getPoseOfImage(imageElement, standard, position, url) {
+        function getPoseOfImage(imageElement, standard, url) {
             var flipHorizontal = false;
             var outputStride = 8;
-            var divArr = document.getElementsByClassName("imgDiv");
+            // var divArr = document.getElementsByClassName("imgDiv");
             posenet.load().then(function (net) {
                 return net.estimateSinglePose(imageElement, 0.5, flipHorizontal, outputStride);
             }).then(function (pose) {
 
-                count = 0;
-                for(var i=0; i < pose.keypoints.length; i++) {
-                    keypoint = pose.keypoints[i];
-                    var pointDiv = document.createElement('div');
-                    pointDiv.className = 'point';
-                    pointDiv.style.left = keypoint.position.x + "px";
-                    pointDiv.style.top = keypoint.position.y + "px";
-                    pointDiv.innerHTML = count;
-                    divArr[position].appendChild(pointDiv);
-                    count++;
-                }
-                myPose = {keypoints: pose.keypoints, url: url};
-                if(standard) {
-                    poses.set("standard", myPose);
+                // count = 0;
+                // for(var i=0; i < pose.keypoints.length; i++) {
+                //     keypoint = pose.keypoints[i];
+                //     var pointDiv = document.createElement('div');
+                //     pointDiv.className = 'point';
+                //     pointDiv.style.left = keypoint.position.x + "px";
+                //     pointDiv.style.top = keypoint.position.y + "px";
+                //     pointDiv.innerHTML = count;
+                //     divArr[position].appendChild(pointDiv);
+                //     count++;
+                // }
+                if(pose.score > 0.8) {
+                    myPose = {keypoints: pose.keypoints, url: url};
                 }
                 else {
-                    poses.set("normal", myPose);
+                    myPose = null;
                 }
+                    if (standard) {
+                        poses.set("standard", myPose);
+                    } else {
+                        poses.set("normal", myPose);
+                    }
             });
         }
 
@@ -122,7 +126,12 @@
             };
             xhttp.open("POST", "http://localhost:8090/matchPose", true);
             xhttp.setRequestHeader("Content-type", "application/json");
-            var poseArr = [JSON.stringify(poses.get("standard")), JSON.stringify(poses.get("normal")), suggestionId];
+            if(poses.get("standard") != null && poses.get("normal") != null) {
+                var poseArr = [JSON.stringify(poses.get("standard")), JSON.stringify(poses.get("normal")), suggestionId];
+            }
+            else {
+                var poseArr = [suggestionId];
+            }
             xhttp.send(JSON.stringify(poseArr));
         }
     </script>
