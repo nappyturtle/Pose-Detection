@@ -16,9 +16,9 @@ public class ApiRetrofitClient {
     public static Retrofit getClient(String baseUrl){
         OkHttpClient okHttpClient = new OkHttpClient
                 .Builder()
-                .readTimeout(10000, TimeUnit.MILLISECONDS) // ngắt thời gian đọc từ server
-                .writeTimeout(10000,TimeUnit.MILLISECONDS)
-                .connectTimeout(10000,TimeUnit.MILLISECONDS) // thời gian ngắt kết nối
+                .readTimeout(1, TimeUnit.MINUTES) // ngắt thời gian đọc từ server
+                .writeTimeout(1,TimeUnit.MINUTES)
+                .connectTimeout(1,TimeUnit.MINUTES) // thời gian ngắt kết nối
                 .retryOnConnectionFailure(true) // nếu lỗi về mạng thì nó sẽ cố gắng kết nối lai
                 .protocols(Arrays.asList(Protocol.HTTP_1_1)) // trường hợp ko kiếm dc giao thức
                                                    // set lại giao thức cho nó
