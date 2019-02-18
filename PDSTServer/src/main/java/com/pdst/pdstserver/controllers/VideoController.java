@@ -3,9 +3,12 @@ package com.pdst.pdstserver.controllers;
 import com.pdst.pdstserver.models.Suggestion;
 import com.pdst.pdstserver.models.Video;
 import com.pdst.pdstserver.services.videoservice.VideoService;
+import com.sun.org.apache.xpath.internal.operations.Bool;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,13 +39,24 @@ public class VideoController {
         return videoService.getVideoById(id);
     }
 
-    @PostMapping(value = "/createDataset")
-    public ResponseEntity<Video> createVideo(@RequestBody Video video) {
+    @PostMapping(value = "/create")
+    public ResponseEntity<Void> createVideo(@RequestBody Video video, UriComponentsBuilder builder) {
+        boolean flag = videoService.createVideo(video);
+        if (flag == false) {
+            return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+        }
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(builder.path("create/{title}").buildAndExpand(video.getTitle()).toUri());
+        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+    }
+
+   /* @PostMapping(value = "/createDataset")
+    public ResponseEntity<Boolean> createVideo(@RequestBody Video video) {
 
         System.out.println("da vao day");
         System.out.println("title = " + video.getTitle());
-        Video response = videoService.createVideo(video);
+        Boolean response = videoService.createVideo(video);
         return new ResponseEntity<Video>(response, HttpStatus.OK);
-    }
+    }*/
 
 }

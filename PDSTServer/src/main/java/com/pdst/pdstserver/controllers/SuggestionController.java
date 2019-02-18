@@ -1,10 +1,14 @@
 package com.pdst.pdstserver.controllers;
 
 import com.pdst.pdstserver.dtos.SuggestionDTO;
+import com.pdst.pdstserver.models.Suggestion;
+import com.pdst.pdstserver.models.Video;
 import com.pdst.pdstserver.services.SuggestionService.SugggestionService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
@@ -18,8 +22,21 @@ public class SuggestionController {
     public SuggestionController(SugggestionService sugggestionService) {
         this.sugggestionService = sugggestionService;
     }
+
     @GetMapping("suggestions")
     public List<SuggestionDTO> getAllSuggestions() {
+
         return sugggestionService.getAllSuggestions();
+    }
+
+    @PostMapping(value = "/create")
+    public ResponseEntity<Void> createSuggestion(@RequestBody Suggestion suggestion, UriComponentsBuilder builder) {
+        boolean flag = sugggestionService.createSuggestion(suggestion);
+        if (flag == false) {
+            return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+        }
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(builder.path("create/{name}").buildAndExpand(suggestion.getName()).toUri());
+        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
     }
 }

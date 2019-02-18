@@ -1,13 +1,16 @@
 package com.pdst.pdstserver.services.SuggestionService;
 
+import com.pdst.pdstserver.handlers.SendRequest;
 import com.pdst.pdstserver.models.Suggestion;
 import com.pdst.pdstserver.dtos.SuggestionDTO;
+import com.pdst.pdstserver.models.Video;
 import com.pdst.pdstserver.repositories.SuggestionRepository;
 import com.pdst.pdstserver.repositories.VideoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SugggestionServiceImpl implements SugggestionService {
@@ -44,5 +47,33 @@ public class SugggestionServiceImpl implements SugggestionService {
             e.printStackTrace();
         }
         return listTemp;
+    }
+
+    @Override
+    public boolean createSuggestion(Suggestion suggestion) {
+        Suggestion savedSuggestion = suggestionRepository.save(suggestion);
+        Video trainerVideo = videoRepository.findVideoById(savedSuggestion.getVideoId());
+
+        // gửi request đến service để cắt video
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(3000);
+                    SendRequest sendRequest = new SendRequest();
+                    sendRequest.sendRequestToSuggest(trainerVideo, savedSuggestion.getName(), savedSuggestion.getId());
+                    System.out.println("da goi request to create suggestion");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        t.start();
+
+        if (savedSuggestion == null) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }
