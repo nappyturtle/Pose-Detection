@@ -12,6 +12,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button btnChooseFile;
     private Button btnTrainerUpVideoActi;
+    private Button btnSuggestionList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
         btnChooseFile = (Button) findViewById(R.id.btnChooseFile);
         btnTrainerUpVideoActi = (Button) findViewById(R.id.btnTrainerUpVideoActi);
+        btnSuggestionList = (Button)findViewById(R.id.btnSuggestionList);
 
         final Intent intent = new Intent(this, TraineeUploadVideoActi.class);
         btnChooseFile.setOnClickListener(new View.OnClickListener() {
@@ -32,6 +34,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, TrainerUploadVideoActi.class);
+                startActivity(intent);
+            }
+        });
+        btnSuggestionList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SuggestionListActi.class);
                 startActivity(intent);
             }
         });

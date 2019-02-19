@@ -224,7 +224,7 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
                 Suggestion suggestion = new Suggestion();
                 suggestion.setAccountId(3);
                 suggestion.setName(folderName);
-                suggestion.setVideoId(6);
+                suggestion.setVideoId(1);
 
                 /*SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                 Date date = Calendar.getInstance().getTime();

@@ -15,7 +15,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.SuggestionListActi">
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,7 +23,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.SuggestionDetailActi" />
-        <activity android:name=".activity.UploadVideoActi"></activity>
+        <activity android:name=".activity.TraineeUploadVideoActi" />
+        <activity android:name=".activity.TrainerUploadVideoActi" />
+        <activity android:name=".activity.SuggestionListActi" />
     </application>
 
 </manifest>

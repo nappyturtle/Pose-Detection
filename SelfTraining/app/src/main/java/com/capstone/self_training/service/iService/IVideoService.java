@@ -1,6 +1,5 @@
 package com.capstone.self_training.service.iService;
 
-import com.capstone.self_training.model.ResObj;
 import com.capstone.self_training.model.Video;
 
 import retrofit2.Call;

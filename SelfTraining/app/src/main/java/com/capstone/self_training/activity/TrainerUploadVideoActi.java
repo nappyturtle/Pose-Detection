@@ -191,7 +191,7 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
                 //progressDialog.dismiss();
                 Toast.makeText(TrainerUploadVideoActi.this, "File Uploaded", Toast.LENGTH_SHORT).show();
                 //Toast.makeText(TraineeUploadVideoActi.this, taskSnapshot.getDownloadUrl().toString(), Toast.LENGTH_SHORT).show();
-                Video video = new Video(edtTitle.getText().toString(), taskSnapshot.getDownloadUrl().toString());
+                Video video = new Video();
 
                 //String uploadId = mDatabase.push().getKey();
                 //mDatabase.child(uploadId).setValue(video);
@@ -199,6 +199,7 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
                 video.setAccountId(3);
                 video.setCategoryId(1);
                 video.setFolderName(foldername);
+                video.setThumnailUrl("https://firebasestorage.googleapis.com/v0/b/demouploadvideo-bdc04.appspot.com/o/images%20(1).jpg?alt=media&token=b270aaef-6cf2-4a08-8ce9-40ef57734a19");
                 video.setTitle(edtTitle.getText().toString());
                 video.setContentUrl(taskSnapshot.getDownloadUrl().toString());
                 video.setCreatedTime(createdTime());
