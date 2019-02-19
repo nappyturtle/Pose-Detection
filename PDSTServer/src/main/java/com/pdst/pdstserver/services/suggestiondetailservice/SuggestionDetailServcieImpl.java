@@ -40,7 +40,7 @@ public class SuggestionDetailServcieImpl implements SuggestionDetailServcie {
         SuggestionDetail suggestionDetail = (SuggestionDetail) beanWrapper.getWrappedInstance();
         suggestionDetail.setStatus("active");
         Example<SuggestionDetail> suggestionDetailExample = Example.of(suggestionDetail, ExampleMatcher.matchingAll().withIgnorePaths("id"));
-        List<SuggestionDetail> suggestionDetails = suggestionDetailRepository.findAll(suggestionDetailExample, new Sort(Sort.Direction.DESC, "createdTime"));
+        List<SuggestionDetail> suggestionDetails = suggestionDetailRepository.findAll(suggestionDetailExample, new Sort(Sort.Direction.ASC, "createdTime"));
         return suggestionDetails;
     }
 

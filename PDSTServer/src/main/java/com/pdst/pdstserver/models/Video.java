@@ -1,17 +1,10 @@
 package com.pdst.pdstserver.models;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.*;
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
@@ -23,11 +16,15 @@ public class Video implements Serializable {
     private Integer accountId;
     private Integer categoryId;
     private Integer numOfView;
+    private Integer headWeight;
+    private Integer bodyWeight;
+    private Integer legWeight;
     private String status;
 
     private String folderName;
     private String createdTime;
     private String updatedTime;
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -99,6 +96,33 @@ public class Video implements Serializable {
     public void setNumOfView(Integer numOfView) {
         this.numOfView = numOfView;
     }
+    @Basic
+    @Column(name = "head_weight")
+    public Integer getHeadWeight() {
+        return headWeight;
+    }
+
+    public void setHeadWeight(Integer headWeight) {
+        this.headWeight = headWeight;
+    }
+    @Basic
+    @Column(name = "body_head")
+    public Integer getBodyWeight() {
+        return bodyWeight;
+    }
+
+    public void setBodyWeight(Integer bodyWeight) {
+        this.bodyWeight = bodyWeight;
+    }
+    @Basic
+    @Column(name = "leg_weight")
+    public Integer getLegWeight() {
+        return legWeight;
+    }
+
+    public void setLegWeight(Integer legWeight) {
+        this.legWeight = legWeight;
+    }
 
     @Basic
     @Column(name = "status")
@@ -109,6 +133,7 @@ public class Video implements Serializable {
     public void setStatus(String status) {
         this.status = status;
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -124,12 +149,15 @@ public class Video implements Serializable {
                 Objects.equals(numOfView, video.numOfView) &&
                 Objects.equals(status, video.status) &&
                 Objects.equals(createdTime, video.createdTime) &&
-                Objects.equals(updatedTime, video.updatedTime);
+                Objects.equals(updatedTime, video.updatedTime) &&
+                Objects.equals(headWeight, video.headWeight) &&
+                Objects.equals(bodyWeight, video.bodyWeight) &&
+                Objects.equals(legWeight, video.legWeight);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, thumnailUrl, contentUrl, accountId, categoryId, numOfView, status, createdTime, updatedTime);
+        return Objects.hash(id, title, thumnailUrl, contentUrl, accountId, categoryId, numOfView, status, createdTime, updatedTime, headWeight, bodyWeight, legWeight);
     }
 
     @Basic
@@ -141,56 +169,6 @@ public class Video implements Serializable {
     public void setFolderName(String folderName) {
         this.folderName = folderName;
     }
-
-//    @PrePersist
-//    public void prePersist() {
-//        System.out.println("pre persist!");
-//    }
-//
-//    @PostPersist
-//    public void postPersist() {
-//        try {
-//            System.out.println("da vao de gui url");
-//            URL url = new URL("http://localhost:8090/sliceVideo");
-//            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-//            con.setDoOutput(true);
-//            con.setDoInput(true);
-//            con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-//            con.setRequestProperty("Accept", "application/json");
-//            con.setRequestMethod("POST");
-//
-//            JSONObject fileInfo = new JSONObject();
-//
-//            fileInfo.put("videoName","KietPT-456789/Video/1.mp4");
-//            fileInfo.put("videoUrl",this.getContentUrl());
-//
-//
-//            OutputStream os = con.getOutputStream();
-//            os.write(fileInfo.toString().getBytes("UTF-8"));
-//            //os.close();
-//
-//            StringBuilder sb = new StringBuilder();
-//            int HttpResult = con.getResponseCode();
-//            if (HttpResult == HttpURLConnection.HTTP_OK) {
-//                BufferedReader br = new BufferedReader(
-//                        new InputStreamReader(con.getInputStream(), "utf-8"));
-//                String line = null;
-//                while ((line = br.readLine()) != null) {
-//                    sb.append(line + "\n");
-//                }
-//                br.close();
-//                System.out.println("" + sb.toString());
-//            } else {
-//                System.out.println(con.getResponseMessage());
-//            }
-//            os.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//        System.out.println("aaaaaaaaaaaaaaaaaaaa");
-//    }
 
     @Basic
     @Column(name = "created_time")

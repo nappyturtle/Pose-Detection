@@ -8,7 +8,6 @@ import java.util.Objects;
 @Entity
 public class Suggestion implements Serializable {
     private int id;
-    private String name;
     private Integer accountId;
     private Integer videoId;
     private String status;
@@ -25,16 +24,6 @@ public class Suggestion implements Serializable {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    @Basic
-    @Column(name = "name")
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     @Basic
@@ -73,7 +62,6 @@ public class Suggestion implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         Suggestion that = (Suggestion) o;
         return id == that.id &&
-                Objects.equals(name, that.name) &&
                 Objects.equals(accountId, that.accountId) &&
                 Objects.equals(videoId, that.videoId) &&
                 Objects.equals(status, that.status) &&
@@ -83,7 +71,7 @@ public class Suggestion implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, accountId, videoId, status, createdTime, updatedTime);
+        return Objects.hash(id, accountId, videoId, status, createdTime, updatedTime);
     }
 
     @Basic
