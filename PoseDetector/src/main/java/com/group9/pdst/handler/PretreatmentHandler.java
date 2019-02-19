@@ -12,7 +12,7 @@ public class PretreatmentHandler {
         for (int i = 0; i < trainerPoints.size(); i++) {
             KeyPoint trainerKeyPoint = trainerPoints.get(i);
             KeyPoint traineeKeyPoint = traineePoints.get(i);
-            if (trainerKeyPoint.getScore() < 0.75 || traineeKeyPoint.getScore() < 0.75) {
+            if (trainerKeyPoint.getScore() < 0.7 || traineeKeyPoint.getScore() < 0.7) {
                 traineePoints.remove(traineeKeyPoint);
                 trainerPoints.remove(trainerKeyPoint);
             }
