@@ -41,8 +41,8 @@ public class VideoController {
 
     @PostMapping(value = "/create")
     public ResponseEntity<Void> createVideo(@RequestBody Video video, UriComponentsBuilder builder) {
-        boolean flag = videoService.createVideo(video);
-        if (flag == false) {
+        Video flag = videoService.createVideo(video);
+        if (flag == null) {
             return new ResponseEntity<Void>(HttpStatus.CONFLICT);
         }
         HttpHeaders headers = new HttpHeaders();
