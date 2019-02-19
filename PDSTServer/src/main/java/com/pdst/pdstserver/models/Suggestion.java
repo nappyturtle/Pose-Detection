@@ -15,6 +15,7 @@ public class Suggestion implements Serializable {
     private String createdTime;
     private String updatedTime;
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

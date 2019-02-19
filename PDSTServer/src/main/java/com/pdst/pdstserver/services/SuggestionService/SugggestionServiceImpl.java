@@ -3,6 +3,7 @@ package com.pdst.pdstserver.services.SuggestionService;
 import com.pdst.pdstserver.handlers.SendRequest;
 import com.pdst.pdstserver.models.Suggestion;
 import com.pdst.pdstserver.dtos.SuggestionDTO;
+import com.pdst.pdstserver.models.SuggestionTest;
 import com.pdst.pdstserver.models.Video;
 import com.pdst.pdstserver.repositories.SuggestionRepository;
 import com.pdst.pdstserver.repositories.VideoRepository;
@@ -50,10 +51,19 @@ public class SugggestionServiceImpl implements SugggestionService {
     }
 
     @Override
-    public boolean createSuggestion(Suggestion suggestion) {
-        Suggestion savedSuggestion = suggestionRepository.save(suggestion);
+    public boolean createSuggestion(SuggestionTest suggestion) {
+
+
+        Suggestion dbInserted = new Suggestion();
+        dbInserted.setAccountId(suggestion.getAccountId());
+        dbInserted.setName(suggestion.getName());
+        dbInserted.setVideoId(suggestion.getVideoId());
+        dbInserted.setCreatedTime(suggestion.getCreatedTime());
+
+        Suggestion savedSuggestion = suggestionRepository.save(dbInserted);
         Video trainerVideo = videoRepository.findVideoById(savedSuggestion.getVideoId());
 
+        System.out.println(suggestion.getThumnailUrl());
         // gửi request đến service để cắt video
         Thread t = new Thread(new Runnable() {
             @Override
@@ -61,7 +71,8 @@ public class SugggestionServiceImpl implements SugggestionService {
                 try {
                     Thread.sleep(3000);
                     SendRequest sendRequest = new SendRequest();
-                    sendRequest.sendRequestToSuggest(trainerVideo, savedSuggestion.getName(), savedSuggestion.getId());
+                    sendRequest.sendRequestToSuggest(trainerVideo, savedSuggestion.getName(),
+                            savedSuggestion.getId(),suggestion.getThumnailUrl());
                     System.out.println("da goi request to create suggestion");
                 } catch (InterruptedException e) {
                     e.printStackTrace();

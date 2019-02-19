@@ -2,6 +2,7 @@ package com.pdst.pdstserver.controllers;
 
 import com.pdst.pdstserver.dtos.SuggestionDTO;
 import com.pdst.pdstserver.models.Suggestion;
+import com.pdst.pdstserver.models.SuggestionTest;
 import com.pdst.pdstserver.models.Video;
 import com.pdst.pdstserver.services.SuggestionService.SugggestionService;
 import org.springframework.http.HttpHeaders;
@@ -30,7 +31,7 @@ public class SuggestionController {
     }
 
     @PostMapping(value = "/create")
-    public ResponseEntity<Void> createSuggestion(@RequestBody Suggestion suggestion, UriComponentsBuilder builder) {
+    public ResponseEntity<Void> createSuggestion(@RequestBody SuggestionTest suggestion, UriComponentsBuilder builder) {
         boolean flag = sugggestionService.createSuggestion(suggestion);
         if (flag == false) {
             return new ResponseEntity<Void>(HttpStatus.CONFLICT);

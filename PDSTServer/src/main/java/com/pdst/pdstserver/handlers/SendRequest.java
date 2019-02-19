@@ -56,7 +56,8 @@ public class SendRequest {
     }
 
 
-    public void sendRequestToSuggest(Video videoRequest,String foldernameTrainee,int suggestionId){
+    public void sendRequestToSuggest(Video videoRequest,String foldernameTrainee,int suggestionId,
+                                     String traineeVideoUrl){
         try {
             System.out.println("da vao de gui url");
             URL url = new URL("http://localhost:8090/sliceVideoToSuggest");
@@ -72,7 +73,7 @@ public class SendRequest {
             fileInfo.put("foldernameTrainer", videoRequest.getFolderName());
             fileInfo.put("foldernameTrainee", foldernameTrainee);
             fileInfo.put("suggestionId", suggestionId);
-            fileInfo.put("videoUrl", videoRequest.getContentUrl());
+            fileInfo.put("videoUrl", traineeVideoUrl);
 
 
             OutputStream os = con.getOutputStream();
