@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.MediaController;
+import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -36,6 +37,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import org.jcodec.common.DemuxerTrack;
 import org.jcodec.common.io.NIOUtils;
@@ -47,7 +49,7 @@ import java.util.Date;
 
 public class TrainerUploadVideoActi extends AppCompatActivity {
 
-    private static int RESULT_LOAD_IMAGE = 1;
+    private static int PICK_IMAGE_REQUEST = 1;
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
     private static final int SELECT_VIDEO = 3;
 
@@ -55,6 +57,7 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
     private Button btnTrainerChooseVideo;
     private Button btnTrainerUpVideo;
     private EditText edtTitle;
+    private Spinner spnCategory;
 
     private StorageReference storageReference;
 
@@ -63,6 +66,7 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
     private String filename;
 
     private ImageView ivThumbnail;
+    private Uri imageUri;
     Bitmap bmp;
 
     @Override
@@ -77,12 +81,19 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
         requestRead();
         uploadVideo();
 
-        /*ivThumbnail.setOnClickListener(new View.OnClickListener() {
+        ivThumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openGallery();
+                openFileChooser();
             }
-        });*/
+        });
+    }
+
+    private void openFileChooser() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, PICK_IMAGE_REQUEST);
     }
 
     public void init() {
@@ -91,12 +102,20 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
         btnTrainerChooseVideo = (Button) findViewById(R.id.btnTrainerChooseVideo);
         btnTrainerUpVideo = (Button) findViewById(R.id.btnTrainerUpVideo);
         edtTitle = (EditText) findViewById(R.id.edtTitle);
+        spnCategory = (Spinner) findViewById(R.id.spnCategory);
 
         storageReference = FirebaseStorage.getInstance().getReference();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+                && data != null && data.getData() != null) {
+            imageUri = data.getData();
+            Picasso.get().load(imageUri).into(ivThumbnail);
+        }
+
         if (requestCode == SELECT_VIDEO && resultCode == RESULT_OK && data != null && data.getData() != null) {
             System.out.println("Select video  ");
             selectedVideoUri = data.getData();
@@ -164,8 +183,7 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
     }
 
     private String createFolderName(String username) {
-        int convertTime = (int) new Date().getTime();
-        return username + "-" + convertTime;
+        return username + "-" + System.currentTimeMillis();
     }
 
     private String createdTime() {
@@ -183,7 +201,7 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
 
         final String foldername = createFolderName("trainer01");
 
-        StorageReference stR = storageReference.child(foldername + "/" + edtTitle.getText().toString());
+        final StorageReference stR = storageReference.child(foldername + "/" + edtTitle.getText().toString());
 
         stR.putFile(selectedVideoUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -191,21 +209,32 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
                 //progressDialog.dismiss();
                 Toast.makeText(TrainerUploadVideoActi.this, "File Uploaded", Toast.LENGTH_SHORT).show();
                 //Toast.makeText(TraineeUploadVideoActi.this, taskSnapshot.getDownloadUrl().toString(), Toast.LENGTH_SHORT).show();
-                Video video = new Video();
+                final Video videoUploadedToFirebase = new Video(edtTitle.getText().toString(), taskSnapshot.getDownloadUrl().toString());
 
                 //String uploadId = mDatabase.push().getKey();
                 //mDatabase.child(uploadId).setValue(video);
 
-                video.setAccountId(3);
-                video.setCategoryId(1);
-                video.setFolderName(foldername);
-                video.setThumnailUrl("https://firebasestorage.googleapis.com/v0/b/demouploadvideo-bdc04.appspot.com/o/images%20(1).jpg?alt=media&token=b270aaef-6cf2-4a08-8ce9-40ef57734a19");
-                video.setTitle(edtTitle.getText().toString());
-                video.setContentUrl(taskSnapshot.getDownloadUrl().toString());
-                video.setCreatedTime(createdTime());
+                
 
-                VideoService videoService = new VideoService();
-                videoService.createVideo(video);
+                StorageReference srImg = storageReference.child(foldername + "/" + edtTitle.getText().toString() + "-thumbnail");
+                srImg.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        videoUploadedToFirebase.setThumnailUrl(taskSnapshot.getDownloadUrl().toString());
+                        VideoService videoService = new VideoService();
+                        videoService.createVideo(videoUploadedToFirebase);
+                        Toast.makeText(TrainerUploadVideoActi.this, "upload image success", Toast.LENGTH_LONG).show();
+                    }
+                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                        double progress = (50.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                        progressDialog.setMessage("Uploaded " + (int) progress + "%...");
+                        if ((int) progress == 50) {
+                            progressDialog.dismiss();
+                        }
+                    }
+                });
 
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -266,13 +295,6 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
-
-    private void openGallery() {
-        Intent photoPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
-        photoPickerIntent.setType("image/*");
-        startActivityForResult(photoPickerIntent, RESULT_LOAD_IMAGE);
-    }
-
 
     public String getPath(Uri uri) {
         Cursor cursor = getContentResolver().query(uri, null, null, null, null);

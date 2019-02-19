@@ -173,8 +173,7 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
     }
 
     private String createFolderName(String username) {
-        int convertTime = (int) new Date().getTime();
-        return username + "-" + convertTime;
+        return username + "-" + System.currentTimeMillis();
     }
 
     private String createdTime() {
