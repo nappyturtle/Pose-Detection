@@ -11,13 +11,30 @@ public class Video implements Serializable{
     private Integer categoryId;
     private Integer numOfView;
     private String status;
-
+    private String username;
+    private String categoryName;
     private String folderName;
     private String createdTime;
     private String updatedTime;
     private Integer headWeight;
     private Integer bodyWeight;
     private Integer legWeight;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
 
     public void setAccountId(Integer accountId) {
         this.accountId = accountId;
