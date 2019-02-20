@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="15sp"
-            android:text="Hình từ video mẫu của chúng tôi"
+            android:text="Hình từ video của bạn"
             android:textAlignment="center"
             android:textSize="20sp" />
 
@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="15sp"
-            android:text="Hình từ video của bạn"
+            android:text="Hình từ video mẫu của chúng tôi"
             android:textAlignment="center"
             android:textSize="20sp" />
 

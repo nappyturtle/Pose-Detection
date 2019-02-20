@@ -2,6 +2,7 @@ package com.capstone.self_training.activity;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -11,6 +12,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -146,8 +148,7 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
             public void onClick(View v) {
                 Toast.makeText(TraineeUploadVideoActi.this, "da vao upload video", Toast.LENGTH_SHORT).show();
                 checkVideoLength();
-                uploadFileToFirebase();
-                //videoService.createVideo(uploadedVideo);
+                confirmUploadingVideo();
             }
         });
     }
@@ -196,43 +197,19 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
         stR.putFile(selectedVideoUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                //progressDialog.dismiss();
-                Toast.makeText(TraineeUploadVideoActi.this, "File Uploaded", Toast.LENGTH_SHORT).show();
-                //Toast.makeText(TraineeUploadVideoActi.this, taskSnapshot.getDownloadUrl().toString(), Toast.LENGTH_SHORT).show();
-                /*Video video = new Video(txtVideoName.getText().toString(), taskSnapshot.getDownloadUrl().toString());
-
-                //String uploadId = mDatabase.push().getKey();
-                //mDatabase.child(uploadId).setValue(video);
-
-                video.setAccountId(3);
-                video.setCategoryId(1);
-                video.setFolderName(Constants.STORAGE_PATH_UPLOADS);
-                video.setTitle(txtVideoName.getText().toString());
-                video.setContentUrl(taskSnapshot.getDownloadUrl().toString());
-
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                Date date = Calendar.getInstance().getTime();
-                String createdDate = sdf.format(date);
-
-                video.setCreatedTime(createdDate);
-
-
-                VideoService videoService = new VideoService();
-                videoService.createVideo(video);*/
 
                 Suggestion suggestion = new Suggestion();
                 suggestion.setAccountId(3);
-                suggestion.setName(folderName);
-                suggestion.setVideoId(1);
-
-                /*SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                Date date = Calendar.getInstance().getTime();
-                String createdDate = sdf.format(date);*/
-
+                suggestion.setVideoId(3);
+                suggestion.setFoldernameTrainee(folderName);
+                suggestion.setStatus("active");
                 suggestion.setCreatedTime(createdTime());
+                suggestion.setUrlVideoTrainee(taskSnapshot.getDownloadUrl().toString());
 
                 SuggestionService suggestionService = new SuggestionService();
                 suggestionService.createSuggestion(suggestion);
+                //progressDialog.dismiss();
+                Toast.makeText(TraineeUploadVideoActi.this, "File Uploaded", Toast.LENGTH_SHORT).show();
 
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -246,14 +223,38 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
             public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                 double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
                 progressDialog.setMessage("Uploaded " + (int) progress + "%...");
-                if ((int) progress == 100) {
+                if((int) progress == 100){
                     progressDialog.dismiss();
                 }
             }
         });
-
-
     }
+
+    public void confirmUploadingVideo() {
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Đăng video");
+
+        alertDialog.setMessage("Bạn có muốn đăng video này không ?");
+        alertDialog.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                uploadFileToFirebase();
+            }
+        });
+        alertDialog.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        dialog.dismiss();
+                    }
+                });
+            }
+        });
+        alertDialog.show();
+    }
+
 
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
 

@@ -7,54 +7,36 @@
     android:layout_height="match_parent"
     tools:context=".activity.TrainerUploadVideoActi">
 
-    <android.support.constraint.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:paddingBottom="20dp">
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="152dp"
-            android:layout_height="35dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="8dp"
-            android:text="Đăng Video"
-            android:textAlignment="center"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/trainer_upload_toolbar_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
+            app:title="Đăng video"
+            app:titleTextColor="#868683"></android.support.v7.widget.Toolbar>
 
         <TextView
             android:id="@+id/textView3"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="15dp"
             android:text="Hình nền"
-            android:textAlignment="center"
             android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.216"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+            android:textStyle="bold" />
 
         <FrameLayout
+            android:layout_marginTop="10dp"
             android:id="@+id/frameLayout"
-            android:layout_width="0dp"
-            android:layout_height="200dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3">
+            android:layout_width="280dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+           >
 
             <ImageView
                 android:id="@+id/ivThumbnail"
@@ -64,46 +46,24 @@
 
         </FrameLayout>
 
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="8dp"
-            android:text="Tiêu đề"
-            android:textAlignment="center"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.116"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
 
         <EditText
+            android:layout_marginTop="10dp"
             android:id="@+id/edtTitle"
             android:layout_width="347dp"
             android:layout_height="50dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="15dp"
             android:ems="10"
-            android:inputType="text"
-            android:text="Tiêu đề"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+            android:hint="Tiêu đề"
+            android:inputType="text" />
 
         <FrameLayout
             android:id="@+id/frameLayout2"
-            android:layout_width="0dp"
+            android:layout_width="350dp"
             android:layout_height="200dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edtTitle">
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+           >
 
             <VideoView
                 android:id="@+id/vwTrainerVideo"
@@ -116,47 +76,155 @@
             android:id="@+id/textView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="68dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
             android:text="Danh mục"
             android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/frameLayout2" />
+            android:textStyle="bold" />
 
         <Spinner
             android:id="@+id/spnCategory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="32dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView5">
+            android:layout_marginLeft="15dp"
+            android:autofillHints="Chọn danh mục ">
 
         </Spinner>
 
-        <Button
-            android:id="@+id/btnTrainerUpVideo"
-            android:layout_width="150dp"
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="32dp"
-            android:text="Đăng Video"
-            android:textAlignment="center"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/_dynamic" />
-
-        <Button
-            android:id="@+id/btnTrainerChooseVideo"
-            android:layout_width="150dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:text="Bộ phận quan trọng"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+        <LinearLayout
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="20dp"
-            android:text="Choose Video"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/_dynamic" />
+            android:orientation="vertical"
+            >
+            <LinearLayout
+                android:layout_margin="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Đầu"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        />
 
-    </android.support.constraint.ConstraintLayout>
+                    <SeekBar
+                        android:id="@+id/seekBar_Head"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:max="10" />
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/seekBar_Result_Head"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0/10"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_margin="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Thân"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        />
+
+                    <SeekBar
+                        android:id="@+id/seekBar_Body"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:max="10" />
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/seekBar_Result_Body"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0/10"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_margin="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Chân"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        />
+
+                    <SeekBar
+                        android:id="@+id/seekBar_Leg"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:max="10" />
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/seekBar_Result_Leg"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0/10"/>
+            </LinearLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="40dp"
+            >
+            <Button
+                android:id="@+id/btnTrainerChooseVideo"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="Chọn Video" />
+            <Button
+                android:id="@+id/btnTrainerUpVideo"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="Đăng Video" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 </ScrollView>

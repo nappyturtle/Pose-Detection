@@ -2,11 +2,12 @@ package com.capstone.self_training.activity;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
@@ -14,6 +15,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,14 +24,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.MediaController;
+import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.capstone.self_training.R;
 import com.capstone.self_training.model.Video;
 import com.capstone.self_training.service.dataservice.VideoService;
-import com.capstone.self_training.util.Constants;
 import com.capstone.self_training.util.MP4Demuxer;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -42,10 +45,13 @@ import com.squareup.picasso.Picasso;
 import org.jcodec.common.DemuxerTrack;
 import org.jcodec.common.io.NIOUtils;
 
+import java.io.IOException;
 import java.nio.channels.SeekableByteChannel;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+import retrofit2.Call;
 
 public class TrainerUploadVideoActi extends AppCompatActivity {
 
@@ -67,7 +73,17 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
 
     private ImageView ivThumbnail;
     private Uri imageUri;
+
+    private SeekBar seekBar_head;
+    private SeekBar seekBar_body;
+    private SeekBar seekBar_leg;
+    private TextView resultHead;
+    private TextView resultBody;
+    private TextView resultLeg;
     Bitmap bmp;
+    SharedPreferences mPerferences;
+    SharedPreferences.Editor mEditor;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +94,7 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
         StrictMode.setThreadPolicy(policy);
 
         init();
+        getSeekbarResult();
         requestRead();
         uploadVideo();
 
@@ -87,6 +104,87 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
                 openFileChooser();
             }
         });
+    }
+
+    private void getSeekbarResult() {
+        // lấy resultHead của seekbar
+        resultHead.setText(seekBar_head.getProgress() + "/" + seekBar_head.getMax());
+        seekBar_head.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int progressValue;
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                Log.e("fromUser = ", String.valueOf(fromUser));
+                progressValue = progress;
+                resultHead.setText(progress + "/" + seekBar.getMax());
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                resultHead.setText(progressValue + "/" + seekBar.getMax());
+                mEditor.putInt(getString(R.string.result_head), progressValue);
+                mEditor.commit();
+            }
+        });
+
+        // lấy resultBody của seekbar
+        resultBody.setText(seekBar_body.getProgress() + "/" + seekBar_body.getMax());
+
+        seekBar_body.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int progressValue;
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                Log.e("fromUser = ", String.valueOf(fromUser));
+                progressValue = progress;
+                resultBody.setText(progress + "/" + seekBar.getMax());
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                resultBody.setText(progressValue + "/" + seekBar.getMax());
+                mEditor.putInt(getString(R.string.result_body), progressValue);
+                mEditor.commit();
+            }
+        });
+
+        // lấy resultLeg của seekbar
+        resultLeg.setText(seekBar_leg.getProgress() + "/" + seekBar_leg.getMax());
+
+        seekBar_leg.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int progressValue;
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                Log.e("fromUser = ", String.valueOf(fromUser));
+                progressValue = progress;
+                resultLeg.setText(progress + "/" + seekBar.getMax());
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                resultLeg.setText(progressValue + "/" + seekBar.getMax());
+                mEditor.putInt(getString(R.string.result_leg), progressValue);
+                mEditor.commit();
+            }
+        });
+
+
     }
 
     private void openFileChooser() {
@@ -104,7 +202,31 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
         edtTitle = (EditText) findViewById(R.id.edtTitle);
         spnCategory = (Spinner) findViewById(R.id.spnCategory);
 
+        mPerferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mEditor = mPerferences.edit();
+
+        seekBar_head = (SeekBar) findViewById(R.id.seekBar_Head);
+        seekBar_body = (SeekBar) findViewById(R.id.seekBar_Body);
+        seekBar_leg = (SeekBar) findViewById(R.id.seekBar_Leg);
+        resultHead = (TextView) findViewById(R.id.seekBar_Result_Head);
+        resultBody = (TextView) findViewById(R.id.seekBar_Result_Body);
+        resultLeg = (TextView) findViewById(R.id.seekBar_Result_Leg);
+
         storageReference = FirebaseStorage.getInstance().getReference();
+        initSharedPreperences();
+    }
+
+    private void initSharedPreperences() {
+        mEditor.putInt(getString(R.string.result_head), 0);
+        mEditor.commit();
+
+        mEditor.putInt(getString(R.string.result_body), 0);
+        mEditor.commit();
+
+        mEditor.putInt(getString(R.string.result_leg), 0);
+        mEditor.commit();
+
+
     }
 
     @Override
@@ -121,7 +243,6 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
             selectedVideoUri = data.getData();
             selectedPath = getPath(selectedVideoUri);
             filename = selectedPath.substring(selectedPath.lastIndexOf("/") + 1);
-            edtTitle.setText(filename);
             Uri uri = Uri.parse(selectedPath);
             vwTrainerVideo.setVideoURI(uri);
             MediaController mediaController = new MediaController(this);
@@ -131,14 +252,21 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
     }
 
     private void uploadVideo() {
-        //Video uploadedVideo = new Video();
+
         btnTrainerUpVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(TrainerUploadVideoActi.this, "da vao upload video", Toast.LENGTH_SHORT).show();
-                checkVideoLength();
-                uploadFileToFirebase();
-                //videoService.createVideo(uploadedVideo);
+                boolean checked = true;
+                if (edtTitle.getText().toString() == null || edtTitle.getText().toString().equals("")
+                        || imageUri == null || imageUri.equals("") || selectedVideoUri == null || selectedVideoUri.equals("")) {
+                    checked = false;
+                    Toast.makeText(TrainerUploadVideoActi.this, "Xin vui lòng điền đầy đủ thông tin video trước khi đăng", Toast.LENGTH_SHORT).show();
+                }
+                if (checked) {
+                    Toast.makeText(TrainerUploadVideoActi.this, "da vao upload video", Toast.LENGTH_SHORT).show();
+                    checkVideoLength();
+                    confirmUploadingVideo();
+                }
             }
         });
     }
@@ -193,6 +321,7 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
     }
 
     private void uploadFileToFirebase() {
+
         final ProgressDialog progressDialog = new ProgressDialog(this);
         //final Video uploadedVideo = new Video();
         progressDialog.setTitle("Uploading");
@@ -200,7 +329,6 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
         Log.e("TextView = ", edtTitle.getText().toString());
 
         final String foldername = createFolderName("trainer01");
-
         final StorageReference stR = storageReference.child(foldername + "/" + edtTitle.getText().toString());
 
         stR.putFile(selectedVideoUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -208,20 +336,30 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 //progressDialog.dismiss();
                 Toast.makeText(TrainerUploadVideoActi.this, "File Uploaded", Toast.LENGTH_SHORT).show();
-                //Toast.makeText(TraineeUploadVideoActi.this, taskSnapshot.getDownloadUrl().toString(), Toast.LENGTH_SHORT).show();
-                final Video videoUploadedToFirebase = new Video(edtTitle.getText().toString(), taskSnapshot.getDownloadUrl().toString());
+                final Video videoUploadedToFirebase = new Video();
 
-                //String uploadId = mDatabase.push().getKey();
-                //mDatabase.child(uploadId).setValue(video);
+                videoUploadedToFirebase.setTitle(edtTitle.getText().toString());
+                videoUploadedToFirebase.setContentUrl(taskSnapshot.getDownloadUrl().toString());
+                videoUploadedToFirebase.setAccountId(6);
+                videoUploadedToFirebase.setCategoryId(1);
+                videoUploadedToFirebase.setNumOfView(0);
+                videoUploadedToFirebase.setStatus("active");
+                videoUploadedToFirebase.setCreatedTime(createdTime());
+                videoUploadedToFirebase.setFolderName(foldername);
 
-                
+                videoUploadedToFirebase.setHeadWeight(mPerferences.getInt(getString(R.string.result_head), 0));
+                videoUploadedToFirebase.setBodyWeight(mPerferences.getInt(getString(R.string.result_body), 0));
+                videoUploadedToFirebase.setLegWeight(mPerferences.getInt(getString(R.string.result_leg), 0));
+
 
                 StorageReference srImg = storageReference.child(foldername + "/" + edtTitle.getText().toString() + "-thumbnail");
                 srImg.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         videoUploadedToFirebase.setThumnailUrl(taskSnapshot.getDownloadUrl().toString());
+
                         VideoService videoService = new VideoService();
+
                         videoService.createVideo(videoUploadedToFirebase);
                         Toast.makeText(TrainerUploadVideoActi.this, "upload image success", Toast.LENGTH_LONG).show();
                     }
@@ -255,8 +393,33 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
             }
         });
 
-
     }
+
+    public void confirmUploadingVideo() {
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Đăng video");
+
+        alertDialog.setMessage("Bạn có muốn đăng video này không ?");
+        alertDialog.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                uploadFileToFirebase();
+            }
+        });
+        alertDialog.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        dialog.dismiss();
+                    }
+                });
+            }
+        });
+        alertDialog.show();
+    }
+
 
     /**
      * requestPermissions and do something

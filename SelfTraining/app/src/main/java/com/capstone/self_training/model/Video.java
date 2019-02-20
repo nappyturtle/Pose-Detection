@@ -15,6 +15,46 @@ public class Video implements Serializable{
     private String folderName;
     private String createdTime;
     private String updatedTime;
+    private Integer headWeight;
+    private Integer bodyWeight;
+    private Integer legWeight;
+
+    public void setAccountId(Integer accountId) {
+        this.accountId = accountId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public void setNumOfView(Integer numOfView) {
+        this.numOfView = numOfView;
+    }
+
+    public Integer getHeadWeight() {
+        return headWeight;
+    }
+
+    public void setHeadWeight(Integer headWeight) {
+        this.headWeight = headWeight;
+    }
+
+    public Integer getBodyWeight() {
+        return bodyWeight;
+    }
+
+    public void setBodyWeight(Integer bodyWeight) {
+        this.bodyWeight = bodyWeight;
+    }
+
+    public Integer getLegWeight() {
+        return legWeight;
+    }
+
+    public void setLegWeight(Integer legWeight) {
+        this.legWeight = legWeight;
+    }
+
     public Video(){}
 
     public int getId() {

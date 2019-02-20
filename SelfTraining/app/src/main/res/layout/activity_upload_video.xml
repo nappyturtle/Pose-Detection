@@ -6,17 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".activity.TraineeUploadVideoActi">
 
-    <TextView
+    <android.support.v7.widget.Toolbar
         android:id="@+id/textView"
-        android:layout_width="194dp"
-        android:layout_height="48dp"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="37dp"
         android:layout_marginEnd="8dp"
-        android:text="Upload Video"
+        app:title="Đăng video"
         android:textAlignment="center"
         android:textSize="24sp"
         android:textStyle="bold"
+        app:titleTextColor="#868683"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.567"
         app:layout_constraintStart_toStartOf="parent"

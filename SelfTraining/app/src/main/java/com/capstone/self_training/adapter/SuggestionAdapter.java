@@ -66,7 +66,7 @@ public class SuggestionAdapter extends BaseAdapter {
         Picasso.get().load(suggestion.getThumnailUrl()).placeholder(R.drawable.error).
                 error(R.drawable.errors).into(viewHolder.suggestion_image);
 
-        viewHolder.suggestion_name.setText(suggestion.getName().toString());
+        viewHolder.suggestion_name.setText(suggestion.getVideoName().toString());
         viewHolder.suggestion_date.setText(suggestion.getCreatedTime().toString());
         return convertView;
     }
