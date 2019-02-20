@@ -7,4 +7,5 @@
     <string name="result_head">com.capstone.self_training.activity.resultHead</string>
     <string name="result_body">com.capstone.self_training.activity.resultBody</string>
     <string name="result_leg">com.capstone.self_training.activity.resultLeg</string>
+    <string name="full_screen">full screen mode</string>
 </resources>

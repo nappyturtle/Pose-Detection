@@ -1,0 +1,99 @@
+{
+  "project_info": {
+    "project_number": "404242634566",
+    "firebase_url": "https://demouploadvideo-bdc04.firebaseio.com",
+    "project_id": "demouploadvideo-bdc04",
+    "storage_bucket": "demouploadvideo-bdc04.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:404242634566:android:7aa99208f7e7d835",
+        "android_client_info": {
+          "package_name": "com.capstone.self_training"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "404242634566-9rt968dlnc4v80b6qb0l3nlpbd76qbaj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.capstone.self_training",
+            "certificate_hash": "6be7067b5316330b36c57af31e87b5b3d2b66836"
+          }
+        },
+        {
+          "client_id": "404242634566-0fdgu6s3nu06aknusd2qm66tmveqp4eq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgaf8NAp3UXCLI5G7IF87QfY_hQMo3Z-E"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "404242634566-0fdgu6s3nu06aknusd2qm66tmveqp4eq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:404242634566:android:d44debcdef37af9c",
+        "android_client_info": {
+          "package_name": "self_training.kietpt.uploadvideo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "404242634566-fna3ji0r23iepikc84dgnghn8p0qsabe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "self_training.kietpt.uploadvideo",
+            "certificate_hash": "6be7067b5316330b36c57af31e87b5b3d2b66836"
+          }
+        },
+        {
+          "client_id": "404242634566-0fdgu6s3nu06aknusd2qm66tmveqp4eq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgaf8NAp3UXCLI5G7IF87QfY_hQMo3Z-E"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "404242634566-0fdgu6s3nu06aknusd2qm66tmveqp4eq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

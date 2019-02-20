@@ -20,6 +20,25 @@ public class Video implements Serializable{
     private Integer bodyWeight;
     private Integer legWeight;
 
+    public Video(int id, String title, String thumnailUrl, String contentUrl, Integer accountId, Integer categoryId, Integer numOfView, String status, String username, String categoryName, String folderName, String createdTime, String updatedTime, Integer headWeight, Integer bodyWeight, Integer legWeight) {
+        this.id = id;
+        this.title = title;
+        this.thumnailUrl = thumnailUrl;
+        this.contentUrl = contentUrl;
+        this.accountId = accountId;
+        this.categoryId = categoryId;
+        this.numOfView = numOfView;
+        this.status = status;
+        this.username = username;
+        this.categoryName = categoryName;
+        this.folderName = folderName;
+        this.createdTime = createdTime;
+        this.updatedTime = updatedTime;
+        this.headWeight = headWeight;
+        this.bodyWeight = bodyWeight;
+        this.legWeight = legWeight;
+    }
+
     public String getUsername() {
         return username;
     }

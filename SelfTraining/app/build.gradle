@@ -37,6 +37,7 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:27.1.1'
 // https://mvnrepository.com/artifact/org.jcodec/jcodec-android
     implementation group: 'org.jcodec', name: 'jcodec-android', version: '0.2.3'
+    //
 
 }
 
