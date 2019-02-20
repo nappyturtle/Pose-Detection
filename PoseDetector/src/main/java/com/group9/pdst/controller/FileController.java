@@ -61,12 +61,12 @@ public class FileController {
         System.out.println("trainee = "+fileInfo.getFoldernameTrainee());
         System.out.println("suggestionId = "+fileInfo.getSuggestionId());
         System.out.println("url = "+fileInfo.getVideoUrl());
+        System.out.println("head = "+fileInfo.getHeadWeight());
+        System.out.println("body = "+fileInfo.getBodyWeight());
+        System.out.println("leg = "+fileInfo.getLegWeight());
 
         System.out.println(" da vao getVideoUrl Controller ");
-        //List<FileInfo> list = null;
         try {
-
-
             // tạo folder KietPT-123456 trong thư mục filestorage
             fileStorageService.createFolder(fileInfo.getFoldernameTrainee());
 
@@ -80,7 +80,8 @@ public class FileController {
             //list = fileStorageService.getFileFromLocalStorage(folderName);
             OpenBrowserUtilities.openBrowser(ConstantUtilities.domain + "uploadImageToSuggest.html?trainer=" +
                     fileInfo.getFoldernameTrainer()+"&trainee="+fileInfo.getFoldernameTrainee()
-            +"&suggestionId="+fileInfo.getSuggestionId());
+            +"&suggestionId="+fileInfo.getSuggestionId()+"&headWeight="+fileInfo.getHeadWeight()+"&bodyWeight="+fileInfo.getBodyWeight()
+            +"&legWeight="+fileInfo.getLegWeight());
         } catch (Exception e) {
             logger.info("Something Wrong in /sliceVideoToSuggest !!!! " + e.getMessage());
         }

@@ -12,6 +12,33 @@ public class FileInfo {
 	private String foldernameTrainee;
 	private String suggestionId;
 	private String foldername;
+	private Integer headWeight;
+	private Integer bodyWeight;
+	private Integer legWeight;
+
+	public Integer getHeadWeight() {
+		return headWeight;
+	}
+
+	public void setHeadWeight(Integer headWeight) {
+		this.headWeight = headWeight;
+	}
+
+	public Integer getBodyWeight() {
+		return bodyWeight;
+	}
+
+	public void setBodyWeight(Integer bodyWeight) {
+		this.bodyWeight = bodyWeight;
+	}
+
+	public Integer getLegWeight() {
+		return legWeight;
+	}
+
+	public void setLegWeight(Integer legWeight) {
+		this.legWeight = legWeight;
+	}
 
 	public String getFoldername() {
 		return foldername;
