@@ -56,7 +56,7 @@ public class SendRequest {
     }
 
 
-    public void sendRequestToSuggest(String foldernameTrainer,String foldernameTrainee,int suggestionId,
+    public void sendRequestToSuggest(Video videoRequest,String foldernameTrainee,int suggestionId,
                                      String traineeVideoUrl){
         try {
             System.out.println("da vao de gui url");
@@ -70,10 +70,13 @@ public class SendRequest {
 
             JSONObject fileInfo = new JSONObject();
 
-            fileInfo.put("foldernameTrainer", foldernameTrainer);
+            fileInfo.put("foldernameTrainer", videoRequest.getFolderName());
             fileInfo.put("foldernameTrainee", foldernameTrainee);
             fileInfo.put("suggestionId", suggestionId);
             fileInfo.put("videoUrl", traineeVideoUrl);
+            fileInfo.put("headWeight",videoRequest.getHeadWeight());
+            fileInfo.put("bodyWeight",videoRequest.getBodyWeight());
+            fileInfo.put("legWeight",videoRequest.getLegWeight());
 
 
             OutputStream os = con.getOutputStream();

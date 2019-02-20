@@ -62,8 +62,8 @@ public class SugggestionServiceImpl implements SugggestionService {
 
         Suggestion savedSuggestion = suggestionRepository.save(dbInserted);
         System.out.println("videoId = "+savedSuggestion.getVideoId());
-        Video foldernameTrainer = videoRepository.findVideoById(savedSuggestion.getVideoId());
-        System.out.println(foldernameTrainer);
+        Video videoRequest = videoRepository.findVideoById(savedSuggestion.getVideoId());
+
 
 
         // gửi request đến service để cắt video
@@ -73,7 +73,7 @@ public class SugggestionServiceImpl implements SugggestionService {
                 try {
                     Thread.sleep(3000);
                     SendRequest sendRequest = new SendRequest();
-                    sendRequest.sendRequestToSuggest(foldernameTrainer.getFolderName(), suggestion.getFoldernameTrainee(),
+                    sendRequest.sendRequestToSuggest(videoRequest, suggestion.getFoldernameTrainee(),
                             savedSuggestion.getId(),suggestion.getUrlVideoTrainee());
                     System.out.println("da goi request to make suggestion");
                 } catch (InterruptedException e) {
