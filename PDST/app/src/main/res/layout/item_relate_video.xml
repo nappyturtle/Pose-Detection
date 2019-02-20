@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_margin="5dp"
+        android:layout_alignParentStart="true"
+        android:id="@+id/relate_video_thumbnail"
+        android:layout_width="200dp"
+        android:layout_height="120dp"
+        android:src="@drawable/img5" />
+    <LinearLayout
+        android:layout_margin="5dp"
+        android:orientation="vertical"
+        android:layout_toRightOf="@+id/relate_video_thumbnail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/relate_video_title"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:text="Bai Tap Yoga 1 abc xyz asd sad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/relate_video_username"
+            android:paddingLeft="15dp"
+            android:textSize="16sp"
+            android:layout_marginTop="15dp"
+            android:text="kietPT"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/relate_video_view"
+            android:paddingLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:text="1,4 Tr lượt xem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>
