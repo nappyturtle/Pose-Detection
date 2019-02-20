@@ -50,13 +50,5 @@ public class VideoController {
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
     }
 
-   /* @PostMapping(value = "/createDataset")
-    public ResponseEntity<Boolean> createVideo(@RequestBody Video video) {
-
-        System.out.println("da vao day");
-        System.out.println("title = " + video.getTitle());
-        Boolean response = videoService.createVideo(video);
-        return new ResponseEntity<Video>(response, HttpStatus.OK);
-    }*/
 
 }

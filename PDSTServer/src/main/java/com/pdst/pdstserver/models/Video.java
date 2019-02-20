@@ -106,7 +106,7 @@ public class Video implements Serializable {
         this.headWeight = headWeight;
     }
     @Basic
-    @Column(name = "body_head")
+    @Column(name = "body_weight")
     public Integer getBodyWeight() {
         return bodyWeight;
     }
