@@ -1,5 +1,6 @@
 package com.pdst.pdstserver.controllers;
 
+import com.pdst.pdstserver.dtos.VideoDTO;
 import com.pdst.pdstserver.models.Suggestion;
 import com.pdst.pdstserver.models.Video;
 import com.pdst.pdstserver.services.videoservice.VideoService;
@@ -29,7 +30,7 @@ public class VideoController {
     }
 
     @GetMapping("getAllVideosByDate")
-    public List<Video> getAllVideoByDate() {
+    public List<VideoDTO> getAllVideoByDate() {
         return videoService.getAllVideosOrderByDate();
     }
 
