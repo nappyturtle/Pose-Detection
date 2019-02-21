@@ -2,10 +2,10 @@ package com.pdst.pdstserver.dtos;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import java.io.Serializable;
 import java.util.Optional;
 
-@JsonSerialize
-public class SuggestionDTO {
+public class SuggestionDTO implements Serializable {
     private int id;
     private String videoName;
     private Integer accountId;
