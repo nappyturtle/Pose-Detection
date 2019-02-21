@@ -32,6 +32,7 @@ public class VideoController {
     @GetMapping("getAllVideosByDate")
     public List<VideoDTO> getAllVideoByDate() {
         return videoService.getAllVideosOrderByDate();
+
     }
 
 
@@ -42,8 +43,8 @@ public class VideoController {
 
     @PostMapping(value = "/create")
     public ResponseEntity<Void> createVideo(@RequestBody Video video, UriComponentsBuilder builder) {
-        Video flag = videoService.createVideo(video);
-        if (flag == null) {
+        boolean flag = videoService.createVideo(video);
+        if (flag == false) {
             return new ResponseEntity<Void>(HttpStatus.CONFLICT);
         }
         HttpHeaders headers = new HttpHeaders();

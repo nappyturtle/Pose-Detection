@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface VideoService {
     List<Video> getAllVideos();
     List<VideoDTO> getAllVideosOrderByDate();
-    Optional<Video> getVideoById(Integer id);
-    Video createVideo(Video video);
+    Optional<Video> getVideoById(int id);
+    boolean createVideo(Video video);
 
 }
