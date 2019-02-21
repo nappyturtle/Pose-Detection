@@ -10,40 +10,28 @@ import com.capstone.self_training.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button btnChooseFile;
-    private Button btnTrainerUpVideoActi;
-    private Button btnSuggestionList;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btnChooseFile = (Button) findViewById(R.id.btnChooseFile);
-        btnTrainerUpVideoActi = (Button) findViewById(R.id.btnTrainerUpVideoActi);
-        btnSuggestionList = (Button)findViewById(R.id.btnSuggestionList);
+        Thread welcomeThread = new Thread() {
 
-        final Intent intent = new Intent(this, TraineeUploadVideoActi.class);
-        btnChooseFile.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                startActivity(intent);
+            public void run() {
+                try {
+                    super.run();
+                    sleep(1000);  //Delay of 1 seconds
+                } catch (Exception e) {
+
+                } finally {
+                    Intent i = new Intent(MainActivity.this, MainActivity_Home.class);
+                    startActivity(i);
+                    finish();
+                }
             }
-        });
-        btnTrainerUpVideoActi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, TrainerUploadVideoActi.class);
-                startActivity(intent);
-            }
-        });
-        btnSuggestionList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, SuggestionListActi.class);
-                startActivity(intent);
-            }
-        });
+        };
+        welcomeThread.start();
 
     }
 }

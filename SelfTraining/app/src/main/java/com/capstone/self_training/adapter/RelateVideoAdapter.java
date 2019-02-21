@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import com.capstone.self_training.R;
 import com.capstone.self_training.activity.PlayVideoActivity;
+import com.capstone.self_training.dto.VideoDTO;
+import com.capstone.self_training.model.Account;
 import com.capstone.self_training.model.Video;
 import com.capstone.self_training.util.TransformDataUtil;
 import com.squareup.picasso.Picasso;
@@ -20,10 +22,10 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 public class RelateVideoAdapter extends RecyclerView.Adapter<RelateVideoAdapter.ViewHolder> {
-    private List<Video> models;
+    private List<VideoDTO> models;
     private Context context;
 
-    public RelateVideoAdapter(List<Video> models, Context context) {
+    public RelateVideoAdapter(List<VideoDTO> models, Context context) {
         this.models = models;
         this.context = context;
     }
@@ -39,21 +41,25 @@ public class RelateVideoAdapter extends RecyclerView.Adapter<RelateVideoAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final Video video = models.get(position);
+        final VideoDTO video = models.get(position);
+        final Account account = new Account();
+        account.setUsername(video.getUsername());
+        account.setImgUrl(video.getImgUrl());
 
         //BIND DATA
-        Picasso.get().load(video.getThumnailUrl()).fit().into(holder.thumbnail);
+        Picasso.get().load(video.getVideo().getThumnailUrl()).fit().into(holder.thumbnail);
 
-        holder.title.setText(video.getTitle());
+        holder.title.setText(video.getVideo().getTitle());
         holder.username.setText(video.getUsername());
-        holder.totalView.setText(TransformDataUtil.totalViewToText(video.getNumOfView()));
+        holder.totalView.setText(video.getVideo().getNumOfView()+" lượt xem");
 
         holder.title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Intend to View Video Activity here
                 Intent intent = new Intent(context, PlayVideoActivity.class);
-                intent.putExtra("PLAYVIDEO", video);
+                intent.putExtra("PLAYVIDEO", video.getVideo());
+                intent.putExtra("ACCOUNT", account);
                 context.startActivity(intent);
                 ((Activity)context).finish();
 
@@ -64,7 +70,8 @@ public class RelateVideoAdapter extends RecyclerView.Adapter<RelateVideoAdapter.
             public void onClick(View v) {
                 //Intend to View Video Activity here
                 Intent intent = new Intent(context, PlayVideoActivity.class);
-                intent.putExtra("PLAYVIDEO", video);
+                intent.putExtra("PLAYVIDEO", video.getVideo());
+                intent.putExtra("ACCOUNT", account);
                 context.startActivity(intent);
                 ((Activity)context).finish();
 

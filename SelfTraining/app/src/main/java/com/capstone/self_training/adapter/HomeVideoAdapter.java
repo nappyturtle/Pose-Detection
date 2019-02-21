@@ -25,19 +25,19 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class HomeVideoAdapter extends RecyclerView.Adapter<HomeVideoAdapter.ViewHolder> {
     private List<Video> models;
     private Context context;
-    private List<Account> account;
+    private List<Account> accounts;
 
     public HomeVideoAdapter(List<Video> models, Context context, List<Account> accounts) {
         this.models = models;
         this.context = context;
-        this.account = accounts;
+        this.accounts = accounts;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_home_video, parent , false);
+                .inflate(R.layout.item_home_video, parent, false);
 
         return new ViewHolder(v);
     }
@@ -45,18 +45,18 @@ public class HomeVideoAdapter extends RecyclerView.Adapter<HomeVideoAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Video model = models.get(position);
-        final Account accounts = account.get(position);
+        final Account account = accounts.get(position);
 
         //BIND IMAGE
         Picasso.get().load(model.getThumnailUrl()).fit().into(holder.thumbnail);
-        Picasso.get().load(accounts.getImgUrl()).fit().into(holder.userImg);
+        Picasso.get().load(account.getImgUrl()).fit().into(holder.userImg);
 
         //BIND TEXT
         holder.title.setText(model.getTitle());
-        holder.userName.setText(model.getUsername());
+        holder.userName.setText(account.getUsername());
 
-        holder.postTime.setText(TransformDataUtil.dateToTimestampAgoText(model.getCreatedTime()));
-        holder.totalView.setText(TransformDataUtil.totalViewToText(model.getNumOfView()));
+        holder.postTime.setText(model.getCreatedTime());
+        holder.totalView.setText(model.getNumOfView() + " lượt xem");
 
         //BIND CLICK EVENT
         holder.thumbnail.setOnClickListener(new View.OnClickListener() {
@@ -65,9 +65,8 @@ public class HomeVideoAdapter extends RecyclerView.Adapter<HomeVideoAdapter.View
                 //Intend to View Video Activity here
                 Intent intent = new Intent(context, PlayVideoActivity.class);
                 intent.putExtra("PLAYVIDEO", model);
+                intent.putExtra("ACCOUNT", account);
                 context.startActivity(intent);
-//                Toast.makeText(context, "Clicked to view video", Toast.LENGTH_SHORT).show();
-
             }
         });
 
@@ -80,7 +79,6 @@ public class HomeVideoAdapter extends RecyclerView.Adapter<HomeVideoAdapter.View
         });
 
 
-
     }
 
     @Override
@@ -88,7 +86,7 @@ public class HomeVideoAdapter extends RecyclerView.Adapter<HomeVideoAdapter.View
         return models.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView thumbnail;
         public CircleImageView userImg;
         public TextView userName;

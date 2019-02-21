@@ -20,6 +20,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -31,7 +32,11 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.capstone.self_training.R;
+import com.capstone.self_training.adapter.CategoryAdapter;
+import com.capstone.self_training.helper.TimeHelper;
+import com.capstone.self_training.model.Category;
 import com.capstone.self_training.model.Video;
+import com.capstone.self_training.service.dataservice.CategoryService;
 import com.capstone.self_training.service.dataservice.VideoService;
 import com.capstone.self_training.util.MP4Demuxer;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -48,8 +53,10 @@ import org.jcodec.common.io.NIOUtils;
 import java.io.IOException;
 import java.nio.channels.SeekableByteChannel;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import retrofit2.Call;
 
@@ -81,6 +88,9 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
     private TextView resultBody;
     private TextView resultLeg;
     Bitmap bmp;
+    private ArrayList<Category> cateList;
+    private CategoryAdapter categoryAdapter;
+    private CategoryService categoryService;
     SharedPreferences mPerferences;
     SharedPreferences.Editor mEditor;
 
@@ -201,6 +211,7 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
         btnTrainerUpVideo = (Button) findViewById(R.id.btnTrainerUpVideo);
         edtTitle = (EditText) findViewById(R.id.edtTitle);
         spnCategory = (Spinner) findViewById(R.id.spnCategory);
+        storageReference = FirebaseStorage.getInstance().getReference();
 
         mPerferences = PreferenceManager.getDefaultSharedPreferences(this);
         mEditor = mPerferences.edit();
@@ -213,7 +224,24 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
         resultLeg = (TextView) findViewById(R.id.seekBar_Result_Leg);
 
         storageReference = FirebaseStorage.getInstance().getReference();
+        categoryService = new CategoryService();
+        initCateList();
+        categoryAdapter = new CategoryAdapter(this, cateList);
+        spnCategory.setAdapter(categoryAdapter);
         initSharedPreperences();
+
+    }
+
+    private void initCateList() {
+        List<Category> arrCate = categoryService.getAllcategories();
+        if (cateList == null) {
+            cateList = new ArrayList<Category>();
+        }
+        if (arrCate != null) {
+            for (Category c : arrCate) {
+                cateList.add(c);
+            }
+        }
     }
 
     private void initSharedPreperences() {
@@ -314,12 +342,6 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
         return username + "-" + System.currentTimeMillis();
     }
 
-    private String createdTime() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        Date date = Calendar.getInstance().getTime();
-        return sdf.format(date);
-    }
-
     private void uploadFileToFirebase() {
 
         final ProgressDialog progressDialog = new ProgressDialog(this);
@@ -338,19 +360,19 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
                 Toast.makeText(TrainerUploadVideoActi.this, "File Uploaded", Toast.LENGTH_SHORT).show();
                 final Video videoUploadedToFirebase = new Video();
 
-                videoUploadedToFirebase.setTitle(edtTitle.getText().toString());
-                videoUploadedToFirebase.setContentUrl(taskSnapshot.getDownloadUrl().toString());
-                videoUploadedToFirebase.setAccountId(6);
+                videoUploadedToFirebase.setAccountId(3);
                 videoUploadedToFirebase.setCategoryId(1);
                 videoUploadedToFirebase.setNumOfView(0);
-                videoUploadedToFirebase.setStatus("active");
-                videoUploadedToFirebase.setCreatedTime(createdTime());
                 videoUploadedToFirebase.setFolderName(foldername);
-
+                videoUploadedToFirebase.setTitle(edtTitle.getText().toString());
+                videoUploadedToFirebase.setContentUrl(taskSnapshot.getDownloadUrl().toString());
+                videoUploadedToFirebase.setCreatedTime(TimeHelper.getCurrentTime());
                 videoUploadedToFirebase.setHeadWeight(mPerferences.getInt(getString(R.string.result_head), 0));
                 videoUploadedToFirebase.setBodyWeight(mPerferences.getInt(getString(R.string.result_body), 0));
                 videoUploadedToFirebase.setLegWeight(mPerferences.getInt(getString(R.string.result_leg), 0));
 
+                Category selectedCategory = (Category) spnCategory.getSelectedItem();
+                videoUploadedToFirebase.setCategoryId(selectedCategory.getId());
 
                 StorageReference srImg = storageReference.child(foldername + "/" + edtTitle.getText().toString() + "-thumbnail");
                 srImg.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {

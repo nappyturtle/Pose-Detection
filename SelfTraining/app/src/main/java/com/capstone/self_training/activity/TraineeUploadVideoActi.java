@@ -24,11 +24,10 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.capstone.self_training.R;
+import com.capstone.self_training.helper.TimeHelper;
 import com.capstone.self_training.model.Suggestion;
 import com.capstone.self_training.model.Video;
 import com.capstone.self_training.service.dataservice.SuggestionService;
-import com.capstone.self_training.service.dataservice.VideoService;
-import com.capstone.self_training.util.Constants;
 import com.capstone.self_training.util.MP4Demuxer;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -59,8 +58,7 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
     private Uri selectedVideoUri;
     private String selectedPath;
     private String filename;
-
-    //private VideoService videoService;
+    private Video playingVideo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +68,7 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-
-        //openChooseVideoView();
+        playingVideo = (Video) getIntent().getSerializableExtra("PLAYINGVIDEO");
 
         init();
 
@@ -134,7 +131,6 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
         btnChooseFile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(TraineeUploadVideoActi.this, "aaaaaaaaaaaaaaa", Toast.LENGTH_SHORT).show();
                 openChooseVideoView();
             }
         });
@@ -177,12 +173,6 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
         return username + "-" + System.currentTimeMillis();
     }
 
-    private String createdTime() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        Date date = Calendar.getInstance().getTime();
-        return sdf.format(date);
-    }
-
     private void uploadFileToFirebase() {
 
         final ProgressDialog progressDialog = new ProgressDialog(this);
@@ -200,10 +190,9 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
 
                 Suggestion suggestion = new Suggestion();
                 suggestion.setAccountId(3);
-                suggestion.setVideoId(3);
-                suggestion.setFoldernameTrainee(folderName);
+                suggestion.setVideoId(playingVideo.getId());
                 suggestion.setStatus("active");
-                suggestion.setCreatedTime(createdTime());
+                suggestion.setCreatedTime(TimeHelper.getCurrentTime());
                 suggestion.setUrlVideoTrainee(taskSnapshot.getDownloadUrl().toString());
 
                 SuggestionService suggestionService = new SuggestionService();

@@ -1,10 +1,12 @@
 package com.capstone.self_training.activity;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,8 +22,10 @@ import android.widget.Toast;
 
 import com.capstone.self_training.R;
 import com.capstone.self_training.adapter.RelateVideoAdapter;
+import com.capstone.self_training.dto.VideoDTO;
 import com.capstone.self_training.model.Account;
 import com.capstone.self_training.model.Video;
+import com.capstone.self_training.service.dataservice.VideoService;
 import com.capstone.self_training.util.TransformDataUtil;
 import com.squareup.picasso.Picasso;
 
@@ -42,6 +46,7 @@ public class PlayVideoActivity extends AppCompatActivity implements SurfaceHolde
     TextView video_title, video_view, username;
     CircleImageView user_img;
     Button user_sub_btn;
+    private Button btnUpSelfTrainVideo;
 
 
     private RecyclerView relate_video_list;
@@ -50,7 +55,7 @@ public class PlayVideoActivity extends AppCompatActivity implements SurfaceHolde
 
     /***** HARD DATA *****/
 
-    private static final String[] thumbnail_list_demo = {
+    /*private static final String[] thumbnail_list_demo = {
             "https://kenh14cdn.com/zoom/700_438/2018/11/27/5b4083abbcf59-blackpink-instagram-photo-music-core-win-white-outfit-2-1543314360824254878270-crop-1549777736947858310470.jpg",
             "https://toquoc.mediacdn.vn/2019/1/7/yq-blackpink-040120192x2x-1546846556026543083655.jpg",
             "https://upload.wikimedia.org/wikipedia/commons/0/00/%EB%B8%94%EB%9E%99%ED%95%91%ED%81%AC%28BlackPink%29_-_%EB%A7%88%EC%A7%80%EB%A7%89%EC%B2%98%EB%9F%BC_171001_%EC%BD%94%EB%A6%AC%EC%95%84%EB%AE%A4%EC%A7%81%ED%8E%98%EC%8A%A4%ED%8B%B0%EB%B2%8C.jpg",
@@ -87,8 +92,9 @@ public class PlayVideoActivity extends AppCompatActivity implements SurfaceHolde
             "Phat",
             "Thinh",
             "Hieu"
-    };
-    private static final Account account = new Account(
+    };*/
+
+    /*private static final Account account = new Account(
             1,
             "hoangtlt",
             "acbxyz123",
@@ -102,7 +108,7 @@ public class PlayVideoActivity extends AppCompatActivity implements SurfaceHolde
             null,
             null,
             null
-    );
+    );*/
 
     /***************************/
 
@@ -112,30 +118,45 @@ public class PlayVideoActivity extends AppCompatActivity implements SurfaceHolde
         isPauseMedia = false;
         super.onCreate(savedInstanceState);
 
+        final Video playingVideo = (Video) getIntent().getSerializableExtra("PLAYVIDEO");
+        Account account = (Account) getIntent().getSerializableExtra("ACCOUNT");
 
-        Video playingVideo = (Video) getIntent().getSerializableExtra("PLAYVIDEO");
-        Account accounts = (Account) getIntent().getSerializableExtra("ACCOUNT");
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        VideoService videoService = new VideoService();
+        List<VideoDTO> list = videoService.getVideosByDate();
 
         if (isFullScreen() == false) {
-
-
             setContentView(R.layout.activity_play_video);
 
             video_title = (TextView) findViewById(R.id.play_video_title);
             video_view = (TextView) findViewById(R.id.play_video_view);
             username = (TextView) findViewById(R.id.play_video_username);
             video_title.setText(playingVideo.getTitle());
-            video_view.setText(TransformDataUtil.totalViewToText(playingVideo.getNumOfView()));
-            username.setText(playingVideo.getUsername());
+            video_view.setText(playingVideo.getNumOfView() + " lượt xem");
+            if (account.getUsername() != null) {
+                username.setText(account.getUsername());
+            }
 
-
-            user_sub_btn = (Button) findViewById(R.id.play_video_sub);
+            /*user_sub_btn = (Button) findViewById(R.id.play_video_sub);
             user_sub_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(PlayVideoActivity.this, "Subscribe clicked", Toast.LENGTH_SHORT).show();
                 }
+            });*/
+
+            btnUpSelfTrainVideo = (Button) findViewById(R.id.btnUpSelfTrainVideo);
+            btnUpSelfTrainVideo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(), TraineeUploadVideoActi.class);
+                    intent.putExtra("PLAYINGVIDEO", playingVideo);
+                    startActivity(intent);
+                }
             });
+
             user_img = (CircleImageView) findViewById(R.id.play_video_userImg);
 
             Picasso.get().load(account.getImgUrl()).fit().into(user_img);
@@ -154,7 +175,7 @@ public class PlayVideoActivity extends AppCompatActivity implements SurfaceHolde
 
             /** SET HARD CODE **/
 
-            for (int i = 0; i < 10; i++) {
+            /*for (int i = 0; i < 10; i++) {
                 Video video = new Video(
                         1,
                         "Demo display long name video about yoga thumbnail in list " + i,
@@ -175,10 +196,10 @@ public class PlayVideoActivity extends AppCompatActivity implements SurfaceHolde
                 );
                 videos.add(video);
 
-            }
+            }*/
             /****************************/
 
-            relateVideoAdapter = new RelateVideoAdapter(videos, this);
+            relateVideoAdapter = new RelateVideoAdapter(list, this);
 
             relate_video_list.setAdapter(relateVideoAdapter);
 
@@ -208,6 +229,7 @@ public class PlayVideoActivity extends AppCompatActivity implements SurfaceHolde
         }
 
     }
+
 
     //Show the media controller
     @Override
@@ -306,7 +328,6 @@ public class PlayVideoActivity extends AppCompatActivity implements SurfaceHolde
         mediaPlayer.pause();
         if (getResources().getConfiguration().orientation == 1) {
             this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-
         } else {
             this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }

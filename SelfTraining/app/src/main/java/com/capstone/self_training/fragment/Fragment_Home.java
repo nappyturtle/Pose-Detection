@@ -2,6 +2,7 @@
 package com.capstone.self_training.fragment;
 
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,8 +14,10 @@ import android.view.ViewGroup;
 
 import com.capstone.self_training.R;
 import com.capstone.self_training.adapter.HomeVideoAdapter;
+import com.capstone.self_training.dto.VideoDTO;
 import com.capstone.self_training.model.Account;
 import com.capstone.self_training.model.Video;
+import com.capstone.self_training.service.dataservice.VideoService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +26,7 @@ public class Fragment_Home extends Fragment {
 
     /***** HARD DATA *****/
 
-    private static final String[] thumbnail_list_demo = {
+    /*private static final String[] thumbnail_list_demo = {
             "https://kenh14cdn.com/zoom/700_438/2018/11/27/5b4083abbcf59-blackpink-instagram-photo-music-core-win-white-outfit-2-1543314360824254878270-crop-1549777736947858310470.jpg",
             "https://toquoc.mediacdn.vn/2019/1/7/yq-blackpink-040120192x2x-1546846556026543083655.jpg",
             "https://upload.wikimedia.org/wikipedia/commons/0/00/%EB%B8%94%EB%9E%99%ED%95%91%ED%81%AC%28BlackPink%29_-_%EB%A7%88%EC%A7%80%EB%A7%89%EC%B2%98%EB%9F%BC_171001_%EC%BD%94%EB%A6%AC%EC%95%84%EB%AE%A4%EC%A7%81%ED%8E%98%EC%8A%A4%ED%8B%B0%EB%B2%8C.jpg",
@@ -75,7 +78,7 @@ public class Fragment_Home extends Fragment {
             null,
             null
     );
-
+*/
 
     /***************************/
 
@@ -84,22 +87,36 @@ public class Fragment_Home extends Fragment {
     private RecyclerView.Adapter homeVideoAdapter;
     private List<Video> videos;
     private List<Account> accounts;
+    private VideoService videoService;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         home_video_list = (RecyclerView) view.findViewById(R.id.home_video_list);
         home_video_list.setHasFixedSize(true);
         home_video_list.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        videoService = new VideoService();
+        List<VideoDTO> videoDTOS = videoService.getVideosByDate();
+
         videos = new ArrayList<>();
         accounts = new ArrayList<>();
+
+        for (VideoDTO dto : videoDTOS) {
+            videos.add(dto.getVideo());
+            Account account = new Account();
+            account.setUsername(dto.getUsername());
+            account.setImgUrl(dto.getImgUrl());
+            accounts.add(account);
+        }
+
         /** SET HARD CODE **/
-
-
-        for (int i = 0; i < 10; i++) {
+        /*for (int i = 0; i < 10; i++) {
             Video video = new Video(
                     1,
                     "Demo display long name video about yoga thumbnail in list " + i,
@@ -120,15 +137,12 @@ public class Fragment_Home extends Fragment {
             );
             videos.add(video);
             accounts.add(account);
-        }
+        }*/
         /****************************/
 
-
-
-        homeVideoAdapter = new HomeVideoAdapter(videos, getContext(), accounts );
+        homeVideoAdapter = new HomeVideoAdapter(videos, getContext(), accounts);
 
         home_video_list.setAdapter(homeVideoAdapter);
-
 
         return view;
     }

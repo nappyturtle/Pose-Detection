@@ -9,25 +9,26 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/textView"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="8dp"
-        app:title="Đăng video"
         android:textAlignment="center"
-        android:textSize="24sp"
+        android:textSize="36sp"
         android:textStyle="bold"
-        app:titleTextColor="#868683"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.567"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="Đăng video"
+        app:titleTextColor="#868683" />
 
     <FrameLayout
         android:id="@+id/frmViewVideo"
         android:layout_width="0dp"
         android:layout_height="300dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,22 +43,28 @@
 
     <Button
         android:id="@+id/btnChooseFile"
-        android:layout_width="163dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="23dp"
         android:text="Chọn Video"
+        app:layout_constraintEnd_toStartOf="@+id/btnUploadVideo"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtVideoName" />
 
     <Button
         android:id="@+id/btnUploadVideo"
-        android:layout_width="163dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="23dp"
         android:text="Đăng Video"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btnChooseFile"
         app:layout_constraintTop_toBottomOf="@+id/txtVideoName" />
 
     <TextView
