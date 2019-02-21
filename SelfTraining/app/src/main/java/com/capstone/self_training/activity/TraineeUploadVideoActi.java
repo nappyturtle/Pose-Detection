@@ -53,7 +53,6 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
     private VideoView videoView;
 
     private StorageReference storageReference;
-    private DatabaseReference mDatabase;
 
     private Uri selectedVideoUri;
     private String selectedPath;
@@ -115,7 +114,6 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
         videoView = (VideoView) findViewById(R.id.vwVideo);
 
         storageReference = FirebaseStorage.getInstance().getReference();
-        //mDatabase = FirebaseDatabase.getInstance().getReference(Constants.DATABASE_PATH_UPLOADS);
 
     }
 

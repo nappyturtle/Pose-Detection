@@ -2,7 +2,6 @@ package com.capstone.self_training.service.dataservice;
 
 import com.capstone.self_training.model.Category;
 import com.capstone.self_training.service.ApiRetrofitClient;
-import com.capstone.self_training.service.ApiUtils;
 import com.capstone.self_training.service.iService.ICategoryService;
 
 import java.util.ArrayList;
@@ -15,7 +14,7 @@ public class CategoryService {
     private ICategoryService iCategoryService;
 
     public List<Category> getAllcategories() {
-        iCategoryService = ApiUtils.getCategoryService();
+        iCategoryService = DataService.getCategoryService();
         List<Category> categoryList = null;
         Call<List<Category>> call = iCategoryService.getAllcategories();
         try {

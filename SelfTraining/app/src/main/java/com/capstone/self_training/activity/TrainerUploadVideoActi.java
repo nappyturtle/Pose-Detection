@@ -124,7 +124,6 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                Log.e("fromUser = ", String.valueOf(fromUser));
                 progressValue = progress;
                 resultHead.setText(progress + "/" + seekBar.getMax());
             }

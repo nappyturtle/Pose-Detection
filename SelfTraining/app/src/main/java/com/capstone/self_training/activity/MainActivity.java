@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 try {
                     super.run();
-                    sleep(1000);  //Delay of 1 seconds
+                    sleep(2000);  //Delay of 1 seconds
                 } catch (Exception e) {
 
                 } finally {
