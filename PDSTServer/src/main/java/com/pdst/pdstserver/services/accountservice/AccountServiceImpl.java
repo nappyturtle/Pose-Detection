@@ -30,12 +30,22 @@ public class AccountServiceImpl implements AccountService {
 
     //Api for test
     @Override
-    public List<Account> getAllAccounts(){
+    public List<Account> getAllAccounts() {
         return accountRepository.findAll();
     }
 
     @Override
     public void update(Account account) {
         accountRepository.save(account);
+    }
+
+    @Override
+    public boolean checkLogin(String username, String password) {
+        List<Account> list = accountRepository.findAccountByUsernameAndPassword(username, password);
+        if (list.size() == 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

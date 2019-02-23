@@ -8,4 +8,5 @@ public interface AccountService {
     boolean create(Account account);
     List<Account> getAllAccounts();
     void update(Account account);
+    boolean checkLogin(String username, String password);
 }

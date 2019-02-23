@@ -26,8 +26,18 @@ public class AccountController {
         return accountService.getAllAccounts();
     }
 
-    /*@PostMapping("signup")*/
-   /* public ResponseEntity<Void> addArticle(@RequestBody Account account, UriComponentsBuilder builder) {
+    @PostMapping("signin")
+    public boolean checkLogin(@RequestBody String username, @RequestBody String password) {
+        boolean loginFlag = accountService.checkLogin(username, password);
+        if (loginFlag) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @PostMapping("signup")
+    public ResponseEntity<Void> addArticle(@RequestBody Account account, UriComponentsBuilder builder) {
         boolean flag = accountService.create(account);
         if (flag == false) {
             return new ResponseEntity<Void>(HttpStatus.CONFLICT);
@@ -35,7 +45,13 @@ public class AccountController {
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(builder.path("create/{username}").buildAndExpand(account.getUsername()).toUri());
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
-    }*/
+    }
+
+    @PostMapping("register")
+    public boolean register(@RequestBody Account account){
+        boolean result = accountService.create(account);
+        return result;
+    }
 
     /*@PutMapping("update")
     public ResponseEntity<Account> updateArticle(@RequestBody Account account) {
