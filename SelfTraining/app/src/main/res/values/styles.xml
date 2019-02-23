@@ -1,15 +1,20 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar"></style>
+
+    <style name="CustomToolbarStyle" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:background">@color/colorPrimary</item>
     </style>
+
     <style name="HoloSeekBar" parent="android:Widget.Holo.Light.SeekBar">
-        <item name="android:progressDrawable">@drawable/seekbar_scrubber_progress_horizontal_holo_light</item>
-        <item name="android:indeterminateDrawable">@drawable/seekbar_scrubber_progress_horizontal_holo_light</item>
+        <item name="android:progressDrawable">
+            @drawable/seekbar_scrubber_progress_horizontal_holo_light
+        </item>
+        <item name="android:indeterminateDrawable">
+            @drawable/seekbar_scrubber_progress_horizontal_holo_light
+        </item>
         <item name="android:thumb">@drawable/seekbar_scrubber_control_selector_holo_light</item>
     </style>
 </resources>
