@@ -103,12 +103,8 @@
                 //     divArr[position].appendChild(pointDiv);
                 //     count++;
                 // }
-                if(pose.score > 0.7) {
+
                     myPose = {keypoints: pose.keypoints, url: url};
-                }
-                else {
-                    myPose = null;
-                }
                     if (standard) {
                         poses.set("standard", myPose);
                     } else {
@@ -126,12 +122,13 @@
             };
             xhttp.open("POST", "http://localhost:8090/matchPose", true);
             xhttp.setRequestHeader("Content-type", "application/json");
-            if(poses.get("standard") != null && poses.get("normal") != null) {
-                var poseArr = [JSON.stringify(poses.get("standard")), JSON.stringify(poses.get("normal")), suggestionId];
-            }
-            else {
-                var poseArr = [suggestionId];
-            }
+            // if(poses.get("standard") != null && poses.get("normal") != null) {
+            //     var poseArr = [JSON.stringify(poses.get("standard")), JSON.stringify(poses.get("normal")), suggestionId];
+            // }
+            // else {
+            //     var poseArr = [suggestionId];
+            // }
+            var poseArr = [JSON.stringify(poses.get("standard")), JSON.stringify(poses.get("normal")), suggestionId];
             xhttp.send(JSON.stringify(poseArr));
         }
     </script>

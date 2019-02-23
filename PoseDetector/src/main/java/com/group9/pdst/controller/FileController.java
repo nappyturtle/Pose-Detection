@@ -67,6 +67,10 @@ public class FileController {
 
         System.out.println(" da vao getVideoUrl Controller ");
         try {
+            ConstantUtilities.jedis.flushAll();
+            ConstantUtilities.jedis.set(fileInfo.getSuggestionId() + "_headweight", fileInfo.getHeadWeight() + "");
+            ConstantUtilities.jedis.set(fileInfo.getSuggestionId() + "_bodyweight", fileInfo.getBodyWeight() + "");
+            ConstantUtilities.jedis.set(fileInfo.getSuggestionId() + "_legweight", fileInfo.getLegWeight() + "");
             // tạo folder KietPT-123456 trong thư mục filestorage
             fileStorageService.createFolder(fileInfo.getFoldernameTrainee());
 
@@ -80,8 +84,7 @@ public class FileController {
             //list = fileStorageService.getFileFromLocalStorage(folderName);
             OpenBrowserUtilities.openBrowser(ConstantUtilities.domain + "uploadImageToSuggest.html?trainer=" +
                     fileInfo.getFoldernameTrainer()+"&trainee="+fileInfo.getFoldernameTrainee()
-            +"&suggestionId="+fileInfo.getSuggestionId()+"&headWeight="+fileInfo.getHeadWeight()+"&bodyWeight="+fileInfo.getBodyWeight()
-            +"&legWeight="+fileInfo.getLegWeight());
+            +"&suggestionId="+fileInfo.getSuggestionId());
         } catch (Exception e) {
             logger.info("Something Wrong in /sliceVideoToSuggest !!!! " + e.getMessage());
         }

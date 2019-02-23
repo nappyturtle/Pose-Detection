@@ -13,11 +13,11 @@ public class KeyPoint {
     private double score;
     private Position position;
     private String part;
-
     public KeyPoint(double score, Position position, String part) {
         this.score = score;
         this.position = position;
         this.part = part;
+
     }
 
     public KeyPoint() {

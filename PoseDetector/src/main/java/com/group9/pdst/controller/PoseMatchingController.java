@@ -28,18 +28,12 @@ public class PoseMatchingController {
         List<String> poses;
         try {
             poses = mapper.readValue(jsonPoses, List.class);
-            if(poses.size() > 1) {
                 Pose trainerPose = mapper.readValue(poses.get(0), Pose.class);
                 Pose traineePose = mapper.readValue(poses.get(1), Pose.class);
                 String suggestionId = poses.get(2);
                 PoseMatchingHandler handler = new PoseMatchingHandler();
-                result = handler.matchPose(trainerPose, traineePose);
+                result = handler.matchPose(trainerPose, traineePose, suggestionId);
                 ConstantUtilities.jedis.lpush(suggestionId, result);
-            }
-            else {
-                String suggestionId = poses.get(0);
-                ConstantUtilities.jedis.lpush(suggestionId, result);
-            }
         } catch (IOException e) {
             e.printStackTrace();
         }

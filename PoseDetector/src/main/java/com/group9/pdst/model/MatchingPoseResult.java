@@ -7,12 +7,30 @@ public class MatchingPoseResult {
     private String imgUrl;
     private String standardImgUrl;
     private String description;
-    private double matchingPercentage;
-    public MatchingPoseResult(String imgUrl, String standardImgUrl, String description, double matchingPercentage) {
+    private double maxMatchingPercentage;
+    private double minMatchingPercentage;
+    public MatchingPoseResult(String imgUrl, String standardImgUrl, String description, double maxMatchingPercentage, double minMatchingPercentage) {
         this.imgUrl = imgUrl;
         this.standardImgUrl = standardImgUrl;
         this.description = description;
-        this.matchingPercentage = matchingPercentage;
+        this.maxMatchingPercentage = maxMatchingPercentage;
+        this.minMatchingPercentage = minMatchingPercentage;
+    }
+
+    public double getMaxMatchingPercentage() {
+        return maxMatchingPercentage;
+    }
+
+    public void setMaxMatchingPercentage(double maxMatchingPercentage) {
+        this.maxMatchingPercentage = maxMatchingPercentage;
+    }
+
+    public double getMinMatchingPercentage() {
+        return minMatchingPercentage;
+    }
+
+    public void setMinMatchingPercentage(double minMatchingPercentage) {
+        this.minMatchingPercentage = minMatchingPercentage;
     }
 
     public MatchingPoseResult() {
@@ -42,12 +60,14 @@ public class MatchingPoseResult {
         this.standardImgUrl = standardImgUrl;
     }
 
-    public double getMatchingPercentage() {
-        return matchingPercentage;
+    @Override
+    public String toString() {
+        return "MatchingPoseResult{" +
+                "imgUrl='" + imgUrl + '\'' +
+                ", standardImgUrl='" + standardImgUrl + '\'' +
+                ", description='" + description + '\'' +
+                ", maxMatchingPercentage=" + maxMatchingPercentage +
+                ", minMatchingPercentage=" + minMatchingPercentage +
+                '}';
     }
-
-    public void setMatchingPercentage(double matchingPercentage) {
-        this.matchingPercentage = matchingPercentage;
-    }
-
 }

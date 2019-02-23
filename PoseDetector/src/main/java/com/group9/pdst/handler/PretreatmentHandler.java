@@ -9,14 +9,14 @@ public class PretreatmentHandler {
     public void pretreatment(List<KeyPoint> trainerPoints, List<KeyPoint> traineePoints) {
         removeExcessPoints(trainerPoints);
         removeExcessPoints(traineePoints);
-        for (int i = 0; i < trainerPoints.size(); i++) {
-            KeyPoint trainerKeyPoint = trainerPoints.get(i);
-            KeyPoint traineeKeyPoint = traineePoints.get(i);
-            if (trainerKeyPoint.getScore() < 0.7 || traineeKeyPoint.getScore() < 0.7) {
-                traineePoints.remove(traineeKeyPoint);
-                trainerPoints.remove(trainerKeyPoint);
-            }
-        }
+//        for (int i = 0; i < trainerPoints.size(); i++) {
+//            KeyPoint trainerKeyPoint = trainerPoints.get(i);
+//            KeyPoint traineeKeyPoint = traineePoints.get(i);
+//            if (trainerKeyPoint.getScore() < 0.75 || traineeKeyPoint.getScore() < 0.75) {
+//                traineePoints.remove(traineeKeyPoint);
+//                trainerPoints.remove(trainerKeyPoint);
+//            }
+//        }
     }
     //remove unnecessary points
     private void removeExcessPoints(List<KeyPoint> keypoints) {

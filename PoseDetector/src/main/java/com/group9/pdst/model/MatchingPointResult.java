@@ -4,13 +4,39 @@ public class MatchingPointResult {
     private String part;
     private double xDeviation;
     private double yDeviation;
-    private double matchingPercentage;
-
-    public MatchingPointResult(String part, double xDeviation, double yDeviation, double matchingPercentage) {
+    private double maxMatchingPercentage;
+    private double minMatchingPercentage;
+    private int weight;
+    public MatchingPointResult(String part, double xDeviation, double yDeviation, double maxMatchingPercentage, double minMatchingPercentage) {
         this.part = part;
         this.xDeviation = xDeviation;
         this.yDeviation = yDeviation;
-        this.matchingPercentage = matchingPercentage;
+        this.maxMatchingPercentage = maxMatchingPercentage;
+        this.minMatchingPercentage = minMatchingPercentage;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
+    public double getMaxMatchingPercentage() {
+        return maxMatchingPercentage;
+    }
+
+    public void setMaxMatchingPercentage(double maxMatchingPercentage) {
+        this.maxMatchingPercentage = maxMatchingPercentage;
+    }
+
+    public double getMinMatchingPercentage() {
+        return minMatchingPercentage;
+    }
+
+    public void setMinMatchingPercentage(double minMatchingPercentage) {
+        this.minMatchingPercentage = minMatchingPercentage;
     }
 
     public String getPart() {
@@ -37,21 +63,14 @@ public class MatchingPointResult {
         this.yDeviation = yDeviation;
     }
 
-    public double getMatchingPercentage() {
-        return matchingPercentage;
-    }
-
-    public void setMatchingPercentage(double matchingPercentage) {
-        this.matchingPercentage = matchingPercentage;
-    }
-
     @Override
     public String toString() {
         return "MatchingPointResult{" +
                 "part='" + part + '\'' +
                 ", xDeviation=" + xDeviation +
                 ", yDeviation=" + yDeviation +
-                ", matchingPercentage=" + matchingPercentage +
+                ", maxMatchingPercentage=" + maxMatchingPercentage +
+                ", minMatchingPercentage=" + minMatchingPercentage +
                 '}';
     }
 }
