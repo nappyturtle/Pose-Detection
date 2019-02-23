@@ -234,6 +234,9 @@ public class PlayVideoActivity extends AppCompatActivity implements SurfaceHolde
     //Show the media controller
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        controller.setMediaPlayer(this);
+        controller.setAnchorView((FrameLayout) findViewById(R.id.videoSurfaceContainer));
+        mediaPlayer.start();
         controller.show();
         return false;
     }
@@ -258,9 +261,7 @@ public class PlayVideoActivity extends AppCompatActivity implements SurfaceHolde
     // Implement MediaPlayer.OnPreparedListener
     @Override
     public void onPrepared(MediaPlayer mp) {
-        controller.setMediaPlayer(this);
-        controller.setAnchorView((FrameLayout) findViewById(R.id.videoSurfaceContainer));
-        mediaPlayer.start();
+
     }
     // End MediaPlayer.OnPreparedListener
 
