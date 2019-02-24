@@ -1,9 +1,7 @@
 package com.pdst.pdstserver.dtos;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.Serializable;
-import java.util.Optional;
 
 public class SuggestionDTO implements Serializable {
     private int id;
@@ -87,4 +85,6 @@ public class SuggestionDTO implements Serializable {
     public void setThumnailUrl(String thumnailUrl) {
         this.thumnailUrl = thumnailUrl;
     }
+
+
 }

@@ -5,7 +5,6 @@ import com.pdst.pdstserver.services.SuggestionService.SugggestionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -32,5 +31,10 @@ public class SuggestionController {
             return new ResponseEntity<Void>(HttpStatus.CONFLICT);
         }
         return new ResponseEntity<Void>(HttpStatus.CREATED);
+    }
+
+    @GetMapping("suggestionsByTrainee")
+    public List<SuggestionDTO> getSuggestionByTrainee(@RequestParam(value = "id") int id){
+        return sugggestionService.getSuggestionByTrainee(id);
     }
 }

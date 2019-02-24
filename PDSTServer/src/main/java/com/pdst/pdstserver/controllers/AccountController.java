@@ -1,6 +1,8 @@
 package com.pdst.pdstserver.controllers;
 
+import com.pdst.pdstserver.dtos.AccountDTO;
 import com.pdst.pdstserver.models.Account;
+import com.pdst.pdstserver.security.SecurityConstants;
 import com.pdst.pdstserver.services.accountservice.AccountService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -9,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
+
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping(AccountController.BASE_URK)
@@ -26,37 +30,29 @@ public class AccountController {
         return accountService.getAllAccounts();
     }
 
-    @PostMapping("signin")
-    public boolean checkLogin(@RequestBody String username, @RequestBody String password) {
-        boolean loginFlag = accountService.checkLogin(username, password);
-        if (loginFlag) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    @PostMapping("signup")
-    public ResponseEntity<Void> addArticle(@RequestBody Account account, UriComponentsBuilder builder) {
-        boolean flag = accountService.create(account);
+    @PostMapping("sign-up")
+    public ResponseEntity createAccount(@RequestBody Account account) {
+        boolean flag = accountService.createAccount(account);
         if (flag == false) {
-            return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+            return ResponseEntity.status(CONFLICT).body("Username của đã tồn tại, vui lòng chon username khác");
         }
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(builder.path("create/{username}").buildAndExpand(account.getUsername()).toUri());
-        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+        return ResponseEntity.status(CREATED).body("Đăng kí thành công");
+
     }
 
-    @PostMapping("register")
-    public boolean register(@RequestBody Account account){
-        boolean result = accountService.create(account);
-        return result;
+    @GetMapping("staff/accounts")
+    public List<Account> findAllAccountsByStaff() {
+        return accountService.getAllAccountsByStaff();
     }
 
-    /*@PutMapping("update")
-    public ResponseEntity<Account> updateArticle(@RequestBody Account account) {
-        accountService.update(account);
-        return new ResponseEntity<Account>(account, HttpStatus.OK);
-    }*/
+    @PutMapping("edit")
+    public ResponseEntity updateProfile(@RequestBody AccountDTO account) {
+        Account accountEdited = accountService.editProfile(account);
+        if (accountEdited != null) {
+            return ResponseEntity.status(OK).body(accountEdited);
+        }
+        return ResponseEntity.status(NOT_FOUND).body("Tài khoản này không tồn tại");
+    }
+
 
 }

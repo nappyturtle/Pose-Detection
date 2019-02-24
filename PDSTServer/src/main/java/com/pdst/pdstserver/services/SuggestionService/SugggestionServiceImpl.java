@@ -9,6 +9,7 @@ import com.pdst.pdstserver.repositories.VideoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -88,5 +89,32 @@ public class SugggestionServiceImpl implements SugggestionService {
         } else {
             return true;
         }
+    }
+
+    @Override
+    public List<SuggestionDTO> getSuggestionByTrainee(int id) {
+        List<Suggestion> list = suggestionRepository.findAllByAccountId(id);
+        List<SuggestionDTO> listDTO = new ArrayList<>();
+
+        try {
+            for (int i = 0; i < list.size(); i++) {
+                Suggestion suggestion = list.get(i);
+                System.out.println("id = " + suggestion.getId());
+
+                Optional<Video> video = videoRepository.findById(suggestion.getVideoId());
+                System.out.println("test = " + video.get().getThumnailUrl());
+                SuggestionDTO dto = new SuggestionDTO();
+                dto.setId(suggestion.getId());
+                dto.setAccountId(suggestion.getAccountId());
+                dto.setVideoName(video.get().getTitle());
+                dto.setVideoId(suggestion.getVideoId());
+                dto.setThumnailUrl(video.get().getThumnailUrl());
+                dto.setCreatedTime(suggestion.getCreatedTime());
+                listDTO.add(dto);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return listDTO;
     }
 }

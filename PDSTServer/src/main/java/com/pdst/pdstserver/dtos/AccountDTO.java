@@ -1,11 +1,10 @@
-package com.pdst.pdstserver.models;
+package com.pdst.pdstserver.dtos;
 
-import javax.persistence.*;
+import com.pdst.pdstserver.models.Account;
+
 import java.io.Serializable;
-import java.util.Objects;
 
-@Entity
-public class Account implements Serializable {
+public class AccountDTO implements Serializable {
     private int id;
     private String username;
     private String password;
@@ -18,10 +17,24 @@ public class Account implements Serializable {
     private String status;
     private String createdTime;
     private String updatedTime;
+    private String token;
+    private String message;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     public int getId() {
         return id;
     }
@@ -30,8 +43,6 @@ public class Account implements Serializable {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "username")
     public String getUsername() {
         return username;
     }
@@ -40,8 +51,6 @@ public class Account implements Serializable {
         this.username = username;
     }
 
-    @Basic
-    @Column(name = "password")
     public String getPassword() {
         return password;
     }
@@ -50,8 +59,6 @@ public class Account implements Serializable {
         this.password = password;
     }
 
-    @Basic
-    @Column(name = "email")
     public String getEmail() {
         return email;
     }
@@ -60,8 +67,6 @@ public class Account implements Serializable {
         this.email = email;
     }
 
-    @Basic
-    @Column(name = "phone")
     public String getPhone() {
         return phone;
     }
@@ -70,8 +75,6 @@ public class Account implements Serializable {
         this.phone = phone;
     }
 
-    @Basic
-    @Column(name = "gender")
     public String getGender() {
         return gender;
     }
@@ -80,8 +83,6 @@ public class Account implements Serializable {
         this.gender = gender;
     }
 
-    @Basic
-    @Column(name = "img_url")
     public String getImgUrl() {
         return imgUrl;
     }
@@ -90,8 +91,6 @@ public class Account implements Serializable {
         this.imgUrl = imgUrl;
     }
 
-    @Basic
-    @Column(name = "address")
     public String getAddress() {
         return address;
     }
@@ -100,8 +99,6 @@ public class Account implements Serializable {
         this.address = address;
     }
 
-    @Basic
-    @Column(name = "role_id")
     public Integer getRoleId() {
         return roleId;
     }
@@ -110,8 +107,6 @@ public class Account implements Serializable {
         this.roleId = roleId;
     }
 
-    @Basic
-    @Column(name = "status")
     public String getStatus() {
         return status;
     }
@@ -120,32 +115,6 @@ public class Account implements Serializable {
         this.status = status;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Account account = (Account) o;
-        return id == account.id &&
-                Objects.equals(username, account.username) &&
-                Objects.equals(password, account.password) &&
-                Objects.equals(email, account.email) &&
-                Objects.equals(phone, account.phone) &&
-                Objects.equals(gender, account.gender) &&
-                Objects.equals(imgUrl, account.imgUrl) &&
-                Objects.equals(address, account.address) &&
-                Objects.equals(roleId, account.roleId) &&
-                Objects.equals(status, account.status) &&
-                Objects.equals(createdTime, account.createdTime) &&
-                Objects.equals(updatedTime, account.updatedTime);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, username, password, email, phone, gender, imgUrl, address, roleId, status, createdTime, updatedTime);
-    }
-
-    @Basic
-    @Column(name = "created_time")
     public String getCreatedTime() {
         return createdTime;
     }
@@ -154,8 +123,6 @@ public class Account implements Serializable {
         this.createdTime = createdTime;
     }
 
-    @Basic
-    @Column(name = "updated_time")
     public String getUpdatedTime() {
         return updatedTime;
     }

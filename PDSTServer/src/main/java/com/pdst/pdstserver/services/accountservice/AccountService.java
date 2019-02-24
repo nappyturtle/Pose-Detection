@@ -1,12 +1,14 @@
 package com.pdst.pdstserver.services.accountservice;
 
+import com.pdst.pdstserver.dtos.AccountDTO;
 import com.pdst.pdstserver.models.Account;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
 public interface AccountService {
-    boolean create(Account account);
+    boolean createAccount(Account account);
     List<Account> getAllAccounts();
-    void update(Account account);
-    boolean checkLogin(String username, String password);
+    Account editProfile(AccountDTO account);
+    List<Account> getAllAccountsByStaff();
 }
