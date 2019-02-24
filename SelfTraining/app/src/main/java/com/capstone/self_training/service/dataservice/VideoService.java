@@ -13,9 +13,9 @@ public class VideoService {
 
     private IVideoService iVideoService;
 
-    public Call<Void> createVideo(Video video) {
+    public Call<Void> createVideo(String token,Video video) {
         iVideoService = DataService.getVideoService();
-        Call<Void> call = iVideoService.createVideo(video);
+        Call<Void> call = iVideoService.createVideo(token,video);
         try{
             call.execute().body();
         } catch (Exception e){

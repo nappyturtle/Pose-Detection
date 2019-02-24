@@ -91,8 +91,8 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
     private ArrayList<Category> cateList;
     private CategoryAdapter categoryAdapter;
     private CategoryService categoryService;
-    SharedPreferences mPerferences;
-    SharedPreferences.Editor mEditor;
+    private SharedPreferences mPerferences;
+    private SharedPreferences.Editor mEditor;
 
 
     @Override
@@ -348,8 +348,8 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
         progressDialog.setTitle("Uploading");
         progressDialog.show();
         Log.e("TextView = ", edtTitle.getText().toString());
-
-        final String foldername = createFolderName("trainer01");
+        String username = mPerferences.getString(getString(R.string.username), "");
+        final String foldername = createFolderName(username);
         final StorageReference stR = storageReference.child(foldername + "/" + edtTitle.getText().toString());
 
         stR.putFile(selectedVideoUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -358,8 +358,7 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
                 //progressDialog.dismiss();
                 Toast.makeText(TrainerUploadVideoActi.this, "File Uploaded", Toast.LENGTH_SHORT).show();
                 final Video videoUploadedToFirebase = new Video();
-
-                videoUploadedToFirebase.setAccountId(3);
+                videoUploadedToFirebase.setAccountId(mPerferences.getInt(getString(R.string.id), 0));
                 videoUploadedToFirebase.setCategoryId(1);
                 videoUploadedToFirebase.setNumOfView(0);
                 videoUploadedToFirebase.setFolderName(foldername);
@@ -381,7 +380,8 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
 
                         VideoService videoService = new VideoService();
 
-                        videoService.createVideo(videoUploadedToFirebase);
+                        videoService.createVideo(mPerferences.getString(getString(R.string.token), ""),
+                                videoUploadedToFirebase);
                         Toast.makeText(TrainerUploadVideoActi.this, "upload image success", Toast.LENGTH_LONG).show();
                     }
                 }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {

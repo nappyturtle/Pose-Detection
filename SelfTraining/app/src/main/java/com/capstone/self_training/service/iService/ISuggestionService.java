@@ -1,12 +1,22 @@
 package com.capstone.self_training.service.iService;
 
 import com.capstone.self_training.model.Suggestion;
+import com.capstone.self_training.util.Constants;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface ISuggestionService {
     @POST("suggestion/create")
-    Call<Void> createSuggestion(@Body Suggestion suggestion);
+    Call<Void> createSuggestion(@Header(Constants.header_string) String token,@Body Suggestion suggestion);
+
+    @GET("suggestion/suggestionsByTrainee")
+    Call<List<Suggestion>> getSuggestionList(@Header(Constants.header_string) String token,
+                                             @Query("id") int accountId);
 }

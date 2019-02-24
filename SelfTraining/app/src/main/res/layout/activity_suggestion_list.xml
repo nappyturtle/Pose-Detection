@@ -16,11 +16,34 @@
         app:title="Kết quả tự tập"
         >
     </android.support.v7.widget.Toolbar>
-    <ListView
-        android:scrollbars="none"
-        android:layout_margin="5dp"
-        android:id="@+id/suggestionList_listview"
-        android:divider="#ffffff"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></ListView>
+        android:layout_height="wrap_content"
+        >
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            >
+            <TextView
+
+                android:id="@+id/txtSuggestionIsEmpty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Không có kết quả nào"
+                android:textSize="23sp" />
+
+            <ListView
+                android:scrollbars="none"
+
+                android:id="@+id/suggestionList_listview"
+                android:divider="#ffffff"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></ListView>
+        </FrameLayout>
+    </LinearLayout>
+
 </LinearLayout>

@@ -1,13 +1,16 @@
 package com.capstone.self_training.activity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.StrictMode;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -25,8 +28,10 @@ import android.widget.VideoView;
 
 import com.capstone.self_training.R;
 import com.capstone.self_training.helper.TimeHelper;
+import com.capstone.self_training.model.Account;
 import com.capstone.self_training.model.Suggestion;
 import com.capstone.self_training.model.Video;
+import com.capstone.self_training.service.dataservice.AccountService;
 import com.capstone.self_training.service.dataservice.SuggestionService;
 import com.capstone.self_training.util.MP4Demuxer;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -47,6 +52,7 @@ import java.util.Date;
 
 public class TraineeUploadVideoActi extends AppCompatActivity {
     private static final int SELECT_VIDEO = 3;
+    private static final int REQUEST_CODE_LOGIN = 0x9345;
     private Button btnChooseFile;
     private Button btnUploadVideo;
     private TextView txtVideoName;
@@ -58,6 +64,10 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
     private String selectedPath;
     private String filename;
     private Video playingVideo;
+
+    private SharedPreferences mPerferences;
+    private SharedPreferences.Editor mEditor;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +101,10 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
             videoView.setMediaController(mediaController);
             mediaController.setAnchorView(videoView);
         }
+        if (requestCode == REQUEST_CODE_LOGIN && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
+            System.out.println("Trainee upload");
+
+        }
     }
 
     public String getPath(Uri uri) {
@@ -114,6 +128,12 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
         videoView = (VideoView) findViewById(R.id.vwVideo);
 
         storageReference = FirebaseStorage.getInstance().getReference();
+        mPerferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mEditor = mPerferences.edit();
+
+//        username = mPerferences.getString(getString(R.string.username),"");
+//        roleId = mPerferences.getInt(getString(R.string.roleId),0);
+//        token = mPerferences.getString(getString(R.string.token),"");
 
     }
 
@@ -140,9 +160,16 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
         btnUploadVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(TraineeUploadVideoActi.this, "da vao upload video", Toast.LENGTH_SHORT).show();
-                checkVideoLength();
-                confirmUploadingVideo();
+                boolean checked = true;
+                if (selectedVideoUri == null || selectedVideoUri.equals("")) {
+                    checked = false;
+                    Toast.makeText(TraineeUploadVideoActi.this, "Xin vui lòng chọn video trước khi đăng", Toast.LENGTH_SHORT).show();
+                }
+                if (checked) {
+                    Toast.makeText(TraineeUploadVideoActi.this, "da vao upload video", Toast.LENGTH_SHORT).show();
+                    checkVideoLength();
+                    confirmUploadingVideo();
+                }
             }
         });
     }
@@ -179,24 +206,29 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
         progressDialog.show();
         Log.e("TextView = ", txtVideoName.getText().toString());
 
-        final String folderName = createFolderName("trainee01");
+        String username = mPerferences.getString(getString(R.string.username), "");
+        final String folderName = createFolderName(username);
 
         StorageReference stR = storageReference.child(folderName + "/" + txtVideoName.getText().toString());
         stR.putFile(selectedVideoUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                int accountId = mPerferences.getInt(getString(R.string.id), 0);
+                String token = mPerferences.getString(getString(R.string.token), "");
 
                 Suggestion suggestion = new Suggestion();
-                suggestion.setAccountId(3);
+                suggestion.setAccountId(accountId);
                 suggestion.setVideoId(playingVideo.getId());
                 suggestion.setStatus("active");
                 suggestion.setCreatedTime(TimeHelper.getCurrentTime());
                 suggestion.setUrlVideoTrainee(taskSnapshot.getDownloadUrl().toString());
 
                 SuggestionService suggestionService = new SuggestionService();
-                suggestionService.createSuggestion(suggestion);
+                suggestionService.createSuggestion(token, suggestion);
                 //progressDialog.dismiss();
-                Toast.makeText(TraineeUploadVideoActi.this, "File Uploaded", Toast.LENGTH_SHORT).show();
+                Toast.makeText(TraineeUploadVideoActi.this, "Video đã được đăng", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getApplicationContext(), MainActivity_Home.class);
+                startActivity(intent);
 
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -210,7 +242,7 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
             public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                 double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
                 progressDialog.setMessage("Uploaded " + (int) progress + "%...");
-                if((int) progress == 100){
+                if ((int) progress == 100) {
                     progressDialog.dismiss();
                 }
             }
@@ -225,7 +257,15 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
         alertDialog.setPositiveButton("Có", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                uploadFileToFirebase();
+                int id = mPerferences.getInt(getString(R.string.id), 0);
+                boolean accountExisted = mPerferences.getBoolean(getString(R.string.accountExisted), false);
+                if (id == 0 && !accountExisted) {
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivityForResult(intent, REQUEST_CODE_LOGIN);
+                }
+                if (id != 0 && accountExisted) {
+                    uploadFileToFirebase();
+                }
             }
         });
         alertDialog.setNegativeButton("Không", new DialogInterface.OnClickListener() {

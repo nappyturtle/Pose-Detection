@@ -26,8 +26,13 @@
         <activity android:name=".activity.TraineeUploadVideoActi" />
         <activity android:name=".activity.TrainerUploadVideoActi" />
         <activity android:name=".activity.SuggestionListActi" />
-        <activity android:name=".activity.PlayVideoActivity"/>
-
+        <activity android:name=".activity.MainActivity" />
+        <activity android:name=".activity.PlayVideoActivity" />
+        <activity android:name=".activity.TrainerProfileActivity" />
+        <activity android:name=".activity.TraineeProfileActivity" />
+        <activity android:name=".activity.LoginActivity" />
+        <activity android:name=".activity.ChangePasswordActivity"/>
+        <activity android:name=".activity.RegisterActivity"/>
     </application>
 
 </manifest>

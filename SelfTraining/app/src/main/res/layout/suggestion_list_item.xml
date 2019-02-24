@@ -14,8 +14,8 @@
         <ImageView
             android:id="@+id/suggestionList_item_imageview"
             android:scaleType="fitXY"
-            android:layout_width="200dp"
-            android:layout_height="100dp" />
+            android:layout_width="150dp"
+            android:layout_height="80dp" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
             <TextView
                 android:id="@+id/suggestionList_item_name"
                 android:layout_margin="2dp"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Động tác cơ bản dành cho dân văn phòng công sở"
                 android:maxLines="1"
@@ -37,12 +37,11 @@
                 android:id="@+id/suggestionList_item_date"
                 android:layout_marginTop="15dp"
                 android:layout_marginLeft="5dp"
-
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="24/01/2018"
-                android:textSize="18sp"
-                android:textColor="#080808" />
+                android:textSize="15sp"
+                android:textColor="#686868" />
         </LinearLayout>
 
     </LinearLayout>

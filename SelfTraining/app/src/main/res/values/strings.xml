@@ -4,6 +4,8 @@
     <string name="username">com.capstone.self_training.activity.username</string>
     <string name="roleId">com.capstone.self_training.activity.roleId</string>
     <string name="token">com.capstone.self_training.activity.token</string>
+    <string name="accountExisted">com.capstone.self_training.activity.accountExisted</string>
+    <string name="imgAccount">com.capstone.self_training.activity.imgAccount</string>
     <string name="result_head">com.capstone.self_training.activity.resultHead</string>
     <string name="result_body">com.capstone.self_training.activity.resultBody</string>
     <string name="result_leg">com.capstone.self_training.activity.resultLeg</string>

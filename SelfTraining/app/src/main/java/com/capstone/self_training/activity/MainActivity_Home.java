@@ -1,11 +1,14 @@
 package com.capstone.self_training.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -23,7 +26,8 @@ public class MainActivity_Home extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager viewPager;
     private Toolbar toolbar;
-
+    private SharedPreferences mPerferences;
+    private SharedPreferences.Editor mEditor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,9 +50,13 @@ public class MainActivity_Home extends AppCompatActivity {
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_top);
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_register);
 
-        toolbar = (Toolbar) findViewById(R.id.app_bar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar_main_home);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
+
+        mPerferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mEditor = mPerferences.edit();
+
     }
 
     private void mapping() {
@@ -68,24 +76,23 @@ public class MainActivity_Home extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        int roleId = mPerferences.getInt(getString(R.string.roleId),0);
         switch (item.getItemId()) {
             case R.id.btnSearch:
                 break;
             case R.id.btnProfile:
-                int role = 0;
-                if (role == TRAINEE_ROLE) {
+                if (roleId == TRAINEE_ROLE) {
                     Intent i = new Intent(MainActivity_Home.this, TraineeProfileActivity.class);
                     startActivity(i);
-                } else if (role == TRAINER_ROLE){
+                } else if (roleId == TRAINER_ROLE){
                     Intent i = new Intent(MainActivity_Home.this, TrainerProfileActivity.class);
                     startActivity(i);
                 } else {
-                    Intent i = new Intent(MainActivity_Home.this, RegisterActivity.class);
+                    Intent i = new Intent(MainActivity_Home.this, LoginActivity.class);
                     startActivity(i);
                 }
                 break;
             default:
-
                 break;
         }
         return super.onOptionsItemSelected(item);

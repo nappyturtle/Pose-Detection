@@ -1,27 +1,82 @@
 package com.capstone.self_training.model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
-public class Account implements Serializable{
+public class Account implements Serializable {
+    @SerializedName("id")
+    @Expose
     private int id;
+    @SerializedName("username")
+    @Expose
     private String username;
+    @SerializedName("password")
+    @Expose
     private String password;
+    @SerializedName("email")
+    @Expose
     private String email;
+    @SerializedName("phone")
+    @Expose
     private String phone;
+    @SerializedName("gender")
+    @Expose
     private String gender;
+    @SerializedName("imgUrl")
+    @Expose
     private String imgUrl;
+    @SerializedName("address")
+    @Expose
     private String address;
-    private Integer numOfFollow;
+    @SerializedName("roleId")
+    @Expose
     private Integer roleId;
+    @SerializedName("status")
+    @Expose
     private String status;
+    @SerializedName("createdTime")
+    @Expose
     private String createdTime;
+    @SerializedName("updatedTime")
+    @Expose
     private String updatedTime;
+    @SerializedName("token")
+    @Expose
+    private String token;
+    @SerializedName("message")
+    @Expose
+    private String message;
 
-    public Account(){
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public Account() {
 
     }
 
-    public Account(int id, String username, String password, String email, String phone, String gender, String imgUrl, String address, Integer numOfFollow, Integer roleId, String status, String createdTime, String updatedTime) {
+    public Account(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    public Account(int id, String username, String password, String email,
+                   String phone, String gender, String imgUrl, String address,
+                   Integer roleId, String status, String createdTime, String updatedTime) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -30,7 +85,6 @@ public class Account implements Serializable{
         this.gender = gender;
         this.imgUrl = imgUrl;
         this.address = address;
-        this.numOfFollow = numOfFollow;
         this.roleId = roleId;
         this.status = status;
         this.createdTime = createdTime;
@@ -101,13 +155,6 @@ public class Account implements Serializable{
         this.address = address;
     }
 
-    public Integer getNumOfFollow() {
-        return numOfFollow;
-    }
-
-    public void setNumOfFollow(Integer numOfFollow) {
-        this.numOfFollow = numOfFollow;
-    }
 
     public Integer getRoleId() {
         return roleId;
