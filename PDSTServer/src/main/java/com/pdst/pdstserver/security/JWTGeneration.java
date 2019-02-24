@@ -78,7 +78,7 @@ public class JWTGeneration extends UsernamePasswordAuthenticationFilter {
         Account account = accountRepository.findByUsernameAndStatusEquals(usernameTmp,"active");
 
         if(account != null) {
-            //response.setHeader(HEADER_STRING, TOKEN_PREFIX + token);
+            response.setHeader(HEADER_STRING, TOKEN_PREFIX + token);
             AccountDTO dto = new AccountDTO();
             dto.setId(account.getId());
             dto.setUsername(account.getUsername());
