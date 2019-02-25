@@ -29,10 +29,10 @@
         var suggestionId = getParams("suggestionId");
         var trainerFolder = getParams("trainerFolder");
         var traineeFolder = getParams("traineeFolder");
+        imgName = getParams("img");
+        simgName = getParams("simg");
+        imgSize = getParams("imgSize");
         function getPoses() {
-            imgName = getParams("img");
-            simgName = getParams("simg");
-            imgSize = getParams("imgSize");
             getImageFromStorage(imgName, false);
             getImageFromStorage(simgName, true);
             var readyStateCheckInterval = setInterval(function () {
@@ -104,7 +104,7 @@
                 //     count++;
                 // }
 
-                    myPose = {keypoints: pose.keypoints, url: url};
+                    myPose = {keypoints: pose.keypoints, url: url, name: simgName};
                     if (standard) {
                         poses.set("standard", myPose);
                     } else {

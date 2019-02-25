@@ -9,14 +9,19 @@ public class PretreatmentHandler {
     public void pretreatment(List<KeyPoint> trainerPoints, List<KeyPoint> traineePoints) {
         removeExcessPoints(trainerPoints);
         removeExcessPoints(traineePoints);
-//        for (int i = 0; i < trainerPoints.size(); i++) {
-//            KeyPoint trainerKeyPoint = trainerPoints.get(i);
-//            KeyPoint traineeKeyPoint = traineePoints.get(i);
-//            if (trainerKeyPoint.getScore() < 0.75 || traineeKeyPoint.getScore() < 0.75) {
-//                traineePoints.remove(traineeKeyPoint);
-//                trainerPoints.remove(trainerKeyPoint);
-//            }
-//        }
+        int count = 0;
+        do {
+            KeyPoint trainerKeyPoint = trainerPoints.get(count);
+            KeyPoint traineeKeyPoint = traineePoints.get(count);
+            if (Math.abs(trainerKeyPoint.getScore() - traineeKeyPoint.getScore()) > 0.2) {
+                traineePoints.remove(traineeKeyPoint);
+                trainerPoints.remove(trainerKeyPoint);
+            }
+            else {
+                count++;
+            }
+        }
+        while(count < trainerPoints.size());
     }
     //remove unnecessary points
     private void removeExcessPoints(List<KeyPoint> keypoints) {
@@ -26,6 +31,7 @@ public class PretreatmentHandler {
     //Combine 2 Hip to create 1 Torso
     private void createTorsoPoint(List<KeyPoint> keypoints) {
         KeyPoint torso = new KeyPoint();
+        boolean created = true;
         torso.setPart("Torso");
         double x = 0;
         double y = 0;
@@ -33,14 +39,17 @@ public class PretreatmentHandler {
         for(int i=0; i<keypoints.size(); i++) {
             KeyPoint keyPoint = keypoints.get(i);
             if(keyPoint.getPart().contains("Hip")) {
+                created = false;
                 x += keyPoint.getPosition().getX();
                 y += keyPoint.getPosition().getY();
                 score += keyPoint.getScore();
             }
         }
-        torso.setScore(score/2);
-        Position position = new Position(x/2,y/2);
-        torso.setPosition(position);
-        keypoints.add(torso);
+        if(!created) {
+            torso.setScore(score / 2);
+            Position position = new Position(x / 2, y / 2);
+            torso.setPosition(position);
+            keypoints.add(torso);
+        }
     }
 }
