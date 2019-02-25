@@ -220,6 +220,7 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
                 suggestion.setAccountId(accountId);
                 suggestion.setVideoId(playingVideo.getId());
                 suggestion.setStatus("active");
+                suggestion.setFoldernameTrainee(folderName);
                 suggestion.setCreatedTime(TimeHelper.getCurrentTime());
                 suggestion.setUrlVideoTrainee(taskSnapshot.getDownloadUrl().toString());
 
