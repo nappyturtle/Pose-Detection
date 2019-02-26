@@ -13,8 +13,7 @@ public class Suggestion implements Serializable {
     private String status;
     private String createdTime;
     private String updatedTime;
-
-
+    private String thumnail_url;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -34,6 +33,16 @@ public class Suggestion implements Serializable {
 
     public void setAccountId(Integer accountId) {
         this.accountId = accountId;
+    }
+
+    @Basic
+    @Column(name = "thumnail_url")
+    public String getThumnail_url() {
+        return thumnail_url;
+    }
+
+    public void setThumnail_url(String thumnail_url) {
+        this.thumnail_url = thumnail_url;
     }
 
     @Basic
@@ -66,12 +75,13 @@ public class Suggestion implements Serializable {
                 Objects.equals(videoId, that.videoId) &&
                 Objects.equals(status, that.status) &&
                 Objects.equals(createdTime, that.createdTime) &&
-                Objects.equals(updatedTime, that.updatedTime);
+                Objects.equals(updatedTime, that.updatedTime) &&
+                Objects.equals(thumnail_url, that.thumnail_url);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, accountId, videoId, status, createdTime, updatedTime);
+        return Objects.hash(id, accountId, videoId, status, createdTime, updatedTime, thumnail_url);
     }
 
     @Basic
