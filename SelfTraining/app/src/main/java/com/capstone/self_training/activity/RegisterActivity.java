@@ -120,7 +120,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     Toast.LENGTH_LONG).show();
                         } else {
                             Toast.makeText(getApplicationContext(),"Đăng kí thành công", Toast.LENGTH_LONG).show();
-                            Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
+                            Intent i = new Intent(RegisterActivity.this, MainActivity_Home.class);
                             startActivity(i);
                         }
 

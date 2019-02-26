@@ -255,6 +255,7 @@ public class PlayVideoActivity extends AppCompatActivity implements SurfaceHolde
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
+        mediaPlayer.stop();
     }
     // End SurfaceHolder.Callback
 
