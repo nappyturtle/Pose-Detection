@@ -61,10 +61,10 @@ public class VideoFrameExtracter {
         }
 
         File originalFile = file;
-        for (int i = 0; i < frameRate/2; i++) {
+        for (int i = 0; i < frameRate; i++) {
             //Picture frame = FrameGrab.getFrameFromFile(file, i);
 
-            Picture frame = FrameGrab.getFrameAtSec(file, i*2);
+            Picture frame = FrameGrab.getFrameAtSec(file, i);
             //originalFile = File.createTempFile("Frame_" + i + 1, "_.png", new File(String.valueOf(path)));
             String frameIndex = i < 10 ? "0" + i : "" + i;
             originalFile = new File(path+"/Frame"+frameIndex+".png");

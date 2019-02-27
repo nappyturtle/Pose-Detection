@@ -71,7 +71,6 @@ public class PoseMatchingController {
             ResponseEntity<String> result = restTemplate.exchange("http://localhost:8080/suggestiondetail/createSuggestionDetails", HttpMethod.POST, entity, String.class);
 //            String result = restTemplate.postForObject("http://localhost:8080/suggestiondetail/createSuggestionDetails", finalResult, String.class);
             System.out.println(result);
-            ConstantUtilities.jedis.flushAll();
 //            for (int i = 0; i < finalResult.size(); i++) {
 //                System.out.println(finalResult.get(i));
 //                System.out.println("\n===============\n");

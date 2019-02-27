@@ -67,7 +67,6 @@ public class FileController {
 
         System.out.println(" da vao getVideoUrl Controller ");
         try {
-            ConstantUtilities.jedis.flushAll();
             ConstantUtilities.jedis.set(fileInfo.getSuggestionId() + "_headweight", fileInfo.getHeadWeight() + "");
             ConstantUtilities.jedis.set(fileInfo.getSuggestionId() + "_bodyweight", fileInfo.getBodyWeight() + "");
             ConstantUtilities.jedis.set(fileInfo.getSuggestionId() + "_legweight", fileInfo.getLegWeight() + "");

@@ -25,21 +25,21 @@ public class PoseMatchingHandler {
         List<SuggestionDetail> finalResult = new ArrayList<>();
         ObjectMapper mapper = new ObjectMapper();
         String matchingResultJSON;
-        boolean flag = true;
+        boolean flag = false;
         for (int i = 0; i < simgList.size(); i++) {
             String simgName = simgList.get(i);
             MatchingPoseResult finalPoseResult = null;
             double maxPercent = 0;
-            double minPercent = 0;
+//            double minPercent = 0;
             //
             if (i > 0) {
-                ConstantUtilities.jedis.set("isCompare", "false");
+                ConstantUtilities.jedis.set(suggestionId + "_isCompare", "false");
                 flag = checkMatchingPrecondition(simgList.get(i - 1), simgName, trainerFolder, suggestionId);
             }
 
             //
             if (flag) {
-                ConstantUtilities.jedis.set("isCompare", "true");
+                ConstantUtilities.jedis.set(suggestionId + "_isCompare", "true");
                 for (int j = 0; j < imgList.size(); j++) {
                     String uri = ConstantUtilities.domain + "poseDetect.html";
                     String imgName = imgList.get(j);
@@ -128,8 +128,8 @@ public class PoseMatchingHandler {
         TransUtilities.bodyWeight = Integer.parseInt(ConstantUtilities.jedis.get(suggestionId + "_bodyweight"));
         TransUtilities.headWeight = Integer.parseInt(ConstantUtilities.jedis.get(suggestionId + "_headweight"));
         String description = "";
-        String importantJSON = ConstantUtilities.jedis.get("important");
-        String isCompare = ConstantUtilities.jedis.get("isCompare");
+        String importantJSON = ConstantUtilities.jedis.get(suggestionId + "_important");
+        String isCompare = ConstantUtilities.jedis.get(suggestionId + "_isCompare");
 
         handler.pretreatment(trainerPoints, traineePoints);
         for (int i = 0; i < trainerPoints.size(); i++) {
@@ -165,7 +165,7 @@ public class PoseMatchingHandler {
         } //het dong for
 
         if("false".equals(isCompare)) {
-            ConstantUtilities.jedis.set("important", mapper.writeValueAsString(changePoints));
+            ConstantUtilities.jedis.set(suggestionId + "_important", mapper.writeValueAsString(changePoints));
         }
         else {
             if(importantJSON != null) {
@@ -178,12 +178,12 @@ public class PoseMatchingHandler {
             }
             //Frame dau tien khong co frame truoc de so, su dung weight do nguoi dung cung cap
             else {
-                int highestWeight = Math.max(Math.max(TransUtilities.bodyWeight, TransUtilities.headWeight), TransUtilities.legWeight);
-                for (MatchingPointResult matchingPointResult: keyPointsResult) {
-                    if(matchingPointResult.getWeight() == highestWeight) {
-                        importantPoints.add(matchingPointResult);
-                    }
-                }
+//                int highestWeight = Math.max(Math.max(TransUtilities.bodyWeight, TransUtilities.headWeight), TransUtilities.legWeight);
+//                for (MatchingPointResult matchingPointResult: keyPointsResult) {
+//                    if(matchingPointResult.getWeight() == highestWeight) {
+//                        importantPoints.add(matchingPointResult);
+//                    }
+//                }
             }
             description += getNoteworthyPoints(importantPoints);
         }
