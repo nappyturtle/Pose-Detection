@@ -60,7 +60,7 @@ public class SugggestionServiceImpl implements SugggestionService {
         dbInserted.setVideoId(suggestion.getVideoId());
         dbInserted.setCreatedTime(suggestion.getCreatedTime());
         dbInserted.setStatus(suggestion.getStatus());
-
+        dbInserted.setThumnailUrl(suggestion.getThumnailUrl());
         Suggestion savedSuggestion = suggestionRepository.save(dbInserted);
         System.out.println("videoId = "+savedSuggestion.getVideoId());
         Video videoRequest = videoRepository.findVideoById(savedSuggestion.getVideoId());
@@ -93,7 +93,7 @@ public class SugggestionServiceImpl implements SugggestionService {
 
     @Override
     public List<SuggestionDTO> getSuggestionByTrainee(int id) {
-        List<Suggestion> list = suggestionRepository.findAllByAccountId(id);
+        List<Suggestion> list = suggestionRepository.findAllByAccountIdOrderByCreatedTimeDesc(id);
         List<SuggestionDTO> listDTO = new ArrayList<>();
 
         try {
@@ -102,14 +102,14 @@ public class SugggestionServiceImpl implements SugggestionService {
                 System.out.println("id = " + suggestion.getId());
 
                 Optional<Video> video = videoRepository.findById(suggestion.getVideoId());
-                System.out.println("test = " + video.get().getThumnailUrl());
                 SuggestionDTO dto = new SuggestionDTO();
                 dto.setId(suggestion.getId());
                 dto.setAccountId(suggestion.getAccountId());
                 dto.setVideoName(video.get().getTitle());
                 dto.setVideoId(suggestion.getVideoId());
-                dto.setThumnailUrl(video.get().getThumnailUrl());
+                dto.setThumnailUrl(suggestion.getThumnailUrl());
                 dto.setCreatedTime(suggestion.getCreatedTime());
+                dto.setStatus(suggestion.getStatus());
                 listDTO.add(dto);
             }
         } catch (Exception e) {

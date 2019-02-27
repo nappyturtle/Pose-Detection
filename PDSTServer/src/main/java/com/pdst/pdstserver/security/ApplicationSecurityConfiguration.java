@@ -42,6 +42,8 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
             .antMatchers(HttpMethod.PUT, EDIT_URL).permitAll()
             .antMatchers(HttpMethod.GET, GET_ALL_VIDEO).permitAll()
                 .antMatchers(HttpMethod.GET, GET_ALL_CATEGORY).permitAll()
+                .antMatchers(HttpMethod.GET, GET_ALL_VIDEO_TRAINER).permitAll()
+                .antMatchers(HttpMethod.GET, GET_ALL_VIDEO_TRENDING).permitAll()
             .antMatchers(HttpMethod.GET, "/account/accounts").hasAuthority("Admin")
             .antMatchers(HttpMethod.GET, "/account/staff/accounts").hasAuthority("Staff")
             .anyRequest().authenticated()

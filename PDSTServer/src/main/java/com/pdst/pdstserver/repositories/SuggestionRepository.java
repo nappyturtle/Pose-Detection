@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface SuggestionRepository extends JpaRepository<Suggestion, Integer> {
 
-    List<Suggestion> findAllByAccountId(int id);
+    List<Suggestion> findAllByAccountIdOrderByCreatedTimeDesc(int id);
 }

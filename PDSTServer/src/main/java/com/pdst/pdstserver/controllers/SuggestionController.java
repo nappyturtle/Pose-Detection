@@ -1,6 +1,7 @@
 package com.pdst.pdstserver.controllers;
 
 import com.pdst.pdstserver.dtos.SuggestionDTO;
+import com.pdst.pdstserver.models.Suggestion;
 import com.pdst.pdstserver.services.SuggestionService.SugggestionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

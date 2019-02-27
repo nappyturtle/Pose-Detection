@@ -5,6 +5,7 @@ import com.pdst.pdstserver.models.Suggestion;
 import com.pdst.pdstserver.models.Video;
 import com.pdst.pdstserver.services.videoservice.VideoService;
 import com.sun.org.apache.xpath.internal.operations.Bool;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,9 +31,21 @@ public class VideoController {
     }
 
     @GetMapping("getAllVideosByDate")
-    public List<VideoDTO> getAllVideoByDate() {
-        return videoService.getAllVideosOrderByDate();
+    public List<VideoDTO> getAllVideoByDate(@RequestParam(value = "page") int page, @RequestParam(value = "size") int size) {
+        List<VideoDTO> resultPage = videoService.getAllVideosOrderByDate(page,size);
+        return resultPage;
+    }
 
+    @GetMapping("getAllVideosByTrainer")
+    public List<VideoDTO> getAllVideoByTrainer(@RequestParam(value = "accountId") int accountId) {
+        List<VideoDTO> resultPage = videoService.getAllVideosByTrainer(accountId);
+        return resultPage;
+    }
+
+    @GetMapping("getAllVideosByTopNumOfView")
+    public List<VideoDTO> getAllVideosByTopNumOfView(@RequestParam(value = "page") int page, @RequestParam(value = "size") int size) {
+        List<VideoDTO> resultPage = videoService.getAllVideosByTopNumOfView(page,size);
+        return resultPage;
     }
 
 
