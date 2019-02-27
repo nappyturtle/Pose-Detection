@@ -79,13 +79,13 @@
                         android:layout_height="0dp"
                         android:layout_weight="1"
                         android:orientation="horizontal"
-                        android:weightSum="2">
+                        android:weightSum="5">
 
                         <TextView
                             android:id="@+id/home_video_time"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
+                            android:layout_weight="3"
                             android:gravity="center_vertical"
                             android:paddingLeft="15dp"
                             android:text="17 gio truoc"
@@ -95,7 +95,7 @@
                             android:id="@+id/home_video_view"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
+                            android:layout_weight="2"
                             android:gravity="center_vertical"
                             android:paddingLeft="15dp"
                             android:text="1,4 Tr luot xem"

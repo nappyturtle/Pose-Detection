@@ -1,6 +1,7 @@
 package com.capstone.self_training.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +45,7 @@ public class SuggestionAdapter extends BaseAdapter {
         ImageView suggestion_image;
         TextView suggestion_name;
         TextView suggestion_date;
+        TextView suggestion_status;
     }
 
     @Override
@@ -57,6 +59,7 @@ public class SuggestionAdapter extends BaseAdapter {
             viewHolder.suggestion_image = (ImageView) convertView.findViewById(R.id.suggestionList_item_imageview);
             viewHolder.suggestion_name = (TextView) convertView.findViewById(R.id.suggestionList_item_name);
             viewHolder.suggestion_date = (TextView) convertView.findViewById(R.id.suggestionList_item_date);
+            viewHolder.suggestion_status = (TextView) convertView.findViewById(R.id.suggestionList_item_status);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -64,10 +67,18 @@ public class SuggestionAdapter extends BaseAdapter {
         // gán giá trị
         Suggestion suggestion = suggestionList.get(position);
         Picasso.get().load(suggestion.getThumnailUrl()).placeholder(R.drawable.error).
-                error(R.drawable.errors).into(viewHolder.suggestion_image);
+               into(viewHolder.suggestion_image);
 
         viewHolder.suggestion_name.setText(suggestion.getVideoName().toString());
         viewHolder.suggestion_date.setText(suggestion.getCreatedTime().toString());
+        String status = suggestion.getStatus().toString();
+        if(status.equals("active")){
+            viewHolder.suggestion_status.setText("Hoàn tất");
+            viewHolder.suggestion_status.setTextColor(Color.parseColor("#ff0000"));
+        }else if(status.equals("processing")){
+            viewHolder.suggestion_status.setText("Đang xử lí");
+            viewHolder.suggestion_status.setTextColor(Color.parseColor("#7FFF00"));
+        }
         return convertView;
     }
 }

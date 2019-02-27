@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.capstone.self_training.R;
@@ -29,13 +30,14 @@ import retrofit2.Response;
 
 public class SuggestionDetailActi extends AppCompatActivity {
 
-    Toolbar toolbar;
-    ViewPager viewPager;
-    ArrayList<SuggestionDetail> suggestionDetails;
+    private Toolbar toolbar;
+    private ViewPager viewPager;
+    private ArrayList<SuggestionDetail> suggestionDetails;
 
-    SharedPreferences mPerferences;
-    SharedPreferences.Editor mEditor;
-    String token;
+    private SharedPreferences mPerferences;
+    private SharedPreferences.Editor mEditor;
+    private String token;
+    private TextView txtSuggestionDetailIsEmpty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,8 +94,11 @@ public class SuggestionDetailActi extends AppCompatActivity {
         SuggestionDetailService suggestionDetailService = new SuggestionDetailService();
         suggestionDetails = (ArrayList<SuggestionDetail>) suggestionDetailService.getSuggestionDetailList(token,suggestionId);
         if(suggestionDetails.size() == 0){
-
+            txtSuggestionDetailIsEmpty.setVisibility(View.VISIBLE);
+            viewPager.setVisibility(View.INVISIBLE);
         }else{
+            txtSuggestionDetailIsEmpty.setVisibility(View.INVISIBLE);
+            viewPager.setVisibility(View.VISIBLE);
             MainSuggestionDetailAdapter main = new MainSuggestionDetailAdapter(getSupportFragmentManager());
             for (int i = 0; i < suggestionDetails.size(); i++) {
                 SuggestionDetailFragment fragment = SuggestionDetailFragment.newInstance(suggestionDetails.get(i));
@@ -106,6 +111,7 @@ public class SuggestionDetailActi extends AppCompatActivity {
     private void reflect() {
         toolbar = (Toolbar) findViewById(R.id.suggestionDetail_toolbar_id);
         viewPager = (ViewPager) findViewById(R.id.suggestionDetail_viewPager_id);
+        txtSuggestionDetailIsEmpty = (TextView)findViewById(R.id.txtSuggestionDetailIsEmpty);
         suggestionDetails = new ArrayList<>();
 
         mPerferences = PreferenceManager.getDefaultSharedPreferences(this);

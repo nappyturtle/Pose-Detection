@@ -65,8 +65,6 @@
                             android:text="1,4 tr lượt xem"
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
 
-
-
                     </LinearLayout>
 
                 </LinearLayout>

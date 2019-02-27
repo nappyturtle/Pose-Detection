@@ -362,6 +362,7 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
                 videoUploadedToFirebase.setCategoryId(1);
                 videoUploadedToFirebase.setNumOfView(0);
                 videoUploadedToFirebase.setFolderName(foldername);
+                videoUploadedToFirebase.setStatus("active");
                 videoUploadedToFirebase.setTitle(edtTitle.getText().toString());
                 videoUploadedToFirebase.setContentUrl(taskSnapshot.getDownloadUrl().toString());
                 videoUploadedToFirebase.setCreatedTime(TimeHelper.getCurrentTime());
@@ -383,6 +384,8 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
                         videoService.createVideo(mPerferences.getString(getString(R.string.token), ""),
                                 videoUploadedToFirebase);
                         Toast.makeText(TrainerUploadVideoActi.this, "upload image success", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(TrainerUploadVideoActi.this,MainActivity_Home.class);
+                        startActivity(intent);
                     }
                 }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                     @Override

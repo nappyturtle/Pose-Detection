@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
@@ -45,6 +47,7 @@ import com.google.firebase.storage.UploadTask;
 import org.jcodec.common.DemuxerTrack;
 import org.jcodec.common.io.NIOUtils;
 
+import java.io.ByteArrayOutputStream;
 import java.nio.channels.SeekableByteChannel;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -131,9 +134,6 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
         mPerferences = PreferenceManager.getDefaultSharedPreferences(this);
         mEditor = mPerferences.edit();
 
-//        username = mPerferences.getString(getString(R.string.username),"");
-//        roleId = mPerferences.getInt(getString(R.string.roleId),0);
-//        token = mPerferences.getString(getString(R.string.token),"");
 
     }
 
@@ -213,23 +213,53 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
         stR.putFile(selectedVideoUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // set các value cho suggestion, upload video lên storage trước
                 int accountId = mPerferences.getInt(getString(R.string.id), 0);
-                String token = mPerferences.getString(getString(R.string.token), "");
+                final String token = mPerferences.getString(getString(R.string.token), "");
 
-                Suggestion suggestion = new Suggestion();
+                final Suggestion suggestion = new Suggestion();
                 suggestion.setAccountId(accountId);
                 suggestion.setVideoId(playingVideo.getId());
-                suggestion.setStatus("active");
+                suggestion.setStatus("processing");
                 suggestion.setFoldernameTrainee(folderName);
                 suggestion.setCreatedTime(TimeHelper.getCurrentTime());
                 suggestion.setUrlVideoTrainee(taskSnapshot.getDownloadUrl().toString());
 
-                SuggestionService suggestionService = new SuggestionService();
-                suggestionService.createSuggestion(token, suggestion);
-                //progressDialog.dismiss();
-                Toast.makeText(TraineeUploadVideoActi.this, "Video đã được đăng", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(getApplicationContext(), MainActivity_Home.class);
-                startActivity(intent);
+                StorageReference thumnailStr = storageReference.child(folderName + "/" + txtVideoName.getText()
+                        .toString() + "-suggestion_thumbnail");
+                Bitmap bitmap_thumbnail = ThumbnailUtils.createVideoThumbnail(getPath(selectedVideoUri),
+                        MediaStore.Images.Thumbnails.MINI_KIND);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap_thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] data = baos.toByteArray();
+                thumnailStr.putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // upload hình lên storage sau, tải hình bitmap làm thumbnail cho suggestion
+                        suggestion.setThumnailUrl(taskSnapshot.getDownloadUrl().toString());
+
+                        SuggestionService suggestionService = new SuggestionService();
+                        suggestionService.createSuggestion(token, suggestion);
+                        //progressDialog.dismiss();
+                        Toast.makeText(TraineeUploadVideoActi.this, "Video đã được đăng", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(getApplicationContext(), MainActivity_Home.class);
+                        startActivity(intent);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("Upload thumbnail suggestion: ",e.getMessage());
+                    }
+                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                        double progress = (50.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                        progressDialog.setMessage("Uploaded " + (int) progress + "%...");
+                        if ((int) progress == 50) {
+                            progressDialog.dismiss();
+                        }
+                    }
+                });
 
             }
         }).addOnFailureListener(new OnFailureListener() {

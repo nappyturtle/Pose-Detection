@@ -11,11 +11,19 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface IVideoService {
     @POST("video/create")
     Call<Void> createVideo(@Header(Constants.header_string) String token, @Body Video video);
 
     @GET("video/getAllVideosByDate")
-    Call<List<VideoDTO>> getVideosByDate();
+    Call<List<VideoDTO>> getVideosByDate(@Query("page") int page,@Query("size") int size);
+
+
+    @GET("video/getAllVideosByTrainer")
+    Call<List<VideoDTO>> getVideosByTrainer(@Query("accountId") int accountId);
+
+    @GET("video/getAllVideosByTopNumOfView")
+    Call<List<VideoDTO>> getAllVideosByTopNumOfView(@Query("page") int page,@Query("size") int size);
 }

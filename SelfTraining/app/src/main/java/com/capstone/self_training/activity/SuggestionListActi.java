@@ -126,19 +126,6 @@ public class SuggestionListActi extends AppCompatActivity {
             listView.setAdapter(suggestionAdapter);
         }
     }
-    private void showMessageIsEmpty(){
-        if(suggestionList.size() <= 0){
-            suggestionAdapter.notifyDataSetChanged();
-            txtSuggestionIsEmpty.setVisibility(View.VISIBLE);
-            listView.setVisibility(View.INVISIBLE);
-
-        }else{
-            suggestionAdapter.notifyDataSetChanged();
-            txtSuggestionIsEmpty.setVisibility(View.INVISIBLE);
-            listView.setVisibility(View.VISIBLE);
-
-        }
-    }
 
     private void reflect() {
         //mHandler = new MHandler();

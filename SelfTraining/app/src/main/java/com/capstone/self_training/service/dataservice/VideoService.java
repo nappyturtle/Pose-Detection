@@ -24,9 +24,32 @@ public class VideoService {
         return null;
     }
 
-    public List<VideoDTO> getVideosByDate() {
+    public List<VideoDTO> getVideosByDate(int page, int size) {
         iVideoService = DataService.getVideoService();
-        Call<List<VideoDTO>> call = iVideoService.getVideosByDate();
+        Call<List<VideoDTO>> call = iVideoService.getVideosByDate(page,size);
+        List<VideoDTO> videoDTOS = null;
+        try{
+            videoDTOS = call.execute().body();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return videoDTOS;
+    }
+
+    public List<VideoDTO> getVideosByTrainer(int id) {
+        iVideoService = DataService.getVideoService();
+        Call<List<VideoDTO>> call = iVideoService.getVideosByTrainer(id);
+        List<VideoDTO> videoDTOS = null;
+        try{
+            videoDTOS = call.execute().body();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return videoDTOS;
+    }
+    public List<VideoDTO> getAllVideosByTopNumOfView(int page, int size) {
+        iVideoService = DataService.getVideoService();
+        Call<List<VideoDTO>> call = iVideoService.getAllVideosByTopNumOfView(page,size);
         List<VideoDTO> videoDTOS = null;
         try{
             videoDTOS = call.execute().body();

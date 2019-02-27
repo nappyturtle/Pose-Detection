@@ -1,5 +1,6 @@
 package com.capstone.self_training.activity;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,7 +9,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -17,6 +17,7 @@ import com.capstone.self_training.adapter.MainViewPager;
 import com.capstone.self_training.fragment.Fragment_Home;
 import com.capstone.self_training.fragment.Fragment_Register;
 import com.capstone.self_training.fragment.Fragment_Trending;
+import com.capstone.self_training.util.CheckConnection;
 
 public class MainActivity_Home extends AppCompatActivity {
 
@@ -32,8 +33,14 @@ public class MainActivity_Home extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_home);
-        mapping();
-        init();
+        if (CheckConnection.haveNetworkConnection(this)) {
+            mapping();
+            init();
+        }else{
+            CheckConnection.showConnection(this, "Xin vui lòng kiểm tra kết nối internet !!! ");
+            finish();
+        }
+
 
 
         //toolbar.setLogo(R.drawable.logoyoga);
@@ -41,9 +48,10 @@ public class MainActivity_Home extends AppCompatActivity {
 
     private void init() {
         MainViewPager mainViewPager = new MainViewPager(getSupportFragmentManager());
-        mainViewPager.addFragment(new Fragment_Home(), "Home");
-        mainViewPager.addFragment(new Fragment_Trending(), "Trending");
-        mainViewPager.addFragment(new Fragment_Register(), "Register");
+        mainViewPager.addFragment(new Fragment_Home(), "Trang chủ",getApplicationContext());
+        mainViewPager.addFragment(new Fragment_Trending(), "Thịnh hành",getApplicationContext());
+        mainViewPager.addFragment(new Fragment_Register(), "Kết quả tập",getApplicationContext());
+
         viewPager.setAdapter(mainViewPager);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_home);

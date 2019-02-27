@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,6 +16,7 @@ import com.capstone.self_training.R;
 import com.capstone.self_training.activity.PlayVideoActivity;
 import com.capstone.self_training.model.Account;
 import com.capstone.self_training.model.Video;
+import com.capstone.self_training.service.iService.OnLoadMoreListener;
 import com.capstone.self_training.util.TransformDataUtil;
 import com.squareup.picasso.Picasso;
 
@@ -31,6 +33,7 @@ public class HomeVideoAdapter extends RecyclerView.Adapter<HomeVideoAdapter.View
         this.models = models;
         this.context = context;
         this.accounts = accounts;
+
     }
 
     @NonNull
@@ -104,6 +107,14 @@ public class HomeVideoAdapter extends RecyclerView.Adapter<HomeVideoAdapter.View
             title = (TextView) itemView.findViewById(R.id.home_video_title);
             postTime = (TextView) itemView.findViewById(R.id.home_video_time);
             totalView = (TextView) itemView.findViewById(R.id.home_video_view);
+        }
+    }
+    public static class ProgressViewHolder extends RecyclerView.ViewHolder {
+        public ProgressBar progressBar;
+
+        public ProgressViewHolder(View v) {
+            super(v);
+            progressBar = (ProgressBar) v.findViewById(R.id.progressbar_id);
         }
     }
 }

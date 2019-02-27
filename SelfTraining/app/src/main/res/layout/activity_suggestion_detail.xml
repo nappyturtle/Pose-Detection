@@ -4,23 +4,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.SuggestionDetailActi"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".activity.SuggestionDetailActi">
+
     <android.support.v7.widget.Toolbar
+        android:id="@+id/suggestionDetail_toolbar_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="Kết quả chi tiết"
-        android:id="@+id/suggestionDetail_toolbar_id"
         android:minHeight="?attr/actionBarSize"
-        app:titleTextColor="#868683"
-        ></android.support.v7.widget.Toolbar>
-    <android.support.v4.view.ViewPager
-        android:layout_marginTop="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:id="@+id/suggestionDetail_viewPager_id"
-        >
+        app:title="Kết quả chi tiết"
+        app:titleTextColor="#868683"></android.support.v7.widget.Toolbar>
 
-    </android.support.v4.view.ViewPager>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp">
+
+        <TextView
+            android:id="@+id/txtSuggestionDetailIsEmpty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Không có kết quả nào, đang trong quá trình xử lí"
+            android:textSize="23sp" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/suggestionDetail_viewPager_id"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1">
+
+        </android.support.v4.view.ViewPager>
+    </FrameLayout>
 </LinearLayout>
