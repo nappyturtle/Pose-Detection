@@ -44,14 +44,7 @@
                         app:civ_border_color="#000000"
                         app:civ_border_width="2dp" />
 
-                    <TextView
-                        android:id="@+id/home_video_username"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="KietPT"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                        android:textColor="#12006F" />
+
 
                 </LinearLayout>
 
@@ -60,14 +53,14 @@
                     android:layout_height="match_parent"
                     android:layout_weight="4"
                     android:orientation="vertical"
-                    android:weightSum="3">
+                    android:weightSum="5">
 
                     <TextView
                         android:ellipsize="end"
                         android:id="@+id/home_video_title"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="2"
+                        android:layout_weight="3"
                         android:maxLines="2"
                         android:paddingLeft="20dp"
                         android:paddingRight="10dp"
@@ -82,13 +75,13 @@
                         android:weightSum="5">
 
                         <TextView
-                            android:id="@+id/home_video_time"
+                            android:id="@+id/home_video_username"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="3"
                             android:gravity="center_vertical"
                             android:paddingLeft="15dp"
-                            android:text="17 gio truoc"
+                            android:text="KietPT"
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
 
                         <TextView
@@ -99,6 +92,33 @@
                             android:gravity="center_vertical"
                             android:paddingLeft="15dp"
                             android:text="1,4 Tr luot xem"
+                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <TextView
+                            android:id="@+id/home_video_time"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="15dp"
+                            android:text="17 giờ trước"
+                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
+
+                        <TextView
+                            android:id="@+id/home_video_payment"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="15dp"
+                            android:text="Miễn Phí"
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
 
 
