@@ -1,9 +1,8 @@
 package com.pdst.pdstserver.controllers;
 
 import com.pdst.pdstserver.models.SuggestionDetail;
-import com.pdst.pdstserver.services.suggestiondetailservice.SuggestionDetailServcie;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import com.pdst.pdstserver.services.suggestionService.SuggestionService;
+import com.pdst.pdstserver.services.suggestiondetailservice.SuggestionDetailService;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -13,17 +12,20 @@ import java.util.List;
 @RequestMapping(SuggestionDetailController.BASE_URL)
 public class SuggestionDetailController {
     public static final String BASE_URL = "suggestiondetail";
-    private final SuggestionDetailServcie suggestionDetailServcie;
-    public SuggestionDetailController(SuggestionDetailServcie suggestionDetailServcie) {
-        this.suggestionDetailServcie = suggestionDetailServcie;
+    private final SuggestionDetailService suggestionDetailService;
+    private final SuggestionService suggestionService;
+
+    public SuggestionDetailController(SuggestionDetailService suggestionDetailService, SuggestionService suggestionService) {
+        this.suggestionDetailService = suggestionDetailService;
+        this.suggestionService = suggestionService;
     }
     @GetMapping("getAllSuggestionDetails")
     public List<SuggestionDetail> getAllSuggestionDetails() {
-        return suggestionDetailServcie.getAllSuggestionDetails();
+        return suggestionDetailService.getAllSuggestionDetails();
     }
     @GetMapping("getSuggestionDetailsBySuggestion")
     public List<SuggestionDetail> getSuggestionDetails(int suggestionId) {
-        return suggestionDetailServcie.getSuggestionDetails("suggestionId", suggestionId);
+        return suggestionDetailService.getSuggestionDetails("suggestionId", suggestionId);
     }
 
     @PostMapping("createSuggestionDetails")
@@ -31,8 +33,10 @@ public class SuggestionDetailController {
         for (int i = 0; i < suggestionDetails.size(); i++) {
             SuggestionDetail suggestionDetail =  suggestionDetails.get(i);
             suggestionDetail.setCreatedTime(LocalDateTime.now().toString());
-            suggestionDetailServcie.createSuggestionDetail(suggestionDetail);
+            suggestionDetailService.createSuggestionDetail(suggestionDetail);
         }
+        suggestionService.updateSuggestionStatus(suggestionDetails.get(0).getSuggestionId(), "active");
+//        suggestionService
         return "Success";
     }
 }

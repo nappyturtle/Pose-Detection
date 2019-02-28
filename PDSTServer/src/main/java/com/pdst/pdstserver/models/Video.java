@@ -24,7 +24,7 @@ public class Video implements Serializable {
     private String folderName;
     private String createdTime;
     private String updatedTime;
-
+    private Double price;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +35,15 @@ public class Video implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+    @Basic
+    @Column(name = "price")
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     @Basic
@@ -152,12 +161,13 @@ public class Video implements Serializable {
                 Objects.equals(updatedTime, video.updatedTime) &&
                 Objects.equals(headWeight, video.headWeight) &&
                 Objects.equals(bodyWeight, video.bodyWeight) &&
-                Objects.equals(legWeight, video.legWeight);
+                Objects.equals(legWeight, video.legWeight) &&
+                Objects.equals(price, video.price);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, thumnailUrl, contentUrl, accountId, categoryId, numOfView, status, createdTime, updatedTime, headWeight, bodyWeight, legWeight);
+        return Objects.hash(id, title, thumnailUrl, contentUrl, accountId, categoryId, numOfView, status, createdTime, updatedTime, headWeight, bodyWeight, legWeight, price);
     }
 
     @Basic

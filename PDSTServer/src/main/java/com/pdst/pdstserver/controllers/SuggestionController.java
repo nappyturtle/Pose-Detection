@@ -1,8 +1,7 @@
 package com.pdst.pdstserver.controllers;
 
 import com.pdst.pdstserver.dtos.SuggestionDTO;
-import com.pdst.pdstserver.models.Suggestion;
-import com.pdst.pdstserver.services.SuggestionService.SugggestionService;
+import com.pdst.pdstserver.services.suggestionService.SuggestionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,21 +12,21 @@ import java.util.List;
 public class SuggestionController {
     public static final String BASE_URL = "suggestion";
 
-    private final SugggestionService sugggestionService;
+    private final SuggestionService suggestionService;
 
-    public SuggestionController(SugggestionService sugggestionService) {
-        this.sugggestionService = sugggestionService;
+    public SuggestionController(SuggestionService suggestionService) {
+        this.suggestionService = suggestionService;
     }
 
     @GetMapping("suggestions")
     public List<SuggestionDTO> getAllSuggestions() {
 
-        return sugggestionService.getAllSuggestions();
+        return suggestionService.getAllSuggestions();
     }
 
     @PostMapping(value = "/create")
     public ResponseEntity<Void> createSuggestion(@RequestBody SuggestionDTO suggestion) {
-        boolean flag = sugggestionService.createSuggestion(suggestion);
+        boolean flag = suggestionService.createSuggestion(suggestion);
         if (flag == false) {
             return new ResponseEntity<Void>(HttpStatus.CONFLICT);
         }
@@ -36,6 +35,6 @@ public class SuggestionController {
 
     @GetMapping("suggestionsByTrainee")
     public List<SuggestionDTO> getSuggestionByTrainee(@RequestParam(value = "id") int id){
-        return sugggestionService.getSuggestionByTrainee(id);
+        return suggestionService.getSuggestionByTrainee(id);
     }
 }
