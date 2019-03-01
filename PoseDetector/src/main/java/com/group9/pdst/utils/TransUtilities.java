@@ -1,6 +1,11 @@
 package com.group9.pdst.utils;
 
+import com.group9.pdst.model.KeyPoint;
+import com.group9.pdst.model.KeyPointVector;
 import com.group9.pdst.model.MatchingPointResult;
+import com.group9.pdst.model.Position;
+
+import java.util.List;
 
 public class TransUtilities {
     public static int headWeight;
@@ -22,7 +27,7 @@ public class TransUtilities {
                 return "Cổ tay trái";
             case "rightWrist":
                 return "Cổ tay phải";
-            case "Torso":
+            case "torso":
                 return "Thân";
             case "leftKnee":
                 return "Đầu gối trái";
@@ -58,7 +63,7 @@ public class TransUtilities {
             case "rightWrist":
                 matchingPointResult.setWeight(bodyWeight);
                 return;
-            case "Torso":
+            case "torso":
                 matchingPointResult.setWeight(bodyWeight);
                 return;
             case "leftKnee":
@@ -75,5 +80,75 @@ public class TransUtilities {
                 return;
         }
         return;
+    }
+    private static KeyPoint getRootPoint(List<KeyPoint> keyPointList, String rootPointPart) {
+        for (int i = 0; i < keyPointList.size(); i++) {
+            KeyPoint rootPoint =  keyPointList.get(i);
+            if(rootPoint.getPart().equals(rootPointPart)) return rootPoint;
+        }
+        return null;
+    }
+    public static KeyPointVector createVectorFromKeypoint(List<KeyPoint> keyPointList, KeyPoint keyPoint) {
+        KeyPoint rootPoint;
+        Position position;
+        KeyPointVector vector;
+        switch (keyPoint.getPart()) {
+            case "nose":
+                rootPoint = getRootPoint(keyPointList, "torso");
+                position = new Position(keyPoint.getPosition().getX() - rootPoint.getPosition().getX(), keyPoint.getPosition().getY() - rootPoint.getPosition().getY());
+                vector = new KeyPointVector(position, keyPoint.getPart());
+                return vector;
+            case "leftShoulder":
+                rootPoint = getRootPoint(keyPointList, "torso");
+                position = new Position(keyPoint.getPosition().getX() - rootPoint.getPosition().getX(), keyPoint.getPosition().getY() - rootPoint.getPosition().getY());
+                vector = new KeyPointVector(position, keyPoint.getPart());
+                return vector;
+            case "rightShoulder":
+                rootPoint = getRootPoint(keyPointList, "torso");
+                position = new Position(keyPoint.getPosition().getX() - rootPoint.getPosition().getX(), keyPoint.getPosition().getY() - rootPoint.getPosition().getY());
+                vector = new KeyPointVector(position, keyPoint.getPart());
+                return vector;
+            case "leftElbow":
+                rootPoint = getRootPoint(keyPointList, "leftShoulder");
+                position = new Position(keyPoint.getPosition().getX() - rootPoint.getPosition().getX(), keyPoint.getPosition().getY() - rootPoint.getPosition().getY());
+                vector = new KeyPointVector(position, keyPoint.getPart());
+                return vector;
+            case "rightElbow":
+                rootPoint = getRootPoint(keyPointList, "rightShoulder");
+                position = new Position(keyPoint.getPosition().getX() - rootPoint.getPosition().getX(), keyPoint.getPosition().getY() - rootPoint.getPosition().getY());
+                vector = new KeyPointVector(position, keyPoint.getPart());
+                return vector;
+            case "leftWrist":
+                rootPoint = getRootPoint(keyPointList, "leftElbow");
+                position = new Position(keyPoint.getPosition().getX() - rootPoint.getPosition().getX(), keyPoint.getPosition().getY() - rootPoint.getPosition().getY());
+                vector = new KeyPointVector(position, keyPoint.getPart());
+                return vector;
+            case "rightWrist":
+                rootPoint = getRootPoint(keyPointList, "rightElbow");
+                position = new Position(keyPoint.getPosition().getX() - rootPoint.getPosition().getX(), keyPoint.getPosition().getY() - rootPoint.getPosition().getY());
+                vector = new KeyPointVector(position, keyPoint.getPart());
+                return vector;
+            case "leftKnee":
+                rootPoint = getRootPoint(keyPointList, "torso");
+                position = new Position(keyPoint.getPosition().getX() - rootPoint.getPosition().getX(), keyPoint.getPosition().getY() - rootPoint.getPosition().getY());
+                vector = new KeyPointVector(position, keyPoint.getPart());
+                return vector;
+            case "rightKnee":
+                rootPoint = getRootPoint(keyPointList, "torso");
+                position = new Position(keyPoint.getPosition().getX() - rootPoint.getPosition().getX(), keyPoint.getPosition().getY() - rootPoint.getPosition().getY());
+                vector = new KeyPointVector(position, keyPoint.getPart());
+                return vector;
+            case "leftAnkle":
+                rootPoint = getRootPoint(keyPointList, "leftKnee");
+                position = new Position(keyPoint.getPosition().getX() - rootPoint.getPosition().getX(), keyPoint.getPosition().getY() - rootPoint.getPosition().getY());
+                vector = new KeyPointVector(position, keyPoint.getPart());
+                return vector;
+            case "rightAnkle":
+                rootPoint = getRootPoint(keyPointList, "rightKnee");
+                position = new Position(keyPoint.getPosition().getX() - rootPoint.getPosition().getX(), keyPoint.getPosition().getY() - rootPoint.getPosition().getY());
+                vector = new KeyPointVector(position, keyPoint.getPart());
+                return vector;
+        }
+        return null;
     }
 }

@@ -9,19 +9,19 @@ public class PretreatmentHandler {
     public void pretreatment(List<KeyPoint> trainerPoints, List<KeyPoint> traineePoints) {
         removeExcessPoints(trainerPoints);
         removeExcessPoints(traineePoints);
-        int count = 0;
-        do {
-            KeyPoint trainerKeyPoint = trainerPoints.get(count);
-            KeyPoint traineeKeyPoint = traineePoints.get(count);
-            if (Math.abs(trainerKeyPoint.getScore() - traineeKeyPoint.getScore()) > 0.2) {
-                traineePoints.remove(traineeKeyPoint);
-                trainerPoints.remove(trainerKeyPoint);
-            }
-            else {
-                count++;
-            }
-        }
-        while(count < trainerPoints.size());
+//        int count = 0;
+//        do {
+//            KeyPoint trainerKeyPoint = trainerPoints.get(count);
+//            KeyPoint traineeKeyPoint = traineePoints.get(count);
+//            if (Math.abs(trainerKeyPoint.getScore() - traineeKeyPoint.getScore()) > 0.2) {
+//                traineePoints.remove(traineeKeyPoint);
+//                trainerPoints.remove(trainerKeyPoint);
+//            }
+//            else {
+//                count++;
+//            }
+//        }
+//        while(count < trainerPoints.size());
     }
     //remove unnecessary points
     private void removeExcessPoints(List<KeyPoint> keypoints) {
@@ -32,7 +32,7 @@ public class PretreatmentHandler {
     private void createTorsoPoint(List<KeyPoint> keypoints) {
         KeyPoint torso = new KeyPoint();
         boolean created = true;
-        torso.setPart("Torso");
+        torso.setPart("torso");
         double x = 0;
         double y = 0;
         double score = 0;

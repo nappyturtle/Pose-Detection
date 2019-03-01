@@ -17,8 +17,8 @@ import java.util.List;
 
 public class PoseMatchingHandler {
     //allowable deviation range
-    private double standardDeviation = CalculationUtilities.calculateStandardDeviation(0, ConstantUtilities.imgSize);
-
+//    private double standardDeviation = CalculationUtilities.calculateStandardDeviation(0, ConstantUtilities.imgSize);
+    private final double CHANGE_LIMIT = Math.sqrt(3)/2;
     //duyet tung frame trong 2 list va thuc hien matching, kt kq tra ve trong redis voi key la suggestionid
     //tra ve danh sach cac suggestion details
     public List<SuggestionDetail> makeSuggestionDetails(List<String> simgList, List<String> imgList, String suggestionId, String trainerFolder, String traineeFolder) throws JsonProcessingException {
@@ -30,13 +30,11 @@ public class PoseMatchingHandler {
             String simgName = simgList.get(i);
             MatchingPoseResult finalPoseResult = null;
             double maxPercent = 0;
-//            double minPercent = 0;
             //
             if (i > 0) {
                 ConstantUtilities.jedis.set(suggestionId + "_isCompare", "false");
                 flag = checkMatchingPrecondition(simgList.get(i - 1), simgName, trainerFolder, suggestionId);
             }
-
             //
             if (flag) {
                 ConstantUtilities.jedis.set(suggestionId + "_isCompare", "true");
@@ -116,53 +114,45 @@ public class PoseMatchingHandler {
     public MatchingPoseResult matchPose(Pose trainerPose, Pose traineePose, String suggestionId) throws IOException {
         List<KeyPoint> trainerPoints = trainerPose.getKeypoints();
         List<KeyPoint> traineePoints = traineePose.getKeypoints();
-        PretreatmentHandler handler = new PretreatmentHandler();
         List<MatchingPointResult> keyPointsResult = new ArrayList<>();
-        ObjectMapper mapper = new ObjectMapper();
         List<MatchingPointResult> importantPoints = new ArrayList<>();
         List<String> changePoints = new ArrayList<>();
+
+        PretreatmentHandler handler = new PretreatmentHandler();
+        ObjectMapper mapper = new ObjectMapper();
+
         double maxPosePercentage = 0;
         double minPosePercentage = 0;
         int totalWeight = 0;
+        String description = "";
+
         TransUtilities.legWeight = Integer.parseInt(ConstantUtilities.jedis.get(suggestionId + "_legweight"));
         TransUtilities.bodyWeight = Integer.parseInt(ConstantUtilities.jedis.get(suggestionId + "_bodyweight"));
         TransUtilities.headWeight = Integer.parseInt(ConstantUtilities.jedis.get(suggestionId + "_headweight"));
-        String description = "";
         String importantJSON = ConstantUtilities.jedis.get(suggestionId + "_important");
         String isCompare = ConstantUtilities.jedis.get(suggestionId + "_isCompare");
 
+        //xu ly loai bo cac diem thua va tao diem than - torso lam trong tam
         handler.pretreatment(trainerPoints, traineePoints);
         for (int i = 0; i < trainerPoints.size(); i++) {
             KeyPoint trainerPoint = trainerPoints.get(i);
             KeyPoint traineePoint = traineePoints.get(i);
-
-            //Calculate distance between 2 corresponding points in 2 images
-            double xDeviation = trainerPoint.getPosition().getX() - traineePoint.getPosition().getX();
-            double yDeviation = trainerPoint.getPosition().getY() - traineePoint.getPosition().getY();
-
-            //combine distance and confident score to decrease effect of not confident points
-            //divided by standard deviation to get deviation percentage
-//            double pointDeviationPercentage = CalculationUtilities.calculateEuclideanDistance(xDeviation, yDeviation) * trainerPoint.getScore() / standardDeviation;
-            double pointDeviationPercentage = CalculationUtilities.calculateEuclideanDistance(xDeviation, yDeviation) / standardDeviation;
-            double maxPointPercentage = 0;
-            if (pointDeviationPercentage <= 1) {
-                maxPointPercentage = 1 - pointDeviationPercentage;
+            if(!"torso".equals(trainerPoint.getPart())) {
+                KeyPointVector trainerPointVector = TransUtilities.createVectorFromKeypoint(trainerPoints, trainerPoint);
+                KeyPointVector traineePointVector = TransUtilities.createVectorFromKeypoint(traineePoints, traineePoint);
+                double maxPointPercentage = CalculationUtilities.calculateCosine(trainerPointVector, traineePointVector);
+                double minPointPercentage = maxPointPercentage * Math.max(traineePoint.getScore(), trainerPoint.getScore());
+                if ("false".equals(isCompare) && maxPointPercentage < CHANGE_LIMIT) {
+                    changePoints.add(trainerPoint.getPart());
+                }
+                MatchingPointResult point = new MatchingPointResult(trainerPoint.getPart(), maxPointPercentage, minPointPercentage);
+                TransUtilities.setPartWeight(point);
+                totalWeight += point.getWeight();
+                keyPointsResult.add(point);
+                maxPosePercentage += maxPointPercentage * point.getWeight();
+                minPosePercentage += minPointPercentage * point.getWeight();
             }
-            double minPointPercentage = maxPointPercentage * Math.max(traineePoint.getScore(), trainerPoint.getScore());
-
-            //do lech giua max va min cang nho thi do tin cay cang cao, o day yeu cau do tin cay tren 80%
-            MatchingPointResult point = new MatchingPointResult(traineePoint.getPart(), xDeviation, yDeviation, maxPointPercentage, minPointPercentage);
-            TransUtilities.setPartWeight(point);
-            totalWeight += point.getWeight();
-            keyPointsResult.add(point);
-            maxPosePercentage += maxPointPercentage * point.getWeight();
-            minPosePercentage += minPointPercentage * point.getWeight();
-            //cac diem lech nhau tren 80% la cac diem chuyen dong so voi frame truoc
-            if ("false".equals(isCompare) && maxPointPercentage < 0.8) {
-                changePoints.add(point.getPart());
-            }
-
-        } //het dong for
+        }
 
         if("false".equals(isCompare)) {
             ConstantUtilities.jedis.set(suggestionId + "_important", mapper.writeValueAsString(changePoints));
@@ -175,15 +165,6 @@ public class PoseMatchingHandler {
                        importantPoints.add(matchingPointResult);
                     }
                 }
-            }
-            //Frame dau tien khong co frame truoc de so, su dung weight do nguoi dung cung cap
-            else {
-//                int highestWeight = Math.max(Math.max(TransUtilities.bodyWeight, TransUtilities.headWeight), TransUtilities.legWeight);
-//                for (MatchingPointResult matchingPointResult: keyPointsResult) {
-//                    if(matchingPointResult.getWeight() == highestWeight) {
-//                        importantPoints.add(matchingPointResult);
-//                    }
-//                }
             }
             description += getNoteworthyPoints(importantPoints);
         }
@@ -199,8 +180,13 @@ public class PoseMatchingHandler {
         String importantParts = "Các bộ phận quan trọng trong tư thế này: \n";
         for (int i = 0; i < importantPoints.size(); i++) {
             MatchingPointResult importantPoint = importantPoints.get(i);
-            importantParts += TransUtilities.transPartToVietnamese(importantPoint.getPart()) + ": khớp " + CalculationUtilities.roundingPercentage(importantPoint.getMinMatchingPercentage()) + "% - "
-                    + CalculationUtilities.roundingPercentage(importantPoint.getMaxMatchingPercentage()) + "%\n";
+            if(importantPoint.getMaxMatchingPercentage() > 0) {
+                importantParts += TransUtilities.transPartToVietnamese(importantPoint.getPart()) + ": khớp " + CalculationUtilities.roundingPercentage(importantPoint.getMinMatchingPercentage()) + "% - "
+                        + CalculationUtilities.roundingPercentage(importantPoint.getMaxMatchingPercentage()) + "%\n";
+            }
+            else {
+                importantParts += TransUtilities.transPartToVietnamese(importantPoint.getPart()) + " không khớp\n";
+            }
         }
         return importantParts;
     }
