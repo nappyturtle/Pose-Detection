@@ -32,6 +32,17 @@ public class Suggestion {
     @SerializedName("status")
     @Expose
     private String status;
+    @SerializedName("traineeVideo")
+    @Expose
+    private String traineeVideo;
+
+    public String getTraineeVideo() {
+        return traineeVideo;
+    }
+
+    public void setTraineeVideo(String traineeVideo) {
+        this.traineeVideo = traineeVideo;
+    }
 
     public String getStatus() {
         return status;

@@ -26,6 +26,7 @@ public class MainSuggestionDetailAdapter extends FragmentStatePagerAdapter{
         return arrayListFragment.size();
     }
     public void addFragment(SuggestionDetailFragment fragment){
+
         arrayListFragment.add(fragment);
 
 

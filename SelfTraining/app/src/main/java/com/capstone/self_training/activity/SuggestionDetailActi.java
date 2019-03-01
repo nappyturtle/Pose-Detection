@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,37 +64,10 @@ public class SuggestionDetailActi extends AppCompatActivity {
     private void getData(){
         Intent intent = getIntent();
         int suggestionId = intent.getIntExtra("suggestionId",1);
-//        ISuggestionDetailService suggestionDetailService = DataService.getSuggestionDetailService();
-////        Call<List<SuggestionDetail>> callBack = suggestionDetailService.getSuggestionDetail(token,suggestionId);
-////        callBack.enqueue(new Callback<List<SuggestionDetail>>() {
-////            @Override
-////            public void onResponse(Call<List<SuggestionDetail>> call, Response<List<SuggestionDetail>> response) {
-////                if(response.code() == Constants.Status_Ok) {
-////                    suggestionDetails = (ArrayList<SuggestionDetail>) response.body();
-////                    if(suggestionDetails.size() == 0){
-////                        // hiển TextView
-////                    }else {
-////                        MainSuggestionDetailAdapter main = new MainSuggestionDetailAdapter(getSupportFragmentManager());
-////                        for (int i = 0; i < suggestionDetails.size(); i++) {
-////                            SuggestionDetailFragment fragment = SuggestionDetailFragment.newInstance(suggestionDetails.get(i));
-////                            main.addFragment(fragment);
-////                            viewPager.setAdapter(main);
-////                        }
-////                    }
-////                }else{
-////                    Toast.makeText(SuggestionDetailActi.this, "Hệ thống bị đang bị lỗi, Vui lòng quay lại sau", Toast.LENGTH_SHORT).show();
-////                }
-////            }
-////
-////            @Override
-////            public void onFailure(Call<List<SuggestionDetail>> call, Throwable t) {
-////                Toast.makeText(SuggestionDetailActi.this, "Hệ thống bị đang bị lỗi "+t.getMessage(), Toast.LENGTH_SHORT).show();
-////                Log.e("SuggestionListActi onFailure: ",t.getMessage());
-////            }
-////        });
+
         SuggestionDetailService suggestionDetailService = new SuggestionDetailService();
         suggestionDetails = (ArrayList<SuggestionDetail>) suggestionDetailService.getSuggestionDetailList(token,suggestionId);
-        if(suggestionDetails.size() == 0){
+        if(suggestionDetails.size() <= 0){
             txtSuggestionDetailIsEmpty.setVisibility(View.VISIBLE);
             viewPager.setVisibility(View.INVISIBLE);
         }else{

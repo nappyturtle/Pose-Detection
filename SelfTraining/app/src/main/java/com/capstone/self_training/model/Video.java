@@ -19,6 +19,15 @@ public class Video implements Serializable{
     private Integer headWeight;
     private Integer bodyWeight;
     private Integer legWeight;
+    private Double price;
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
 
     public Video(int id, String title, String thumnailUrl, String contentUrl, Integer accountId, Integer categoryId, Integer numOfView, String status, String username, String categoryName, String folderName, String createdTime, String updatedTime, Integer headWeight, Integer bodyWeight, Integer legWeight) {
         this.id = id;

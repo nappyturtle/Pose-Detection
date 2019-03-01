@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
@@ -50,6 +51,7 @@ import com.squareup.picasso.Picasso;
 import org.jcodec.common.DemuxerTrack;
 import org.jcodec.common.io.NIOUtils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.channels.SeekableByteChannel;
 import java.text.SimpleDateFormat;
@@ -87,12 +89,13 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
     private TextView resultHead;
     private TextView resultBody;
     private TextView resultLeg;
-    Bitmap bmp;
+    Bitmap bitmap_thumbnail;
     private ArrayList<Category> cateList;
     private CategoryAdapter categoryAdapter;
     private CategoryService categoryService;
     private SharedPreferences mPerferences;
     private SharedPreferences.Editor mEditor;
+    private boolean checkedThumnail;
 
 
     @Override
@@ -263,6 +266,7 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
                 && data != null && data.getData() != null) {
             imageUri = data.getData();
             Picasso.get().load(imageUri).into(ivThumbnail);
+            checkedThumnail = true;
         }
 
         if (requestCode == SELECT_VIDEO && resultCode == RESULT_OK && data != null && data.getData() != null) {
@@ -275,6 +279,12 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
             MediaController mediaController = new MediaController(this);
             vwTrainerVideo.setMediaController(mediaController);
             mediaController.setAnchorView(vwTrainerVideo);
+
+            bitmap_thumbnail = ThumbnailUtils.createVideoThumbnail(getPath(selectedVideoUri),
+                    MediaStore.Images.Thumbnails.MINI_KIND);
+            ivThumbnail.setImageBitmap(bitmap_thumbnail);
+            checkedThumnail = false;
+            imageUri = null;
         }
     }
 
@@ -285,7 +295,7 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
             public void onClick(View v) {
                 boolean checked = true;
                 if (edtTitle.getText().toString() == null || edtTitle.getText().toString().equals("")
-                        || imageUri == null || imageUri.equals("") || selectedVideoUri == null || selectedVideoUri.equals("")) {
+                         || selectedVideoUri == null || selectedVideoUri.equals("")) {
                     checked = false;
                     Toast.makeText(TrainerUploadVideoActi.this, "Xin vui lòng điền đầy đủ thông tin video trước khi đăng", Toast.LENGTH_SHORT).show();
                 }
@@ -359,7 +369,6 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
                 Toast.makeText(TrainerUploadVideoActi.this, "File Uploaded", Toast.LENGTH_SHORT).show();
                 final Video videoUploadedToFirebase = new Video();
                 videoUploadedToFirebase.setAccountId(mPerferences.getInt(getString(R.string.id), 0));
-                videoUploadedToFirebase.setCategoryId(1);
                 videoUploadedToFirebase.setNumOfView(0);
                 videoUploadedToFirebase.setFolderName(foldername);
                 videoUploadedToFirebase.setStatus("active");
@@ -369,34 +378,71 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
                 videoUploadedToFirebase.setHeadWeight(mPerferences.getInt(getString(R.string.result_head), 0));
                 videoUploadedToFirebase.setBodyWeight(mPerferences.getInt(getString(R.string.result_body), 0));
                 videoUploadedToFirebase.setLegWeight(mPerferences.getInt(getString(R.string.result_leg), 0));
+                videoUploadedToFirebase.setPrice(Double.valueOf(0));
 
                 Category selectedCategory = (Category) spnCategory.getSelectedItem();
                 videoUploadedToFirebase.setCategoryId(selectedCategory.getId());
 
-                StorageReference srImg = storageReference.child(foldername + "/" + edtTitle.getText().toString() + "-thumbnail");
-                srImg.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        videoUploadedToFirebase.setThumnailUrl(taskSnapshot.getDownloadUrl().toString());
+                // add thumbnail được chọn trong bộ sưu tập
+                if(checkedThumnail && imageUri != null && !imageUri.equals("")) {
+                    Log.e("thumbnail bo suu tập = ","đã vào bộ suu tập");
+                    StorageReference srImg = storageReference.child(foldername + "/" + edtTitle.getText().toString() + "-thumbnail");
+                    srImg.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            videoUploadedToFirebase.setThumnailUrl(taskSnapshot.getDownloadUrl().toString());
 
-                        VideoService videoService = new VideoService();
+                            VideoService videoService = new VideoService();
 
-                        videoService.createVideo(mPerferences.getString(getString(R.string.token), ""),
-                                videoUploadedToFirebase);
-                        Toast.makeText(TrainerUploadVideoActi.this, "upload image success", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(TrainerUploadVideoActi.this,MainActivity_Home.class);
-                        startActivity(intent);
-                    }
-                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                        double progress = (50.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                        progressDialog.setMessage("Uploaded " + (int) progress + "%...");
-                        if ((int) progress == 50) {
-                            progressDialog.dismiss();
+                            videoService.createVideo(mPerferences.getString(getString(R.string.token), ""),
+                                    videoUploadedToFirebase);
+                            Toast.makeText(TrainerUploadVideoActi.this, "upload image success", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(TrainerUploadVideoActi.this, MainActivity_Home.class);
+                            startActivity(intent);
                         }
-                    }
-                });
+                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (50.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                            progressDialog.setMessage("Uploaded " + (int) progress + "%...");
+                            if ((int) progress == 50) {
+                                progressDialog.dismiss();
+                            }
+                        }
+                    });
+                }
+
+                // add thumbnail mặc định từ video
+                if(!checkedThumnail) {
+                    Log.e("thumbnail default = ","đã vào thumbnail default");
+                    StorageReference thumbnailDefault = storageReference.child(foldername + "/" + edtTitle.getText().toString() + "- video thumbnail");
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bitmap_thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                    byte[] data = baos.toByteArray();
+                    thumbnailDefault.putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            videoUploadedToFirebase.setThumnailUrl(taskSnapshot.getDownloadUrl().toString());
+
+                            VideoService videoService = new VideoService();
+
+                            videoService.createVideo(mPerferences.getString(getString(R.string.token), ""),
+                                    videoUploadedToFirebase);
+                            Toast.makeText(TrainerUploadVideoActi.this, "upload image success", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(TrainerUploadVideoActi.this, MainActivity_Home.class);
+                            startActivity(intent);
+                        }
+                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                            progressDialog.setMessage("Uploaded " + (int) progress + "%...");
+                            if ((int) progress == 100) {
+                                progressDialog.dismiss();
+                            }
+                        }
+                    });
+                }
 
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -411,9 +457,9 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
             public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                 double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
                 progressDialog.setMessage("Uploaded " + (int) progress + "%...");
-                if ((int) progress == 100) {
-                    progressDialog.dismiss();
-                }
+//                if ((int) progress == 100) {
+//                    progressDialog.dismiss();
+//                }
             }
         });
 

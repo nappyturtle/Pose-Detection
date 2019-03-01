@@ -30,7 +30,10 @@ public class SuggestionDetailFragment extends Fragment {
         ViewHolder viewHolder = null;
         savedInstanceState = getArguments();
         SuggestionDetail suggestionDetail = (SuggestionDetail) savedInstanceState.getSerializable("suggestionDetail");
-        Log.e("detail = ",suggestionDetail.getId() + " - "+suggestionDetail.getDescription());
+        Log.e("detail = ",suggestionDetail.getId() + " - "+suggestionDetail.getDescription() + " - "+suggestionDetail.getImgUrl()
+                + " - "+suggestionDetail.getStandardImgUrl());
+
+
         if(view == null){
             viewHolder = new ViewHolder();
             view = inflater.inflate(R.layout.suggestion_detail_fragment,container,false);
@@ -46,11 +49,12 @@ public class SuggestionDetailFragment extends Fragment {
             Log.e("da vao dây","da vao đây rồi nè");
         }
 
-
-            Picasso.get().load(suggestionDetail.getImgUrl()).placeholder(R.drawable.error).
-                    error(R.drawable.errors).into(viewHolder.imgUrl);
-            Picasso.get().load(suggestionDetail.getStandardImgUrl()).placeholder(R.drawable.error).
-                    error(R.drawable.errors).into(viewHolder.imgStandardUrl);
+        Picasso.get().load(suggestionDetail.getImgUrl()).fit().into(viewHolder.imgUrl);
+//            Picasso.get().load(suggestionDetail.getImgUrl().toString()).placeholder(R.drawable.error).
+//                   into(viewHolder.imgUrl);
+        Picasso.get().load(suggestionDetail.getStandardImgUrl()).fit().into(viewHolder.imgStandardUrl);
+//            Picasso.get().load(suggestionDetail.getStandardImgUrl().toString()).placeholder(R.drawable.error).
+//                    into(viewHolder.imgStandardUrl);
             viewHolder.result.setText(suggestionDetail.getDescription().toString());
             return view;
     }
