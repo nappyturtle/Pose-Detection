@@ -1,4 +1,4 @@
-package com.pdst.pdstserver.services.suggestionService;
+package com.pdst.pdstserver.services.SuggestionService;
 
 import com.pdst.pdstserver.handlers.SendRequest;
 import com.pdst.pdstserver.models.Suggestion;
@@ -6,7 +6,10 @@ import com.pdst.pdstserver.dtos.SuggestionDTO;
 import com.pdst.pdstserver.models.Video;
 import com.pdst.pdstserver.repositories.SuggestionRepository;
 import com.pdst.pdstserver.repositories.VideoRepository;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +71,7 @@ public class SuggestionServiceImpl implements SuggestionService {
         dbInserted.setCreatedTime(suggestion.getCreatedTime());
         dbInserted.setStatus(suggestion.getStatus());
         dbInserted.setThumnailUrl(suggestion.getThumnailUrl());
+        dbInserted.setTraineeVideo(suggestion.getUrlVideoTrainee());
         Suggestion savedSuggestion = suggestionRepository.save(dbInserted);
         System.out.println("videoId = "+savedSuggestion.getVideoId());
         Video videoRequest = videoRepository.findVideoById(savedSuggestion.getVideoId());
@@ -99,8 +103,11 @@ public class SuggestionServiceImpl implements SuggestionService {
     }
 
     @Override
-    public List<SuggestionDTO> getSuggestionByTrainee(int id) {
-        List<Suggestion> list = suggestionRepository.findAllByAccountIdOrderByCreatedTimeDesc(id);
+    public List<SuggestionDTO> getSuggestionByTrainee(int page, int size, int id) {
+        System.out.println("page - size : "+page + " - "+size);
+        List<Suggestion> list = suggestionRepository.findAllByAccountId(new PageRequest(page,size,Sort.Direction.DESC,"createdTime"),id);
+        System.out.println("list = "+list.isEmpty());
+//
         List<SuggestionDTO> listDTO = new ArrayList<>();
 
         try {
@@ -117,6 +124,7 @@ public class SuggestionServiceImpl implements SuggestionService {
                 dto.setThumnailUrl(suggestion.getThumnailUrl());
                 dto.setCreatedTime(suggestion.getCreatedTime());
                 dto.setStatus(suggestion.getStatus());
+                dto.setUrlVideoTrainee(suggestion.getTraineeVideo());
                 listDTO.add(dto);
             }
         } catch (Exception e) {

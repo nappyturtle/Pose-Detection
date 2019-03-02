@@ -1,10 +1,11 @@
 package com.pdst.pdstserver.controllers;
 
 import com.pdst.pdstserver.dtos.SuggestionDTO;
-import com.pdst.pdstserver.services.suggestionService.SuggestionService;
+import com.pdst.pdstserver.services.SuggestionService.SuggestionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -34,7 +35,8 @@ public class SuggestionController {
     }
 
     @GetMapping("suggestionsByTrainee")
-    public List<SuggestionDTO> getSuggestionByTrainee(@RequestParam(value = "id") int id){
-        return suggestionService.getSuggestionByTrainee(id);
+    public List<SuggestionDTO> getSuggestionByTrainee(@RequestParam(value = "page") int page, @RequestParam(value = "size") int size, @RequestParam(value = "id") int id) {
+
+        return suggestionService.getSuggestionByTrainee(page,size,id);
     }
 }

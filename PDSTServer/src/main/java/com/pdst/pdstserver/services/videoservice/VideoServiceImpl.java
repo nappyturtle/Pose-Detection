@@ -35,6 +35,7 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
    public List<VideoDTO> getAllVideosOrderByDate(int page, int size) {
+        System.out.println("page - size = " + page + " - "+size);
         Page<Video> videos =  videoRepository.findAll(new PageRequest(page,size,Sort.Direction.DESC,"createdTime"));
 
         List<VideoDTO> dtos = new ArrayList<>();
@@ -102,6 +103,7 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public List<VideoDTO> getAllVideosByTopNumOfView(int page,int size) {
+        System.out.println("page - size = " + page + " - "+size);
         Page<Video> videos =  videoRepository.findAll(new PageRequest(page,size,Sort.Direction.DESC,"numOfView"));
 
         List<VideoDTO> dtos = new ArrayList<>();

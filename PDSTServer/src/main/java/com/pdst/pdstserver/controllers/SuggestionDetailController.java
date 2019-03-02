@@ -1,7 +1,7 @@
 package com.pdst.pdstserver.controllers;
 
 import com.pdst.pdstserver.models.SuggestionDetail;
-import com.pdst.pdstserver.services.suggestionService.SuggestionService;
+import com.pdst.pdstserver.services.SuggestionService.SuggestionService;
 import com.pdst.pdstserver.services.suggestiondetailservice.SuggestionDetailService;
 import org.springframework.web.bind.annotation.*;
 
