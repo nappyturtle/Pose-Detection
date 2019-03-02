@@ -3,6 +3,7 @@ package com.capstone.self_training.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,15 +17,13 @@ import com.capstone.self_training.R;
 import com.capstone.self_training.activity.PlayVideoActivity;
 import com.capstone.self_training.model.Account;
 import com.capstone.self_training.model.Video;
-import com.capstone.self_training.service.iService.OnLoadMoreListener;
-import com.capstone.self_training.util.TransformDataUtil;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class HomeVideoAdapter extends RecyclerView.Adapter<HomeVideoAdapter.ViewHolder> {
+public class HomeVideoAdapter extends RecyclerView.Adapter<HomeVideoAdapter.VideoViewHolder> {
     private List<Video> models;
     private Context context;
     private List<Account> accounts;
@@ -38,15 +37,16 @@ public class HomeVideoAdapter extends RecyclerView.Adapter<HomeVideoAdapter.View
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public VideoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_home_video, parent, false);
+        return new VideoViewHolder(v);
 
-        return new ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull VideoViewHolder holder, int position) {
         final Video model = models.get(position);
         final Account account = accounts.get(position);
 
@@ -80,16 +80,17 @@ public class HomeVideoAdapter extends RecyclerView.Adapter<HomeVideoAdapter.View
                 Toast.makeText(context, "View Profile Clicked", Toast.LENGTH_SHORT).show();
             }
         });
-
-
     }
+
+
 
     @Override
     public int getItemCount() {
-        return models.size();
+        return models == null ? 0 : models.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+
+    public class VideoViewHolder extends RecyclerView.ViewHolder {
         public ImageView thumbnail;
         public CircleImageView userImg;
         public TextView userName;
@@ -98,7 +99,7 @@ public class HomeVideoAdapter extends RecyclerView.Adapter<HomeVideoAdapter.View
         public TextView totalView;
 
 
-        public ViewHolder(View itemView) {
+        public VideoViewHolder(View itemView) {
             super(itemView);
 
             thumbnail = (ImageView) itemView.findViewById(R.id.home_video_thumbnail);
@@ -109,12 +110,6 @@ public class HomeVideoAdapter extends RecyclerView.Adapter<HomeVideoAdapter.View
             totalView = (TextView) itemView.findViewById(R.id.home_video_view);
         }
     }
-    public static class ProgressViewHolder extends RecyclerView.ViewHolder {
-        public ProgressBar progressBar;
 
-        public ProgressViewHolder(View v) {
-            super(v);
-            progressBar = (ProgressBar) v.findViewById(R.id.progressbar_id);
-        }
-    }
 }
+

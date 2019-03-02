@@ -4,15 +4,18 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
+import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +28,7 @@ import com.capstone.self_training.util.CheckConnection;
 import com.capstone.self_training.util.Constants;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -39,30 +43,72 @@ public class SuggestionListActi extends AppCompatActivity {
     private ArrayList<Suggestion> suggestionList;
     private SuggestionAdapter suggestionAdapter;
     private TextView txtSuggestionIsEmpty;
-    View footerView; // progressbar
-    //boolean isLoading = false;
-    //MHandler mHandler;
+    private View progressBar;
+
+    private boolean limitedData = false;
+    private boolean isLoading = false;
+
     private SharedPreferences mPerferences;
     private SharedPreferences.Editor mEditor;
-
+    private mHandler mHandler;
     private String token;
     private int id;
-
+    private int page = 0;
+    private int size = 5;
+    private int checkedSuggestionList = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_suggestion_list);
+
         if (CheckConnection.haveNetworkConnection(this)) {
             reflect();
             displayToolBar();
             getSuggestionItem();
-            getData();
-            //getMoreData();
+            getData(page, size);
+            getMoreData();
+//            listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+//                @Override
+//                public void onScrollStateChanged(AbsListView view, int scrollState) {
+//                    if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+//                        isLoading = false;
+//                    }
+//                }
+//
+//                @Override
+//                public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+//                    if (firstVisibleItem + visibleItemCount == totalItemCount && !isLoading && !limitedData & totalItemCount != 0) {
+//                        isLoading = true;
+//                        ThreadData threadData = new ThreadData();
+//                        threadData.start();
+//                    }
+//                }
+//            });
         } else {
             CheckConnection.showConnection(this, "Xin vui lòng kiểm tra kết nối internet !!! ");
             finish();
         }
 
+    }
+
+    private void getMoreData() {
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                    isLoading = false;
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (firstVisibleItem + visibleItemCount == totalItemCount && !isLoading && !limitedData & totalItemCount != 0) {
+                    isLoading = true;
+                    ThreadData threadData = new ThreadData();
+                    threadData.start();
+                }
+            }
+        });
     }
 
     private void displayToolBar() {
@@ -87,52 +133,42 @@ public class SuggestionListActi extends AppCompatActivity {
         });
     }
 
-    private void getData() {
-//        SuggestionService suggestionService = DataService.getSuggestionService();
-//        Call<List<Suggestion>> callBack = suggestionService.getSuggestionList(token, id);
-//        callBack.enqueue(new Callback<List<Suggestion>>() {
-//            @Override
-//            public void onResponse(Call<List<Suggestion>> call, Response<List<Suggestion>> response) {
-//                if (response.code() == Constants.Status_Ok) {
-//                    suggestionList = (ArrayList<Suggestion>) response.body();
-//                    if(suggestionList.size() == 0){
-//                        // hiển thị textview
-//                    }else {
-//                        suggestionAdapter = new SuggestionAdapter(getApplicationContext(), R.layout.suggestion_list_item, suggestionList);
-//                        listView.setAdapter(suggestionAdapter);
-//                    }
-//                }else{
-//                    Toast.makeText(SuggestionListActi.this, "Hệ thống bị đang bị lỗi, Vui lòng quay lại sau", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<Suggestion>> call, Throwable t) {
-//                Toast.makeText(SuggestionListActi.this, "Hệ thống bị đang bị lỗi "+t.getMessage(), Toast.LENGTH_SHORT).show();
-//                Log.e("SuggestionListActi onFailure: ",t.getMessage());
-//            }
-//        });
+    private void getData(int page, int size) {
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         SuggestionService suggestionService = new SuggestionService();
-        suggestionList = (ArrayList<Suggestion>) suggestionService.getSuggestionList(token, id);
-        //showMessageIsEmpty();
-        //suggestionAdapter.notifyDataSetChanged();
-        if(suggestionList.size() <= 0){
-            txtSuggestionIsEmpty.setVisibility(View.VISIBLE);
+        ArrayList<Suggestion> listTemp = (ArrayList<Suggestion>) suggestionService.getSuggestionList(token, page, size, id);
+        if (listTemp.size() <= 0 && checkedSuggestionList == 0) {
             listView.setVisibility(View.INVISIBLE);
-        }else {
-            txtSuggestionIsEmpty.setVisibility(View.INVISIBLE);
-            listView.setVisibility(View.VISIBLE);
-            suggestionAdapter = new SuggestionAdapter(getApplicationContext(), R.layout.suggestion_list_item, suggestionList);
-            listView.setAdapter(suggestionAdapter);
+            txtSuggestionIsEmpty.setVisibility(View.VISIBLE);
+        } else
+            if (listTemp.size() <= 0 && checkedSuggestionList == 1) {
+            Log.e("ddasdasdasd <=0 ", "dasdasd <= 0");
+            limitedData = true;
+            listView.removeFooterView(progressBar);
+                Toast.makeText(this, "Đã hết dữ liệu", Toast.LENGTH_SHORT).show();
+        } else {
+            listView.removeFooterView(progressBar);
+            for (Suggestion su : listTemp) {
+                suggestionList.add(su);
+                suggestionAdapter.notifyDataSetChanged();
+            }
+            Log.e("ddasdasdasd > 0 ", "dasdasd > 0");
+
+            suggestionAdapter = new SuggestionAdapter(getApplicationContext(), suggestionList);
+
+            checkedSuggestionList = 1;
         }
     }
 
     private void reflect() {
-        //mHandler = new MHandler();
+
         toolbar = (Toolbar) findViewById(R.id.suggestionList_toolbar_id);
         listView = (ListView) findViewById(R.id.suggestionList_listview);
         suggestionList = new ArrayList<>();
-        suggestionAdapter = new SuggestionAdapter(getApplicationContext(), R.layout.suggestion_list_item, suggestionList);
+        suggestionAdapter = new SuggestionAdapter(getApplicationContext(), suggestionList);
         listView.setAdapter(suggestionAdapter);
         txtSuggestionIsEmpty = (TextView) findViewById(R.id.txtSuggestionIsEmpty);
 
@@ -142,58 +178,42 @@ public class SuggestionListActi extends AppCompatActivity {
 
         token = mPerferences.getString(getString(R.string.token), "");
         id = mPerferences.getInt(getString(R.string.id), 0);
+        mHandler = new mHandler();
+        LayoutInflater layoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        progressBar = layoutInflater.inflate(R.layout.progressbar, null);
     }
 
-//    public void getMoreData() {
-//        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(AbsListView view, int scrollState) {
-//
-//            }
-//
-//            @Override
-//            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-//                if (firstVisibleItem + visibleItemCount == totalItemCount && totalItemCount != 0 && isLoading == false) {
-//                    isLoading = true;
-//                    ThreadData threadData = new ThreadData();
-//                    threadData.start();
-//                }
-//            }
-//        });
-//    }
-//
-//    public class MHandler extends Handler { // nó là ông chủ dùng để quản lí thread
-//        @Override
-//        public void handleMessage(Message msg) { // phương thức handleMessage này trả gồm 2 trường hợp
-//            // 0: khi bắt đầu thì listview sẽ hiển thị kèm theo đó là progressbar
-//            // 1: khi load thêm dữ liệu
-//            switch (msg.what) {
-//                case 0:
-//                    listView.addFooterView(footerView);
-//                    break;
-//                case 1:
-//
-//                    isLoading = false;
-//
-//                    break;
-//            }
-//            super.handleMessage(msg);
-//        }
-//    }
-//
-//    public class ThreadData extends Thread {
-//        @Override
-//        public void run() {
-//            mHandler.sendEmptyMessage(0); // gửi 0 là vì lần đầu chay để lấy dữ liệu
-//            try {
-//                Thread.sleep(3000); // cho thằng progressbar nó ngủ 3 giây
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            Message message = mHandler.obtainMessage(1); // nó là 1 phương thức liên kết thread vs hanlder
-//            // dùng để duy trì kết nối khi muốn gọi lại, tham số truyền vào là 1 thì nó sẽ chuyển vào cái switch case 1
-//            mHandler.sendMessage(message);
-//            super.run();
-//        }
-//    }
+    // handler dùng để quản lí các thread
+    // thread này là luồng phụ chạy song song vs luồng chính, dùng để cập nhật số lượng dữ liệu
+    public class mHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0:
+                    listView.addFooterView(progressBar);
+                    break;
+                case 1:
+                    getData(++page, size);
+                    suggestionAdapter.notifyDataSetChanged();
+                    isLoading = false;
+                    break;
+            }
+            super.handleMessage(msg);
+        }
+    }
+
+    public class ThreadData extends Thread {
+        @Override
+        public void run() {
+            mHandler.sendEmptyMessage(0);
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Message message = mHandler.obtainMessage(1);
+            mHandler.sendMessage(message);
+            super.run();
+        }
+    }
 }

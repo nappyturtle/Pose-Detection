@@ -43,8 +43,9 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        reflect();
+
         if (CheckConnection.haveNetworkConnection(this)) {
+            reflect();
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
             signIn();
@@ -59,52 +60,6 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                IAccountService IAccountService = DataService.sign_in();
-//                Log.e("USERNAME-PASSWORD", "username = " + username.getText().toString() + " - password = " + pass.getText().toString());
-//                Call<Account> callBack = IAccountService.login(new Account(username.getText().toString(), pass.getText().toString()));
-//                callBack.enqueue(new Callback<Account>() {
-//                    @Override
-//                    public void onResponse(Call<Account> call, Response<Account> response) {
-//                        if (response.code() == Constants.Status_Forbidden) {
-//                            Toast.makeText(LoginActivity.this, "Tài khoản hoặc mật khẩu không đúng, Vui lòng nhập lại", Toast.LENGTH_SHORT).show();
-//                        } else if (response.code() == Constants.Status_NotFound) {
-//                            Toast.makeText(LoginActivity.this, (CharSequence) response.body(), Toast.LENGTH_SHORT).show();
-//                        } else if (response.code() == Constants.Status_Ok) {
-//                            //String token = String.valueOf(response.headers().get(Constants.header_string));
-//                            Account account = response.body();
-//                            //Toast.makeText(LoginActivity.this, token, Toast.LENGTH_SHORT).show();
-//                            Toast.makeText(LoginActivity.this, account.getId() + " - " + account.getUsername(),
-//                                    Toast.LENGTH_SHORT).show();
-//
-//                            //save id,username,roleId,token to Shared Preperences
-//                            mEditor.putInt(getString(R.string.id), account.getId());
-//                            mEditor.commit();
-//
-//                            mEditor.putString(getString(R.string.username), account.getUsername());
-//                            mEditor.commit();
-//
-//                            mEditor.putInt(getString(R.string.roleId), account.getRoleId());
-//                            mEditor.commit();
-//
-//                            mEditor.putString(getString(R.string.token), account.getToken());
-//                            mEditor.commit();
-//
-//                            if (account.getRoleId() == 3) {
-//                                Intent intent = new Intent(getApplicationContext(), TrainerProfileActivity.class);
-//                                startActivity(intent);
-//                            } else if (account.getRoleId() == 4) {
-//                                Intent intent = new Intent(getApplicationContext(), TraineeProfileActivity.class);
-//                                startActivity(intent);
-//                            }
-//                        }
-//
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<Account> call, Throwable t) {
-//                        Log.e("Login failed : ", t.getMessage());
-//                    }
-//                });
 
                 accountService = new AccountService(getApplicationContext());
                 Account account = (Account) accountService.login(new Account(username.getText().toString(), pass.getText().toString()));

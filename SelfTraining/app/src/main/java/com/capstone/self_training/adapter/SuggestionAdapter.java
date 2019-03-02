@@ -1,6 +1,7 @@
 package com.capstone.self_training.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.capstone.self_training.R;
+import com.capstone.self_training.activity.TraineeVideoUploadedActivity;
 import com.capstone.self_training.model.Suggestion;
 import com.squareup.picasso.Picasso;
 
@@ -18,11 +20,10 @@ import java.util.ArrayList;
 public class SuggestionAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<Suggestion> suggestionList;
-    private int layout;
 
-    public SuggestionAdapter(Context context, int layout, ArrayList<Suggestion> suggestionList) {
+
+    public SuggestionAdapter(Context context, ArrayList<Suggestion> suggestionList) {
         this.context = context;
-        this.layout = layout;
         this.suggestionList = suggestionList;
     }
 
@@ -46,6 +47,7 @@ public class SuggestionAdapter extends BaseAdapter {
         TextView suggestion_name;
         TextView suggestion_date;
         TextView suggestion_status;
+        ImageView suggestion_image_play;
     }
 
     @Override
@@ -54,18 +56,19 @@ public class SuggestionAdapter extends BaseAdapter {
         if (convertView == null) {
             viewHolder = new ViewHolder();
             LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = layoutInflater.inflate(layout, null);
+            convertView = layoutInflater.inflate(R.layout.suggestion_list_item, null);
             // ánh xạ view
             viewHolder.suggestion_image = (ImageView) convertView.findViewById(R.id.suggestionList_item_imageview);
             viewHolder.suggestion_name = (TextView) convertView.findViewById(R.id.suggestionList_item_name);
             viewHolder.suggestion_date = (TextView) convertView.findViewById(R.id.suggestionList_item_date);
             viewHolder.suggestion_status = (TextView) convertView.findViewById(R.id.suggestionList_item_status);
+            viewHolder.suggestion_image_play = (ImageView) convertView.findViewById(R.id.suggestionList_item_play);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         // gán giá trị
-        Suggestion suggestion = suggestionList.get(position);
+        final Suggestion suggestion = suggestionList.get(position);
         Picasso.get().load(suggestion.getThumnailUrl()).placeholder(R.drawable.error).
                into(viewHolder.suggestion_image);
 
@@ -79,6 +82,14 @@ public class SuggestionAdapter extends BaseAdapter {
             viewHolder.suggestion_status.setText("Đang xử lí");
             viewHolder.suggestion_status.setTextColor(Color.parseColor("#7FFF00"));
         }
+        viewHolder.suggestion_image_play.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context,TraineeVideoUploadedActivity.class);
+                intent.putExtra("Suggestion",suggestion);
+                context.startActivity(intent);
+            }
+        });
         return convertView;
     }
 }

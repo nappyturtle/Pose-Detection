@@ -5,18 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Activity.PlayVideoActivity">
+    tools:context=".activity.PlayVideoActivity">
 
     <FrameLayout
-        android:id="@+id/videoSurfaceContainer"
-        android:layout_width="match_parent"
-        android:layout_height="220dp">
+    android:id="@+id/videoSurfaceContainer"
+    android:layout_width="match_parent"
+    android:layout_height="220dp">
 
-        <SurfaceView
-            android:id="@+id/videoSurface"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </FrameLayout>
+    <SurfaceView
+        android:id="@+id/videoSurface"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</FrameLayout>
 
     <ScrollView
         android:id="@+id/play_video_scrollview"
@@ -116,7 +116,9 @@
                         android:padding="2dp"
                         android:text="Đăng Video Tập Theo"
                         android:textColor="#FF0000"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:textSize="12sp"
+                        />
 
 
                 </RelativeLayout>

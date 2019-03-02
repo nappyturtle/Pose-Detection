@@ -24,10 +24,10 @@ public class SuggestionService {
         return null;
     }
 
-    public List<Suggestion> getSuggestionList(String token, int accountId) {
+    public List<Suggestion> getSuggestionList(String token,int page, int size,  int accountId) {
         iSuggestionService = DataService.getSuggestionService();
         List<Suggestion> suggestionList = null;
-        Call<List<Suggestion>> callBack = iSuggestionService.getSuggestionList(token,accountId);
+        Call<List<Suggestion>> callBack = iSuggestionService.getSuggestionList(token,page,size,accountId);
         try{
             suggestionList = callBack.execute().body();
         }catch (Exception e){

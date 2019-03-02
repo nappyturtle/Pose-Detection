@@ -3,7 +3,9 @@ package com.capstone.self_training.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Suggestion {
+import java.io.Serializable;
+
+public class Suggestion implements Serializable{
 
     @SerializedName("id")
     @Expose
