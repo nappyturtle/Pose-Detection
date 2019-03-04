@@ -19,6 +19,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -73,6 +74,8 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
     private Button btnTrainerUpVideo;
     private EditText edtTitle;
     private Spinner spnCategory;
+    private EditText edtPrice;
+    private Toolbar toolbar;
 
     private StorageReference storageReference;
 
@@ -214,6 +217,13 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
         edtTitle = (EditText) findViewById(R.id.edtTitle);
         spnCategory = (Spinner) findViewById(R.id.spnCategory);
         storageReference = FirebaseStorage.getInstance().getReference();
+        edtPrice = (EditText) findViewById(R.id.edtPrice);
+        if (edtPrice.getText() == null) {
+            edtPrice.setText("0");
+        }
+
+        toolbar = (Toolbar) findViewById(R.id.trainer_upload_toolbar_id);
+        setupToolbar();
 
         mPerferences = PreferenceManager.getDefaultSharedPreferences(this);
         mEditor = mPerferences.edit();
@@ -232,6 +242,18 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
         spnCategory.setAdapter(categoryAdapter);
         initSharedPreperences();
 
+    }
+
+    private void setupToolbar() {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void initCateList() {
@@ -295,7 +317,7 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
             public void onClick(View v) {
                 boolean checked = true;
                 if (edtTitle.getText().toString() == null || edtTitle.getText().toString().equals("")
-                         || selectedVideoUri == null || selectedVideoUri.equals("")) {
+                        || selectedVideoUri == null || selectedVideoUri.equals("")) {
                     checked = false;
                     Toast.makeText(TrainerUploadVideoActi.this, "Xin vui lòng điền đầy đủ thông tin video trước khi đăng", Toast.LENGTH_SHORT).show();
                 }
@@ -313,7 +335,6 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
         btnTrainerChooseVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(TrainerUploadVideoActi.this, "aaaaaaaaaaaaaaa", Toast.LENGTH_SHORT).show();
                 openChooseVideoView();
             }
         });
@@ -352,21 +373,19 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
     }
 
     private void uploadFileToFirebase() {
-
         final ProgressDialog progressDialog = new ProgressDialog(this);
-        //final Video uploadedVideo = new Video();
         progressDialog.setTitle("Uploading");
         progressDialog.show();
-        Log.e("TextView = ", edtTitle.getText().toString());
+
         String username = mPerferences.getString(getString(R.string.username), "");
+
         final String foldername = createFolderName(username);
         final StorageReference stR = storageReference.child(foldername + "/" + edtTitle.getText().toString());
 
         stR.putFile(selectedVideoUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                //progressDialog.dismiss();
-                Toast.makeText(TrainerUploadVideoActi.this, "File Uploaded", Toast.LENGTH_SHORT).show();
+
                 final Video videoUploadedToFirebase = new Video();
                 videoUploadedToFirebase.setAccountId(mPerferences.getInt(getString(R.string.id), 0));
                 videoUploadedToFirebase.setNumOfView(0);
@@ -378,14 +397,20 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
                 videoUploadedToFirebase.setHeadWeight(mPerferences.getInt(getString(R.string.result_head), 0));
                 videoUploadedToFirebase.setBodyWeight(mPerferences.getInt(getString(R.string.result_body), 0));
                 videoUploadedToFirebase.setLegWeight(mPerferences.getInt(getString(R.string.result_leg), 0));
-                videoUploadedToFirebase.setPrice(Double.valueOf(0));
+
+                String price = edtPrice.getText().toString();
+                if (price == null || price.equalsIgnoreCase("")) {
+                    videoUploadedToFirebase.setPrice(0);
+                } else {
+                    videoUploadedToFirebase.setPrice(Integer.parseInt(edtPrice.getText().toString()));
+                }
 
                 Category selectedCategory = (Category) spnCategory.getSelectedItem();
                 videoUploadedToFirebase.setCategoryId(selectedCategory.getId());
 
                 // add thumbnail được chọn trong bộ sưu tập
-                if(checkedThumnail && imageUri != null && !imageUri.equals("")) {
-                    Log.e("thumbnail bo suu tập = ","đã vào bộ suu tập");
+                if (checkedThumnail && imageUri != null && !imageUri.equals("")) {
+                    Log.e("thumbnail bo suu tập = ", "đã vào bộ suu tập");
                     StorageReference srImg = storageReference.child(foldername + "/" + edtTitle.getText().toString() + "-thumbnail");
                     srImg.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -412,9 +437,11 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
                     });
                 }
 
+                Toast.makeText(TrainerUploadVideoActi.this, "Đăng video thành công", Toast.LENGTH_LONG).show();
+
                 // add thumbnail mặc định từ video
-                if(!checkedThumnail) {
-                    Log.e("thumbnail default = ","đã vào thumbnail default");
+                if (!checkedThumnail) {
+                    Log.e("thumbnail default = ", "đã vào thumbnail default");
                     StorageReference thumbnailDefault = storageReference.child(foldername + "/" + edtTitle.getText().toString() + "- video thumbnail");
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     bitmap_thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, baos);
@@ -456,6 +483,7 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
             @Override
             public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                 double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+
                 progressDialog.setMessage("Uploaded " + (int) progress + "%...");
 //                if ((int) progress == 100) {
 //                    progressDialog.dismiss();

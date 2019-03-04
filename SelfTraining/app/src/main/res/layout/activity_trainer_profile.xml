@@ -4,182 +4,185 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.TrainerProfileActivity"
     android:orientation="vertical"
-    >
+    tools:context=".activity.TrainerProfileActivity">
+
     <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_trainer_profile_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
-        app:titleTextColor="#868683"
         app:title="Thông tin tài khoản"
-        android:id="@+id/toolbar_trainer_profile_id"
-        >
+        app:titleTextColor="#868683">
 
     </android.support.v7.widget.Toolbar>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/img_trainer_profile_id"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="10dp"
             android:layout_width="80dp"
             android:layout_height="80dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
             android:src="@drawable/userlogin"
             app:civ_border_color="#da43da"
             app:civ_border_width="2dp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_weight="10"
             android:layout_marginTop="10dp"
-            android:padding="10dp"
-            >
+            android:layout_weight="10"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
             <TextView
                 android:id="@+id/txtUsername_trainer_profile_id"
-                android:layout_weight="9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="9"
                 android:text="Username"
-                android:textSize="15sp"
                 android:textColor="#000000"
-                android:textStyle="bold"
-                />
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
             <ImageView
                 android:id="@+id/imgSetting_trainer_profile_id"
-                android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="20dp"
+                android:layout_weight="1"
                 android:background="@drawable/ic_settings"
-                />
+                android:onClick="updateProfile"/>
         </LinearLayout>
+
         <View
-            android:layout_marginTop="5dp"
             android:layout_width="fill_parent"
             android:layout_height="2dp"
-            android:background="#c0c0c0"/>
+            android:layout_marginTop="5dp"
+            android:background="#c0c0c0" />
+
         <LinearLayout
             android:id="@+id/lnUpload_trainer_profile_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_weight="10"
             android:layout_marginTop="10dp"
-            android:padding="10dp"
-            >
+            android:layout_weight="10"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
             <ImageView
-                android:layout_weight="3"
                 android:layout_width="50dp"
                 android:layout_height="30dp"
-                android:background="@drawable/upload"
-                />
+                android:layout_weight="3"
+                android:background="@drawable/upload" />
+
             <TextView
-                android:layout_weight="7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="7"
                 android:text="Đăng video"
                 android:textColor="#000000"
-                android:textStyle="bold"
                 android:textSize="18sp"
-                android:layout_marginLeft="20dp"
-                />
+                android:textStyle="bold" />
         </LinearLayout>
+
         <View
-            android:layout_marginTop="15dp"
             android:layout_width="fill_parent"
             android:layout_height="2dp"
-            android:background="#c0c0c0"/>
+            android:layout_marginTop="15dp"
+            android:background="#c0c0c0" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_weight="10"
-            android:layout_marginTop="10dp"
-            android:padding="10dp"
-            >
-            <ImageView
-                android:layout_weight="3"
-                android:layout_width="50dp"
-                android:layout_height="30dp"
-                android:background="@drawable/recommendation"
-                />
-            <TextView
-                android:layout_weight="7"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Danh sách kết quả video tự tập"
-                android:textColor="#000000"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:layout_marginLeft="20dp"
-                />
-            </LinearLayout>
-            <TextView
-                android:layout_width="wrap_content"
-                android:id="@+id/btnGetAllSuggestion_trainer_profile_id"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="280dp"
-                android:text="Xem tất cả"
-                android:textSize="15sp"
-                android:textColor="#252ed9"
-                android:textStyle="bold"
-                />
-        </LinearLayout>
-        <View
-            android:layout_marginTop="15dp"
-            android:layout_width="fill_parent"
-            android:layout_height="2dp"
-            android:background="#c0c0c0"/>
+            android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_weight="10"
                 android:layout_marginTop="10dp"
-                android:padding="10dp"
-                >
+                android:layout_weight="10"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
                 <ImageView
-                    android:layout_weight="3"
                     android:layout_width="50dp"
                     android:layout_height="30dp"
-                    android:background="@drawable/youtube"
-                    />
+                    android:layout_weight="3"
+                    android:background="@drawable/recommendation" />
+
                 <TextView
-                    android:layout_weight="7"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Danh sách video đã đăng"
-                    android:textColor="#000000"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
                     android:layout_marginLeft="20dp"
-                    />
+                    android:layout_weight="7"
+                    android:text="Danh sách kết quả video tự tập"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
             </LinearLayout>
+
             <TextView
+                android:id="@+id/btnGetAllSuggestion_trainer_profile_id"
                 android:layout_width="wrap_content"
-                android:id="@+id/btnGetAllVideo_trainer_profile_id"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="280dp"
                 android:text="Xem tất cả"
-                android:textSize="15sp"
                 android:textColor="#252ed9"
-                android:textStyle="bold"
-                />
+                android:textSize="15sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="15dp"
+            android:background="#c0c0c0" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="10"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="3"
+                    android:background="@drawable/youtube" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight="7"
+                    android:text="Danh sách video đã đăng"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/btnGetAllVideo_trainer_profile_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="280dp"
+                android:text="Xem tất cả"
+                android:textColor="#252ed9"
+                android:textSize="15sp"
+                android:textStyle="bold"/>
         </LinearLayout>
     </LinearLayout>
 

@@ -2,7 +2,7 @@ package com.capstone.self_training.model;
 
 import java.io.Serializable;
 
-public class Video implements Serializable{
+public class Video implements Serializable {
     private int id;
     private String title;
     private String thumnailUrl;
@@ -10,58 +10,31 @@ public class Video implements Serializable{
     private Integer accountId;
     private Integer categoryId;
     private Integer numOfView;
+    private Integer headWeight;
+    private Integer bodyWeight;
+    private Integer legWeight;
     private String status;
     private String username;
     private String categoryName;
     private String folderName;
     private String createdTime;
     private String updatedTime;
-    private Integer headWeight;
-    private Integer bodyWeight;
-    private Integer legWeight;
-    private Double price;
+    private int price;
 
-    public Double getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
-    public Video(int id, String title, String thumnailUrl, String contentUrl, Integer accountId, Integer categoryId, Integer numOfView, String status, String username, String categoryName, String folderName, String createdTime, String updatedTime, Integer headWeight, Integer bodyWeight, Integer legWeight) {
-        this.id = id;
+    public Video(String title, String contentUrl) {
         this.title = title;
-        this.thumnailUrl = thumnailUrl;
         this.contentUrl = contentUrl;
-        this.accountId = accountId;
-        this.categoryId = categoryId;
-        this.numOfView = numOfView;
-        this.status = status;
-        this.username = username;
-        this.categoryName = categoryName;
-        this.folderName = folderName;
-        this.createdTime = createdTime;
-        this.updatedTime = updatedTime;
-        this.headWeight = headWeight;
-        this.bodyWeight = bodyWeight;
-        this.legWeight = legWeight;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public Video() {
     }
 
     public void setAccountId(Integer accountId) {
@@ -99,8 +72,6 @@ public class Video implements Serializable{
     public void setLegWeight(Integer legWeight) {
         this.legWeight = legWeight;
     }
-
-    public Video(){}
 
     public int getId() {
         return id;

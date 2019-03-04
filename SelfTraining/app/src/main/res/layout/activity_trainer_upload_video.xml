@@ -25,18 +25,19 @@
             android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginVertical="10dp"
             android:text="Hình nền"
             android:textSize="18sp"
             android:textStyle="bold" />
 
         <FrameLayout
-            android:layout_marginTop="10dp"
             android:id="@+id/frameLayout"
-            android:layout_width="280dp"
+            android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_gravity="center"
-           >
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginVertical="10dp">
 
             <ImageView
                 android:id="@+id/ivThumbnail"
@@ -48,36 +49,50 @@
 
 
         <EditText
-            android:layout_marginTop="10dp"
             android:id="@+id/edtTitle"
-            android:layout_width="347dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginVertical="10dp"
             android:ems="10"
             android:hint="Tiêu đề"
-            android:inputType="text" />
+            android:inputType="text"
+            android:textSize="18sp" />
 
-        <FrameLayout
-            android:id="@+id/frameLayout2"
-            android:layout_width="350dp"
-            android:layout_height="200dp"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center"
-           >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginVertical="10dp"
+            android:gravity="center"
+            android:orientation="vertical">
 
-            <VideoView
-                android:id="@+id/vwTrainerVideo"
+            <FrameLayout
+                android:id="@+id/frameLayout2"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp">
 
-        </FrameLayout>
+                <VideoView
+                    android:id="@+id/vwTrainerVideo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </FrameLayout>
+
+            <Button
+                android:id="@+id/btnTrainerChooseVideo"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="Chọn Video" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/textView5"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginVertical="10dp"
             android:text="Danh mục"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -86,45 +101,46 @@
             android:id="@+id/spnCategory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginVertical="10dp"
             android:autofillHints="Chọn danh mục ">
 
         </Spinner>
 
         <TextView
             android:id="@+id/textView6"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginVertical="10dp"
             android:text="Bộ phận quan trọng"
             android:textSize="18sp"
             android:textStyle="bold" />
+
         <LinearLayout
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginVertical="10dp"
+            android:orientation="vertical">
+
             <LinearLayout
-                android:layout_margin="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                >
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    >
+                    android:orientation="horizontal">
+
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="50dp"
                         android:layout_height="wrap_content"
                         android:text="Đầu"
                         android:textSize="18sp"
-                        android:textStyle="bold"
-                        />
+                        android:textStyle="bold" />
 
                     <SeekBar
                         android:id="@+id/seekBar_Head"
@@ -132,32 +148,32 @@
                         android:layout_height="match_parent"
                         android:max="10" />
                 </LinearLayout>
+
                 <TextView
                     android:id="@+id/seekBar_Result_Head"
-                    android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0/10"/>
+                    android:layout_gravity="center"
+                    android:text="0/10" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_margin="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                >
+                android:layout_marginVertical="10dp"
+                android:orientation="vertical">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    >
+                    android:orientation="horizontal">
+
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="50dp"
                         android:layout_height="wrap_content"
                         android:text="Thân"
                         android:textSize="18sp"
-                        android:textStyle="bold"
-                        />
+                        android:textStyle="bold" />
 
                     <SeekBar
                         android:id="@+id/seekBar_Body"
@@ -165,32 +181,32 @@
                         android:layout_height="match_parent"
                         android:max="10" />
                 </LinearLayout>
+
                 <TextView
                     android:id="@+id/seekBar_Result_Body"
-                    android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0/10"/>
+                    android:layout_gravity="center"
+                    android:text="0/10" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_margin="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                >
+                android:layout_marginVertical="10dp"
+                android:orientation="vertical">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    >
+                    android:orientation="horizontal">
+
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="50dp"
                         android:layout_height="wrap_content"
                         android:text="Chân"
                         android:textSize="18sp"
-                        android:textStyle="bold"
-                        />
+                        android:textStyle="bold" />
 
                     <SeekBar
                         android:id="@+id/seekBar_Leg"
@@ -198,26 +214,57 @@
                         android:layout_height="match_parent"
                         android:max="10" />
                 </LinearLayout>
+
                 <TextView
                     android:id="@+id/seekBar_Result_Leg"
-                    android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0/10"/>
+                    android:layout_gravity="center"
+                    android:text="0/10" />
             </LinearLayout>
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginLeft="40dp"
-            >
-            <Button
-                android:id="@+id/btnTrainerChooseVideo"
-                android:layout_width="150dp"
+            android:layout_marginHorizontal="0dp"
+            android:layout_marginVertical="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Chọn Video" />
+                android:text="Giá"
+                android:textSize="18sp"
+                android:layout_marginLeft="50dp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/edtPrice"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
+                android:hint="0"
+                android:inputType="number" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="30dp"
+                android:text="nghìn VNĐ" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginHorizontal="30dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+
             <Button
                 android:id="@+id/btnTrainerUpVideo"
                 android:layout_width="150dp"

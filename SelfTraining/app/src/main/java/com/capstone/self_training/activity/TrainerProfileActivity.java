@@ -35,19 +35,20 @@ public class TrainerProfileActivity extends AppCompatActivity {
     String username;
     int roleId;
     String token;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trainer_profile);
-        if(CheckConnection.haveNetworkConnection(this)){
+        if (CheckConnection.haveNetworkConnection(this)) {
             reflect();
             displayToolBar();
             loadData();
             getAllSuggestion();
             getAllUploadedVideo();
             uploadVideoToStorage();
-        }else{
-            CheckConnection.showConnection(this,"Xin vui lòng kiểm tra kết nối internet !!! ");
+        } else {
+            CheckConnection.showConnection(this, "Xin vui lòng kiểm tra kết nối internet !!! ");
             finish();
         }
     }
@@ -56,7 +57,7 @@ public class TrainerProfileActivity extends AppCompatActivity {
         uploadVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),TrainerUploadVideoActi.class);
+                Intent intent = new Intent(getApplicationContext(), TrainerUploadVideoActi.class);
                 startActivity(intent);
             }
         });
@@ -66,7 +67,8 @@ public class TrainerProfileActivity extends AppCompatActivity {
         viewUploadedVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(TrainerProfileActivity.this, TrainerVideoListActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -75,7 +77,7 @@ public class TrainerProfileActivity extends AppCompatActivity {
         viewSuggestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TrainerProfileActivity.this,SuggestionListActi.class);
+                Intent intent = new Intent(TrainerProfileActivity.this, SuggestionListActi.class);
                 startActivity(intent);
             }
         });
@@ -88,27 +90,29 @@ public class TrainerProfileActivity extends AppCompatActivity {
         txtUsername = (TextView) findViewById(R.id.txtUsername_trainer_profile_id);
         imgSetting = (ImageView) findViewById(R.id.imgSetting_trainer_profile_id);
         uploadVideo = (LinearLayout) findViewById(R.id.lnUpload_trainer_profile_id);
-        viewSuggestion = (TextView)findViewById(R.id.btnGetAllSuggestion_trainer_profile_id);
+        viewSuggestion = (TextView) findViewById(R.id.btnGetAllSuggestion_trainer_profile_id);
         viewUploadedVideo = (TextView) findViewById(R.id.btnGetAllVideo_trainer_profile_id);
 
         mPerferences = PreferenceManager.getDefaultSharedPreferences(this);
         mEditor = mPerferences.edit();
-        Log.e("TrainerProfileActi: ","id = "+String.valueOf(mPerferences.getInt(getString(R.string.id),0))
-        +" - username = "+mPerferences.getString(getString(R.string.username),"") + " - roleId = "+
-         String.valueOf(mPerferences.getInt(getString(R.string.roleId),0)) + " - token = "+
-                        mPerferences.getString(getString(R.string.token),""));
+        Log.e("TrainerProfileActi: ", "id = " + String.valueOf(mPerferences.getInt(getString(R.string.id), 0))
+                + " - username = " + mPerferences.getString(getString(R.string.username), "") + " - roleId = " +
+                String.valueOf(mPerferences.getInt(getString(R.string.roleId), 0)) + " - token = " +
+                mPerferences.getString(getString(R.string.token), ""));
 
-         id = mPerferences.getInt(getString(R.string.id),0);
-         username = mPerferences.getString(getString(R.string.username),"");
-         roleId = mPerferences.getInt(getString(R.string.roleId),0);
-         token = mPerferences.getString(getString(R.string.token),"");
+        id = mPerferences.getInt(getString(R.string.id), 0);
+        username = mPerferences.getString(getString(R.string.username), "");
+        roleId = mPerferences.getInt(getString(R.string.roleId), 0);
+        token = mPerferences.getString(getString(R.string.token), "");
     }
-    private void loadData(){
-        txtUsername.setText(mPerferences.getString(getString(R.string.username),""));
-        Picasso.get().load(mPerferences.getString(getString(R.string.imgAccount),""))
+
+    private void loadData() {
+        txtUsername.setText(mPerferences.getString(getString(R.string.username), ""));
+        Picasso.get().load(mPerferences.getString(getString(R.string.imgAccount), ""))
                 .placeholder(R.drawable.userlogin).into(imgAccount);
     }
-    private void displayToolBar(){
+
+    private void displayToolBar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -118,6 +122,7 @@ public class TrainerProfileActivity extends AppCompatActivity {
             }
         });
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.trainer_trainee_menu, menu);
@@ -128,13 +133,13 @@ public class TrainerProfileActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menuChangePassword:
-                Intent intentChangePassword = new Intent(getApplicationContext(),ChangePasswordActivity.class);
+                Intent intentChangePassword = new Intent(getApplicationContext(), ChangePasswordActivity.class);
                 startActivity(intentChangePassword);
                 break;
             case R.id.menuLogout:
-                SharedPreferences preferences =  PreferenceManager.getDefaultSharedPreferences(this);
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
                 preferences.edit().clear().commit();
-                Intent intentMain_Home = new Intent(getApplicationContext(),MainActivity_Home.class);
+                Intent intentMain_Home = new Intent(getApplicationContext(), MainActivity_Home.class);
                 startActivity(intentMain_Home);
                 break;
             default:
@@ -143,5 +148,11 @@ public class TrainerProfileActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    public void updateProfile(View view) {
+        Intent intent = new Intent(TrainerProfileActivity.this, UpdateProfileActivity.class);
+        intent.putExtra("USER_ID", id);
+        startActivity(intent);
+    }
 
 }

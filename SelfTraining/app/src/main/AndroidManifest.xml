@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.capstone.self_training">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -14,8 +17,14 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".activity.MainActivity_Home">
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        <activity android:name=".activity.TrainerVideoListActivity"></activity>
+        <activity android:name=".activity.UpdateProfileActivity" />
+        <activity android:name=".activity.RegisterActivity" />
+        <activity android:name=".activity.TransferActi" />
+        <activity android:name=".activity.TrainerUploadVideoActi" />
+        <activity android:name=".activity.TraineeUploadVideoActi" />
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,16 +32,13 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.SuggestionDetailActi" />
-        <activity android:name=".activity.TraineeUploadVideoActi" />
-        <activity android:name=".activity.TrainerUploadVideoActi" />
         <activity android:name=".activity.SuggestionListActi" />
-        <activity android:name=".activity.MainActivity" />
+        <activity android:name=".activity.MainActivity_Home" />
         <activity android:name=".activity.PlayVideoActivity" />
-        <activity android:name=".activity.TrainerProfileActivity" />
-        <activity android:name=".activity.TraineeProfileActivity" />
+        <activity android:name=".activity.ChangePasswordActivity" />
         <activity android:name=".activity.LoginActivity" />
-        <activity android:name=".activity.ChangePasswordActivity"/>
-        <activity android:name=".activity.RegisterActivity"/>
+        <activity android:name=".activity.TraineeProfileActivity" />
+        <activity android:name=".activity.TrainerProfileActivity" />
     </application>
 
 </manifest>

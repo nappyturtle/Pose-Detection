@@ -1,8 +1,8 @@
 package com.capstone.self_training.service.dataservice;
 
 
-
 import android.content.Context;
+import android.provider.ContactsContract;
 
 import com.capstone.self_training.model.Account;
 import com.capstone.self_training.service.iService.IAccountService;
@@ -16,7 +16,8 @@ import retrofit2.Call;
 public class AccountService {
     private IAccountService iAccountService;
     private Context context;
-    public AccountService(Context context){
+
+    public AccountService(Context context) {
         this.context = context;
     }
 
@@ -41,6 +42,18 @@ public class AccountService {
         return accountResponse;
     }
 
+    public Account getAccount(int id) {
+        iAccountService = DataService.getAccountService();
+        Call<Account> call = iAccountService.getAccount(id);
+        Account account = null;
+        try {
+            account = call.execute().body();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return account;
+    }
+
     public Integer register(Account account) {
         iAccountService = DataService.getAccountService();
         Call<Integer> call = iAccountService.register(account);
@@ -57,5 +70,16 @@ public class AccountService {
             e.printStackTrace();
         }
         return status;
+    }
+
+    public void updateProfile(Account account) {
+        iAccountService = DataService.getAccountService();
+        Call<Void> call = iAccountService.updateProfile(account);
+        String mess = null;
+        try {
+            call.execute().body();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
