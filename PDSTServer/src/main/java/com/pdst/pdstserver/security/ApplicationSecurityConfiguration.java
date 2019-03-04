@@ -37,20 +37,21 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
-            .authorizeRequests()
-            .antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
-            .antMatchers(HttpMethod.PUT, EDIT_URL).permitAll()
-            .antMatchers(HttpMethod.GET, GET_ALL_VIDEO).permitAll()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
+                .antMatchers(HttpMethod.PUT, EDIT_URL).permitAll()
+                .antMatchers(HttpMethod.GET, GET_ALL_VIDEO).permitAll()
                 .antMatchers(HttpMethod.GET, GET_ALL_CATEGORY).permitAll()
+                .antMatchers(HttpMethod.GET, GET_ACCOUNT_BY_ID).permitAll()
                 .antMatchers(HttpMethod.GET, GET_ALL_VIDEO_TRAINER).permitAll()
                 .antMatchers(HttpMethod.GET, GET_ALL_VIDEO_TRENDING).permitAll()
-            .antMatchers(HttpMethod.GET, "/account/accounts").hasAuthority("Admin")
-            .antMatchers(HttpMethod.GET, "/account/staff/accounts").hasAuthority("Staff")
-            .anyRequest().authenticated()
-            .and()
-            .addFilter(new JWTGeneration(authenticationManager(),accountRepository))
-            .addFilter(new JWTVerification(authenticationManager()))
-            // disable session creation on Spring Security
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .antMatchers(HttpMethod.GET, "/account/accounts").hasAuthority("Admin")
+                .antMatchers(HttpMethod.GET, "/account/staff/accounts").hasAuthority("Staff")
+                .anyRequest().authenticated()
+                .and()
+                .addFilter(new JWTGeneration(authenticationManager(), accountRepository))
+                .addFilter(new JWTVerification(authenticationManager()))
+                // disable session creation on Spring Security
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 }

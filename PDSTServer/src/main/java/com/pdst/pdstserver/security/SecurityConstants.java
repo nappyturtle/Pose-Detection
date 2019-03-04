@@ -13,6 +13,7 @@ public class SecurityConstants {
     public static final String EDIT_URL = "/account/edit";
     public static final String GET_ALL_VIDEO = "/video/getAllVideosByDate";
     public static final String GET_ALL_CATEGORY = "/category/categories";
+    public static final String GET_ACCOUNT_BY_ID = "/account/update/{id}";
     public static final String GET_ALL_VIDEO_TRAINER = "/video/getAllVideosByTrainer";
     public static final String GET_ALL_VIDEO_TRENDING = "/video/getAllVideosByTopNumOfView";
 

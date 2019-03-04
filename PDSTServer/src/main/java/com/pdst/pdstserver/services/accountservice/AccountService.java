@@ -11,4 +11,5 @@ public interface AccountService {
     List<Account> getAllAccounts();
     Account editProfile(AccountDTO account);
     List<Account> getAllAccountsByStaff();
+    Account getAccountById(int id);
 }

@@ -88,7 +88,7 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public List<VideoDTO> getAllVideosByTrainer(int accountId) {
-        List<Video> videos = videoRepository.findAllByAccountId(accountId);
+        List<Video> videos = videoRepository.findAllByAccountIdOrderByCreatedTimeDesc(accountId);
         List<VideoDTO> dtos = new ArrayList<>();
         for (Video video : videos) {
             Account account = accountRepository.findAccountById(video.getAccountId());
@@ -97,9 +97,9 @@ public class VideoServiceImpl implements VideoService {
             dto.setUsername(account.getUsername());
             dto.setImgUrl(account.getImgUrl());
             dtos.add(dto);
-        }
-        return dtos;
     }
+        return dtos;
+}
 
     @Override
     public List<VideoDTO> getAllVideosByTopNumOfView(int page,int size) {

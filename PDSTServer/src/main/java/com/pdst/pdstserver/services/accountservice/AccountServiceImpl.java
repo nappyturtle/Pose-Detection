@@ -73,5 +73,10 @@ public class AccountServiceImpl implements AccountService {
         return accountRepository.findAllByRoleIdGreaterThanEqual(3);
     }
 
+    @Override
+    public Account getAccountById(int id) {
+        return accountRepository.findAccountById(id);
+    }
+
 
 }

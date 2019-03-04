@@ -9,6 +9,9 @@ public class VideoDTO implements Serializable {
     private String username;
     private String imgUrl;
 
+    public VideoDTO() {
+    }
+
     public Video getVideo() {
         return video;
     }

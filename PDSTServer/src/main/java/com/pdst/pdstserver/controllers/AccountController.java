@@ -54,5 +54,9 @@ public class AccountController {
         return ResponseEntity.status(NOT_FOUND).body("Tài khoản này không tồn tại");
     }
 
+    @GetMapping("update/{id}")
+    public Account getAccount(@PathVariable(value = "id") int id){
+        return accountService.getAccountById(id);
+    }
 
 }
