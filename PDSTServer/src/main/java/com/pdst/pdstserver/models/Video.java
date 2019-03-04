@@ -24,7 +24,7 @@ public class Video implements Serializable {
     private String folderName;
     private String createdTime;
     private String updatedTime;
-    private Double price;
+    private Integer price;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,11 +38,11 @@ public class Video implements Serializable {
     }
     @Basic
     @Column(name = "price")
-    public Double getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 
