@@ -74,9 +74,9 @@ public class SendRequest {
             fileInfo.put("foldernameTrainee", foldernameTrainee);
             fileInfo.put("suggestionId", suggestionId);
             fileInfo.put("videoUrl", traineeVideoUrl);
-            fileInfo.put("headWeight",videoRequest.getHeadWeight());
-            fileInfo.put("bodyWeight",videoRequest.getBodyWeight());
-            fileInfo.put("legWeight",videoRequest.getLegWeight());
+//            fileInfo.put("headWeight",videoRequest.getHeadWeight());
+//            fileInfo.put("bodyWeight",videoRequest.getBodyWeight());
+//            fileInfo.put("legWeight",videoRequest.getLegWeight());
 
 
             OutputStream os = con.getOutputStream();

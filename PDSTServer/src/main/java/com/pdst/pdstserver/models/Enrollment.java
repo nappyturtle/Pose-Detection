@@ -5,10 +5,9 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@Table(name = "videotransaction")
-public class VideoTransaction implements Serializable {
+public class Enrollment implements Serializable {
     private int id;
-    private Integer videoId;
+    private Integer courseId;
     private Integer accountId;
     private String createdTime;
 
@@ -24,13 +23,13 @@ public class VideoTransaction implements Serializable {
     }
 
     @Basic
-    @Column(name = "video_id")
-    public Integer getVideoId() {
-        return videoId;
+    @Column(name = "course_Id")
+    public Integer getCourseId() {
+        return courseId;
     }
 
-    public void setVideoId(Integer videoId) {
-        this.videoId = videoId;
+    public void setCourseId(Integer courseId) {
+        this.courseId = courseId;
     }
     @Basic
     @Column(name = "account_id")
@@ -53,17 +52,17 @@ public class VideoTransaction implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, accountId, videoId, createdTime);
+        return Objects.hash(id, accountId, courseId, createdTime);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        VideoTransaction that = (VideoTransaction) o;
+        Enrollment that = (Enrollment) o;
         return  id == that.id &&
                 Objects.equals(accountId, that.accountId) &&
-                Objects.equals(videoId, that.videoId) &&
+                Objects.equals(courseId, that.courseId) &&
                 Objects.equals(createdTime, that.createdTime);
     }
 }

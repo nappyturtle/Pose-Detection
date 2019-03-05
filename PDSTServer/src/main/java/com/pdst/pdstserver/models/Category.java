@@ -2,7 +2,6 @@ package com.pdst.pdstserver.models;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity

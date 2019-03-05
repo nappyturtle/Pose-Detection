@@ -10,5 +10,6 @@ import java.util.List;
 @Repository
 public interface VideoRepository extends JpaRepository<Video, Integer>{
     Video findVideoById(Integer id);
-    List<Video> findAllByAccountIdOrderByCreatedTimeDesc(int accountId);
+//    List<Video> findAllByAccountIdOrderByCreatedTimeDesc(int accountId);
+
 }

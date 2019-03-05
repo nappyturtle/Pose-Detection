@@ -3,8 +3,10 @@ package com.pdst.pdstserver.services.videoservice;
 import com.pdst.pdstserver.dtos.VideoDTO;
 import com.pdst.pdstserver.handlers.SendRequest;
 import com.pdst.pdstserver.models.Account;
+import com.pdst.pdstserver.models.Course;
 import com.pdst.pdstserver.models.Video;
 import com.pdst.pdstserver.repositories.AccountRepository;
+import com.pdst.pdstserver.repositories.CourseRepository;
 import com.pdst.pdstserver.repositories.VideoRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,11 +22,12 @@ public class VideoServiceImpl implements VideoService {
 
     private final VideoRepository videoRepository;
     private final AccountRepository accountRepository;
+    private final CourseRepository courseRepository;
 
-
-    public VideoServiceImpl(VideoRepository videoRepository, AccountRepository accountRepository) {
+    public VideoServiceImpl(VideoRepository videoRepository, AccountRepository accountRepository, CourseRepository courseRepository) {
         this.videoRepository = videoRepository;
         this.accountRepository = accountRepository;
+        this.courseRepository = courseRepository;
     }
 
 
@@ -40,7 +43,9 @@ public class VideoServiceImpl implements VideoService {
 
         List<VideoDTO> dtos = new ArrayList<>();
         for (Video video : videos) {
-            Account account = accountRepository.findAccountById(video.getAccountId());
+            Course course = courseRepository.findCourseById(video.getCourseId());
+//            Account account = accountRepository.findAccountById(video.getAccountId());
+            Account account = accountRepository.findAccountById(course.getAccountId());
             VideoDTO dto = new VideoDTO();
             dto.setVideo(video);
             dto.setUsername(account.getUsername());
@@ -86,20 +91,22 @@ public class VideoServiceImpl implements VideoService {
 
     }
 
+    //cho nay chua biet sua sao, tam thoi comment lai - VuVG 03/05/2019
     @Override
     public List<VideoDTO> getAllVideosByTrainer(int accountId) {
-        List<Video> videos = videoRepository.findAllByAccountIdOrderByCreatedTimeDesc(accountId);
-        List<VideoDTO> dtos = new ArrayList<>();
-        for (Video video : videos) {
-            Account account = accountRepository.findAccountById(video.getAccountId());
-            VideoDTO dto = new VideoDTO();
-            dto.setVideo(video);
-            dto.setUsername(account.getUsername());
-            dto.setImgUrl(account.getImgUrl());
-            dtos.add(dto);
+//        List<Video> videos = videoRepository.findAllByAccountIdOrderByCreatedTimeDesc(accountId);
+//        List<VideoDTO> dtos = new ArrayList<>();
+//        for (Video video : videos) {
+//            Account account = accountRepository.findAccountById(video.getAccountId());
+//            VideoDTO dto = new VideoDTO();
+//            dto.setVideo(video);
+//            dto.setUsername(account.getUsername());
+//            dto.setImgUrl(account.getImgUrl());
+//            dtos.add(dto);
+//    }
+//        return dtos;
+        return null;
     }
-        return dtos;
-}
 
     @Override
     public List<VideoDTO> getAllVideosByTopNumOfView(int page,int size) {
@@ -108,7 +115,9 @@ public class VideoServiceImpl implements VideoService {
 
         List<VideoDTO> dtos = new ArrayList<>();
         for (Video video : videos) {
-            Account account = accountRepository.findAccountById(video.getAccountId());
+            Course course = courseRepository.findCourseById(video.getCourseId());
+//            Account account = accountRepository.findAccountById(video.getAccountId());
+            Account account = accountRepository.findAccountById(course.getAccountId());
             VideoDTO dto = new VideoDTO();
             dto.setVideo(video);
             dto.setUsername(account.getUsername());

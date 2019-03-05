@@ -13,18 +13,12 @@ public class Video implements Serializable {
     private String title;
     private String thumnailUrl;
     private String contentUrl;
-    private Integer accountId;
-    private Integer categoryId;
+    private Integer courseId;
     private Integer numOfView;
-    private Integer headWeight;
-    private Integer bodyWeight;
-    private Integer legWeight;
     private String status;
-
     private String folderName;
     private String createdTime;
     private String updatedTime;
-    private Integer price;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,15 +29,6 @@ public class Video implements Serializable {
 
     public void setId(int id) {
         this.id = id;
-    }
-    @Basic
-    @Column(name = "price")
-    public Integer getPrice() {
-        return price;
-    }
-
-    public void setPrice(Integer price) {
-        this.price = price;
     }
 
     @Basic
@@ -77,26 +62,6 @@ public class Video implements Serializable {
     }
 
     @Basic
-    @Column(name = "account_id")
-    public Integer getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(Integer accountId) {
-        this.accountId = accountId;
-    }
-
-    @Basic
-    @Column(name = "category_id")
-    public Integer getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    @Basic
     @Column(name = "num_of_view")
     public Integer getNumOfView() {
         return numOfView;
@@ -104,33 +69,6 @@ public class Video implements Serializable {
 
     public void setNumOfView(Integer numOfView) {
         this.numOfView = numOfView;
-    }
-    @Basic
-    @Column(name = "head_weight")
-    public Integer getHeadWeight() {
-        return headWeight;
-    }
-
-    public void setHeadWeight(Integer headWeight) {
-        this.headWeight = headWeight;
-    }
-    @Basic
-    @Column(name = "body_weight")
-    public Integer getBodyWeight() {
-        return bodyWeight;
-    }
-
-    public void setBodyWeight(Integer bodyWeight) {
-        this.bodyWeight = bodyWeight;
-    }
-    @Basic
-    @Column(name = "leg_weight")
-    public Integer getLegWeight() {
-        return legWeight;
-    }
-
-    public void setLegWeight(Integer legWeight) {
-        this.legWeight = legWeight;
     }
 
     @Basic
@@ -143,6 +81,17 @@ public class Video implements Serializable {
         this.status = status;
     }
 
+    @Basic
+    @Column(name = "course_id")
+    public Integer getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(Integer courseId) {
+        this.courseId = courseId;
+    }
+
+
 
     @Override
     public boolean equals(Object o) {
@@ -153,21 +102,15 @@ public class Video implements Serializable {
                 Objects.equals(title, video.title) &&
                 Objects.equals(thumnailUrl, video.thumnailUrl) &&
                 Objects.equals(contentUrl, video.contentUrl) &&
-                Objects.equals(accountId, video.accountId) &&
-                Objects.equals(categoryId, video.categoryId) &&
                 Objects.equals(numOfView, video.numOfView) &&
                 Objects.equals(status, video.status) &&
                 Objects.equals(createdTime, video.createdTime) &&
-                Objects.equals(updatedTime, video.updatedTime) &&
-                Objects.equals(headWeight, video.headWeight) &&
-                Objects.equals(bodyWeight, video.bodyWeight) &&
-                Objects.equals(legWeight, video.legWeight) &&
-                Objects.equals(price, video.price);
+                Objects.equals(updatedTime, video.updatedTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, thumnailUrl, contentUrl, accountId, categoryId, numOfView, status, createdTime, updatedTime, headWeight, bodyWeight, legWeight, price);
+        return Objects.hash(id, title, thumnailUrl, contentUrl, numOfView, status, createdTime, updatedTime);
     }
 
     @Basic
