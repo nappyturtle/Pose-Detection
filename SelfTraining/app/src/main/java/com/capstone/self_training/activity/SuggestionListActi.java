@@ -67,23 +67,7 @@ public class SuggestionListActi extends AppCompatActivity {
             getSuggestionItem();
             getData(page, size);
             getMoreData();
-//            listView.setOnScrollListener(new AbsListView.OnScrollListener() {
-//                @Override
-//                public void onScrollStateChanged(AbsListView view, int scrollState) {
-//                    if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
-//                        isLoading = false;
-//                    }
-//                }
-//
-//                @Override
-//                public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-//                    if (firstVisibleItem + visibleItemCount == totalItemCount && !isLoading && !limitedData & totalItemCount != 0) {
-//                        isLoading = true;
-//                        ThreadData threadData = new ThreadData();
-//                        threadData.start();
-//                    }
-//                }
-//            });
+
         } else {
             CheckConnection.showConnection(this, "Xin vui lòng kiểm tra kết nối internet !!! ");
             finish();
@@ -135,8 +119,8 @@ public class SuggestionListActi extends AppCompatActivity {
 
     private void getData(int page, int size) {
 
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
+//        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+//        StrictMode.setThreadPolicy(policy);
 
         SuggestionService suggestionService = new SuggestionService();
         ArrayList<Suggestion> listTemp = (ArrayList<Suggestion>) suggestionService.getSuggestionList(token, page, size, id);
@@ -157,7 +141,7 @@ public class SuggestionListActi extends AppCompatActivity {
             }
             Log.e("ddasdasdasd > 0 ", "dasdasd > 0");
 
-            suggestionAdapter = new SuggestionAdapter(getApplicationContext(), suggestionList);
+            //suggestionAdapter = new SuggestionAdapter(getApplicationContext(), suggestionList);
 
             checkedSuggestionList = 1;
         }
@@ -207,7 +191,7 @@ public class SuggestionListActi extends AppCompatActivity {
         public void run() {
             mHandler.sendEmptyMessage(0);
             try {
-                Thread.sleep(3000);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

@@ -12,35 +12,34 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.capstone.self_training.R;
+import com.capstone.self_training.activity.PlayBoughtVideoActivity;
 import com.capstone.self_training.activity.PlayVideoActivity;
 import com.capstone.self_training.dto.VideoDTO;
 import com.capstone.self_training.model.Account;
-import com.capstone.self_training.model.Video;
-import com.capstone.self_training.util.TransformDataUtil;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class RelateVideoAdapter extends RecyclerView.Adapter<RelateVideoAdapter.ViewHolder> {
+public class RelateBoughtVideoAdapter extends RecyclerView.Adapter<RelateBoughtVideoAdapter.ViewHolder> {
     private List<VideoDTO> models;
     private Context context;
 
-    public RelateVideoAdapter(List<VideoDTO> models, Context context) {
+    public RelateBoughtVideoAdapter(List<VideoDTO> models, Context context) {
         this.models = models;
         this.context = context;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RelateBoughtVideoAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_relate_video, parent , false);
 
-        return new ViewHolder(v);
+        return new RelateBoughtVideoAdapter.ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RelateBoughtVideoAdapter.ViewHolder holder, int position) {
         final VideoDTO video = models.get(position);
         final Account account = new Account();
         account.setUsername(video.getUsername());
@@ -69,7 +68,7 @@ public class RelateVideoAdapter extends RecyclerView.Adapter<RelateVideoAdapter.
             @Override
             public void onClick(View v) {
                 //Intend to View Video Activity here
-                Intent intent = new Intent(context, PlayVideoActivity.class);
+                Intent intent = new Intent(context, PlayBoughtVideoActivity.class);
                 intent.putExtra("PLAYVIDEO", video.getVideo());
                 intent.putExtra("ACCOUNT", account);
                 context.startActivity(intent);
@@ -77,6 +76,7 @@ public class RelateVideoAdapter extends RecyclerView.Adapter<RelateVideoAdapter.
 
             }
         });
+        holder.tvPayment.setVisibility(View.INVISIBLE);
 
     }
 

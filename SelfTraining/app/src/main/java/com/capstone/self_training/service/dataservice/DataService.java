@@ -3,10 +3,10 @@ package com.capstone.self_training.service.dataservice;
 import com.capstone.self_training.service.ApiRetrofitClient;
 import com.capstone.self_training.service.iService.IAccountService;
 import com.capstone.self_training.service.iService.ISuggestionDetailService;
-import com.capstone.self_training.service.iService.IAccountService;
 import com.capstone.self_training.service.iService.ICategoryService;
 import com.capstone.self_training.service.iService.ISuggestionService;
 import com.capstone.self_training.service.iService.IVideoService;
+import com.capstone.self_training.service.iService.IEnrollmentService;
 import com.capstone.self_training.util.Constants;
 
 public class DataService {
@@ -31,5 +31,9 @@ public class DataService {
 
     public static IAccountService getAccountService() {
         return ApiRetrofitClient.getClient(baseUrl).create((IAccountService.class));
+    }
+
+    public static IEnrollmentService getEnrollmentService() {
+        return ApiRetrofitClient.getClient(baseUrl).create(IEnrollmentService.class);
     }
 }

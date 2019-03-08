@@ -1,5 +1,6 @@
 package com.capstone.self_training.activity;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,17 +26,22 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class TraineeProfileActivity extends AppCompatActivity {
 
+    private static final int REQUEST_CODE_UPDATE = 4;
     Toolbar toolbar;
     CircleImageView imgAccount;
     TextView txtUsername;
     ImageView imgSetting;
     TextView viewSuggestion;
+    TextView viewBoughtVideo;
     SharedPreferences mPerferences;
     SharedPreferences.Editor mEditor;
     int id;
     String username;
     int roleId;
     String token;
+    String imageAccount;
+    LinearLayout lnSuggestion;
+    LinearLayout lnBoughtCourse;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,10 +51,25 @@ public class TraineeProfileActivity extends AppCompatActivity {
             displayToolBar();
             loadData();
             getAllSuggestion();
+            getProfileTrainee();
+            getAllBoughtCourse();
         }else{
             CheckConnection.showConnection(this,"Xin vui lòng kiểm tra kết nối internet !!! ");
             finish();
         }
+    }
+    private void getProfileTrainee(){
+        imgSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+//                startActivityForResult(intent, REQUEST_CODE_LOGIN);
+                Intent intent = new Intent(getApplicationContext(), UpdateProfileActivity.class);
+                intent.putExtra("USER_ID", id);
+                startActivityForResult(intent, REQUEST_CODE_UPDATE);
+                //startActivity(intent);
+            }
+        });
     }
 
     private void reflect() {
@@ -57,6 +78,9 @@ public class TraineeProfileActivity extends AppCompatActivity {
         txtUsername = (TextView) findViewById(R.id.txtUsername_trainee_profile_id);
         imgSetting = (ImageView) findViewById(R.id.imgSetting_trainee_profile_id);
         viewSuggestion = (TextView)findViewById(R.id.btnGetAllSuggestion_trainee_profile_id);
+        viewBoughtVideo = (TextView)findViewById(R.id.btnGetAllBoughtVideo_trainee_profile_id);
+        lnSuggestion = (LinearLayout) findViewById(R.id.ln_traineeProfile_getAllSuggestion);
+        lnBoughtCourse = (LinearLayout) findViewById(R.id.ln_traineeProfile_getAllBoughtCourse);
 
         mPerferences = PreferenceManager.getDefaultSharedPreferences(this);
         mEditor = mPerferences.edit();
@@ -69,6 +93,8 @@ public class TraineeProfileActivity extends AppCompatActivity {
         username = mPerferences.getString(getString(R.string.username),"");
         roleId = mPerferences.getInt(getString(R.string.roleId),0);
         token = mPerferences.getString(getString(R.string.token),"");
+        imageAccount = mPerferences.getString(getString(R.string.imgAccount),"");
+        //Log.e("traineeImage = ",imageAccount);
     }
     private void displayToolBar() {
         setSupportActionBar(toolbar);
@@ -82,8 +108,9 @@ public class TraineeProfileActivity extends AppCompatActivity {
     }
     private void loadData() {
         txtUsername.setText(mPerferences.getString(getString(R.string.username),""));
-        Picasso.get().load(mPerferences.getString(getString(R.string.imgAccount),""))
-                .placeholder(R.drawable.userlogin).into(imgAccount);
+        Picasso.get().load(imageAccount)
+//                .placeholder(R.drawable.userlogin).into(imgAccount);
+        .into(imgAccount);
     }
     private void getAllSuggestion() {
         viewSuggestion.setOnClickListener(new View.OnClickListener() {
@@ -93,7 +120,40 @@ public class TraineeProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        lnSuggestion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TraineeProfileActivity.this,SuggestionListActi.class);
+                startActivity(intent);
+            }
+        });
     }
+    private void getAllBoughtCourse() {
+        viewBoughtVideo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TraineeProfileActivity.this,BoughtCourseActivity.class);
+                startActivity(intent);
+            }
+        });
+        lnBoughtCourse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TraineeProfileActivity.this,BoughtCourseActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_UPDATE && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
+            System.out.println("Trainee uploaded profile");
+            imageAccount = data.getStringExtra("imgAccount");
+
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.trainer_trainee_menu, menu);

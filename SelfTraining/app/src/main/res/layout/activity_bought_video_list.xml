@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.BoughtVideoListActivity"
+
+    >
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/boughtVideo_toolbar_id"
+        android:minHeight="?attr/actionBarSize"
+        app:titleTextColor="#868683"
+        app:title="Danh sách video"
+        >
+    </android.support.v7.widget.Toolbar>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        >
+        <TextView
+            android:visibility="invisible"
+            android:id="@+id/txtBoughtVideoIsEmpty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Không có video nào"
+            android:textSize="23sp" />
+
+        <ListView
+            android:scrollbars="none"
+            android:layout_margin="5dp"
+            android:id="@+id/boughtVideo_listview_id"
+            android:divider="#ffffff"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></ListView>
+    </FrameLayout>
+
+</LinearLayout>

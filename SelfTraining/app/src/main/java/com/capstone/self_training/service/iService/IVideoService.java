@@ -26,4 +26,11 @@ public interface IVideoService {
 
     @GET("video/getAllVideosByTopNumOfView")
     Call<List<VideoDTO>> getAllVideosByTopNumOfView(@Query("page") int page,@Query("size") int size);
+
+    @GET("video/getAllVideoByCourseId")
+    Call<List<VideoDTO>> getAllBoughtVideosByCourseId(@Header(Constants.header_string) String token,
+                                                      @Query("page") int page,@Query("size") int size,@Query("courseId") int courseId);
+    @GET("video/getAllBoughtVideoRelated")
+    Call<List<VideoDTO>> getAllBoughtVideoRelated(@Header(Constants.header_string) String token,
+                                                  @Query("courseId") int courseId,@Query("videoId") int videoId);
 }

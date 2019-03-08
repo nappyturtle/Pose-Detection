@@ -1,6 +1,5 @@
 package com.capstone.self_training.activity;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,7 +14,7 @@ import android.view.MenuItem;
 import com.capstone.self_training.R;
 import com.capstone.self_training.adapter.MainViewPager;
 import com.capstone.self_training.fragment.Fragment_Home;
-import com.capstone.self_training.fragment.Fragment_Register;
+import com.capstone.self_training.fragment.Fragment_Course;
 import com.capstone.self_training.fragment.Fragment_Trending;
 import com.capstone.self_training.util.CheckConnection;
 
@@ -50,7 +49,7 @@ public class MainActivity_Home extends AppCompatActivity {
         MainViewPager mainViewPager = new MainViewPager(getSupportFragmentManager());
         mainViewPager.addFragment(new Fragment_Home(), "Trang chủ",getApplicationContext());
         mainViewPager.addFragment(new Fragment_Trending(), "Thịnh hành",getApplicationContext());
-        mainViewPager.addFragment(new Fragment_Register(), "Kết quả tập",getApplicationContext());
+        mainViewPager.addFragment(new Fragment_Course(), "Khoá học",getApplicationContext());
 
         viewPager.setAdapter(mainViewPager);
         tabLayout.setupWithViewPager(viewPager);

@@ -1,13 +1,15 @@
 package com.capstone.self_training.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.StrictMode;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,12 +23,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.capstone.self_training.R;
+import com.capstone.self_training.adapter.RelateBoughtVideoAdapter;
 import com.capstone.self_training.adapter.RelateVideoAdapter;
 import com.capstone.self_training.dto.VideoDTO;
 import com.capstone.self_training.model.Account;
 import com.capstone.self_training.model.Video;
 import com.capstone.self_training.service.dataservice.VideoService;
-import com.capstone.self_training.util.TransformDataUtil;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -35,7 +37,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class PlayVideoActivity extends AppCompatActivity implements SurfaceHolder.Callback,
+public class PlayBoughtVideoActivity extends AppCompatActivity implements SurfaceHolder.Callback,
         MediaPlayer.OnPreparedListener, VideoControllerView.MediaPlayerControl {
     private String TAG = "FullscreenVideoActivity";
     SurfaceView videoSurface;
@@ -50,9 +52,10 @@ public class PlayVideoActivity extends AppCompatActivity implements SurfaceHolde
 
 
     private RecyclerView relate_video_list;
-    private RecyclerView.Adapter relateVideoAdapter;
+    private RelateBoughtVideoAdapter relateVideoAdapter;
     private List<Video> videos;
-
+    private SharedPreferences mPerferences;
+    private SharedPreferences.Editor mEditor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         isPauseMedia = false;
@@ -60,12 +63,15 @@ public class PlayVideoActivity extends AppCompatActivity implements SurfaceHolde
 
         final Video playingVideo = (Video) getIntent().getSerializableExtra("PLAYVIDEO");
         Account account = (Account) getIntent().getSerializableExtra("ACCOUNT");
+        mPerferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mEditor = mPerferences.edit();
+        String token = mPerferences.getString(getString(R.string.token),"");
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
         VideoService videoService = new VideoService();
-        //List<VideoDTO> list = videoService.getVideosByTrainer(playingVideo.getAccountId());
+        List<VideoDTO> list = videoService.getAllBoughtVideoRelated(token,playingVideo.getCourseId(),playingVideo.getId());
 
         if (isFullScreen() == false) {
             setContentView(R.layout.activity_play_video);
@@ -96,7 +102,7 @@ public class PlayVideoActivity extends AppCompatActivity implements SurfaceHolde
             user_img.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(PlayVideoActivity.this, "View Profile Clicked", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PlayBoughtVideoActivity.this, "View Profile Clicked", Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -106,9 +112,9 @@ public class PlayVideoActivity extends AppCompatActivity implements SurfaceHolde
             videos = new ArrayList<>();
 
 
-            //relateVideoAdapter = new RelateVideoAdapter(list, this);
+            relateVideoAdapter = new RelateBoughtVideoAdapter(list, this);
 
-            //relate_video_list.setAdapter(relateVideoAdapter);
+            relate_video_list.setAdapter(relateVideoAdapter);
 
         } else {
             setContentView(R.layout.activity_fullscreen_video);

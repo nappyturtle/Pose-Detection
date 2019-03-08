@@ -88,6 +88,8 @@ public class Fragment_Home extends Fragment {
     }
 
     private void init() {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
         home_video_list = (RecyclerView) view.findViewById(R.id.home_video_list);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar_id_home);
@@ -104,8 +106,6 @@ public class Fragment_Home extends Fragment {
     }
 
     private void loadData(int page, int size) {
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
 
         videoService = new VideoService();
         List<VideoDTO> videoDTOS = videoService.getVideosByDate(page, size);
@@ -123,7 +123,6 @@ public class Fragment_Home extends Fragment {
                 accounts.add(account);
             }
         }
-
 
     }
 

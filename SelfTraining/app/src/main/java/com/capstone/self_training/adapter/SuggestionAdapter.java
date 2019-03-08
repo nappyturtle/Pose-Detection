@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.capstone.self_training.R;
 import com.capstone.self_training.activity.TraineeVideoUploadedActivity;
+import com.capstone.self_training.helper.TimeHelper;
 import com.capstone.self_training.model.Suggestion;
 import com.squareup.picasso.Picasso;
 
@@ -73,7 +74,7 @@ public class SuggestionAdapter extends BaseAdapter {
                into(viewHolder.suggestion_image);
 
         viewHolder.suggestion_name.setText(suggestion.getVideoName().toString());
-        viewHolder.suggestion_date.setText(suggestion.getCreatedTime().toString());
+        viewHolder.suggestion_date.setText(TimeHelper.showPeriodOfTime(suggestion.getCreatedTime().toString()));
         String status = suggestion.getStatus().toString();
         if(status.equals("active")){
             viewHolder.suggestion_status.setText("Hoàn tất");

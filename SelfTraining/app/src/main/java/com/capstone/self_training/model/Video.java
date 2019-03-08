@@ -10,16 +10,21 @@ public class Video implements Serializable {
     private Integer accountId;
     private Integer categoryId;
     private Integer numOfView;
-    private Integer headWeight;
-    private Integer bodyWeight;
-    private Integer legWeight;
     private String status;
+    private Integer courseId;
     private String username;
-    private String categoryName;
     private String folderName;
     private String createdTime;
     private String updatedTime;
     private int price;
+
+    public Integer getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(Integer courseId) {
+        this.courseId = courseId;
+    }
 
     public int getPrice() {
         return price;
@@ -47,30 +52,6 @@ public class Video implements Serializable {
 
     public void setNumOfView(Integer numOfView) {
         this.numOfView = numOfView;
-    }
-
-    public Integer getHeadWeight() {
-        return headWeight;
-    }
-
-    public void setHeadWeight(Integer headWeight) {
-        this.headWeight = headWeight;
-    }
-
-    public Integer getBodyWeight() {
-        return bodyWeight;
-    }
-
-    public void setBodyWeight(Integer bodyWeight) {
-        this.bodyWeight = bodyWeight;
-    }
-
-    public Integer getLegWeight() {
-        return legWeight;
-    }
-
-    public void setLegWeight(Integer legWeight) {
-        this.legWeight = legWeight;
     }
 
     public int getId() {

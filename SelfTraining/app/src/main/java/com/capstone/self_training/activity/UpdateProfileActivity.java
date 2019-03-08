@@ -4,11 +4,14 @@ package com.capstone.self_training.activity;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -42,6 +45,8 @@ public class UpdateProfileActivity extends AppCompatActivity {
     private Uri userImageUri = null;
 
     private StorageReference storageReference;
+    SharedPreferences mPerferences;
+    SharedPreferences.Editor mEditor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +69,8 @@ public class UpdateProfileActivity extends AppCompatActivity {
         accountService = new AccountService(getApplicationContext());
         currentUser = accountService.getAccount(userId);
         storageReference = FirebaseStorage.getInstance().getReference();
+        mPerferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        mEditor = mPerferences.edit();
 
         if (currentUser != null) {
             if (currentUser.getImgUrl() != null) {
@@ -149,14 +156,26 @@ public class UpdateProfileActivity extends AppCompatActivity {
                     srf.putFile(userImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                            mEditor.putString("imgAccount",taskSnapshot.getDownloadUrl().toString());
+                            mEditor.commit();
+                            Log.e("imgAccountda commit = ",mPerferences.getString(getString(R.string.imgAccount),""));
                             accountService.updateProfile(setAccountToEdit(taskSnapshot.getDownloadUrl().toString()));
+                            Toast.makeText(UpdateProfileActivity.this, "Cập nhập thành công!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent();
+                intent.putExtra("imgAccount",mPerferences.getString(getString(R.string.imgAccount),""));
+                setResult(Activity.RESULT_OK,intent);
+                finish();
+                            Log.e("imgAccountaaaaaaa = ",mPerferences.getString(getString(R.string.imgAccount),""));
+//                            Intent intent = new Intent(getApplicationContext(),TraineeProfileActivity.class);
+//                            startActivity(intent);
                         }
                     });
                 } else {
 
                     accountService.updateProfile(setAccountToEdit(currentUser.getImgUrl()));
                 }
-                Toast.makeText(UpdateProfileActivity.this, "Cập nhập thành công!", Toast.LENGTH_SHORT).show();
+
             }
         });
         alertDialog.setNegativeButton("Không", new DialogInterface.OnClickListener() {

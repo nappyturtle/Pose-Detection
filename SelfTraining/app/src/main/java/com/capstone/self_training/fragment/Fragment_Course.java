@@ -10,12 +10,12 @@ import android.view.ViewGroup;
 
 import com.capstone.self_training.R;
 
-public class Fragment_Register extends Fragment {
+public class Fragment_Course extends Fragment {
     View view;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_register,container, false);
+        view = inflater.inflate(R.layout.fragment_course,container, false);
         return view;
     }
 }

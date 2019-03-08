@@ -93,12 +93,12 @@ public class Fragment_Trending extends Fragment {
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar_id_trending);
         trending_video_list.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(getContext());
-        trending_video_list.setLayoutManager(linearLayoutManager);
 
         videos = new ArrayList<>();
         accounts = new ArrayList<>();
         trendingVideoAdapter = new HomeVideoAdapter(videos, getContext(), accounts);
         trending_video_list.setAdapter(trendingVideoAdapter);
+        trending_video_list.setLayoutManager(linearLayoutManager);
         mHandler = new mHandler();
     }
 

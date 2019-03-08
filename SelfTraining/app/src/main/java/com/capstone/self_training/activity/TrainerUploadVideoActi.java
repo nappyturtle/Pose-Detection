@@ -86,12 +86,12 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
     private ImageView ivThumbnail;
     private Uri imageUri;
 
-    private SeekBar seekBar_head;
-    private SeekBar seekBar_body;
-    private SeekBar seekBar_leg;
-    private TextView resultHead;
-    private TextView resultBody;
-    private TextView resultLeg;
+//    private SeekBar seekBar_head;
+//    private SeekBar seekBar_body;
+//    private SeekBar seekBar_leg;
+//    private TextView resultHead;
+//    private TextView resultBody;
+//    private TextView resultLeg;
     Bitmap bitmap_thumbnail;
     private ArrayList<Category> cateList;
     private CategoryAdapter categoryAdapter;
@@ -110,7 +110,7 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
         StrictMode.setThreadPolicy(policy);
 
         init();
-        getSeekbarResult();
+        //getSeekbarResult();
         requestRead();
         uploadVideo();
 
@@ -122,85 +122,85 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
         });
     }
 
-    private void getSeekbarResult() {
-        // lấy resultHead của seekbar
-        resultHead.setText(seekBar_head.getProgress() + "/" + seekBar_head.getMax());
-        seekBar_head.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int progressValue;
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                progressValue = progress;
-                resultHead.setText(progress + "/" + seekBar.getMax());
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                resultHead.setText(progressValue + "/" + seekBar.getMax());
-                mEditor.putInt(getString(R.string.result_head), progressValue);
-                mEditor.commit();
-            }
-        });
-
-        // lấy resultBody của seekbar
-        resultBody.setText(seekBar_body.getProgress() + "/" + seekBar_body.getMax());
-
-        seekBar_body.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int progressValue;
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                Log.e("fromUser = ", String.valueOf(fromUser));
-                progressValue = progress;
-                resultBody.setText(progress + "/" + seekBar.getMax());
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                resultBody.setText(progressValue + "/" + seekBar.getMax());
-                mEditor.putInt(getString(R.string.result_body), progressValue);
-                mEditor.commit();
-            }
-        });
-
-        // lấy resultLeg của seekbar
-        resultLeg.setText(seekBar_leg.getProgress() + "/" + seekBar_leg.getMax());
-
-        seekBar_leg.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int progressValue;
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                Log.e("fromUser = ", String.valueOf(fromUser));
-                progressValue = progress;
-                resultLeg.setText(progress + "/" + seekBar.getMax());
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                resultLeg.setText(progressValue + "/" + seekBar.getMax());
-                mEditor.putInt(getString(R.string.result_leg), progressValue);
-                mEditor.commit();
-            }
-        });
-
-
-    }
+//    private void getSeekbarResult() {
+//        // lấy resultHead của seekbar
+//        resultHead.setText(seekBar_head.getProgress() + "/" + seekBar_head.getMax());
+//        seekBar_head.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//            int progressValue;
+//
+//            @Override
+//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+//                progressValue = progress;
+//                resultHead.setText(progress + "/" + seekBar.getMax());
+//            }
+//
+//            @Override
+//            public void onStartTrackingTouch(SeekBar seekBar) {
+//
+//            }
+//
+//            @Override
+//            public void onStopTrackingTouch(SeekBar seekBar) {
+//                resultHead.setText(progressValue + "/" + seekBar.getMax());
+//                mEditor.putInt(getString(R.string.result_head), progressValue);
+//                mEditor.commit();
+//            }
+//        });
+//
+//        // lấy resultBody của seekbar
+//        resultBody.setText(seekBar_body.getProgress() + "/" + seekBar_body.getMax());
+//
+//        seekBar_body.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//            int progressValue;
+//
+//            @Override
+//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+//                Log.e("fromUser = ", String.valueOf(fromUser));
+//                progressValue = progress;
+//                resultBody.setText(progress + "/" + seekBar.getMax());
+//            }
+//
+//            @Override
+//            public void onStartTrackingTouch(SeekBar seekBar) {
+//
+//            }
+//
+//            @Override
+//            public void onStopTrackingTouch(SeekBar seekBar) {
+//                resultBody.setText(progressValue + "/" + seekBar.getMax());
+//                mEditor.putInt(getString(R.string.result_body), progressValue);
+//                mEditor.commit();
+//            }
+//        });
+//
+//        // lấy resultLeg của seekbar
+//        resultLeg.setText(seekBar_leg.getProgress() + "/" + seekBar_leg.getMax());
+//
+//        seekBar_leg.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//            int progressValue;
+//
+//            @Override
+//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+//                Log.e("fromUser = ", String.valueOf(fromUser));
+//                progressValue = progress;
+//                resultLeg.setText(progress + "/" + seekBar.getMax());
+//            }
+//
+//            @Override
+//            public void onStartTrackingTouch(SeekBar seekBar) {
+//
+//            }
+//
+//            @Override
+//            public void onStopTrackingTouch(SeekBar seekBar) {
+//                resultLeg.setText(progressValue + "/" + seekBar.getMax());
+//                mEditor.putInt(getString(R.string.result_leg), progressValue);
+//                mEditor.commit();
+//            }
+//        });
+//
+//
+//    }
 
     private void openFileChooser() {
         Intent intent = new Intent();
@@ -228,19 +228,19 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
         mPerferences = PreferenceManager.getDefaultSharedPreferences(this);
         mEditor = mPerferences.edit();
 
-        seekBar_head = (SeekBar) findViewById(R.id.seekBar_Head);
-        seekBar_body = (SeekBar) findViewById(R.id.seekBar_Body);
-        seekBar_leg = (SeekBar) findViewById(R.id.seekBar_Leg);
-        resultHead = (TextView) findViewById(R.id.seekBar_Result_Head);
-        resultBody = (TextView) findViewById(R.id.seekBar_Result_Body);
-        resultLeg = (TextView) findViewById(R.id.seekBar_Result_Leg);
+//        seekBar_head = (SeekBar) findViewById(R.id.seekBar_Head);
+//        seekBar_body = (SeekBar) findViewById(R.id.seekBar_Body);
+//        seekBar_leg = (SeekBar) findViewById(R.id.seekBar_Leg);
+//        resultHead = (TextView) findViewById(R.id.seekBar_Result_Head);
+//        resultBody = (TextView) findViewById(R.id.seekBar_Result_Body);
+//        resultLeg = (TextView) findViewById(R.id.seekBar_Result_Leg);
 
         storageReference = FirebaseStorage.getInstance().getReference();
         categoryService = new CategoryService();
         initCateList();
         categoryAdapter = new CategoryAdapter(this, cateList);
         spnCategory.setAdapter(categoryAdapter);
-        initSharedPreperences();
+        //initSharedPreperences();
 
     }
 
@@ -268,18 +268,18 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
         }
     }
 
-    private void initSharedPreperences() {
-        mEditor.putInt(getString(R.string.result_head), 0);
-        mEditor.commit();
-
-        mEditor.putInt(getString(R.string.result_body), 0);
-        mEditor.commit();
-
-        mEditor.putInt(getString(R.string.result_leg), 0);
-        mEditor.commit();
-
-
-    }
+//    private void initSharedPreperences() {
+//        mEditor.putInt(getString(R.string.result_head), 0);
+//        mEditor.commit();
+//
+//        mEditor.putInt(getString(R.string.result_body), 0);
+//        mEditor.commit();
+//
+//        mEditor.putInt(getString(R.string.result_leg), 0);
+//        mEditor.commit();
+//
+//
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -394,9 +394,9 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
                 videoUploadedToFirebase.setTitle(edtTitle.getText().toString());
                 videoUploadedToFirebase.setContentUrl(taskSnapshot.getDownloadUrl().toString());
                 videoUploadedToFirebase.setCreatedTime(TimeHelper.getCurrentTime());
-                videoUploadedToFirebase.setHeadWeight(mPerferences.getInt(getString(R.string.result_head), 0));
-                videoUploadedToFirebase.setBodyWeight(mPerferences.getInt(getString(R.string.result_body), 0));
-                videoUploadedToFirebase.setLegWeight(mPerferences.getInt(getString(R.string.result_leg), 0));
+//                videoUploadedToFirebase.setHeadWeight(mPerferences.getInt(getString(R.string.result_head), 0));
+//                videoUploadedToFirebase.setBodyWeight(mPerferences.getInt(getString(R.string.result_body), 0));
+//                videoUploadedToFirebase.setLegWeight(mPerferences.getInt(getString(R.string.result_leg), 0));
 
                 String price = edtPrice.getText().toString();
                 if (price == null || price.equalsIgnoreCase("")) {

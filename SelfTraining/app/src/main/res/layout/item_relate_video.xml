@@ -32,18 +32,24 @@
             android:id="@+id/relate_video_username"
             android:paddingLeft="15dp"
             android:textSize="16sp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="8dp"
             android:text="kietPT"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <TextView
             android:id="@+id/relate_video_view"
             android:paddingLeft="15dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="8dp"
             android:text="1,4 Tr lượt xem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
+        <TextView
+            android:id="@+id/relate_video_view_bought"
+            android:paddingLeft="15dp"
+            android:layout_marginTop="8dp"
+            android:text="Miễn phí"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
 
