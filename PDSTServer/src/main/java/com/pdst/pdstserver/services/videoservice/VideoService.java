@@ -15,4 +15,6 @@ public interface VideoService {
     Optional<Video> getVideoById(int id);
     boolean createVideo(Video video);
     List<VideoDTO> getAllVideosByTrainer(int accountId);
+    List<VideoDTO> getAllVideoByCourseId(int page, int size, int courseId);
+    List<VideoDTO> getAllBoughtVideoRelated(int courseId, int videoId);
 }

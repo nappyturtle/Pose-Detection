@@ -14,6 +14,17 @@ public class Course implements Serializable {
     private Integer price;
     private String createdTime;
     private String updatedTime;
+    private String thumbnail;
+
+    @Basic
+    @Column(name = "thumbnail")
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +46,7 @@ public class Course implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
     @Basic
     @Column(name = "status")
     public String getStatus() {
@@ -44,6 +56,7 @@ public class Course implements Serializable {
     public void setStatus(String status) {
         this.status = status;
     }
+
     @Basic
     @Column(name = "category_id")
     public Integer getCategoryId() {
@@ -53,6 +66,7 @@ public class Course implements Serializable {
     public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
     }
+
     @Basic
     @Column(name = "account_id")
     public Integer getAccountId() {
@@ -62,6 +76,7 @@ public class Course implements Serializable {
     public void setAccountId(Integer accountId) {
         this.accountId = accountId;
     }
+
     @Basic
     @Column(name = "price")
     public Integer getPrice() {
@@ -71,6 +86,7 @@ public class Course implements Serializable {
     public void setPrice(Integer price) {
         this.price = price;
     }
+
     @Basic
     @Column(name = "created_time")
     public String getCreatedTime() {
@@ -80,6 +96,7 @@ public class Course implements Serializable {
     public void setCreatedTime(String createdTime) {
         this.createdTime = createdTime;
     }
+
     @Basic
     @Column(name = "updated_time")
     public String getUpdatedTime() {
@@ -89,6 +106,7 @@ public class Course implements Serializable {
     public void setUpdatedTime(String updatedTime) {
         this.updatedTime = updatedTime;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -101,10 +119,13 @@ public class Course implements Serializable {
                 Objects.equals(price, course.price) &&
                 Objects.equals(status, course.status) &&
                 Objects.equals(createdTime, course.createdTime) &&
-                Objects.equals(updatedTime, course.updatedTime);
+                Objects.equals(updatedTime, course.updatedTime) &&
+                Objects.equals(thumbnail, course.thumbnail)
+                ;
     }
+
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, categoryId, accountId, price, status, createdTime, updatedTime);
+        return Objects.hash(id, name, categoryId, accountId, price, status, createdTime, updatedTime, thumbnail);
     }
 }
