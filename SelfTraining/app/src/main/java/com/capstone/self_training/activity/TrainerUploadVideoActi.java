@@ -29,16 +29,20 @@ import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.capstone.self_training.R;
 import com.capstone.self_training.adapter.CategoryAdapter;
+import com.capstone.self_training.adapter.CourseByNameAdapter;
 import com.capstone.self_training.helper.TimeHelper;
 import com.capstone.self_training.model.Category;
+import com.capstone.self_training.model.Course;
 import com.capstone.self_training.model.Video;
 import com.capstone.self_training.service.dataservice.CategoryService;
+import com.capstone.self_training.service.dataservice.CourseService;
 import com.capstone.self_training.service.dataservice.VideoService;
 import com.capstone.self_training.util.MP4Demuxer;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -73,9 +77,9 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
     private Button btnTrainerChooseVideo;
     private Button btnTrainerUpVideo;
     private EditText edtTitle;
-    private Spinner spnCategory;
-    private EditText edtPrice;
     private Toolbar toolbar;
+    private Spinner spnCourse;
+    private ImageView ivAddNewCourse;
 
     private StorageReference storageReference;
 
@@ -85,13 +89,6 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
 
     private ImageView ivThumbnail;
     private Uri imageUri;
-
-//    private SeekBar seekBar_head;
-//    private SeekBar seekBar_body;
-//    private SeekBar seekBar_leg;
-//    private TextView resultHead;
-//    private TextView resultBody;
-//    private TextView resultLeg;
     Bitmap bitmap_thumbnail;
     private ArrayList<Category> cateList;
     private CategoryAdapter categoryAdapter;
@@ -99,7 +96,11 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
     private SharedPreferences mPerferences;
     private SharedPreferences.Editor mEditor;
     private boolean checkedThumnail;
-
+    private CourseService courseService;
+    private int currentUserId;
+    private ArrayList<Course> courseArrayList;
+    private CourseByNameAdapter courseByNameAdapter;
+    private String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,86 +123,6 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
         });
     }
 
-//    private void getSeekbarResult() {
-//        // lấy resultHead của seekbar
-//        resultHead.setText(seekBar_head.getProgress() + "/" + seekBar_head.getMax());
-//        seekBar_head.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-//            int progressValue;
-//
-//            @Override
-//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-//                progressValue = progress;
-//                resultHead.setText(progress + "/" + seekBar.getMax());
-//            }
-//
-//            @Override
-//            public void onStartTrackingTouch(SeekBar seekBar) {
-//
-//            }
-//
-//            @Override
-//            public void onStopTrackingTouch(SeekBar seekBar) {
-//                resultHead.setText(progressValue + "/" + seekBar.getMax());
-//                mEditor.putInt(getString(R.string.result_head), progressValue);
-//                mEditor.commit();
-//            }
-//        });
-//
-//        // lấy resultBody của seekbar
-//        resultBody.setText(seekBar_body.getProgress() + "/" + seekBar_body.getMax());
-//
-//        seekBar_body.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-//            int progressValue;
-//
-//            @Override
-//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-//                Log.e("fromUser = ", String.valueOf(fromUser));
-//                progressValue = progress;
-//                resultBody.setText(progress + "/" + seekBar.getMax());
-//            }
-//
-//            @Override
-//            public void onStartTrackingTouch(SeekBar seekBar) {
-//
-//            }
-//
-//            @Override
-//            public void onStopTrackingTouch(SeekBar seekBar) {
-//                resultBody.setText(progressValue + "/" + seekBar.getMax());
-//                mEditor.putInt(getString(R.string.result_body), progressValue);
-//                mEditor.commit();
-//            }
-//        });
-//
-//        // lấy resultLeg của seekbar
-//        resultLeg.setText(seekBar_leg.getProgress() + "/" + seekBar_leg.getMax());
-//
-//        seekBar_leg.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-//            int progressValue;
-//
-//            @Override
-//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-//                Log.e("fromUser = ", String.valueOf(fromUser));
-//                progressValue = progress;
-//                resultLeg.setText(progress + "/" + seekBar.getMax());
-//            }
-//
-//            @Override
-//            public void onStartTrackingTouch(SeekBar seekBar) {
-//
-//            }
-//
-//            @Override
-//            public void onStopTrackingTouch(SeekBar seekBar) {
-//                resultLeg.setText(progressValue + "/" + seekBar.getMax());
-//                mEditor.putInt(getString(R.string.result_leg), progressValue);
-//                mEditor.commit();
-//            }
-//        });
-//
-//
-//    }
-
     private void openFileChooser() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -210,17 +131,13 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
     }
 
     public void init() {
+
         ivThumbnail = (ImageView) findViewById(R.id.ivThumbnail);
         vwTrainerVideo = (VideoView) findViewById(R.id.vwTrainerVideo);
         btnTrainerChooseVideo = (Button) findViewById(R.id.btnTrainerChooseVideo);
         btnTrainerUpVideo = (Button) findViewById(R.id.btnTrainerUpVideo);
         edtTitle = (EditText) findViewById(R.id.edtTitle);
-        spnCategory = (Spinner) findViewById(R.id.spnCategory);
         storageReference = FirebaseStorage.getInstance().getReference();
-        edtPrice = (EditText) findViewById(R.id.edtPrice);
-        if (edtPrice.getText() == null) {
-            edtPrice.setText("0");
-        }
 
         toolbar = (Toolbar) findViewById(R.id.trainer_upload_toolbar_id);
         setupToolbar();
@@ -228,20 +145,17 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
         mPerferences = PreferenceManager.getDefaultSharedPreferences(this);
         mEditor = mPerferences.edit();
 
-//        seekBar_head = (SeekBar) findViewById(R.id.seekBar_Head);
-//        seekBar_body = (SeekBar) findViewById(R.id.seekBar_Body);
-//        seekBar_leg = (SeekBar) findViewById(R.id.seekBar_Leg);
-//        resultHead = (TextView) findViewById(R.id.seekBar_Result_Head);
-//        resultBody = (TextView) findViewById(R.id.seekBar_Result_Body);
-//        resultLeg = (TextView) findViewById(R.id.seekBar_Result_Leg);
+        token = mPerferences.getString(getString(R.string.token), "");
+        currentUserId = mPerferences.getInt(getString(R.string.id), 0);
 
         storageReference = FirebaseStorage.getInstance().getReference();
-        categoryService = new CategoryService();
-        initCateList();
-        categoryAdapter = new CategoryAdapter(this, cateList);
-        spnCategory.setAdapter(categoryAdapter);
-        //initSharedPreperences();
+        courseService = new CourseService();
+        spnCourse = findViewById(R.id.spnCourse);
+        initCourseList();
+        courseByNameAdapter = new CourseByNameAdapter(this, courseArrayList);
+        spnCourse.setAdapter(courseByNameAdapter);
 
+        ivAddNewCourse = findViewById(R.id.ivAddCourse);
     }
 
     private void setupToolbar() {
@@ -257,6 +171,7 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
     }
 
     private void initCateList() {
+        categoryService = new CategoryService();
         List<Category> arrCate = categoryService.getAllcategories();
         if (cateList == null) {
             cateList = new ArrayList<Category>();
@@ -268,18 +183,17 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
         }
     }
 
-//    private void initSharedPreperences() {
-//        mEditor.putInt(getString(R.string.result_head), 0);
-//        mEditor.commit();
-//
-//        mEditor.putInt(getString(R.string.result_body), 0);
-//        mEditor.commit();
-//
-//        mEditor.putInt(getString(R.string.result_leg), 0);
-//        mEditor.commit();
-//
-//
-//    }
+    private void initCourseList() {
+        List<Course> courses = courseService.getAllCoursesByAccountId(token, currentUserId);
+        if (courseArrayList == null) {
+            courseArrayList = new ArrayList<>();
+        }
+        if (courses != null) {
+            for (Course c : courses) {
+                courseArrayList.add(c);
+            }
+        }
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -385,28 +299,16 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
         stR.putFile(selectedVideoUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
                 final Video videoUploadedToFirebase = new Video();
-                videoUploadedToFirebase.setAccountId(mPerferences.getInt(getString(R.string.id), 0));
+                //videoUploadedToFirebase.setAccountId(mPerferences.getInt(getString(R.string.id), 0));
                 videoUploadedToFirebase.setNumOfView(0);
                 videoUploadedToFirebase.setFolderName(foldername);
                 videoUploadedToFirebase.setStatus("active");
                 videoUploadedToFirebase.setTitle(edtTitle.getText().toString());
                 videoUploadedToFirebase.setContentUrl(taskSnapshot.getDownloadUrl().toString());
                 videoUploadedToFirebase.setCreatedTime(TimeHelper.getCurrentTime());
-//                videoUploadedToFirebase.setHeadWeight(mPerferences.getInt(getString(R.string.result_head), 0));
-//                videoUploadedToFirebase.setBodyWeight(mPerferences.getInt(getString(R.string.result_body), 0));
-//                videoUploadedToFirebase.setLegWeight(mPerferences.getInt(getString(R.string.result_leg), 0));
-
-                String price = edtPrice.getText().toString();
-                if (price == null || price.equalsIgnoreCase("")) {
-                    videoUploadedToFirebase.setPrice(0);
-                } else {
-                    videoUploadedToFirebase.setPrice(Integer.parseInt(edtPrice.getText().toString()));
-                }
-
-                Category selectedCategory = (Category) spnCategory.getSelectedItem();
-                videoUploadedToFirebase.setCategoryId(selectedCategory.getId());
+                Course seletedCourse = (Course) spnCourse.getSelectedItem();
+                videoUploadedToFirebase.setCourseId(seletedCourse.getId());
 
                 // add thumbnail được chọn trong bộ sưu tập
                 if (checkedThumnail && imageUri != null && !imageUri.equals("")) {
@@ -418,9 +320,9 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
                             videoUploadedToFirebase.setThumnailUrl(taskSnapshot.getDownloadUrl().toString());
 
                             VideoService videoService = new VideoService();
-
                             videoService.createVideo(mPerferences.getString(getString(R.string.token), ""),
                                     videoUploadedToFirebase);
+
                             Toast.makeText(TrainerUploadVideoActi.this, "upload image success", Toast.LENGTH_LONG).show();
                             Intent intent = new Intent(TrainerUploadVideoActi.this, MainActivity_Home.class);
                             startActivity(intent);
@@ -483,7 +385,6 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
             @Override
             public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                 double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-
                 progressDialog.setMessage("Uploaded " + (int) progress + "%...");
 //                if ((int) progress == 100) {
 //                    progressDialog.dismiss();
@@ -571,4 +472,7 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
         return path;
     }
 
+    public void addNewCourse(View view) {
+        Toast.makeText(this, "Add New Course", Toast.LENGTH_SHORT).show();
+    }
 }
