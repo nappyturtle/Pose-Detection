@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface CourseService {
     List<Course> getAllCourses();
+    List<Course> getAllCourseByAccountId(int id);
+    boolean createCourse(Course course);
 }

@@ -24,4 +24,19 @@ public class CourseServiceImpl implements CourseService {
     public List<Course> getAllCourses() {
         return courseRepository.findAll();
     }
+
+    @Override
+    public List<Course> getAllCourseByAccountId(int id) {
+        return courseRepository.findAllByAccountId(id);
+    }
+
+    @Override
+    public boolean createCourse(Course course) {
+        Course resCourse = courseRepository.save(course);
+        if (resCourse != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
