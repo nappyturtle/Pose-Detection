@@ -100,20 +100,20 @@
                 android:text="10 ngày trước"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:text="-" />
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginHorizontal="10dp"-->
+                <!--android:text="-" />-->
 
-            <TextView
-                android:id="@+id/tv_bought_course_regis_quantity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="1dp"
-                android:gravity="center_vertical"
-                android:text="20 lượt đăng kí"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
+            <!--<TextView-->
+                <!--android:id="@+id/tv_bought_course_regis_quantity"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginVertical="1dp"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:text="20 lượt đăng kí"-->
+                <!--android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />-->
 
         </LinearLayout>
 

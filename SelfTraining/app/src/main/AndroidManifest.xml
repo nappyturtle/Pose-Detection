@@ -39,7 +39,8 @@
         <activity android:name=".activity.BoughtCourseActivity" />
         <activity android:name=".activity.PlayBoughtVideoActivity" />
         <activity android:name=".activity.BoughtVideoListActivity" />
-        <activity android:name=".activity.ManageTraineeTrainerActivity"></activity>
+        <activity android:name=".activity.ManageTraineeTrainerActivity" />
+        <activity android:name=".activity.TraineeManagementActivity"></activity>
     </application>
 
 </manifest>

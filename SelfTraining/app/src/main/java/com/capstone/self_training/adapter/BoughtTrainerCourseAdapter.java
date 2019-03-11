@@ -1,6 +1,8 @@
 package com.capstone.self_training.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -10,9 +12,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.capstone.self_training.R;
+import com.capstone.self_training.activity.TraineeManagementActivity;
 import com.capstone.self_training.dto.EnrollmentDTO;
+import com.capstone.self_training.fragment.Fragment_Suggestion;
 import com.squareup.picasso.Picasso;
 
+import java.io.Serializable;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -36,7 +41,7 @@ public class BoughtTrainerCourseAdapter extends RecyclerView.Adapter<BoughtTrain
 
     @Override
     public void onBindViewHolder(@NonNull TrainerCourseHolder holder, int position) {
-        EnrollmentDTO enrollmentDTO = trainerList.get(position);
+        final EnrollmentDTO enrollmentDTO = trainerList.get(position);
         Picasso.get().load(enrollmentDTO.getAccountThumbnail()).fit().into(holder.circleImageViewTrainer);
         holder.trainername.setMaxLines(1);
         holder.trainername.setEllipsize(TextUtils.TruncateAt.END);
@@ -44,7 +49,9 @@ public class BoughtTrainerCourseAdapter extends RecyclerView.Adapter<BoughtTrain
         holder.circleImageViewTrainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(context,TraineeManagementActivity.class);
+                intent.putExtra("accountTemp",enrollmentDTO.getAccountId()+"_-/-_"+enrollmentDTO.getUsername());
+                context.startActivity(intent);
             }
         });
     }
