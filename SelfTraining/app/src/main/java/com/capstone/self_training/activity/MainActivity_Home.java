@@ -28,6 +28,7 @@ public class MainActivity_Home extends AppCompatActivity {
     private Toolbar toolbar;
     private SharedPreferences mPerferences;
     private SharedPreferences.Editor mEditor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,11 +36,10 @@ public class MainActivity_Home extends AppCompatActivity {
         if (CheckConnection.haveNetworkConnection(this)) {
             mapping();
             init();
-        }else{
+        } else {
             CheckConnection.showConnection(this, "Xin vui lòng kiểm tra kết nối internet !!! ");
             finish();
         }
-
 
 
         //toolbar.setLogo(R.drawable.logoyoga);
@@ -47,6 +47,7 @@ public class MainActivity_Home extends AppCompatActivity {
 
     private void init() {
         MainViewPager mainViewPager = new MainViewPager(getSupportFragmentManager());
+       
         mainViewPager.addFragment(new Fragment_Home(), "Trang chủ",getApplicationContext());
         mainViewPager.addFragment(new Fragment_Trending(), "Thịnh hành",getApplicationContext());
         mainViewPager.addFragment(new Fragment_Course(), "Khoá học",getApplicationContext());
@@ -60,10 +61,12 @@ public class MainActivity_Home extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar_main_home);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.ic_logo);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
 
         mPerferences = PreferenceManager.getDefaultSharedPreferences(this);
         mEditor = mPerferences.edit();
-
     }
 
     private void mapping() {
@@ -83,7 +86,7 @@ public class MainActivity_Home extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int roleId = mPerferences.getInt(getString(R.string.roleId),0);
+        int roleId = mPerferences.getInt(getString(R.string.roleId), 0);
         switch (item.getItemId()) {
             case R.id.btnSearch:
                 break;
@@ -91,7 +94,7 @@ public class MainActivity_Home extends AppCompatActivity {
                 if (roleId == TRAINEE_ROLE) {
                     Intent i = new Intent(MainActivity_Home.this, TraineeProfileActivity.class);
                     startActivity(i);
-                } else if (roleId == TRAINER_ROLE){
+                } else if (roleId == TRAINER_ROLE) {
                     Intent i = new Intent(MainActivity_Home.this, TrainerProfileActivity.class);
                     startActivity(i);
                 } else {

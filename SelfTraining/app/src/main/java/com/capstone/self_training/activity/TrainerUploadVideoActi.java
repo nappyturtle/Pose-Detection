@@ -149,6 +149,7 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
         currentUserId = mPerferences.getInt(getString(R.string.id), 0);
 
         storageReference = FirebaseStorage.getInstance().getReference();
+
         courseService = new CourseService();
         spnCourse = findViewById(R.id.spnCourse);
         initCourseList();
@@ -473,6 +474,7 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
     }
 
     public void addNewCourse(View view) {
-        Toast.makeText(this, "Add New Course", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, CreateCourseActivity.class);
+        startActivity(intent);
     }
 }

@@ -2,6 +2,7 @@ package com.capstone.self_training.service.dataservice;
 
 import com.capstone.self_training.service.ApiRetrofitClient;
 import com.capstone.self_training.service.iService.IAccountService;
+import com.capstone.self_training.service.iService.ICourseService;
 import com.capstone.self_training.service.iService.ISuggestionDetailService;
 import com.capstone.self_training.service.iService.ICategoryService;
 import com.capstone.self_training.service.iService.ISuggestionService;
@@ -31,6 +32,10 @@ public class DataService {
 
     public static IAccountService getAccountService() {
         return ApiRetrofitClient.getClient(baseUrl).create((IAccountService.class));
+    }
+
+    public static ICourseService getCourseService(){
+        return ApiRetrofitClient.getClient(baseUrl).create(ICourseService.class);
     }
 
     public static IEnrollmentService getEnrollmentService() {
