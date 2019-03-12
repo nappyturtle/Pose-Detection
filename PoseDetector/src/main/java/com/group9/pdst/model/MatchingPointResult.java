@@ -1,22 +1,18 @@
 package com.group9.pdst.model;
 
-public class MatchingPointResult {
+import java.io.Serializable;
+
+public class MatchingPointResult implements Serializable{
     private String part;
     private double maxMatchingPercentage;
     private double minMatchingPercentage;
-    private int weight;
     public MatchingPointResult(String part, double maxMatchingPercentage, double minMatchingPercentage) {
         this.part = part;
         this.maxMatchingPercentage = maxMatchingPercentage;
         this.minMatchingPercentage = minMatchingPercentage;
     }
 
-    public int getWeight() {
-        return weight;
-    }
-
-    public void setWeight(int weight) {
-        this.weight = weight;
+    public MatchingPointResult() {
     }
 
     public double getMaxMatchingPercentage() {

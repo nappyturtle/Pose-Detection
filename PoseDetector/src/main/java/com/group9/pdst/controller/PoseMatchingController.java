@@ -21,6 +21,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -42,7 +43,10 @@ public class PoseMatchingController {
 
                 result = handler.matchPose(trainerPose, traineePose, suggestionId);
                 //Luu ket qua so sanh 2 frame vao jedis
+
                 ConstantUtilities.jedis.lpush(suggestionId, mapper.writeValueAsString(result));
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -63,14 +67,17 @@ public class PoseMatchingController {
             String traineeFolder = (String) imageLists.get(4);
             PoseMatchingHandler handler = new PoseMatchingHandler();
             finalResult = handler.makeSuggestionDetails(simgList, imgList, suggestionId, trainerFolder, traineeFolder);
+            System.out.println("Size: " + finalResult.size());
             RestTemplate restTemplate = new RestTemplate();
-            MultiValueMap<String, String> header = new LinkedMultiValueMap<>();
-            header.add("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsIkpXVEF1dGhvcml0aWVzS2V5IjoiQWRtaW4iLCJleHAiOjE1NTE4NjI4NDF9.4UJthhHzMJwjtlBtf6HtJ0HEOHMSDA6hn7uJBEtdT-z1KaTgExuZM1m0UFAWFIkszj6CxbdPAFjQB9avPXXTPg");
-            HttpEntity<String> entity = new HttpEntity(finalResult, header);
+//            MultiValueMap<String, String> header = new LinkedMultiValueMap<>();
+//            header.add("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsIkpXVEF1dGhvcml0aWVzS2V5IjoiQWRtaW4iLCJleHAiOjE1NTI3MzI0Mzh9.H3nyrh34NRPXz-UJAN_rnPG4td2SKOu1JS2cTkcbzFvlHxcWfHDrD2YWaU3VTWKU3wv2oRrBgYMsl23F8TjIyg");
+//            HttpEntity<String> entity = new HttpEntity(finalResult, header);
 
-            ResponseEntity<String> result = restTemplate.exchange("http://localhost:8080/suggestiondetail/createSuggestionDetails", HttpMethod.POST, entity, String.class);
-//            String result = restTemplate.postForObject("http://localhost:8080/suggestiondetail/createSuggestionDetails", finalResult, String.class);
-            System.out.println(result);
+//            ResponseEntity<String> result = restTemplate.exchange("http://localhost:8080/suggestiondetail/createSuggestionDetails", HttpMethod.POST, entity, String.class);
+            String result = restTemplate.postForObject("http://localhost:8080/suggestiondetail/createSuggestionDetails", finalResult, String.class);
+
+            System.out.println("Start Time: " + ConstantUtilities.startTime);
+            System.out.println("End Time: " + LocalDateTime.now());
 //            for (int i = 0; i < finalResult.size(); i++) {
 //                System.out.println(finalResult.get(i));
 //                System.out.println("\n===============\n");

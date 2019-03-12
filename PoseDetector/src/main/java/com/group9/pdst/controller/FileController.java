@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -57,19 +58,14 @@ public class FileController {
 
     @PostMapping(value = "/sliceVideoToSuggest")
     public String sliceVideoToSuggest(@RequestBody FileInfo fileInfo) {
+        ConstantUtilities.startTime = LocalDateTime.now();
         System.out.println("trainer = "+fileInfo.getFoldernameTrainer());
         System.out.println("trainee = "+fileInfo.getFoldernameTrainee());
         System.out.println("suggestionId = "+fileInfo.getSuggestionId());
         System.out.println("url = "+fileInfo.getVideoUrl());
-        System.out.println("head = "+fileInfo.getHeadWeight());
-        System.out.println("body = "+fileInfo.getBodyWeight());
-        System.out.println("leg = "+fileInfo.getLegWeight());
 
         System.out.println(" da vao getVideoUrl Controller ");
         try {
-            ConstantUtilities.jedis.set(fileInfo.getSuggestionId() + "_headweight", fileInfo.getHeadWeight() + "");
-            ConstantUtilities.jedis.set(fileInfo.getSuggestionId() + "_bodyweight", fileInfo.getBodyWeight() + "");
-            ConstantUtilities.jedis.set(fileInfo.getSuggestionId() + "_legweight", fileInfo.getLegWeight() + "");
             // tạo folder KietPT-123456 trong thư mục filestorage
             fileStorageService.createFolder(fileInfo.getFoldernameTrainee());
 

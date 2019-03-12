@@ -1,27 +1,41 @@
 package com.group9.pdst.handler;
 
 import com.group9.pdst.model.KeyPoint;
+import com.group9.pdst.model.KeyPointVector;
 import com.group9.pdst.model.Position;
+import com.group9.pdst.utils.CalculationUtilities;
+import com.group9.pdst.utils.TransUtilities;
 
 import java.util.List;
 
 public class PretreatmentHandler {
+    private double ankleCosine;
+
+    public double getAnkleCosine() {
+        return ankleCosine;
+    }
+
+    public void setAnkleCosine(double ankleCosine) {
+        this.ankleCosine = ankleCosine;
+    }
+    public KeyPointVector getPairPartVector(List<KeyPoint> keypoints, String part) {
+        KeyPoint leftPart = null;
+        for(int i=0; i<keypoints.size(); i++) {
+            KeyPoint keyPoint = keypoints.get(i);
+            if(keyPoint.getPart().equals("left" + part)) {
+                leftPart = keyPoint;
+                break;
+            }
+        }
+        KeyPointVector v = TransUtilities.createVectorFromKeypoint(keypoints, leftPart, "right" + part);
+        return v;
+    }
     public void pretreatment(List<KeyPoint> trainerPoints, List<KeyPoint> traineePoints) {
         removeExcessPoints(trainerPoints);
         removeExcessPoints(traineePoints);
-//        int count = 0;
-//        do {
-//            KeyPoint trainerKeyPoint = trainerPoints.get(count);
-//            KeyPoint traineeKeyPoint = traineePoints.get(count);
-//            if (Math.abs(trainerKeyPoint.getScore() - traineeKeyPoint.getScore()) > 0.2) {
-//                traineePoints.remove(traineeKeyPoint);
-//                trainerPoints.remove(trainerKeyPoint);
-//            }
-//            else {
-//                count++;
-//            }
-//        }
-//        while(count < trainerPoints.size());
+//        KeyPointVector v1 = getPairPartVector(trainerPoints, "Ankle");
+//        KeyPointVector v2 = getPairPartVector(traineePoints, "Ankle");
+//        ankleCosine = CalculationUtilities.calculateCosine(v1,v2);
     }
     //remove unnecessary points
     private void removeExcessPoints(List<KeyPoint> keypoints) {
