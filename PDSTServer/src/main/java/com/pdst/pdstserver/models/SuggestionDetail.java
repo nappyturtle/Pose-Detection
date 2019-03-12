@@ -18,6 +18,7 @@ public class SuggestionDetail implements Serializable {
     private String status;
     private String createdTime;
     private String updatedTime;
+    private String comment;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,6 +29,15 @@ public class SuggestionDetail implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+    @Basic
+    @Column(name = "comment")
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     @Basic
@@ -92,12 +102,13 @@ public class SuggestionDetail implements Serializable {
                 Objects.equals(suggestionId, that.suggestionId) &&
                 Objects.equals(status, that.status) &&
                 Objects.equals(createdTime, that.createdTime) &&
-                Objects.equals(updatedTime, that.updatedTime);
+                Objects.equals(updatedTime, that.updatedTime) &&
+                Objects.equals(comment, that.comment);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, imgUrl, standardImgUrl, description, suggestionId, status, createdTime, updatedTime);
+        return Objects.hash(id, imgUrl, standardImgUrl, description, suggestionId, status, createdTime, updatedTime, comment);
     }
 
     @Basic

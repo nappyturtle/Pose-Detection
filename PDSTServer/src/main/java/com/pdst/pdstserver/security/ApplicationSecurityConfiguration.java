@@ -39,6 +39,7 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
         http.cors().and().csrf().disable()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
+                .antMatchers(HttpMethod.POST, CREATE_SUGGESTIONDETAIL).permitAll()
                 .antMatchers(HttpMethod.PUT, EDIT_URL).permitAll()
                 .antMatchers(HttpMethod.GET, GET_ALL_VIDEO).permitAll()
                 .antMatchers(HttpMethod.GET, GET_ALL_CATEGORY).permitAll()

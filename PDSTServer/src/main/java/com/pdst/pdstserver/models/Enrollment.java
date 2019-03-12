@@ -10,7 +10,7 @@ public class Enrollment implements Serializable {
     private Integer courseId;
     private Integer accountId;
     private String createdTime;
-
+    private Integer price;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -20,6 +20,15 @@ public class Enrollment implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+    @Basic
+    @Column(name = "price")
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
     }
 
     @Basic
@@ -52,7 +61,7 @@ public class Enrollment implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, accountId, courseId, createdTime);
+        return Objects.hash(id, accountId, courseId, createdTime, price);
     }
 
     @Override
@@ -63,6 +72,7 @@ public class Enrollment implements Serializable {
         return  id == that.id &&
                 Objects.equals(accountId, that.accountId) &&
                 Objects.equals(courseId, that.courseId) &&
-                Objects.equals(createdTime, that.createdTime);
+                Objects.equals(createdTime, that.createdTime) &&
+                Objects.equals(price, that.price);
     }
 }

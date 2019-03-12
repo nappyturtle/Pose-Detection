@@ -56,7 +56,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
             dto.setUsername(account.getUsername());
             dto.setAccountThumbnail(account.getImgUrl());
             dto.setCreatedTime(enrollment.getCreatedTime());
-            dto.setPrice(course.getPrice());
+            dto.setPrice(enrollment.getPrice());
             dto.setThumbnail(course.getThumbnail());
             dto.setTotalVideo(countVideo);
             dto.setStatus(course.getStatus());
