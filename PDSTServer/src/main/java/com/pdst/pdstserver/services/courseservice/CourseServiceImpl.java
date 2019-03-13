@@ -1,6 +1,7 @@
 package com.pdst.pdstserver.services.courseservice;
 
 
+import com.pdst.pdstserver.dtos.CourseDTO;
 import com.pdst.pdstserver.models.Course;
 import com.pdst.pdstserver.models.Enrollment;
 import com.pdst.pdstserver.repositories.CourseRepository;
@@ -14,7 +15,6 @@ import java.util.List;
 @Service
 public class CourseServiceImpl implements CourseService {
     private final CourseRepository courseRepository;
-
 
     public CourseServiceImpl(CourseRepository courseRepository) {
         this.courseRepository = courseRepository;
@@ -39,4 +39,10 @@ public class CourseServiceImpl implements CourseService {
             return false;
         }
     }
+
+    @Override
+    public List<Course> getAllCourseOrderByCreatedTime() {
+        return courseRepository.findAllByOrderByCreatedTimeDesc();
+    }
+
 }
