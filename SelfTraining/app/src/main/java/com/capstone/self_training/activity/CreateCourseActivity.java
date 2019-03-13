@@ -150,6 +150,10 @@ public class CreateCourseActivity extends AppCompatActivity {
         alertDialog.setPositiveButton("Có", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                if(courseThumbnailUri == null){
+                    Toast.makeText(CreateCourseActivity.this, "Bạn chưa chon hình nền cho khóa học!", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 createCourse();
             }
         });

@@ -20,11 +20,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginHorizontal="10dp">
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp">
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -51,27 +53,28 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="30dp"
+                android:layout_marginHorizontal="30dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Categories"
+                    android:text="Danh muc"
                     android:textSize="20sp" />
 
                 <Spinner
                     android:id="@+id/spnCate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="20dp"></Spinner>
+                    android:scrollbarSize="10sp"
+                    android:layout_marginVertical="10dp"></Spinner>
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="30dp"
+                android:layout_marginHorizontal="30dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -91,17 +94,32 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="nghìn VNĐ"
+                    android:text=".000 đ"
                     android:textSize="20sp" />
 
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/ivCourseThumbnail"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_margin="30dp"
-                app:srcCompat="@android:drawable/ic_menu_camera" />
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginVertical="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="Hình nền"
+                    android:textSize="20sp" />
+
+                <ImageView
+                    android:id="@+id/ivCourseThumbnail"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginHorizontal="30dp"
+                    app:srcCompat="@android:drawable/ic_menu_camera" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -112,11 +130,9 @@
                     android:id="@+id/btnCreateCourse"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="30dp"
                     android:onClick="createCours"
                     android:text="Tạo khóa học"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textSize="20sp" />
             </LinearLayout>
 
         </LinearLayout>
