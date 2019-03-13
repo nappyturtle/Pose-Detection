@@ -1,5 +1,6 @@
 package com.capstone.self_training.service.iService;
 
+import com.capstone.self_training.dto.CourseDTO;
 import com.capstone.self_training.model.Course;
 import com.capstone.self_training.util.Constants;
 
@@ -18,5 +19,8 @@ public interface ICourseService {
 
     @POST("course/create")
     Call<Void> createCourse(@Header(Constants.header_string) String token, @Body Course course);
+
+    @GET("course/getAllCourses")
+    Call<List<CourseDTO>> getAllCourse();
 
 }

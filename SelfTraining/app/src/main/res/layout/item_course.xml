@@ -3,10 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginVertical="5dp"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:id="@+id/ln_course_item">
 
     <FrameLayout
-        android:layout_width="170dp"
+        android:layout_width="178dp"
         android:layout_height="120dp"
         android:layout_margin="5dp"
         android:background="@android:color/black"
@@ -16,7 +17,7 @@
             android:id="@+id/iv_course_thumbnail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/img3" />
+            android:background="@drawable/logoyoga" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,17 +40,17 @@
                     android:id="@+id/tv_video_quantity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginVertical="5dp"
                     android:gravity="center"
                     android:text="50"
                     android:textColor="@android:color/white"
-                    android:layout_marginVertical="5dp"
                     android:textSize="18sp" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:layout_marginVertical="5dp"
+                    android:gravity="center"
                     android:text="video"
                     android:textColor="@android:color/white" />
 
@@ -71,7 +72,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:ellipsize="end"
-            android:maxLines="2"
+            android:maxLines="1"
             android:text="Course Name is too long to fix in this space!"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
 
@@ -101,7 +102,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
+                android:layout_marginHorizontal="5dp"
                 android:text="-" />
 
             <TextView
@@ -109,7 +110,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="1dp"
+                android:ellipsize="end"
                 android:gravity="center_vertical"
+                android:maxLines="1"
                 android:text="20 lượt đăng kí"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
 
@@ -127,8 +130,8 @@
                 android:layout_marginVertical="1dp"
                 android:gravity="center_vertical"
                 android:text="200.000 đ"
-                android:textColor="@android:color/holo_red_dark"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                android:textColor="@android:color/holo_red_dark" />
 
         </LinearLayout>
 

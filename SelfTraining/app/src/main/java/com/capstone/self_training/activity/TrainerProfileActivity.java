@@ -42,6 +42,8 @@ public class TrainerProfileActivity extends AppCompatActivity {
     LinearLayout lnSuggestion;
     LinearLayout lnBoughtCourse;
     LinearLayout lnUploadedVideo;
+    LinearLayout lnCreateCourse;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,14 +66,14 @@ public class TrainerProfileActivity extends AppCompatActivity {
         viewAllBoughtCourse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),BoughtCourseActivity.class);
+                Intent intent = new Intent(getApplicationContext(), BoughtCourseActivity.class);
                 startActivity(intent);
             }
         });
         lnBoughtCourse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),BoughtCourseActivity.class);
+                Intent intent = new Intent(getApplicationContext(), BoughtCourseActivity.class);
                 startActivity(intent);
             }
         });
@@ -82,11 +84,11 @@ public class TrainerProfileActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CODE_UPDATE && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
             System.out.println("Trainee uploaded profile");
             imageAccount = data.getStringExtra("imgAccount");
-            Log.e("imageAccount TrainerProfileActivity = ",imageAccount);
+            Log.e("imageAccount TrainerProfileActivity = ", imageAccount);
         }
     }
 
-    private void getProfileTrainer(){
+    private void getProfileTrainer() {
         imgSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,6 +101,7 @@ public class TrainerProfileActivity extends AppCompatActivity {
             }
         });
     }
+
     private void uploadVideoToStorage() {
         uploadVideo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,6 +159,7 @@ public class TrainerProfileActivity extends AppCompatActivity {
         lnSuggestion = (LinearLayout) findViewById(R.id.ln_trainerProfile_getAllSuggestion_id);
         lnBoughtCourse = (LinearLayout) findViewById(R.id.ln_trainerProfile_getAllCourse_id);
         lnUploadedVideo = (LinearLayout) findViewById(R.id.ln_trainerProfile_getAllUploadedVideo_id);
+        lnCreateCourse = findViewById(R.id.ln_create_course);
 
         mPerferences = PreferenceManager.getDefaultSharedPreferences(this);
         mEditor = mPerferences.edit();
@@ -168,6 +172,14 @@ public class TrainerProfileActivity extends AppCompatActivity {
         username = mPerferences.getString(getString(R.string.username), "");
         roleId = mPerferences.getInt(getString(R.string.roleId), 0);
         token = mPerferences.getString(getString(R.string.token), "");
+
+        lnCreateCourse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TrainerProfileActivity.this, CreateCourseActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void loadData() {
