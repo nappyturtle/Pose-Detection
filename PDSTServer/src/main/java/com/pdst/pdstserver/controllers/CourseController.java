@@ -5,6 +5,7 @@ import com.pdst.pdstserver.models.Account;
 import com.pdst.pdstserver.models.Course;
 import com.pdst.pdstserver.services.accountservice.AccountService;
 import com.pdst.pdstserver.services.courseservice.CourseService;
+import com.pdst.pdstserver.services.enrollmentservice.EnrollmentService;
 import com.pdst.pdstserver.services.videoservice.VideoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +21,13 @@ public class CourseController {
     private final CourseService courseService;
     private final AccountService accountService;
     private final VideoService videoService;
+    private final EnrollmentService enrollmentService;
 
-    public CourseController(CourseService courseService, AccountService accountService, VideoService videoService) {
+    public CourseController(CourseService courseService, AccountService accountService, VideoService videoService, EnrollmentService enrollmentService) {
         this.courseService = courseService;
         this.accountService = accountService;
         this.videoService = videoService;
+        this.enrollmentService = enrollmentService;
     }
 
     @GetMapping("courses")
@@ -61,7 +64,7 @@ public class CourseController {
                     CourseDTO courseDTO = new CourseDTO();
                     courseDTO.setCourse(course);
                     courseDTO.setTrainerName(account.getUsername());
-                    courseDTO.setNumberOfRegister(0);
+                    courseDTO.setNumberOfRegister(enrollmentService.countRegisterByCourseId(courseDTO.getCourse().getId()));
                     courseDTO.setNumberOfVideoInCourse(videoService.countVideosByCourseId(courseDTO.getCourse().getId()));
                     courseDTOS.add(courseDTO);
                 }

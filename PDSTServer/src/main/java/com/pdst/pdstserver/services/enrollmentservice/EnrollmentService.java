@@ -10,4 +10,5 @@ public interface EnrollmentService {
     List<Enrollment> getAllEnrollments();
     List<EnrollmentDTO> getAllEnrollmentByAccountId(int page, int size, int accountId);
     List<EnrollmentDTO> getAllBoughtCourseWithTrainername(int accountId);
+    int countRegisterByCourseId(int courseID);
 }

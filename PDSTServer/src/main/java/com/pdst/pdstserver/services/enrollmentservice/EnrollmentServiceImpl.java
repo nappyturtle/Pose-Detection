@@ -91,4 +91,9 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         }
         return dtoList;
     }
+
+    @Override
+    public int countRegisterByCourseId(int courseID) {
+        return enrollmentRepository.countAllByCourseId(courseID);
+    }
 }
