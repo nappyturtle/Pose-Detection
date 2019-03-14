@@ -17,4 +17,5 @@ public interface VideoService {
     List<VideoDTO> getAllVideosByTrainer(int accountId);
     List<VideoDTO> getAllVideoByCourseId(int page, int size, int courseId);
     List<VideoDTO> getAllBoughtVideoRelated(int courseId, int videoId);
+    int countVideosByCourseId(int courseId);
 }

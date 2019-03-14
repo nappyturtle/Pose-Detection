@@ -64,31 +64,34 @@ public class VideoServiceImpl implements VideoService {
     @Override
     public boolean createVideo(Video video) {
         // lưu video vào db
-        Video videoRequest = videoRepository.save(video);
-
-        // gửi request đến service để cắt video
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(3000);
-                    SendRequest sendRequest = new SendRequest();
-                    sendRequest.sendRequestToCreateDataset(videoRequest);
-                    System.out.println("da goi request to create data set");
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+        try {
+            Video videoRequest = videoRepository.save(video);
+            // gửi request đến service để cắt video
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(3000);
+                        SendRequest sendRequest = new SendRequest();
+                        sendRequest.sendRequestToCreateDataset(videoRequest);
+                        System.out.println("da goi request to create data set");
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
+            });
+            t.start();
+            System.out.println("da insert xong");
+            //return videoRequest;
+            if (videoRequest == null) {
+                return true;
+            } else {
+                return false;
             }
-        });
-        t.start();
-        System.out.println("da insert xong");
-        //return videoRequest;
-        if (videoRequest == null) {
-            return true;
-        } else {
+        } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
-
     }
 
     //cho nay chua biet sua sao, tam thoi comment lai - VuVG 03/05/2019
@@ -135,7 +138,7 @@ public class VideoServiceImpl implements VideoService {
                 listTemp.remove(i);
             }
         }
-        for(Video video : listTemp){
+        for (Video video : listTemp) {
             System.out.println("da vao dây roi neeeeeeeee!!!!!");
             Course course = courseRepository.findCourseById(courseId);
             Account account = accountRepository.findAccountById(course.getAccountId());
@@ -146,6 +149,11 @@ public class VideoServiceImpl implements VideoService {
             dtoList.add(dto);
         }
         return dtoList;
+    }
+
+    @Override
+    public int countVideosByCourseId(int courseId) {
+        return videoRepository.countVideosByCourseId(courseId);
     }
 
     @Override
