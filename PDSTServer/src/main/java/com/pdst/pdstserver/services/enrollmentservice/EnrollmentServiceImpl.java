@@ -96,4 +96,13 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     public int countRegisterByCourseId(int courseID) {
         return enrollmentRepository.countAllByCourseId(courseID);
     }
+
+    @Override
+    public boolean saveToEnrollment(Enrollment enrollment) {
+        Enrollment resEnrollment = enrollmentRepository.save(enrollment);
+        if(resEnrollment != null){
+            return true;
+        }
+        return false;
+    }
 }

@@ -1,9 +1,13 @@
 package com.pdst.pdstserver.services.SuggestionService;
 
 import com.pdst.pdstserver.handlers.SendRequest;
+import com.pdst.pdstserver.models.Account;
+import com.pdst.pdstserver.models.Course;
 import com.pdst.pdstserver.models.Suggestion;
 import com.pdst.pdstserver.dtos.SuggestionDTO;
 import com.pdst.pdstserver.models.Video;
+import com.pdst.pdstserver.repositories.AccountRepository;
+import com.pdst.pdstserver.repositories.CourseRepository;
 import com.pdst.pdstserver.repositories.SuggestionRepository;
 import com.pdst.pdstserver.repositories.VideoRepository;
 import org.springframework.data.domain.PageRequest;
@@ -19,10 +23,15 @@ import java.util.Optional;
 public class SuggestionServiceImpl implements SuggestionService {
     private final SuggestionRepository suggestionRepository;
     private final VideoRepository videoRepository;
+    private final AccountRepository accountRepository;
+    private final CourseRepository courseRepository;
 
-    public SuggestionServiceImpl(SuggestionRepository suggestionRepository, VideoRepository videoRepository) {
+    public SuggestionServiceImpl(SuggestionRepository suggestionRepository, VideoRepository videoRepository
+    ,AccountRepository accountRepository,CourseRepository courseRepository) {
         this.suggestionRepository = suggestionRepository;
         this.videoRepository = videoRepository;
+        this.accountRepository = accountRepository;
+        this.courseRepository = courseRepository;
     }
 
     @Override
@@ -58,6 +67,39 @@ public class SuggestionServiceImpl implements SuggestionService {
         suggestion.setStatus(status);
         suggestionRepository.saveAndFlush(suggestion);
         return true;
+    }
+
+    @Override
+    public List<SuggestionDTO> getSuggestionByTrainer(int page, int size, int trainerId, int traineeId) {
+        System.out.println("page - size : "+page + " - "+size);
+        List<Suggestion> list = suggestionRepository.findAllByAccountId(new PageRequest(page,size,Sort.Direction.DESC,"createdTime"),traineeId);
+        List<SuggestionDTO> listDTO = new ArrayList<>();
+
+        try {
+            for (int i = 0; i < list.size(); i++) {
+                Suggestion suggestion = list.get(i);
+                System.out.println("id = " + suggestion.getId());
+
+                Video video = videoRepository.findVideoById(suggestion.getVideoId());
+                Course course = courseRepository.findCourseById(video.getCourseId());
+                Account account = accountRepository.findAccountById(course.getAccountId());
+                if(account.getId() == trainerId) {
+                    SuggestionDTO dto = new SuggestionDTO();
+                    dto.setId(suggestion.getId());
+                    dto.setAccountId(suggestion.getAccountId());
+                    dto.setVideoName(video.getTitle());
+                    dto.setVideoId(suggestion.getVideoId());
+                    dto.setThumnailUrl(suggestion.getThumnailUrl());
+                    dto.setCreatedTime(suggestion.getCreatedTime());
+                    dto.setStatus(suggestion.getStatus());
+                    dto.setUrlVideoTrainee(suggestion.getTraineeVideo());
+                    listDTO.add(dto);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return listDTO;
     }
 
     @Override

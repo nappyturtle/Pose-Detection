@@ -39,4 +39,13 @@ public class SuggestionController {
 
         return suggestionService.getSuggestionByTrainee(page,size,id);
     }
+
+    @GetMapping("getSuggestionByTrainer")
+    public List<SuggestionDTO> getSuggestionByTrainer(@RequestParam(value = "page") int page,
+                                                      @RequestParam(value = "size") int size,
+                                                      @RequestParam(value = "trainerId") int trainerId,
+                                                      @RequestParam(value = "traineeId") int traineeId) {
+
+        return suggestionService.getSuggestionByTrainer(page,size,trainerId,traineeId);
+    }
 }
