@@ -153,7 +153,7 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public int countVideosByCourseId(int courseId) {
-        return videoRepository.countVideosByCourseId(courseId);
+        return videoRepository.countVideoByCourseId(courseId);
     }
 
     @Override
