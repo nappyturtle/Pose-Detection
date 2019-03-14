@@ -3,72 +3,56 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!--<FrameLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_margin="5dp">-->
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/ln_suggestionDetail_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <!--<TextView-->
-            <!--android:id="@+id/txtSuggestionDetailIsEmpty"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:gravity="center"-->
-            <!--android:text="Không có kết quả nào, đang trong quá trình xử lí"-->
-            <!--android:textSize="23sp" />-->
-
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:id="@+id/ln_suggestionDetail_fragment"
-            >
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15sp"
+            android:text="Hình từ video của bạn"
+            android:textAlignment="center"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/suggestionDetail_imageView_id_trainee"
+            android:layout_width="300dp"
+            android:layout_height="180dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15sp"
+            android:text="Hình từ video mẫu của chúng tôi"
+            android:textAlignment="center"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/suggestionDetail_imageView_id_trainer"
+            android:layout_width="300dp"
+            android:layout_height="180dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp" />
 
 
-            <TextView
+
+            <ExpandableListView
+                android:nestedScrollingEnabled="true"
+                android:id="@+id/expandable_listview"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="15sp"
-                android:text="Hình từ video của bạn"
-                android:textAlignment="center"
-                android:textSize="20sp" />
+                android:layout_height="200dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:childDivider="#b6b6b5"
+                android:dividerHeight="1dp"
+                android:scrollbars="none"></ExpandableListView>
+    </LinearLayout>
 
-            <ImageView
-                android:id="@+id/suggestionDetail_imageView_id_trainer"
-                android:layout_width="300dp"
-                android:layout_height="180dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="15sp"
-                android:text="Hình từ video mẫu của chúng tôi"
-                android:textAlignment="center"
-                android:textSize="20sp" />
-
-            <ImageView
-                android:id="@+id/suggestionDetail_imageView_id_trainee"
-                android:layout_width="300dp"
-                android:layout_height="180dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp" />
-
-            <TextView
-                android:id="@+id/suggestionDetail_resultComment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginTop="15sp"
-                android:text="Tư thế của bạn khớp 80%"
-                android:textAlignment="center"
-                android:textColor="#ff1119"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-    <!--</FrameLayout>-->
 </android.support.v4.widget.NestedScrollView>

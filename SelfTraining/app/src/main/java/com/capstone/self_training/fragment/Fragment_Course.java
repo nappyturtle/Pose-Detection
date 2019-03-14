@@ -1,6 +1,8 @@
 package com.capstone.self_training.fragment;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -25,7 +27,8 @@ public class Fragment_Course extends Fragment {
     private List<CourseDTO> courseDTOList;
     private CourseService courseService;
     View view;
-
+    SharedPreferences mPerferences;
+    int accountId;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -35,6 +38,8 @@ public class Fragment_Course extends Fragment {
     }
 
     private void init() {
+        mPerferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        accountId = mPerferences.getInt(getString(R.string.id),0);
         home_course_list = view.findViewById(R.id.home_course_list);
         courseService = new CourseService();
         if (courseDTOList == null) {
@@ -43,7 +48,7 @@ public class Fragment_Course extends Fragment {
         courseDTOList = courseService.getAllCourse();
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         home_course_list.setLayoutManager(layoutManager);
-        homeCourseAdapter = new HomeCourseAdapter(courseDTOList, getContext());
+        homeCourseAdapter = new HomeCourseAdapter(courseDTOList, getContext(),accountId);
         home_course_list.setAdapter(homeCourseAdapter);
     }
 }

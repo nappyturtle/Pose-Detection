@@ -61,6 +61,7 @@ public class SuggestionDetailActi extends AppCompatActivity {
         });
     }
 
+    // hiển thị suggestion detail
     private void getData(){
         Intent intent = getIntent();
         int suggestionId = intent.getIntExtra("suggestionId",1);
@@ -73,8 +74,11 @@ public class SuggestionDetailActi extends AppCompatActivity {
         }else{
             txtSuggestionDetailIsEmpty.setVisibility(View.INVISIBLE);
             viewPager.setVisibility(View.VISIBLE);
+            // đưa là list suggestion detail, dùng 1 adapter để quản lí, truyền list vào đó,
+            // MainSuggestionDetailAdapter có method add 1 suggestion detail vào, để tao ra 1 fragment
             MainSuggestionDetailAdapter main = new MainSuggestionDetailAdapter(getSupportFragmentManager());
             for (int i = 0; i < suggestionDetails.size(); i++) {
+                // để truyền 1 object vào trong fragment thì sẽ khởi tạo 1 constructor newInstance
                 SuggestionDetailFragment fragment = SuggestionDetailFragment.newInstance(suggestionDetails.get(i));
                 main.addFragment(fragment);
                 viewPager.setAdapter(main);

@@ -64,27 +64,19 @@ public class HomeVideoAdapter extends RecyclerView.Adapter<HomeVideoAdapter.Vide
         holder.postTime.setText(TimeHelper.showPeriodOfTime(model.getCreatedTime()));
         holder.totalView.setText(model.getNumOfView() + " lượt xem");
 
-        final int price = model.getPrice();
-        if (price == 0) {
-            holder.twHomeVideoPayment.setText("Miễn phí");
-        } else {
-            holder.twHomeVideoPayment.setText(price + ".000 đ");
-        }
 
         //BIND CLICK EVENT
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        currentUserId = sharedPreferences.getInt("com.capstone.self_training.activity.id",0);
+        currentUserId = sharedPreferences.getInt("com.capstone.self_training.activity.id", 0);
         holder.thumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (price != 0 && model.getAccountId() != currentUserId) {
-                    Toast.makeText(context, "Bạn phải mua video này!", Toast.LENGTH_LONG).show();
-                } else {
-                    Intent intent = new Intent(context, PlayVideoActivity.class);
-                    intent.putExtra("PLAYVIDEO", model);
-                    intent.putExtra("ACCOUNT", account);
-                    context.startActivity(intent);
-                }
+
+                Intent intent = new Intent(context, PlayVideoActivity.class);
+                intent.putExtra("PLAYVIDEO", model);
+                intent.putExtra("ACCOUNT", account);
+                context.startActivity(intent);
+
             }
         });
 
@@ -124,7 +116,6 @@ public class HomeVideoAdapter extends RecyclerView.Adapter<HomeVideoAdapter.Vide
             title = (TextView) itemView.findViewById(R.id.home_video_title);
             postTime = (TextView) itemView.findViewById(R.id.home_video_time);
             totalView = (TextView) itemView.findViewById(R.id.home_video_view);
-            twHomeVideoPayment = (TextView) itemView.findViewById(R.id.home_video_payment);
         }
     }
 

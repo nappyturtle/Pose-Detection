@@ -2,6 +2,7 @@
 package com.capstone.self_training.activity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,6 +25,7 @@ import com.capstone.self_training.service.dataservice.AccountService;
 import com.capstone.self_training.util.Constants;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
@@ -151,29 +153,44 @@ public class UpdateProfileActivity extends AppCompatActivity {
         alertDialog.setPositiveButton("Có", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                final ProgressDialog progressDialog = new ProgressDialog(getApplicationContext());
+                progressDialog.setTitle("Đang xử lý");
+                progressDialog.show();
                 if (userImageUri != null) {
                     StorageReference srf = storageReference.child(Constants.USER_IMAGE_FOLDER_UPLOAD_FIREBASE + "/" + currentUser.getUsername());
                     srf.putFile(userImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                            mEditor.putString("imgAccount",taskSnapshot.getDownloadUrl().toString());
+                            mEditor.putString("imgAccount", taskSnapshot.getDownloadUrl().toString());
                             mEditor.commit();
-                            Log.e("imgAccountda commit = ",mPerferences.getString(getString(R.string.imgAccount),""));
+                            Log.e("imgAccountda commit = ", mPerferences.getString(getString(R.string.imgAccount), ""));
                             accountService.updateProfile(setAccountToEdit(taskSnapshot.getDownloadUrl().toString()));
                             Toast.makeText(UpdateProfileActivity.this, "Cập nhập thành công!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent();
-                intent.putExtra("imgAccount",mPerferences.getString(getString(R.string.imgAccount),""));
-                setResult(Activity.RESULT_OK,intent);
-                finish();
-                            Log.e("imgAccountaaaaaaa = ",mPerferences.getString(getString(R.string.imgAccount),""));
+                            Intent intent = new Intent();
+                            intent.putExtra("imgAccount", mPerferences.getString(getString(R.string.imgAccount), ""));
+                            setResult(Activity.RESULT_OK, intent);
+                            finish();
+                            Log.e("imgAccountaaaaaaa = ", mPerferences.getString(getString(R.string.imgAccount), ""));
 //                            Intent intent = new Intent(getApplicationContext(),TraineeProfileActivity.class);
 //                            startActivity(intent);
                         }
+                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                            progressDialog.setMessage("Hoàn thành " + (int) progress + "%...");
+                            if ((int) progress == 100) {
+                                progressDialog.dismiss();
+                            }
+                        }
                     });
                 } else {
-
+                    progressDialog.setMessage("Hoàn thành " + "10%...");
                     accountService.updateProfile(setAccountToEdit(currentUser.getImgUrl()));
+                    //double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                    progressDialog.setMessage("Hoàn thành " + "100%");
+                    progressDialog.dismiss();
                 }
 
             }

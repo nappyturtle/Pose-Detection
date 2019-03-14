@@ -79,6 +79,7 @@ public class BoughtCourseActivity extends AppCompatActivity {
         }
     }
 
+    // lấy list trainer của những course đã mua chuyển qua màn hình ManageTraineeTrainerActivity
     private void getTotalTraineeAndTrainer() {
         bought_course_totalTextView_id.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,6 +91,7 @@ public class BoughtCourseActivity extends AppCompatActivity {
         });
     }
 
+
     private void init() {
         toolbar = (Toolbar) findViewById(R.id.bought_course_toolbar_id);
         txtEmptyBoughtCourse = (TextView) findViewById(R.id.txtBoughtCourseIsEmpty);
@@ -98,7 +100,7 @@ public class BoughtCourseActivity extends AppCompatActivity {
         LayoutInflater layoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         progressBar = layoutInflater.inflate(R.layout.progressbar, null);
 
-        // recycler view
+        // recycler view ( danh sách các trainer của các course đã mua)
         trainerRecyclerView = (RecyclerView) findViewById(R.id.recycler_trainerCourse);
         trainerRecyclerView.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -107,7 +109,7 @@ public class BoughtCourseActivity extends AppCompatActivity {
         trainerRecyclerView.setLayoutManager(linearLayoutManager);
         trainerRecyclerView.setAdapter(boughtTrainerCourseAdapter);
 
-        // listview
+        // listview ( danh sách các course đã mua)
         boughtCourseListView = (ListView) findViewById(R.id.bought_course_listview);
         enrollmentList = new ArrayList<>();
         boughtCourseAdapter = new BoughtCourseAdapter(enrollmentList, getApplicationContext());
@@ -121,6 +123,7 @@ public class BoughtCourseActivity extends AppCompatActivity {
         mHandler = new mHandler();
     }
 
+    // hiển thị thanh toolbar
     private void displayToolBar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -132,15 +135,18 @@ public class BoughtCourseActivity extends AppCompatActivity {
         });
     }
 
+    // hiển thi danh sách các course đã mua
     private void loadDataListView(int page, int size) {
 
         enrollmentService = new EnrollmentService();
         List<EnrollmentDTO> enrollmentDTOSTemp = enrollmentService.getBoughtCoursesByDate(token, page, size, accountId);
 
-        if (enrollmentDTOSTemp.size() <= 0 && checkedSuggestionList == 0) {
+        if (enrollmentDTOSTemp.size() <= 0 && checkedSuggestionList == 0) { // nếu chưa có course
+            // checkedSuggestionList = 0 ở đây có nghĩa là chưa có data
             ln_boughtCourse_isEmpty.setVisibility(View.INVISIBLE);
             txtEmptyBoughtCourse.setVisibility(View.VISIBLE);
-        } else if (enrollmentDTOSTemp.size() <= 0 && checkedSuggestionList == 1) {
+        } else if (enrollmentDTOSTemp.size() <= 0 && checkedSuggestionList == 1) { // nếu có course nhưng mà load hết dữ liệu
+            // checkedSuggestionList = 1 ở đây có nghĩa là khi đã có data nhưng đã load hết rồi
             Log.e("ddasdasdasd <=0 ", "dasdasd <= 0");
             limitedData = true;
             boughtCourseListView.removeFooterView(progressBar);
@@ -153,13 +159,12 @@ public class BoughtCourseActivity extends AppCompatActivity {
             }
             Log.e("ddasdasdasd > 0 ", "dasdasd > 0");
 
-            //boughtCourseAdapter = new BoughtCourseAdapter(enrollmentList, getApplicationContext());
-
-            checkedSuggestionList = 1;
+            checkedSuggestionList = 1; // data được load lên thì gán = 1
         }
 
     }
 
+    // để hiển thị danh sách những trainer của những course đã mua
     private void loadDataRecylcerView() {
         enrollmentService = new EnrollmentService();
         List<EnrollmentDTO> enrollmentDTOSTemp = enrollmentService.getAllBoughtCourseTrainername(token, accountId);
@@ -173,9 +178,9 @@ public class BoughtCourseActivity extends AppCompatActivity {
         boughtCourseListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
-                    isLoading = false;
-                }
+//                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+//                    isLoading = false;
+//                }
             }
 
             @Override
@@ -189,6 +194,7 @@ public class BoughtCourseActivity extends AppCompatActivity {
         });
     }
 
+    // lấy courseId chuyển qua màn hình BoughtVideoListActivity để hiển thị danh sách video theo courseId
     private void getItemCourse() {
         boughtCourseListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -214,7 +220,7 @@ public class BoughtCourseActivity extends AppCompatActivity {
                     loadDataListView(++page, size);
                     boughtCourseAdapter.notifyDataSetChanged();
                     isLoading = false;
-                    progressBar.setVisibility(View.GONE);
+                    //progressBar.setVisibility(View.GONE);
                     break;
             }
             super.handleMessage(msg);

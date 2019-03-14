@@ -4,7 +4,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.capstone.self_training.R;
-import com.capstone.self_training.R;
 
 public class ChangePasswordActivity extends AppCompatActivity {
 

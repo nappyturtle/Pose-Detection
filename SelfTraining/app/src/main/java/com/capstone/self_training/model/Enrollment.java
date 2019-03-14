@@ -7,7 +7,22 @@ public class Enrollment implements Serializable {
     private Integer courseId;
     private Integer accountId;
     private String createdTime;
+    private Integer price;
 
+    public Enrollment(Integer courseId, Integer accountId, Integer price,String createdTime) {
+        this.courseId = courseId;
+        this.accountId = accountId;
+        this.price = price;
+        this.createdTime = createdTime;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
 
     public int getId() {
         return id;

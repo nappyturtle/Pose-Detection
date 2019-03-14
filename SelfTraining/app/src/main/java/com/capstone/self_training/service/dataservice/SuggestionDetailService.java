@@ -2,6 +2,7 @@ package com.capstone.self_training.service.dataservice;
 
 import android.util.Log;
 
+import com.capstone.self_training.model.Account;
 import com.capstone.self_training.model.SuggestionDetail;
 import com.capstone.self_training.service.iService.ISuggestionDetailService;
 
@@ -22,5 +23,16 @@ public class SuggestionDetailService {
             Log.e("SuggestionDetailService getSuggestionDetailList: ",e.getMessage());
         }
         return detailList;
+    }
+    public boolean saveComment(String token,int sugesstionDetailId){
+        iSuggestionDetailService = DataService.getSuggestionDetailService();
+        Call<Boolean> call = iSuggestionDetailService.saveComment(token,sugesstionDetailId);
+        boolean checked = false;
+        try {
+            checked = call.execute().body();
+        } catch (Exception e) {
+            Log.e("SuggestionDetailService saveComment: ",e.getMessage());
+        }
+        return checked;
     }
 }

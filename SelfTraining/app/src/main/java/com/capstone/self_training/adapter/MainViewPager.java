@@ -28,13 +28,10 @@ public class MainViewPager extends FragmentPagerAdapter {
     public int getCount() {
         return arrayFragment.size();
     }
-    public void addFragment(Fragment fragment, String title,Context context){
-//        if(fragment == null){
-//            Toast.makeText(context, "App hiện tại đang có vấn đề, vui lòng quay lại sau", Toast.LENGTH_SHORT).show();
-//        }else {
-            arrayFragment.add(fragment);
-            arrayTitle.add(title);
-        //}
+
+    public void addFragment(Fragment fragment, String title, Context context) {
+        arrayFragment.add(fragment);
+        arrayTitle.add(title);
     }
 
     @Nullable

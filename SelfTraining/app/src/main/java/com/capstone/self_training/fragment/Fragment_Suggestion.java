@@ -16,12 +16,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.annotation.Nullable;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.capstone.self_training.R;
+import com.capstone.self_training.activity.SuggestionDetailActi;
+import com.capstone.self_training.activity.SuggestionDetailByTrainerActivity;
 import com.capstone.self_training.adapter.SuggestionAdapter;
 import com.capstone.self_training.model.Suggestion;
 import com.capstone.self_training.service.dataservice.SuggestionService;
@@ -40,7 +43,8 @@ public class Fragment_Suggestion extends Fragment {
     private ArrayList<Suggestion> suggestionList;
     private SuggestionAdapter suggestionAdapter;
     private String token;
-    private int id;
+    private int trainerId;
+    private int traineeId;
     mHandler mHandler;
     private SharedPreferences mPerferences;
     private SharedPreferences.Editor mEditor;
@@ -57,18 +61,18 @@ public class Fragment_Suggestion extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @android.support.annotation.Nullable ViewGroup container, @android.support.annotation.Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_suggestion, container, false);
         savedInstanceState = getArguments();
-        id = savedInstanceState.getInt("accountId");
+        traineeId = savedInstanceState.getInt("accountId");
         if (CheckConnection.haveNetworkConnection(getContext())) {
             init();
             loadData(page, size);
             loadMoreData();
+            getSuggestionItem();
             return view;
         } else {
             CheckConnection.showConnection(getContext(), "Kiểm tra kết nối internet");
         }
         return null;
     }
-
 
 
     private void loadMoreData() {
@@ -101,6 +105,7 @@ public class Fragment_Suggestion extends Fragment {
         mEditor = mPerferences.edit();
         mHandler = new mHandler();
         token = mPerferences.getString(getString(R.string.token), "");
+        trainerId = mPerferences.getInt(getString(R.string.id), 0);
         LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         progressBar = layoutInflater.inflate(R.layout.progressbar, null);
 
@@ -110,7 +115,7 @@ public class Fragment_Suggestion extends Fragment {
     private void loadData(int page, int size) {
 
         SuggestionService suggestionService = new SuggestionService();
-        ArrayList<Suggestion> listTemp = (ArrayList<Suggestion>) suggestionService.getSuggestionList(token, page, size, id);
+        ArrayList<Suggestion> listTemp = (ArrayList<Suggestion>) suggestionService.getSuggestionListByTrainer(token, page, size, trainerId, traineeId);
         if (listTemp.size() <= 0 && checkedSuggestionList == 0) {
             listViewSuggestion.setVisibility(View.INVISIBLE);
             txtIsEmptySuggestion.setVisibility(View.VISIBLE);
@@ -130,7 +135,18 @@ public class Fragment_Suggestion extends Fragment {
         }
 
     }
-    public static Fragment_Suggestion newInstance(int accountId){
+    private void getSuggestionItem(){
+        listViewSuggestion.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getContext(), SuggestionDetailByTrainerActivity.class);
+                intent.putExtra("suggestionId", suggestionList.get(i).getId());
+                startActivity(intent);
+            }
+        });
+    }
+
+    public static Fragment_Suggestion newInstance(int accountId) {
         Fragment_Suggestion f = new Fragment_Suggestion();
         // Supply index input as an argument.
         Bundle args = new Bundle();
@@ -152,7 +168,6 @@ public class Fragment_Suggestion extends Fragment {
                     loadData(++page, size);
                     suggestionAdapter.notifyDataSetChanged();
                     isLoading = false;
-                    progressBar.setVisibility(View.GONE);
                     break;
             }
             super.handleMessage(msg);

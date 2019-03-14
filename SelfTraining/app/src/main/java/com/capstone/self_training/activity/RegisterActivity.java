@@ -1,5 +1,6 @@
 package com.capstone.self_training.activity;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -19,6 +20,7 @@ import com.capstone.self_training.service.dataservice.AccountService;
 import com.capstone.self_training.util.Constants;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
@@ -95,6 +97,9 @@ public class RegisterActivity extends AppCompatActivity {
         String password = edtPassword.getText().toString().trim();
         String confirmPass = edtConfirmPass.getText().toString().trim();
         String email = edtEmail.getText().toString().trim();
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Đang xử lý");
+        progressDialog.show();
         if (userImgUri != null) {
             if (validAccount(username, password, confirmPass, email)) {
                 StorageReference storageReference = srf.child(FOLDER_NAME + "/" + username);
@@ -125,6 +130,15 @@ public class RegisterActivity extends AppCompatActivity {
                         }
 
 
+                    }
+                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                        double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                        progressDialog.setMessage("Hoàn thành " + (int) progress + "%...");
+                        if ((int) progress == 100) {
+                            progressDialog.dismiss();
+                        }
                     }
                 });
             }

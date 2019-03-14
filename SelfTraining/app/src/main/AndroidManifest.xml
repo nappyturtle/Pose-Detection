@@ -40,7 +40,11 @@
         <activity android:name=".activity.PlayBoughtVideoActivity" />
         <activity android:name=".activity.BoughtVideoListActivity" />
         <activity android:name=".activity.ManageTraineeTrainerActivity" />
-        <activity android:name=".activity.TraineeManagementActivity"></activity>
+        <activity android:name=".activity.TraineeManagementActivity" />
+        <activity android:name=".activity.CreateCourseActivity" />
+        <activity android:name=".activity.SuggestionDetailByTrainerActivity" />
+        <activity android:name=".activity.CourseDetailPayment" />
+        <activity android:name=".activity.ConfirmationActivity"></activity>
     </application>
 
 </manifest>

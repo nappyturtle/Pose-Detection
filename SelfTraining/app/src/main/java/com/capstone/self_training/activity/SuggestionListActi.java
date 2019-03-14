@@ -74,7 +74,7 @@ public class SuggestionListActi extends AppCompatActivity {
         }
 
     }
-
+    // hiển thị more data suggestion
     private void getMoreData() {
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
@@ -95,6 +95,7 @@ public class SuggestionListActi extends AppCompatActivity {
         });
     }
 
+    // hiển thị thanh toobar
     private void displayToolBar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -106,6 +107,7 @@ public class SuggestionListActi extends AppCompatActivity {
         });
     }
 
+    // lấy id của suggestion để hiển thị suggestion detail
     private void getSuggestionItem() {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -124,11 +126,13 @@ public class SuggestionListActi extends AppCompatActivity {
 
         SuggestionService suggestionService = new SuggestionService();
         ArrayList<Suggestion> listTemp = (ArrayList<Suggestion>) suggestionService.getSuggestionList(token, page, size, id);
-        if (listTemp.size() <= 0 && checkedSuggestionList == 0) {
+        if (listTemp.size() <= 0 && checkedSuggestionList == 0) {// nếu chưa có course
+            // checkedSuggestionList = 0 ở đây có nghĩa là chưa có data
             listView.setVisibility(View.INVISIBLE);
             txtSuggestionIsEmpty.setVisibility(View.VISIBLE);
         } else
-            if (listTemp.size() <= 0 && checkedSuggestionList == 1) {
+            if (listTemp.size() <= 0 && checkedSuggestionList == 1) { // nếu có course nhưng mà load hết dữ liệu
+                // checkedSuggestionList = 1 ở đây có nghĩa là khi đã có data nhưng đã load hết rồi
             Log.e("ddasdasdasd <=0 ", "dasdasd <= 0");
             limitedData = true;
             listView.removeFooterView(progressBar);
@@ -140,8 +144,6 @@ public class SuggestionListActi extends AppCompatActivity {
                 suggestionAdapter.notifyDataSetChanged();
             }
             Log.e("ddasdasdasd > 0 ", "dasdasd > 0");
-
-            //suggestionAdapter = new SuggestionAdapter(getApplicationContext(), suggestionList);
 
             checkedSuggestionList = 1;
         }

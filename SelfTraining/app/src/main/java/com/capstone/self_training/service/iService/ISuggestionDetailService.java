@@ -15,5 +15,8 @@ public interface ISuggestionDetailService {
     Call<List<SuggestionDetail>> getSuggestionDetail(@Header(Constants.header_string) String token,
                                                      @Query("suggestionId") int suggestionId);
 
+    @GET("suggestiondetail/saveComment")
+    Call<Boolean> saveComment(@Header(Constants.header_string) String token,
+                                                     @Query("suggestionDetailId") int suggestionDetailId);
 
 }

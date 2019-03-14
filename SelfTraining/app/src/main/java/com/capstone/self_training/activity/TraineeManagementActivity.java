@@ -37,6 +37,9 @@ public class TraineeManagementActivity extends AppCompatActivity {
             CheckConnection.showConnection(this,"Kiểm tra kết nối Internent!!!");
         }
     }
+    // get accountId - username from thumbnail trainer từ BoughtTrainerCourseAdapter
+    // dùng accountId đê gọi api đưa qua Fragment_Profile
+    // dùng username để setTitle cho toolbar
     private void getDataFromIntent(){
         Intent intent = getIntent();
         String accountTemp = intent.getStringExtra("accountTemp");
@@ -53,9 +56,11 @@ public class TraineeManagementActivity extends AppCompatActivity {
         viewPager = (ViewPager) findViewById(R.id.traineeManagement_myViewPager);
 
         MainViewPager mainViewPager = new MainViewPager(getSupportFragmentManager());
+        // hiển thị màn hinh Fragment_Suggestion
         Fragment_Suggestion fragment_suggestion = Fragment_Suggestion.newInstance(accountId);
         mainViewPager.addFragment(fragment_suggestion, "Các video tập theo",getApplicationContext());
 
+        // hiển thị màn hình Fragment_Profile
         Fragment_Profile fragment_profile = Fragment_Profile.newInstance(accountId);
         mainViewPager.addFragment(fragment_profile, "Giới thiệu",getApplicationContext());
 

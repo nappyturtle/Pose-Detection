@@ -155,6 +155,8 @@ public class CreateCourseActivity extends AppCompatActivity {
                     return;
                 }
                 createCourse();
+                Intent intent = new Intent(getApplicationContext(),TrainerProfileActivity.class);
+                startActivity(intent);
             }
         });
         alertDialog.setNegativeButton("Không", new DialogInterface.OnClickListener() {

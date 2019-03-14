@@ -19,4 +19,9 @@ public interface ISuggestionService {
     @GET("suggestion/suggestionsByTrainee")
     Call<List<Suggestion>> getSuggestionList(@Header(Constants.header_string) String token,@Query("page") int page,
                                              @Query("size") int size,@Query("id") int accountId);
+
+    @GET("suggestion/getSuggestionByTrainer")
+    Call<List<Suggestion>> getSuggestionByTrainer(@Header(Constants.header_string) String token,@Query("page") int page,
+                                             @Query("size") int size,@Query("trainerId") int trainerId
+            ,@Query("traineeId") int traineeId);
 }

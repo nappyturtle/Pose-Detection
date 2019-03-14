@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.capstone.self_training.R;
@@ -29,11 +30,23 @@ public class ManageTraineeTrainerActivity extends AppCompatActivity {
             init();
             displayToolBar();
             getDataManagement();
+            getTraineeTrainerProfile();
         }else{
             CheckConnection.showConnection(this,"Kiểm tra kết nối của bạn !!!");
         }
     }
+    private void getTraineeTrainerProfile() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getApplicationContext(),TraineeManagementActivity.class);
+                intent.putExtra("accountTemp",dtoList.get(i).getAccountId()+"_-/-_"+dtoList.get(i).getUsername());
+                startActivity(intent);
+            }
+        });
+    }
 
+    // lấy danh sách trainer từ màn hình BoughtCourseActivity
     private void getDataManagement() {
         Intent intent = getIntent();
         List<EnrollmentDTO> listTemp = (List<EnrollmentDTO>) intent.getSerializableExtra("listManagement");
@@ -42,6 +55,7 @@ public class ManageTraineeTrainerActivity extends AppCompatActivity {
             adapter.notifyDataSetChanged();
         }
     }
+    // hiển thị thành toolbar
     private void displayToolBar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

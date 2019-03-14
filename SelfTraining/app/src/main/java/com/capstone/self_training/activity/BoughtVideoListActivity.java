@@ -69,6 +69,7 @@ public class BoughtVideoListActivity extends AppCompatActivity {
             CheckConnection.showConnection(this, "Kiểm tra internet của bạn!!!");
         }
     }
+    // hiển thị thanh toolbar
     private void displayToolBar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -80,13 +81,14 @@ public class BoughtVideoListActivity extends AppCompatActivity {
         });
     }
 
+    // lấy thêm data bằng cách scroll nó xuống dưới cuối màn hình
     private void loadmoreVideoListView() {
         listVideo.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
-                    isLoading = false;
-                }
+//                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+//                    isLoading = false;
+//                }
             }
 
             @Override
@@ -100,6 +102,7 @@ public class BoughtVideoListActivity extends AppCompatActivity {
         });
     }
 
+    // để lấy thông tin video, account để chuyển qua màn hình PlayBoughtVideoActivity
     private void getItemVideo() {
         listVideo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -112,6 +115,7 @@ public class BoughtVideoListActivity extends AppCompatActivity {
         });
     }
 
+    // lấy courseId từ BoughtCourseActivity gửi qua
     private void getCourseId() {
         Intent intent = getIntent();
         courseId = intent.getIntExtra("courseId",0);
@@ -122,10 +126,12 @@ public class BoughtVideoListActivity extends AppCompatActivity {
         videoService = new VideoService();
 
         List<VideoDTO> videoDTOS = videoService.getAllBoughtVideosByCourseId(token, page, size, courseId);
-        if (videoDTOS.size() <= 0 && checkedSuggestionList == 0) {
+        if (videoDTOS.size() <= 0 && checkedSuggestionList == 0) {// nếu chưa có course
+            // checkedSuggestionList = 0 ở đây có nghĩa là chưa có data
             listVideo.setVisibility(View.INVISIBLE);
             txtBoughtVideoIsEmpty.setVisibility(View.VISIBLE);
-        } else if (videoDTOS.size() <= 0 && checkedSuggestionList == 1) {
+        } else if (videoDTOS.size() <= 0 && checkedSuggestionList == 1) { // nếu có course nhưng mà load hết dữ liệu
+            // checkedSuggestionList = 1 ở đây có nghĩa là khi đã có data nhưng đã load hết rồi
             Log.e("ddasdasdasd <=0 ", "dasdasd <= 0");
             limitedData = true;
             listVideo.removeFooterView(progressBar);
@@ -142,7 +148,7 @@ public class BoughtVideoListActivity extends AppCompatActivity {
             }
             Log.e("ddasdasdasd > 0 ", "dasdasd > 0");
 
-            checkedSuggestionList = 1;
+            checkedSuggestionList = 1; // data được load lên thì gán = 1
         }
 
     }

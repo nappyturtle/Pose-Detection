@@ -31,6 +31,17 @@ public class SuggestionDetail implements Serializable {
     @SerializedName("updatedTime")
     @Expose
     private Object updatedTime;
+    @SerializedName("comment")
+    @Expose
+    private String comment;
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 
     public Integer getId() {
         return id;
