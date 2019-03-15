@@ -23,4 +23,8 @@ public interface ICourseService {
     @GET("course/getAllCourses")
     Call<List<CourseDTO>> getAllCourse();
 
+    @GET("course/search")
+    Call<List<CourseDTO>> searchCourseByName(@Query("searchValue") String searchValue, @Query("accountId") int accountId);
+    @GET("course/getUnboughtCourses")
+    Call<List<CourseDTO>> getUnboughtCourses(@Query("accountId") int accountId);
 }

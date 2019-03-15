@@ -5,11 +5,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.capstone.self_training.R;
 import com.capstone.self_training.adapter.MainViewPager;
@@ -18,11 +21,13 @@ import com.capstone.self_training.fragment.Fragment_Course;
 import com.capstone.self_training.fragment.Fragment_Trending;
 import com.capstone.self_training.util.CheckConnection;
 
+import java.util.List;
+
 public class MainActivity_Home extends AppCompatActivity {
 
     private final int TRAINER_ROLE = 3;
     private final int TRAINEE_ROLE = 4;
-
+    private String currentFragment = "Fragment_Home";
     TabLayout tabLayout;
     ViewPager viewPager;
     private Toolbar toolbar;
@@ -46,13 +51,33 @@ public class MainActivity_Home extends AppCompatActivity {
     }
 
     private void init() {
-        MainViewPager mainViewPager = new MainViewPager(getSupportFragmentManager());
+        final MainViewPager mainViewPager = new MainViewPager(getSupportFragmentManager());
        
         mainViewPager.addFragment(new Fragment_Home(), "Trang chủ",getApplicationContext());
         mainViewPager.addFragment(new Fragment_Trending(), "Thịnh hành",getApplicationContext());
         mainViewPager.addFragment(new Fragment_Course(), "Khoá học",getApplicationContext());
 
         viewPager.setAdapter(mainViewPager);
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Fragment fragment = mainViewPager.getItem(position);
+                String fragmentName = fragment.getClass().toString();
+                currentFragment = fragmentName.substring(fragmentName.lastIndexOf(".") + 1);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_home);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_top);
@@ -89,6 +114,12 @@ public class MainActivity_Home extends AppCompatActivity {
         int roleId = mPerferences.getInt(getString(R.string.roleId), 0);
         switch (item.getItemId()) {
             case R.id.btnSearch:
+                //Search
+                Intent intent = new Intent(MainActivity_Home.this, SearchActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("fragment", currentFragment);
+                intent.putExtras(bundle);
+                startActivity(intent);
                 break;
             case R.id.btnProfile:
                 if (roleId == TRAINEE_ROLE) {

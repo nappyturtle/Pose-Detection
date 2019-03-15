@@ -82,4 +82,27 @@ public class VideoService {
         }
         return videoDTOS;
     }
+
+    public List<VideoDTO> searchVideoOrderByDate(String searchValue) {
+        iVideoService = DataService.getVideoService();
+        List<VideoDTO> videos = null;
+        Call<List<VideoDTO>> call = iVideoService.searchVideoOrderByDate(searchValue);
+        try {
+            videos = call.execute().body();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return videos;
+    }
+    public List<VideoDTO> searchVideoOrderByView(String searchValue) {
+        iVideoService = DataService.getVideoService();
+        List<VideoDTO> videos = null;
+        Call<List<VideoDTO>> call = iVideoService.searchVideoOrderByView(searchValue);
+        try {
+            videos = call.execute().body();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return videos;
+    }
 }

@@ -100,4 +100,5 @@ public class HomeCourseAdapter extends RecyclerView.Adapter<HomeCourseAdapter.Co
             lnCourseItem = itemView.findViewById(R.id.ln_course_item);
         }
     }
+
 }

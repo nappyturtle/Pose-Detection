@@ -33,4 +33,8 @@ public interface IVideoService {
     @GET("video/getAllBoughtVideoRelated")
     Call<List<VideoDTO>> getAllBoughtVideoRelated(@Header(Constants.header_string) String token,
                                                   @Query("courseId") int courseId,@Query("videoId") int videoId);
+    @GET("video/searchOrderByDate")
+    Call<List<VideoDTO>> searchVideoOrderByDate(@Query("searchValue") String searchValue);
+    @GET("video/searchOrderByView")
+    Call<List<VideoDTO>> searchVideoOrderByView(@Query("searchValue") String searchValue);
 }

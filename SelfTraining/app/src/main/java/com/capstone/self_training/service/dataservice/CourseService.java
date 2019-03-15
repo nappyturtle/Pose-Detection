@@ -50,4 +50,25 @@ public class CourseService {
         }
         return list;
     }
+    public List<CourseDTO> getUnboughtCourses(int accountId) {
+        List<CourseDTO> courses = null;
+        Call<List<CourseDTO>> call = iCourseService.getUnboughtCourses(accountId);
+        try {
+            courses = call.execute().body();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return courses;
+    }
+    public List<CourseDTO> searchCourseByName(String searchValue, int accountId) {
+        List<CourseDTO> courses = null;
+        Call<List<CourseDTO>> call = iCourseService.searchCourseByName(searchValue, accountId);
+        try {
+            courses = call.execute().body();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return courses;
+    }
+
 }

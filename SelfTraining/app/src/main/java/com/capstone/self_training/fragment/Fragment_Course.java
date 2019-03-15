@@ -45,10 +45,18 @@ public class Fragment_Course extends Fragment {
         if (courseDTOList == null) {
             courseDTOList = new ArrayList<>();
         }
-        courseDTOList = courseService.getAllCourse();
+//        courseDTOList = courseService.getAllCourse();
+        //VuVG - 15/03/2019 - thay getAll = get những course chưa mua
+        courseDTOList = courseService.getUnboughtCourses(accountId);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         home_course_list.setLayoutManager(layoutManager);
-        homeCourseAdapter = new HomeCourseAdapter(courseDTOList, getContext(),accountId);
+        homeCourseAdapter = new HomeCourseAdapter(courseDTOList, getContext(), accountId);
         home_course_list.setAdapter(homeCourseAdapter);
+    }
+    //refresh dữ liệu khi resume (sau khi login hay gì đó)
+    @Override
+    public void onResume() {
+        super.onResume();
+        init();
     }
 }
