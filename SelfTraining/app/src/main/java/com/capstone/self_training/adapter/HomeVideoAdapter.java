@@ -3,6 +3,9 @@ package com.capstone.self_training.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,12 +14,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.capstone.self_training.R;
 import com.capstone.self_training.activity.PlayVideoActivity;
+import com.capstone.self_training.activity.TrainerChannelActivity;
 import com.capstone.self_training.helper.TimeHelper;
 import com.capstone.self_training.model.Account;
 import com.capstone.self_training.model.Video;
@@ -62,6 +67,7 @@ public class HomeVideoAdapter extends RecyclerView.Adapter<HomeVideoAdapter.Vide
         holder.userName.setText(account.getUsername());
 
         holder.postTime.setText(TimeHelper.showPeriodOfTime(model.getCreatedTime()));
+
         holder.totalView.setText(model.getNumOfView() + " lượt xem");
 
 
@@ -85,6 +91,10 @@ public class HomeVideoAdapter extends RecyclerView.Adapter<HomeVideoAdapter.Vide
             public void onClick(View v) {
                 //Intend to Profile Activity here
                 Toast.makeText(context, "View Profile Clicked", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, TrainerChannelActivity.class);
+                intent.putExtra("ACCOUNID_FROM_TRAINER_PROFILE", account.getId());
+                intent.putExtra("ACCONTNAME_FROM_TRAINER_PROFILE", account.getUsername());
+                context.startActivity(intent);
             }
         });
     }
@@ -104,8 +114,7 @@ public class HomeVideoAdapter extends RecyclerView.Adapter<HomeVideoAdapter.Vide
         public TextView title;
         public TextView postTime;
         public TextView totalView;
-        public TextView twHomeVideoPayment;
-
+        //public TextView twHomeVideoPayment;
 
         public VideoViewHolder(View itemView) {
             super(itemView);
