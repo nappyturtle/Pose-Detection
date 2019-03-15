@@ -1,6 +1,7 @@
 package com.pdst.pdstserver.controllers;
 
 import com.pdst.pdstserver.dtos.VideoDTO;
+import com.pdst.pdstserver.handlers.SearchUtil;
 import com.pdst.pdstserver.models.Suggestion;
 import com.pdst.pdstserver.models.Video;
 import com.pdst.pdstserver.services.videoservice.VideoService;
@@ -12,8 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(VideoController.BASE_URL)
@@ -76,6 +77,38 @@ public class VideoController {
         List<VideoDTO> resultPage = videoService.getAllBoughtVideoRelated(courseId,videoId);
         return resultPage;
     }
+    @GetMapping("searchOrderByDate")
+    public List<VideoDTO> searchVideoOrderByDate(@RequestParam(value = "searchValue") String searchValue) {
+        List<VideoDTO> videoDTOList = searchVideo(searchValue);
+        Collections.sort(videoDTOList, (videoDTO, t1) -> {return t1.getVideo().getCreatedTime().compareTo(videoDTO.getVideo().getCreatedTime());});
+        return videoDTOList;
+    }
+    @GetMapping("searchOrderByView")
+    public List<VideoDTO> searchVideoOrderByView(@RequestParam(value = "searchValue") String searchValue) {
+        List<VideoDTO> videoDTOList = searchVideo(searchValue);
+        Collections.sort(videoDTOList, (videoDTO, t1) -> {return t1.getVideo().getNumOfView().compareTo(videoDTO.getVideo().getNumOfView());});
+        return videoDTOList;
+    }
 
+    private List<VideoDTO> searchVideo(String searchValue) {
+        List<VideoDTO> videoDTOList = videoService.getAllFreeVideos();
+        Map<VideoDTO, Double> videoMap = new HashMap<>();
+        String[] tokens = searchValue.toLowerCase().split(" ");
+        for (VideoDTO dto : videoDTOList) {
+            videoMap.put(dto, SearchUtil.searchMatchingPercentage(tokens, dto.getVideo().getTitle()));
+        }
+        videoMap = videoMap.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                        (e1, e2) -> e1, LinkedHashMap::new));
+        Iterator iterator = videoMap.keySet().iterator();
+        while (iterator.hasNext()) {
+            VideoDTO videoDTO = (VideoDTO) iterator.next();
+            if (videoMap.get(videoDTO) < 0.5) {
+                videoDTOList.remove(videoDTO);
+            }
+        }
+        return videoDTOList;
+    }
 
 }

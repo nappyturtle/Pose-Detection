@@ -19,4 +19,5 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
     List<CourseDTO> getAllCoursesWithPrice();
 
     List<Course> findAllByOrderByCreatedTimeDesc();
+
 }

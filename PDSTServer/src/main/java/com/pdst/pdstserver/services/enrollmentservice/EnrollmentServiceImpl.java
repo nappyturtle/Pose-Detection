@@ -73,7 +73,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
             Course course = courseRepository.findCourseById(enrollment.getCourseId());
             Account account = accountRepository.findAccountById(course.getAccountId());
             EnrollmentDTO dto = new EnrollmentDTO();
-            dto.setId(course.getId());
+            dto.setCourseId(course.getId());
             dto.setAccountId(account.getId());
             dto.setUsername(account.getUsername());
             dto.setAccountThumbnail(account.getImgUrl());

@@ -18,5 +18,9 @@ public class SecurityConstants {
     public static final String GET_ALL_VIDEO_TRENDING = "/video/getAllVideosByTopNumOfView";
     public static final String GET_ALL_COURSE_WITH_PRICE = "/course/getAllCourses";
     public static final String CREATE_SUGGESTIONDETAIL = "/suggestiondetail/createSuggestionDetails";
+    public static final String SEARCH_COURSE = "/course/search";
+    public static final String SEARCH_VIDEO_ORDERED_BY_DATE = "/video/searchOrderByDate";
+    public static final String SEARCH_VIDEO_ORDERED_BY_VIEW = "/video/searchOrderByView";
+    public static final String GET_UNBOUGHT_COURSES = "/course/getUnboughtCourses";
 
 }

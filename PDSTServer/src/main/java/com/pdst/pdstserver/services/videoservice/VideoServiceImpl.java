@@ -45,12 +45,15 @@ public class VideoServiceImpl implements VideoService {
         for (Video video : videos) {
             Course course = courseRepository.findCourseById(video.getCourseId());
 //            Account account = accountRepository.findAccountById(video.getAccountId());
-            Account account = accountRepository.findAccountById(course.getAccountId());
-            VideoDTO dto = new VideoDTO();
-            dto.setVideo(video);
-            dto.setUsername(account.getUsername());
-            dto.setImgUrl(account.getImgUrl());
-            dtos.add(dto);
+            //VuVG - 15/03/2019 - Chỉ lấy các video free
+            if(course.getPrice() == 0) {
+                Account account = accountRepository.findAccountById(course.getAccountId());
+                VideoDTO dto = new VideoDTO();
+                dto.setVideo(video);
+                dto.setUsername(account.getUsername());
+                dto.setImgUrl(account.getImgUrl());
+                dtos.add(dto);
+            }
         }
         return dtos;
     }
@@ -165,12 +168,33 @@ public class VideoServiceImpl implements VideoService {
         for (Video video : videos) {
             Course course = courseRepository.findCourseById(video.getCourseId());
 //            Account account = accountRepository.findAccountById(video.getAccountId());
-            Account account = accountRepository.findAccountById(course.getAccountId());
-            VideoDTO dto = new VideoDTO();
-            dto.setVideo(video);
-            dto.setUsername(account.getUsername());
-            dto.setImgUrl(account.getImgUrl());
-            dtos.add(dto);
+            //VuVG - 15/03/2019 - Chỉ lấy các video free
+            if(course.getPrice() == 0) {
+                Account account = accountRepository.findAccountById(course.getAccountId());
+                VideoDTO dto = new VideoDTO();
+                dto.setVideo(video);
+                dto.setUsername(account.getUsername());
+                dto.setImgUrl(account.getImgUrl());
+                dtos.add(dto);
+            }
+        }
+        return dtos;
+    }
+
+    @Override
+    public List<VideoDTO> getAllFreeVideos() {
+        List<Video> videos = videoRepository.findAll();
+        List<VideoDTO> dtos = new ArrayList<>();
+        for (Video video : videos) {
+            Course course = courseRepository.findCourseById(video.getCourseId());
+            if(course.getPrice() == 0) {
+                Account account = accountRepository.findAccountById(course.getAccountId());
+                VideoDTO dto = new VideoDTO();
+                dto.setVideo(video);
+                dto.setUsername(account.getUsername());
+                dto.setImgUrl(account.getImgUrl());
+                dtos.add(dto);
+            }
         }
         return dtos;
     }
