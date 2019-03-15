@@ -43,6 +43,7 @@ public class TrainerProfileActivity extends AppCompatActivity {
     LinearLayout lnBoughtCourse;
     LinearLayout lnUploadedVideo;
     LinearLayout lnCreateCourse;
+    LinearLayout lnTrainerChannel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,6 +145,7 @@ public class TrainerProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
     }
 
 
@@ -160,6 +162,7 @@ public class TrainerProfileActivity extends AppCompatActivity {
         lnBoughtCourse = (LinearLayout) findViewById(R.id.ln_trainerProfile_getAllCourse_id);
         lnUploadedVideo = (LinearLayout) findViewById(R.id.ln_trainerProfile_getAllUploadedVideo_id);
         lnCreateCourse = findViewById(R.id.ln_create_course);
+        lnTrainerChannel = findViewById(R.id.ln_trainer_channel);
 
         mPerferences = PreferenceManager.getDefaultSharedPreferences(this);
         mEditor = mPerferences.edit();
@@ -177,6 +180,15 @@ public class TrainerProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(TrainerProfileActivity.this, CreateCourseActivity.class);
+                startActivity(intent);
+            }
+        });
+        lnTrainerChannel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TrainerProfileActivity.this, TrainerChannelActivity.class);
+                intent.putExtra("ACCOUNID_FROM_TRAINER_PROFILE", id);
+                intent.putExtra("ACCONTNAME_FROM_TRAINER_PROFILE", username);
                 startActivity(intent);
             }
         });

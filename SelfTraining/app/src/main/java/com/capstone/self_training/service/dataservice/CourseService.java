@@ -7,6 +7,8 @@ import com.capstone.self_training.dto.CourseDTO;
 import com.capstone.self_training.model.Course;
 import com.capstone.self_training.service.iService.ICourseService;
 
+import org.w3c.dom.ls.LSException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +49,17 @@ public class CourseService {
             list = call.execute().body();
         } catch (Exception e) {
             Log.e("CourseService getAllCourse = ", e.getMessage());
+        }
+        return list;
+    }
+
+    public List<CourseDTO> getAllCoursesWithPriceByAccountId(int accountId) {
+        Call<List<CourseDTO>> call = iCourseService.getAllCoursesWithPriceByAccountId(accountId);
+        List<CourseDTO> list = new ArrayList<>();
+        try {
+            list = call.execute().body();
+        } catch (Exception e) {
+            Log.e("CourseService getAllCoursesWithPriceByAccountId = ", e.getMessage());
         }
         return list;
     }

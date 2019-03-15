@@ -18,21 +18,28 @@ public interface IVideoService {
     Call<Void> createVideo(@Header(Constants.header_string) String token, @Body Video video);
 
     @GET("video/getAllVideosByDate")
-    Call<List<VideoDTO>> getVideosByDate(@Query("page") int page,@Query("size") int size);
+    Call<List<VideoDTO>> getVideosByDate(@Query("page") int page, @Query("size") int size);
 
 
     @GET("video/getAllVideosByTrainer")
     Call<List<VideoDTO>> getVideosByTrainer(@Query("accountId") int accountId);
 
     @GET("video/getAllVideosByTopNumOfView")
-    Call<List<VideoDTO>> getAllVideosByTopNumOfView(@Query("page") int page,@Query("size") int size);
+    Call<List<VideoDTO>> getAllVideosByTopNumOfView(@Query("page") int page, @Query("size") int size);
 
     @GET("video/getAllVideoByCourseId")
     Call<List<VideoDTO>> getAllBoughtVideosByCourseId(@Header(Constants.header_string) String token,
-                                                      @Query("page") int page,@Query("size") int size,@Query("courseId") int courseId);
+                                                      @Query("page") int page, @Query("size") int size, @Query("courseId") int courseId);
+
     @GET("video/getAllBoughtVideoRelated")
     Call<List<VideoDTO>> getAllBoughtVideoRelated(@Header(Constants.header_string) String token,
-                                                  @Query("courseId") int courseId,@Query("videoId") int videoId);
+                                                  @Query("courseId") int courseId, @Query("videoId") int videoId);
+
+   /* @GET("video/videosByAccount")
+    Call<List<VideoDTO>> getVideosByAccountId(@Header(Constants.header_string) String token, @)*/
+
+    @GET("video/getAllFreeVideosByAccount")
+    Call<List<Video>> getAllFreeVideosByAccount(@Query("accountId") int accountId);
     @GET("video/searchOrderByDate")
     Call<List<VideoDTO>> searchVideoOrderByDate(@Query("searchValue") String searchValue);
     @GET("video/searchOrderByView")

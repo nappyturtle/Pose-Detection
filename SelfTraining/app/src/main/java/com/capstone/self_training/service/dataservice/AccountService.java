@@ -3,7 +3,9 @@ package com.capstone.self_training.service.dataservice;
 
 import android.content.Context;
 import android.provider.ContactsContract;
+import android.util.Log;
 
+import com.capstone.self_training.dto.TrainerInfo;
 import com.capstone.self_training.model.Account;
 import com.capstone.self_training.service.iService.IAccountService;
 import com.capstone.self_training.util.Constants;
@@ -81,5 +83,17 @@ public class AccountService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public TrainerInfo getTrainerInfo(int accountId) {
+        iAccountService = DataService.getAccountService();
+        Call<TrainerInfo> call = iAccountService.getTrainerInfo(accountId);
+        TrainerInfo trainerInfo = new TrainerInfo();
+        try {
+            trainerInfo = call.execute().body();
+        } catch (Exception e) {
+            Log.e("AccountService getTrainerInfo: ", e.getMessage());
+        }
+        return trainerInfo;
     }
 }

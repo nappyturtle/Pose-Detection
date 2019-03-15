@@ -132,14 +132,16 @@ public class CreateCourseActivity extends AppCompatActivity {
     }
 
     public void createCours(View view) {
-        if (edtCourseName.getText().toString().trim().equalsIgnoreCase("") || edtCourseName.getText().toString().trim() == null) {
+        /*if (edtCourseName.getText().toString().trim().equalsIgnoreCase("") || edtCourseName.getText().toString().trim() == null) {
             Toast.makeText(this, "Bạn chưa nhập tên khóa học.", Toast.LENGTH_LONG).show();
         }
 
         if (!isChooseThumbnail) {
             Toast.makeText(this, "Bạn chưa chọn hình nền cho khóa học.", Toast.LENGTH_LONG).show();
+        }*/
+        if (validateNewCourse()) {
+            confirmCreateCourse();
         }
-        confirmCreateCourse();
     }
 
     public void confirmCreateCourse() {
@@ -150,10 +152,6 @@ public class CreateCourseActivity extends AppCompatActivity {
         alertDialog.setPositiveButton("Có", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(courseThumbnailUri == null){
-                    Toast.makeText(CreateCourseActivity.this, "Bạn chưa chon hình nền cho khóa học!", Toast.LENGTH_LONG).show();
-                    return;
-                }
                 createCourse();
                 Intent intent = new Intent(getApplicationContext(),TrainerProfileActivity.class);
                 startActivity(intent);
@@ -209,5 +207,24 @@ public class CreateCourseActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private boolean validateNewCourse() {
+        if (edtCourseName.getText().equals("") || edtCourseName.getText() == null) {
+            Toast.makeText(this, "Bạn chưa điền tên khóa học!", Toast.LENGTH_LONG).show();
+            return false;
+        } else if (edtCoursePrice.getText().toString().trim().equals("") || edtCoursePrice.getText() == null) {
+            Toast.makeText(this, "Bạn chưa nhập giá tiền!", Toast.LENGTH_LONG).show();
+            return false;
+        } else if (Integer.parseInt(edtCoursePrice.getText().toString().trim()) < 1) {
+            Toast.makeText(this, "Giá tiền nhỏ nhất" +
+                    " 1.000 đ", Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (courseThumbnailUri == null) {
+            Toast.makeText(CreateCourseActivity.this, "Bạn chưa chon hình nền cho khóa học!", Toast.LENGTH_LONG).show();
+            return false;
+        } else {
+            return true;
+        }
     }
 }
