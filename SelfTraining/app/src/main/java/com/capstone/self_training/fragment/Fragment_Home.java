@@ -1,10 +1,14 @@
 
 package com.capstone.self_training.fragment;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.StrictMode;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,6 +21,7 @@ import android.widget.AbsListView;
 import android.widget.ProgressBar;
 
 import com.capstone.self_training.R;
+import com.capstone.self_training.activity.MainActivity_Home;
 import com.capstone.self_training.adapter.HomeVideoAdapter;
 import com.capstone.self_training.dto.VideoDTO;
 import com.capstone.self_training.model.Account;
@@ -43,16 +48,16 @@ public class Fragment_Home extends Fragment {
     private LinearLayoutManager linearLayoutManager;
     private ProgressBar progressBar;
     mHandler mHandler;
+    private int currentUserId = 0;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        if(CheckConnection.haveNetworkConnection(getContext())) {
+        if (CheckConnection.haveNetworkConnection(getContext())) {
             init();
             loadData(page, size);
-
 
             home_video_list.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
@@ -79,11 +84,10 @@ public class Fragment_Home extends Fragment {
                 }
             });
             return view;
-        }else{
-            CheckConnection.showConnection(getContext(),"Kiểm tra kết nối internet");
+        } else {
+            CheckConnection.showConnection(getContext(), "Kiểm tra kết nối internet");
         }
         return null;
-
 
     }
 
@@ -103,27 +107,30 @@ public class Fragment_Home extends Fragment {
         home_video_list.setLayoutManager(linearLayoutManager);
 //
         mHandler = new mHandler();
+
     }
 
     private void loadData(int page, int size) {
 
         videoService = new VideoService();
         List<VideoDTO> videoDTOS = videoService.getVideosByDate(page, size);
-        if(videoDTOS.size() <= 0){
-            limitedData = true;
-            CheckConnection.showConnection(getContext(),"Đã hết dữ liệu");
-            progressBar.setVisibility(View.GONE);
-        }else {
-            progressBar.setVisibility(View.GONE);
-            for (VideoDTO dto : videoDTOS) {
-                videos.add(dto.getVideo());
-                Account account = new Account();
-                account.setUsername(dto.getUsername());
-                account.setImgUrl(dto.getImgUrl());
-                accounts.add(account);
+        if (videoDTOS != null) {
+            if (videoDTOS.size() <= 0) {
+                limitedData = true;
+                CheckConnection.showConnection(getContext(), "Đã hết dữ liệu");
+                progressBar.setVisibility(View.GONE);
+            } else {
+                progressBar.setVisibility(View.GONE);
+                for (VideoDTO dto : videoDTOS) {
+                    videos.add(dto.getVideo());
+                    Account account = new Account();
+                    account.setUsername(dto.getUsername());
+                    account.setImgUrl(dto.getImgUrl());
+                    account.setId(dto.getAccountId());
+                    accounts.add(account);
+                }
             }
         }
-
     }
 
     // handler dùng để quản lí các thread

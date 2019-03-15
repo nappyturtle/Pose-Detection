@@ -48,7 +48,6 @@ public class Fragment_Trending extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_trending, container, false);
-
         if (CheckConnection.haveNetworkConnection(getContext())) {
             init();
             loadData(page, size);
@@ -80,7 +79,7 @@ public class Fragment_Trending extends Fragment {
 
             return view;
         } else {
-            CheckConnection.showConnection(getContext(),"Kiểm tra kết nối internet");
+            CheckConnection.showConnection(getContext(), "Kiểm tra kết nối internet");
         }
         return null;
     }
@@ -118,6 +117,7 @@ public class Fragment_Trending extends Fragment {
                 Account account = new Account();
                 account.setUsername(dto.getUsername());
                 account.setImgUrl(dto.getImgUrl());
+                account.setId(dto.getAccountId());
                 accounts.add(account);
             }
         }
