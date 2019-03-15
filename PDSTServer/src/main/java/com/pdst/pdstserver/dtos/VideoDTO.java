@@ -8,8 +8,18 @@ public class VideoDTO implements Serializable {
     private Video video;
     private String username;
     private String imgUrl;
+    private int accountId;
+
 
     public VideoDTO() {
+    }
+
+    public int getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(int accountId) {
+        this.accountId = accountId;
     }
 
     public Video getVideo() {
