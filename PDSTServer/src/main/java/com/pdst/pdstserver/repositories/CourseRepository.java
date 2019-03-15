@@ -4,6 +4,7 @@ import com.pdst.pdstserver.dtos.CourseDTO;
 import com.pdst.pdstserver.models.Course;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,4 +21,12 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
 
     List<Course> findAllByOrderByCreatedTimeDesc();
 
+    @Query("SELECT c.id FROM Course c WHERE c.accountId = ?1 and c.price = 0")
+    int getFreeCourseIdByAccountId(int accountId);
+
+    @Query("SELECT c FROM Course c WHERE c.accountId = ?1 AND c.price <> 0 order by c.createdTime desc ")
+    List<Course> getAllCoursesWithPriceByAccountId(int accountId);
+
+    @Query("SELECT COUNT (c.id) FROM Course c WHERE c.accountId = ?1 AND c.price > 0")
+    int countAllCoursesByAccountId(int accountId);
 }

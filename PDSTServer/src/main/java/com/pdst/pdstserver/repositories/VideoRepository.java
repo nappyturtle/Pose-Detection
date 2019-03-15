@@ -16,5 +16,5 @@ public interface VideoRepository extends JpaRepository<Video, Integer>{
     Integer countVideoByCourseId(Integer courseId);
     Integer countVideoByCourseId(int courseId);
     List<Video> findTop6ByCourseIdOrderByCreatedTimeDesc(int courseId);
-
+    List<Video> findAllByCourseIdOrderByCreatedTimeDesc(int courseId);
 }

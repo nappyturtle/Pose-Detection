@@ -33,7 +33,7 @@ public class VideoController {
 
     @GetMapping("getAllVideosByDate")
     public List<VideoDTO> getAllVideoByDate(@RequestParam(value = "page") int page, @RequestParam(value = "size") int size) {
-        List<VideoDTO> resultPage = videoService.getAllVideosOrderByDate(page,size);
+        List<VideoDTO> resultPage = videoService.getAllVideosOrderByDate(page, size);
         return resultPage;
     }
 
@@ -45,7 +45,7 @@ public class VideoController {
 
     @GetMapping("getAllVideosByTopNumOfView")
     public List<VideoDTO> getAllVideosByTopNumOfView(@RequestParam(value = "page") int page, @RequestParam(value = "size") int size) {
-        List<VideoDTO> resultPage = videoService.getAllVideosByTopNumOfView(page,size);
+        List<VideoDTO> resultPage = videoService.getAllVideosByTopNumOfView(page, size);
         return resultPage;
     }
 
@@ -68,13 +68,13 @@ public class VideoController {
 
     @GetMapping("getAllVideoByCourseId")
     public List<VideoDTO> getAllVideoByCourseId(@RequestParam(value = "page") int page, @RequestParam(value = "size") int size, @RequestParam(value = "courseId") int courseId) {
-        List<VideoDTO> resultPage = videoService.getAllVideoByCourseId(page,size,courseId);
+        List<VideoDTO> resultPage = videoService.getAllVideoByCourseId(page, size, courseId);
         return resultPage;
     }
 
     @GetMapping("getAllBoughtVideoRelated")
-    public List<VideoDTO> getAllBoughtVideoRelated(@RequestParam(value = "courseId") int courseId,@RequestParam(value = "videoId") int videoId) {
-        List<VideoDTO> resultPage = videoService.getAllBoughtVideoRelated(courseId,videoId);
+    public List<VideoDTO> getAllBoughtVideoRelated(@RequestParam(value = "courseId") int courseId, @RequestParam(value = "videoId") int videoId) {
+        List<VideoDTO> resultPage = videoService.getAllBoughtVideoRelated(courseId, videoId);
         return resultPage;
     }
     @GetMapping("searchOrderByDate")
@@ -90,6 +90,11 @@ public class VideoController {
         return videoDTOList;
     }
 
+    @GetMapping("getAllFreeVideosByAccount")
+    public List<Video> getAllFreeVideosByAccount(@RequestParam(value = "accountId")int accountId){
+        List<Video> videos = videoService.getAllFreeVideosByAccount(accountId);
+        return videos;
+    }
     private List<VideoDTO> searchVideo(String searchValue) {
         List<VideoDTO> videoDTOList = videoService.getAllFreeVideos();
         Map<VideoDTO, Double> videoMap = new HashMap<>();

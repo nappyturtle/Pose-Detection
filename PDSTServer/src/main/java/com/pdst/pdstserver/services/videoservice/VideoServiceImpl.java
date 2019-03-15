@@ -160,6 +160,15 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
+    public List<Video> getAllFreeVideosByAccount(int accountId) {
+        int freeCourseId = -1;
+        freeCourseId = courseRepository.getFreeCourseIdByAccountId(accountId);
+        List<Video> list = new ArrayList<>();
+        list = videoRepository.findAllByCourseIdOrderByCreatedTimeDesc(freeCourseId);
+        return list;
+    }
+
+    @Override
     public List<VideoDTO> getAllVideosByTopNumOfView(int page, int size) {
         System.out.println("page - size = " + page + " - " + size);
         Page<Video> videos = videoRepository.findAll(new PageRequest(page, size, Sort.Direction.DESC, "numOfView"));

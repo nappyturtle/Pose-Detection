@@ -45,4 +45,14 @@ public class CourseServiceImpl implements CourseService {
         return courseRepository.findAllByOrderByCreatedTimeDesc();
     }
 
+    @Override
+    public List<Course> getAllCoursesWithPriceByAccountId(int accountId) {
+        return courseRepository.getAllCoursesWithPriceByAccountId(accountId);
+    }
+
+    @Override
+    public int countAllCoursesByAccountId(int accountId) {
+        return courseRepository.countAllCoursesByAccountId(accountId);
+    }
+
 }

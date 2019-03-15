@@ -12,4 +12,7 @@ public interface CourseService {
     List<Course> getAllCourseByAccountId(int id);
     boolean createCourse(Course course);
     List<Course> getAllCourseOrderByCreatedTime();
+    List<Course> getAllCoursesWithPriceByAccountId(int accountId);
+
+    int countAllCoursesByAccountId(int accountId);
 }
