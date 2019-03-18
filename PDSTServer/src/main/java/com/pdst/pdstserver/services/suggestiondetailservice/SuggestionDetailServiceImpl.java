@@ -42,4 +42,16 @@ public class SuggestionDetailServiceImpl implements SuggestionDetailService {
         suggestionDetail.setStatus("active");
         return suggestionDetailRepository.saveAndFlush(suggestionDetail);
     }
+
+    @Override
+    public Boolean saveComment(SuggestionDetail suggestionDetailTemp) {
+
+        SuggestionDetail suggestionDetail1 = suggestionDetailRepository.findById(suggestionDetailTemp.getId());
+        suggestionDetail1.setComment(suggestionDetailTemp.getComment());
+        SuggestionDetail checked = suggestionDetailRepository.save(suggestionDetail1);
+        if(checked != null){
+            return true;
+        }
+        return false;
+    }
 }

@@ -1,14 +1,25 @@
 package com.pdst.pdstserver.dtos;
 
+import com.pdst.pdstserver.models.Account;
 import com.pdst.pdstserver.models.Course;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class CourseDTO implements Serializable {
     private Course course;
     private String trainerName;
     private int numberOfRegister;
     private int numberOfVideoInCourse;
+    private List<Account> traineeList;
+
+    public List<Account> getTraineeList() {
+        return traineeList;
+    }
+
+    public void setTraineeList(List<Account> traineeList) {
+        this.traineeList = traineeList;
+    }
 
     public int getNumberOfVideoInCourse() {
         return numberOfVideoInCourse;

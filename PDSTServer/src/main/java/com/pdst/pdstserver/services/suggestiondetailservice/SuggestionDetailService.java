@@ -9,4 +9,5 @@ public interface SuggestionDetailService {
     List<SuggestionDetail> getAllSuggestionDetails();
     List<SuggestionDetail> getSuggestionDetails(String field, Object value);
     SuggestionDetail createSuggestionDetail(SuggestionDetail suggestionDetail);
+    Boolean saveComment(SuggestionDetail suggestionDetail);
 }

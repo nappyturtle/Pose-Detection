@@ -39,4 +39,8 @@ public class SuggestionDetailController {
 //        suggestionService
         return "Success";
     }
+    @PutMapping("saveComment")
+    public boolean createComment(@RequestBody SuggestionDetail suggestionDetail){
+        return suggestionDetailService.saveComment(suggestionDetail);
+    }
 }

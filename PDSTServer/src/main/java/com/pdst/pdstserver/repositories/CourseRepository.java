@@ -2,6 +2,8 @@ package com.pdst.pdstserver.repositories;
 
 import com.pdst.pdstserver.dtos.CourseDTO;
 import com.pdst.pdstserver.models.Course;
+import com.pdst.pdstserver.models.Enrollment;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -29,4 +31,6 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
 
     @Query("SELECT COUNT (c.id) FROM Course c WHERE c.accountId = ?1 AND c.price > 0")
     int countAllCoursesByAccountId(int accountId);
+
+    List<Course> findAllByAccountId(Pageable pageable, int accountId);
 }

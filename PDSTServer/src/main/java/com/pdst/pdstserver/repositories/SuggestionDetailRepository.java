@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SuggestionDetailRepository extends JpaRepository<SuggestionDetail, Integer> {
+    SuggestionDetail findById(int suggestionDetailId);
 }

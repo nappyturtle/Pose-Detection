@@ -43,6 +43,13 @@ public class CourseController {
         return courseService.getAllCourseByAccountId(id);
     }
 
+    @GetMapping("getAllCourseByTrainerId")
+    public List<CourseDTO> getAllCourseByTrainerId(@RequestParam(value = "page") int page,
+                                                    @RequestParam(value = "size") int size,
+                                                    @RequestParam(value = "accountId") int id) {
+        return courseService.getAllCourseByTrainerId(page,size,id);
+    }
+
     @PostMapping("create")
     public ResponseEntity<Void> createCourse(@RequestBody Course course) {
         boolean result = courseService.createCourse(course);
@@ -170,5 +177,10 @@ public class CourseController {
             }
         }
         return courseDTOS;
+    }
+
+    @PutMapping(value = "edit")
+    public boolean editCourse(@RequestBody Course course){
+        return courseService.editCourse(course);
     }
 }
