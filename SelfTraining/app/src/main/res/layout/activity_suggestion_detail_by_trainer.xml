@@ -1,41 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".activity.SuggestionDetailByTrainerActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/suggestionDetail_toolbar_id_byTrainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"
-        app:title="Kết quả chi tiết"
-        app:titleTextColor="#868683"></android.support.v7.widget.Toolbar>
 
-    <FrameLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="5dp">
-
-        <TextView
-            android:id="@+id/txtSuggestionDetailIsEmptyByTrainer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="Không có kết quả nào, đang trong quá trình xử lí"
-            android:textSize="23sp" />
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/suggestionDetail_viewPager_id_byTrainer"
+        android:orientation="vertical"
+        tools:context=".activity.TrainerChannelActivity"
+        >
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/suggestionDetail_byTrainer_toolbar_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_weight="1">
+            android:minHeight="?attr/actionBarSize"
+            app:title="Kết quả chi tiết"
+            app:titleTextColor="#868683">
 
-        </android.support.v4.view.ViewPager>
-    </FrameLayout>
-</LinearLayout>
+        </android.support.v7.widget.Toolbar>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15sp"
+            android:text="Hình từ video của bạn"
+            android:textAlignment="center"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/suggestionDetail_imageView_id_trainee_byTrainer"
+            android:layout_width="300dp"
+            android:layout_height="180dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15sp"
+            android:text="Hình từ video mẫu của chúng tôi"
+            android:textAlignment="center"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/suggestionDetail_imageView_id_trainer_byTrainer"
+            android:layout_width="300dp"
+            android:layout_height="180dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp" />
+
+        <ExpandableListView
+            android:nestedScrollingEnabled="true"
+            android:id="@+id/expandable_listview_byTrainer"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:childDivider="#b6b6b5"
+            android:dividerHeight="1dp"
+            android:scrollbars="none"></ExpandableListView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15sp"
+                android:text="Bình luận"
+                android:layout_margin="10dp"
+                android:textSize="20sp" />
+            <EditText
+                android:id="@+id/edtComment_byTrainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                />
+            <Button
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="15dp"
+                android:id="@+id/btnSaveComment_byTrainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginRight="10dp"
+                android:text="Lưu"
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

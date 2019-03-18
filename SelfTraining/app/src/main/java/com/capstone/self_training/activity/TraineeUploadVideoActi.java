@@ -254,7 +254,7 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
                     @Override
                     public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                         double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                        progressDialog.setMessage("Uploaded " + (int) progress + "%...");
+                        progressDialog.setMessage("Hoàn thành " + (int) progress + "%...");
                         if ((int) progress == 100) {
                             progressDialog.dismiss();
                         }
@@ -272,7 +272,7 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
             @Override
             public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                 double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                progressDialog.setMessage("Uploaded " + (int) progress + "%...");
+                progressDialog.setMessage("Hoàn thành " + (int) progress + "%...");
 //                if ((int) progress == 100) {
 //                    progressDialog.dismiss();
 //                }

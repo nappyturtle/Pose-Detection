@@ -92,6 +92,7 @@
                     android:inputType="number" />
 
                 <TextView
+                    android:id="@+id/currency_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=".000 đ"
@@ -127,12 +128,16 @@
                 android:gravity="center_horizontal">
 
                 <Button
+
                     android:id="@+id/btnCreateCourse"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="createCours"
                     android:text="Tạo khóa học"
-                    android:textSize="20sp" />
+                    android:textSize="18sp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="15dp"
+                    />
             </LinearLayout>
 
         </LinearLayout>

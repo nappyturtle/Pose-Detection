@@ -6,8 +6,11 @@ import com.capstone.self_training.util.Constants;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 public interface ISuggestionDetailService {
@@ -15,8 +18,8 @@ public interface ISuggestionDetailService {
     Call<List<SuggestionDetail>> getSuggestionDetail(@Header(Constants.header_string) String token,
                                                      @Query("suggestionId") int suggestionId);
 
-    @GET("suggestiondetail/saveComment")
-    Call<Boolean> saveComment(@Header(Constants.header_string) String token,
-                                                     @Query("suggestionDetailId") int suggestionDetailId);
+    @PUT("suggestiondetail/saveComment")
+    Call<Boolean> saveComment(@Header(Constants.header_string) String token, @Body SuggestionDetail suggestionDetail);
+
 
 }

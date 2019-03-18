@@ -11,14 +11,24 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 public interface ICourseService {
     @GET("course/getAllCoursesByAccountId")
-    Call<List<Course>> getAllCoursesByAccountId(@Header(Constants.header_string) String token, @Query("accountId") int accountId);
+    Call<List<Course>> getAllCoursesByAccountId(@Header(Constants.header_string) String token,
+                                                @Query("accountId") int accountId);
+    @GET("course/getAllCourseByTrainerId")
+    Call<List<CourseDTO>> getAllCourseByTrainerId(@Header(Constants.header_string) String token,
+                                                   @Query("page") int page,
+                                                   @Query("size") int size,
+                                                   @Query("accountId") int accountId);
 
     @POST("course/create")
     Call<Void> createCourse(@Header(Constants.header_string) String token, @Body Course course);
+
+    @PUT("course/edit")
+    Call<Boolean> editCourse(@Header(Constants.header_string) String token, @Body Course course);
 
     @GET("course/getAllCourses")
     Call<List<CourseDTO>> getAllCourse();

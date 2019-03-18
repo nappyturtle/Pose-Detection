@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.SuggestionDetailListByTrainerActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/suggestionDetail_toolbar_id_byTrainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        app:title="Kết quả chi tiết"
+        app:titleTextColor="#868683"></android.support.v7.widget.Toolbar>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp">
+
+        <TextView
+            android:id="@+id/txtSuggestionDetailIsEmptyByTrainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Không có kết quả nào, đang trong quá trình xử lí"
+            android:textSize="23sp"
+            android:visibility="invisible"
+            />
+
+        <android.support.v7.widget.RecyclerView
+            android:scrollbars="none"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/suggestionDetail_recycleview_id_byTrainer"
+            ></android.support.v7.widget.RecyclerView>
+    </FrameLayout>
+</LinearLayout>

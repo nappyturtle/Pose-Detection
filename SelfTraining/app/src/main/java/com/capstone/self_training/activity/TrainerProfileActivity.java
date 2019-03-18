@@ -30,7 +30,7 @@ public class TrainerProfileActivity extends AppCompatActivity {
     ImageView imgSetting;
     LinearLayout uploadVideo;
     TextView viewSuggestion;
-    TextView viewUploadedVideo;
+    TextView viewUploadedCourse;
     TextView viewAllBoughtCourse;
     SharedPreferences mPerferences;
     SharedPreferences.Editor mEditor;
@@ -41,7 +41,7 @@ public class TrainerProfileActivity extends AppCompatActivity {
     String imageAccount;
     LinearLayout lnSuggestion;
     LinearLayout lnBoughtCourse;
-    LinearLayout lnUploadedVideo;
+    LinearLayout lnUploadedCourse;
     LinearLayout lnCreateCourse;
     LinearLayout lnTrainerChannel;
 
@@ -54,7 +54,7 @@ public class TrainerProfileActivity extends AppCompatActivity {
             displayToolBar();
             loadData();
             getAllSuggestion();
-            getAllUploadedVideo();
+            getAllUploadedCourse();
             uploadVideoToStorage();
             getAllBoughtVideo();
         } else {
@@ -113,18 +113,18 @@ public class TrainerProfileActivity extends AppCompatActivity {
         });
     }
 
-    private void getAllUploadedVideo() {
-        viewUploadedVideo.setOnClickListener(new View.OnClickListener() {
+    private void getAllUploadedCourse() {
+        viewUploadedCourse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TrainerProfileActivity.this, TrainerVideoListActivity.class);
+                Intent intent = new Intent(TrainerProfileActivity.this, TrainerUploadedCourseActivity.class);
                 startActivity(intent);
             }
         });
-        lnUploadedVideo.setOnClickListener(new View.OnClickListener() {
+        lnUploadedCourse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TrainerProfileActivity.this, TrainerVideoListActivity.class);
+                Intent intent = new Intent(TrainerProfileActivity.this, TrainerUploadedCourseActivity.class);
                 startActivity(intent);
             }
         });
@@ -156,11 +156,11 @@ public class TrainerProfileActivity extends AppCompatActivity {
         imgSetting = (ImageView) findViewById(R.id.imgSetting_trainer_profile_id);
         uploadVideo = (LinearLayout) findViewById(R.id.lnUpload_trainer_profile_id);
         viewSuggestion = (TextView) findViewById(R.id.btnGetAllSuggestion_trainer_profile_id);
-        viewUploadedVideo = (TextView) findViewById(R.id.btnGetAllVideo_trainer_profile_id);
+        viewUploadedCourse = (TextView) findViewById(R.id.btnGetAllCourse_trainer_profile_id);
         viewAllBoughtCourse = (TextView) findViewById(R.id.btnGetAllBoughtVideo_trainer_profile_id);
         lnSuggestion = (LinearLayout) findViewById(R.id.ln_trainerProfile_getAllSuggestion_id);
         lnBoughtCourse = (LinearLayout) findViewById(R.id.ln_trainerProfile_getAllCourse_id);
-        lnUploadedVideo = (LinearLayout) findViewById(R.id.ln_trainerProfile_getAllUploadedVideo_id);
+        lnUploadedCourse = (LinearLayout) findViewById(R.id.ln_trainerProfile_getAllUploadedCourse_id);
         lnCreateCourse = findViewById(R.id.ln_create_course);
         lnTrainerChannel = findViewById(R.id.ln_trainer_channel);
 

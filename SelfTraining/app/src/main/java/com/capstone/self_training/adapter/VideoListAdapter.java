@@ -67,7 +67,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.Vide
         public VideoHolder(View itemView) {
             super(itemView);
             ivVideoThumbnail = itemView.findViewById(R.id.iv_video_thumbnail);
-            ivVideoStatus = itemView.findViewById(R.id.trainer_video_status);
+//            ivVideoStatus = itemView.findViewById(R.id.trainer_video_status);
             ivVideoEdit = itemView.findViewById(R.id.trainer_video_edit);
             tvVideoName = itemView.findViewById(R.id.trainer_video_name);
             tvVideoCreatedTime = itemView.findViewById(R.id.tv_trainer_video_created_time);

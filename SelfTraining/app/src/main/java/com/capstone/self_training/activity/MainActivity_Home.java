@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -33,7 +34,7 @@ public class MainActivity_Home extends AppCompatActivity {
     private Toolbar toolbar;
     private SharedPreferences mPerferences;
     private SharedPreferences.Editor mEditor;
-
+    private MainViewPager mainViewPager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +42,7 @@ public class MainActivity_Home extends AppCompatActivity {
         if (CheckConnection.haveNetworkConnection(this)) {
             mapping();
             init();
+            changePager();
         } else {
             CheckConnection.showConnection(this, "Xin vui lòng kiểm tra kết nối internet !!! ");
             finish();
@@ -51,34 +53,15 @@ public class MainActivity_Home extends AppCompatActivity {
     }
 
     private void init() {
-        final MainViewPager mainViewPager = new MainViewPager(getSupportFragmentManager());
-       
-        mainViewPager.addFragment(new Fragment_Home(), "Trang chủ",getApplicationContext());
-        mainViewPager.addFragment(new Fragment_Trending(), "Thịnh hành",getApplicationContext());
-        mainViewPager.addFragment(new Fragment_Course(), "Khoá học",getApplicationContext());
+        mainViewPager = new MainViewPager(getSupportFragmentManager());
+
+        mainViewPager.addFragment(new Fragment_Home(), "Trang chủ", getApplicationContext());
+        mainViewPager.addFragment(new Fragment_Trending(), "Thịnh hành", getApplicationContext());
+        mainViewPager.addFragment(new Fragment_Course(), "Khoá học", getApplicationContext());
 
         viewPager.setAdapter(mainViewPager);
-
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                Fragment fragment = mainViewPager.getItem(position);
-                String fragmentName = fragment.getClass().toString();
-                currentFragment = fragmentName.substring(fragmentName.lastIndexOf(".") + 1);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-
         tabLayout.setupWithViewPager(viewPager);
+
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_home);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_top);
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_register);
@@ -92,6 +75,46 @@ public class MainActivity_Home extends AppCompatActivity {
 
         mPerferences = PreferenceManager.getDefaultSharedPreferences(this);
         mEditor = mPerferences.edit();
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Fragment fragment = mainViewPager.getItem(position);
+                String fragmentName = fragment.getClass().toString();
+                currentFragment = fragmentName.substring(fragmentName.lastIndexOf(".") + 1);
+                Log.e("currentFragment = ", currentFragment);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
+    }
+    private void changePager(){
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Fragment fragment = mainViewPager.getItem(position);
+                String fragmentName = fragment.getClass().toString();
+                currentFragment = fragmentName.substring(fragmentName.lastIndexOf(".") + 1);
+                Log.e("currentFragment = ", currentFragment);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                //Toast.makeText(MainActivity_Home.this, "onPageScrollStateChanged " + state, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void mapping() {

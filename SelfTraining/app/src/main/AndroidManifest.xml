@@ -15,16 +15,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".activity.TrainerChannelActivity"></activity>
-        <activity android:name=".activity.CreateCourseActivity" />
-        <activity android:name=".activity.TestCourseActivity" />
-        <activity android:name=".activity.EditVideoActivity" />
-        <activity android:name=".activity.TrainerVideoListActivity" />
-        <activity android:name=".activity.UpdateProfileActivity" />
-        <activity android:name=".activity.RegisterActivity" />
-        <activity android:name=".activity.TransferActi" />
-        <activity android:name=".activity.TrainerUploadVideoActi" />
-        <activity android:name=".activity.TraineeUploadVideoActi" />
+
         <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,9 +23,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.SuggestionDetailActi" />
-        <activity android:name=".activity.TraineeUploadVideoActi" />
+        <activity android:name=".activity.TrainerChannelActivity" />
+        <activity android:name=".activity.CreateCourseActivity" />
+        <activity android:name=".activity.EditVideoActivity" />
+        <activity android:name=".activity.TrainerVideoListActivity" />
+        <activity android:name=".activity.UpdateProfileActivity" />
+        <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.TrainerUploadVideoActi" />
+        <activity android:name=".activity.TraineeUploadVideoActi" />
+        <activity android:name=".activity.SuggestionDetailActi" />
         <activity android:name=".activity.SuggestionListActi" />
         <activity android:name=".activity.MainActivity_Home" />
         <activity android:name=".activity.PlayVideoActivity" />
@@ -42,19 +39,19 @@
         <activity android:name=".activity.TraineeProfileActivity" />
         <activity android:name=".activity.LoginActivity" />
         <activity android:name=".activity.ChangePasswordActivity" />
-        <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.TraineeVideoUploadedActivity" />
-        <activity android:name=".activity.UpdateProfileActivity" />
-        <activity android:name=".activity.TrainerVideoListActivity" />
         <activity android:name=".activity.BoughtCourseActivity" />
         <activity android:name=".activity.PlayBoughtVideoActivity" />
         <activity android:name=".activity.BoughtVideoListActivity" />
         <activity android:name=".activity.ManageTraineeTrainerActivity" />
-        <activity android:name=".activity.TraineeManagementActivity" />
-        <activity android:name=".activity.CreateCourseActivity" />
-        <activity android:name=".activity.SuggestionDetailByTrainerActivity" />
+        <activity android:name=".activity.TraineeChannelActivity" />
+        <activity android:name=".activity.SuggestionDetailListByTrainerActivity" />
         <activity android:name=".activity.CourseDetailPayment" />
-        <activity android:name=".activity.ConfirmationActivity"></activity>
+        <activity android:name=".activity.SearchActivity" />
+        <activity android:name=".activity.ConfirmationActivity" />
+        <activity android:name=".activity.TrainerUploadedCourseActivity" />
+        <activity android:name=".activity.CourseInforActivity" />
+        <activity android:name=".activity.SuggestionDetailByTrainerActivity"></activity>
     </application>
 
 </manifest>

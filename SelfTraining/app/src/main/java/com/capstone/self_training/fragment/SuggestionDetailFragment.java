@@ -33,6 +33,7 @@ public class SuggestionDetailFragment extends Fragment {
     private class ViewHolder {
         ImageView imgUrl;
         ImageView imgStandardUrl;
+        TextView result;
         ExpandableListView expandableListView;
     }
 
@@ -43,6 +44,7 @@ public class SuggestionDetailFragment extends Fragment {
         ViewHolder viewHolder = null;
         savedInstanceState = getArguments();
         SuggestionDetail suggestionDetail = (SuggestionDetail) savedInstanceState.getSerializable("suggestionDetail");
+
         Log.e("detail = ", suggestionDetail.getId() + " - " + suggestionDetail.getDescription() + " - " + suggestionDetail.getImgUrl()
                 + " - " + suggestionDetail.getStandardImgUrl());
 
@@ -55,8 +57,7 @@ public class SuggestionDetailFragment extends Fragment {
             viewHolder.imgStandardUrl = (ImageView) view.findViewById(R.id.suggestionDetail_imageView_id_trainer);
             viewHolder.expandableListView = (ExpandableListView) view.findViewById(R.id.expandable_listview);
 
-
-            view.setTag(viewHolder); // set giá trị vào
+            view.setTag(viewHolder);
             Log.e("ahihi ", "ahihii");
         } else {
             viewHolder = (ViewHolder) view.getTag(); // get ra vì đã có sẵn ko cần phải render lại, đỡ tốn performance
@@ -67,7 +68,7 @@ public class SuggestionDetailFragment extends Fragment {
         Picasso.get().load(suggestionDetail.getStandardImgUrl()).fit().into(viewHolder.imgStandardUrl);
 
         listHeader = new ArrayList<>();
-        listChild = new HashMap<String, List<String>>();
+        listChild = new HashMap<>();
         listHeader.add("Xem chi tiết");
         listHeader.add("Xem ghi chú");
         List<String> detail = new ArrayList<>();
@@ -88,6 +89,7 @@ public class SuggestionDetailFragment extends Fragment {
         return view;
     }
 
+
     // constructor
     public static SuggestionDetailFragment newInstance(SuggestionDetail suggestionDetail) {
         SuggestionDetailFragment f = new SuggestionDetailFragment();
@@ -97,5 +99,4 @@ public class SuggestionDetailFragment extends Fragment {
         f.setArguments(args);
         return f;
     }
-
 }

@@ -1,14 +1,25 @@
 package com.capstone.self_training.dto;
 
+import com.capstone.self_training.model.Account;
 import com.capstone.self_training.model.Course;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class CourseDTO implements Serializable {
     private Course course;
     private String trainerName;
     private int numberOfRegister;
     private int numberOfVideoInCourse;
+    private List<Account> traineeList;
+
+    public List<Account> getTraineeList() {
+        return traineeList;
+    }
+
+    public void setTraineeList(List<Account> traineeList) {
+        this.traineeList = traineeList;
+    }
 
     public int getNumberOfVideoInCourse() {
         return numberOfVideoInCourse;

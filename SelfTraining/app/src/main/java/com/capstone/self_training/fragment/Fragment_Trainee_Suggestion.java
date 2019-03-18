@@ -20,7 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.capstone.self_training.R;
-import com.capstone.self_training.activity.SuggestionDetailByTrainerActivity;
+import com.capstone.self_training.activity.SuggestionDetailListByTrainerActivity;
 import com.capstone.self_training.adapter.SuggestionAdapter;
 import com.capstone.self_training.model.Suggestion;
 import com.capstone.self_training.service.dataservice.SuggestionService;
@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 
-public class Fragment_Suggestion extends Fragment {
+public class Fragment_Trainee_Suggestion extends Fragment {
 
     private View view;
     private ListView listViewSuggestion;
@@ -134,15 +134,15 @@ public class Fragment_Suggestion extends Fragment {
         listViewSuggestion.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(getContext(), SuggestionDetailByTrainerActivity.class);
+                Intent intent = new Intent(getContext(), SuggestionDetailListByTrainerActivity.class);
                 intent.putExtra("suggestionId", suggestionList.get(i).getId());
                 startActivity(intent);
             }
         });
     }
 
-    public static Fragment_Suggestion newInstance(int accountId) {
-        Fragment_Suggestion f = new Fragment_Suggestion();
+    public static Fragment_Trainee_Suggestion newInstance(int accountId) {
+        Fragment_Trainee_Suggestion f = new Fragment_Trainee_Suggestion();
         // Supply index input as an argument.
         Bundle args = new Bundle();
         args.putInt("accountId", accountId);

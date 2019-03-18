@@ -35,11 +35,11 @@ public class Fragment_Trending extends Fragment {
     private List<Video> videos;
     private List<Account> accounts;
     private VideoService videoService;
-    private int page = 0;
-    private int size = 3;
+    private int page;
+    private int size;
     boolean limitedData = false;
     boolean isLoading = false;
-    int currentItem, totalItems, firstItem;
+    //int currentItem, totalItems, firstItem;
     private LinearLayoutManager linearLayoutManager;
     private ProgressBar progressBar;
     private mHandler mHandler;
@@ -50,39 +50,45 @@ public class Fragment_Trending extends Fragment {
         view = inflater.inflate(R.layout.fragment_trending, container, false);
         if (CheckConnection.haveNetworkConnection(getContext())) {
             init();
+            page = 0;
+            size = 2;
             loadData(page, size);
-
-            trending_video_list.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                @Override
-                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                    super.onScrollStateChanged(recyclerView, newState);
-                    if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
-                        isLoading = false;
-                    }
-                }
-
-                @Override
-                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                    super.onScrolled(recyclerView, dx, dy);
-                    currentItem = linearLayoutManager.getChildCount(); // phần từ nhìn nhìn thấy dc
-                    totalItems = linearLayoutManager.getItemCount();   // tổng số phần tử
-                    firstItem = linearLayoutManager.findFirstVisibleItemPosition(); // phần tử đầu tiên
-                    if (!isLoading && currentItem + firstItem == totalItems && totalItems != 0 && !limitedData) {
-                        // currentItem + firstItem == totalItems ( phần tử đầu tiên + số phần tử nhìn thấy dc => thì có nghĩa nó đang
-                        // đứng ở vị trí cuối cùng => bật progress bar lên
-                        isLoading = true;
-                        ThreadData threadData = new ThreadData();
-                        threadData.start();
-                    }
-                }
-            });
-
+            loadMoreData();
             return view;
         } else {
             CheckConnection.showConnection(getContext(), "Kiểm tra kết nối internet");
         }
         return null;
     }
+
+    private void loadMoreData() {
+        mHandler = new mHandler();
+        trending_video_list.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                    isLoading = false;
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int currentItem = linearLayoutManager.getChildCount(); // phần từ nhìn nhìn thấy dc
+                int totalItems = linearLayoutManager.getItemCount();   // tổng số phần tử
+                int firstItem = linearLayoutManager.findFirstVisibleItemPosition(); // phần tử đầu tiên
+                if (!isLoading && currentItem + firstItem == totalItems && totalItems != 0 && !limitedData) {
+                    // currentItem + firstItem == totalItems ( phần tử đầu tiên + số phần tử nhìn thấy dc => thì có nghĩa nó đang
+                    // đứng ở vị trí cuối cùng => bật progress bar lên
+                    isLoading = true;
+                    ThreadData threadData = new ThreadData();
+                    threadData.start();
+                }
+            }
+        });
+    }
+
 
     private void init() {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -98,7 +104,7 @@ public class Fragment_Trending extends Fragment {
         trendingVideoAdapter = new HomeVideoAdapter(videos, getContext(), accounts);
         trending_video_list.setAdapter(trendingVideoAdapter);
         trending_video_list.setLayoutManager(linearLayoutManager);
-        mHandler = new mHandler();
+
     }
 
     private void loadData(int page, int size) {
@@ -119,6 +125,7 @@ public class Fragment_Trending extends Fragment {
                 account.setImgUrl(dto.getImgUrl());
                 account.setId(dto.getAccountId());
                 accounts.add(account);
+                trendingVideoAdapter.notifyDataSetChanged();
             }
         }
     }

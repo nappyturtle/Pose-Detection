@@ -35,7 +35,6 @@ public class HomeVideoAdapter extends RecyclerView.Adapter<HomeVideoAdapter.Vide
     private List<Video> models;
     private Context context;
     private List<Account> accounts;
-    private int currentUserId;
 
     public HomeVideoAdapter(List<Video> models, Context context, List<Account> accounts) {
         this.models = models;
@@ -73,7 +72,6 @@ public class HomeVideoAdapter extends RecyclerView.Adapter<HomeVideoAdapter.Vide
 
         //BIND CLICK EVENT
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        currentUserId = sharedPreferences.getInt("com.capstone.self_training.activity.id", 0);
         holder.thumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,4 +127,8 @@ public class HomeVideoAdapter extends RecyclerView.Adapter<HomeVideoAdapter.Vide
     }
 
 }
+
+
+
+
 

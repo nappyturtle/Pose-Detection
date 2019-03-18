@@ -76,7 +76,7 @@ public class TraineeProfileActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar_trainee_profile_id);
         imgAccount = (CircleImageView) findViewById(R.id.img_trainee_profile_id);
         txtUsername = (TextView) findViewById(R.id.txtUsername_trainee_profile_id);
-        imgSetting = (ImageView) findViewById(R.id.imgSetting_trainee_profile_id);
+        imgSetting = (ImageView) findViewById(R.id.img_trainee_profile_id);
         viewSuggestion = (TextView)findViewById(R.id.btnGetAllSuggestion_trainee_profile_id);
         viewBoughtVideo = (TextView)findViewById(R.id.btnGetAllBoughtVideo_trainee_profile_id);
         lnSuggestion = (LinearLayout) findViewById(R.id.ln_traineeProfile_getAllSuggestion);

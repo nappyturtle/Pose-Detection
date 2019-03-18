@@ -39,7 +39,7 @@ public class ManageTraineeTrainerActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(getApplicationContext(),TraineeManagementActivity.class);
+                Intent intent = new Intent(getApplicationContext(),TraineeChannelActivity.class);
                 intent.putExtra("accountTemp",dtoList.get(i).getAccountId()+"_-/-_"+dtoList.get(i).getUsername());
                 startActivity(intent);
             }

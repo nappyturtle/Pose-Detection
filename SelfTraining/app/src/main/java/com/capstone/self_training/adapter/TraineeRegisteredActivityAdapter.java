@@ -12,42 +12,45 @@ import android.widget.TextView;
 
 import com.capstone.self_training.R;
 import com.capstone.self_training.activity.TraineeChannelActivity;
-import com.capstone.self_training.dto.EnrollmentDTO;
+import com.capstone.self_training.model.Account;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class BoughtTrainerCourseAdapter extends RecyclerView.Adapter<BoughtTrainerCourseAdapter.TrainerCourseHolder> {
-    private List<EnrollmentDTO> trainerList;
+public class TraineeRegisteredActivityAdapter extends RecyclerView.Adapter<TraineeRegisteredActivityAdapter.TrainerCourseHolder> {
+    private List<Account> traineeList;
     private Context context;
 
-    public BoughtTrainerCourseAdapter(List<EnrollmentDTO> trainerList, Context context) {
-        this.trainerList = trainerList;
+    public TraineeRegisteredActivityAdapter(List<Account> traineeList, Context context) {
+        this.traineeList = traineeList;
         this.context = context;
     }
 
     @NonNull
     @Override
-    public TrainerCourseHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public TraineeRegisteredActivityAdapter.TrainerCourseHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_bought_trainer_course, parent, false);
         return new TrainerCourseHolder(v);
     }
 
+
     @Override
-    public void onBindViewHolder(@NonNull TrainerCourseHolder holder, int position) {
-        final EnrollmentDTO enrollmentDTO = trainerList.get(position);
-        Picasso.get().load(enrollmentDTO.getAccountThumbnail()).fit().into(holder.circleImageViewTrainer);
-        holder.trainername.setMaxLines(1);
-        holder.trainername.setEllipsize(TextUtils.TruncateAt.END);
-        holder.trainername.setText(enrollmentDTO.getUsername());
+    public void onBindViewHolder(@NonNull TraineeRegisteredActivityAdapter.TrainerCourseHolder holder, int position) {
+        final Account account = traineeList.get(position);
+
+        Picasso.get().load(account.getImgUrl()).fit().into(holder.circleImageViewTrainer);
+
+        holder.traineename.setMaxLines(1);
+        holder.traineename.setEllipsize(TextUtils.TruncateAt.END);
+        holder.traineename.setText(account.getUsername());
         holder.circleImageViewTrainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context,TraineeChannelActivity.class);
-                intent.putExtra("accountTemp",enrollmentDTO.getAccountId()+"_-/-_"+enrollmentDTO.getUsername());
+                Intent intent = new Intent(context, TraineeChannelActivity.class);
+                intent.putExtra("accountTemp", account.getId() + "_-/-_" + account.getUsername());
                 context.startActivity(intent);
             }
         });
@@ -55,17 +58,18 @@ public class BoughtTrainerCourseAdapter extends RecyclerView.Adapter<BoughtTrain
 
     @Override
     public int getItemCount() {
-        return trainerList == null ? 0 : trainerList.size();
+        return traineeList == null ? 0 : traineeList.size();
     }
 
     public class TrainerCourseHolder extends RecyclerView.ViewHolder {
         public CircleImageView circleImageViewTrainer;
-        public TextView trainername;
+        public TextView traineename;
 
         public TrainerCourseHolder(View itemView) {
             super(itemView);
             circleImageViewTrainer = (CircleImageView) itemView.findViewById(R.id.trainer_bought_course_thumbnail);
-            trainername = (TextView) itemView.findViewById(R.id.txtTrainerName_bought_course);
+            traineename = (TextView) itemView.findViewById(R.id.txtTrainerName_bought_course);
         }
     }
 }
+

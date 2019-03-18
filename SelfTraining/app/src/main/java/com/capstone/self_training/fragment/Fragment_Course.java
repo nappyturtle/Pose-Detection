@@ -2,12 +2,14 @@ package com.capstone.self_training.fragment;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +40,8 @@ public class Fragment_Course extends Fragment {
     }
 
     private void init() {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         mPerferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         accountId = mPerferences.getInt(getString(R.string.id),0);
         home_course_list = view.findViewById(R.id.home_course_list);

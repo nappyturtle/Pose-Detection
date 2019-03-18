@@ -1,13 +1,10 @@
 package com.capstone.self_training.service.dataservice;
 
-import android.service.autofill.Dataset;
 import android.util.Log;
 
 import com.capstone.self_training.dto.CourseDTO;
 import com.capstone.self_training.model.Course;
 import com.capstone.self_training.service.iService.ICourseService;
-
-import org.w3c.dom.ls.LSException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +29,17 @@ public class CourseService {
         return courses;
     }
 
+    public List<CourseDTO> getAllCourseByTrainerId(String token, int page, int size,int id) {
+        List<CourseDTO> courses = null;
+        Call<List<CourseDTO>> call = iCourseService.getAllCourseByTrainerId(token, page, size, id);
+        try {
+            courses = call.execute().body();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return courses;
+    }
+
     public Call<Void> createCourse(String token, Course course) {
         Call<Void> call = iCourseService.createCourse(token, course);
         try {
@@ -40,6 +48,17 @@ public class CourseService {
             Log.e("CourseService createCourse = ", e.getMessage());
         }
         return null;
+    }
+
+    public boolean editCourse(String token, Course course) {
+        Call<Boolean> call = iCourseService.editCourse(token, course);
+        boolean checked = false;
+        try {
+            checked = call.execute().body();
+        } catch (Exception e) {
+            Log.e("CourseService editCourse = ", e.getMessage());
+        }
+        return checked;
     }
 
     public List<CourseDTO> getAllCourse() {

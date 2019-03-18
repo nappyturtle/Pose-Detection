@@ -15,8 +15,7 @@ import com.capstone.self_training.fragment.Fragment_Home;
 import com.capstone.self_training.fragment.Fragment_Trainer_Channel_Course;
 import com.capstone.self_training.fragment.Fragment_Trainer_Channel_Intro;
 import com.capstone.self_training.fragment.Fragment_Trainer_Channel_Video;
-import com.darwindeveloper.horizontalscrollmenulibrary.custom_views.HorizontalScrollMenuView;
-import com.darwindeveloper.horizontalscrollmenulibrary.extras.MenuItem;
+
 
 public class TrainerChannelActivity extends AppCompatActivity {
 

@@ -324,7 +324,6 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
                             videoService.createVideo(mPerferences.getString(getString(R.string.token), ""),
                                     videoUploadedToFirebase);
 
-                            Toast.makeText(TrainerUploadVideoActi.this, "upload image success", Toast.LENGTH_LONG).show();
                             Intent intent = new Intent(TrainerUploadVideoActi.this, MainActivity_Home.class);
                             startActivity(intent);
                         }
@@ -332,7 +331,7 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
                         @Override
                         public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                             double progress = (50.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                            progressDialog.setMessage("Uploaded " + (int) progress + "%...");
+                            progressDialog.setMessage("Hoàn thành " + (int) progress + "%...");
                             if ((int) progress == 50) {
                                 progressDialog.dismiss();
                             }
@@ -366,7 +365,7 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
                         @Override
                         public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                             double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                            progressDialog.setMessage("Uploaded " + (int) progress + "%...");
+                            progressDialog.setMessage("Hoàn thành " + (int) progress + "%...");
                             if ((int) progress == 100) {
                                 progressDialog.dismiss();
                             }
@@ -386,7 +385,7 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
             @Override
             public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                 double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                progressDialog.setMessage("Uploaded " + (int) progress + "%...");
+                progressDialog.setMessage("Hoàn thành " + (int) progress + "%...");
 //                if ((int) progress == 100) {
 //                    progressDialog.dismiss();
 //                }

@@ -49,7 +49,7 @@
                     android:layout_height="wrap_content"
                     android:text="Username"
                     android:textColor="#000000"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -219,6 +219,7 @@
                         android:layout_gravity="right"
                         android:gravity="right"
                         android:text="Xem tất cả"
+                        android:layout_marginRight="10dp"
                         android:textColor="#252ed9"
                         android:textSize="15sp"
                         android:textStyle="bold" />
@@ -236,7 +237,7 @@
                     android:orientation="vertical">
 
                     <LinearLayout
-                        android:id="@+id/ln_trainerProfile_getAllUploadedVideo_id"
+                        android:id="@+id/ln_trainerProfile_getAllUploadedCourse_id"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
@@ -255,14 +256,14 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="20dp"
                             android:layout_weight="7"
-                            android:text="Danh sách video đã đăng"
+                            android:text="Danh sách khóa học đã đăng"
                             android:textColor="#000000"
                             android:textSize="18sp"
                             android:textStyle="bold" />
                     </LinearLayout>
 
                     <TextView
-                        android:id="@+id/btnGetAllVideo_trainer_profile_id"
+                        android:id="@+id/btnGetAllCourse_trainer_profile_id"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
@@ -270,7 +271,9 @@
                         android:text="Xem tất cả"
                         android:textColor="#252ed9"
                         android:textSize="15sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:layout_marginRight="10dp"
+                        />
                 </LinearLayout>
 
                 <View

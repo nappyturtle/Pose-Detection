@@ -24,9 +24,9 @@ public class SuggestionDetailService {
         }
         return detailList;
     }
-    public boolean saveComment(String token,int sugesstionDetailId){
+    public boolean saveComment(String token,SuggestionDetail suggestionDetail){
         iSuggestionDetailService = DataService.getSuggestionDetailService();
-        Call<Boolean> call = iSuggestionDetailService.saveComment(token,sugesstionDetailId);
+        Call<Boolean> call = iSuggestionDetailService.saveComment(token,suggestionDetail);
         boolean checked = false;
         try {
             checked = call.execute().body();
