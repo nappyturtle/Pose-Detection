@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.capstone.self_training.R;
 import com.capstone.self_training.activity.TraineeChannelActivity;
 import com.capstone.self_training.dto.EnrollmentDTO;
+import com.capstone.self_training.model.Account;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -20,10 +21,10 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class BoughtTrainerCourseAdapter extends RecyclerView.Adapter<BoughtTrainerCourseAdapter.TrainerCourseHolder> {
-    private List<EnrollmentDTO> trainerList;
+    private List<Account> trainerList;
     private Context context;
 
-    public BoughtTrainerCourseAdapter(List<EnrollmentDTO> trainerList, Context context) {
+    public BoughtTrainerCourseAdapter(List<Account> trainerList, Context context) {
         this.trainerList = trainerList;
         this.context = context;
     }
@@ -38,16 +39,16 @@ public class BoughtTrainerCourseAdapter extends RecyclerView.Adapter<BoughtTrain
 
     @Override
     public void onBindViewHolder(@NonNull TrainerCourseHolder holder, int position) {
-        final EnrollmentDTO enrollmentDTO = trainerList.get(position);
-        Picasso.get().load(enrollmentDTO.getAccountThumbnail()).fit().into(holder.circleImageViewTrainer);
+        final Account account = trainerList.get(position);
+        Picasso.get().load(account.getImgUrl()).fit().into(holder.circleImageViewTrainer);
         holder.trainername.setMaxLines(1);
         holder.trainername.setEllipsize(TextUtils.TruncateAt.END);
-        holder.trainername.setText(enrollmentDTO.getUsername());
+        holder.trainername.setText(account.getUsername());
         holder.circleImageViewTrainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context,TraineeChannelActivity.class);
-                intent.putExtra("accountTemp",enrollmentDTO.getAccountId()+"_-/-_"+enrollmentDTO.getUsername());
+                intent.putExtra("accountTemp",account.getId()+"_-/-_"+account.getUsername());
                 context.startActivity(intent);
             }
         });

@@ -15,7 +15,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-
         <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,7 +24,7 @@
         </activity>
         <activity android:name=".activity.TrainerChannelActivity" />
         <activity android:name=".activity.CreateCourseActivity" />
-        <activity android:name=".activity.EditVideoActivity" />
+        <activity android:name=".activity.VideoInforActivity" />
         <activity android:name=".activity.TrainerVideoListActivity" />
         <activity android:name=".activity.UpdateProfileActivity" />
         <activity android:name=".activity.RegisterActivity" />
@@ -51,7 +50,8 @@
         <activity android:name=".activity.ConfirmationActivity" />
         <activity android:name=".activity.TrainerUploadedCourseActivity" />
         <activity android:name=".activity.CourseInforActivity" />
-        <activity android:name=".activity.SuggestionDetailByTrainerActivity"></activity>
+        <activity android:name=".activity.SuggestionDetailByTrainerActivity" />
+        <activity android:name=".activity.TrainerVideoUploadedActivity"></activity>
     </application>
 
 </manifest>

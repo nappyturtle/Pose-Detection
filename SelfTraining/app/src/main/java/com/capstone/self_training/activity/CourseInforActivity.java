@@ -13,6 +13,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -115,10 +116,10 @@ public class CourseInforActivity extends AppCompatActivity {
             }
         });
 
-        initCategoryListAdapter();
-        categoryAdapter = new CategoryAdapter(this, categoryArrayList);
-        spnCate.setAdapter(categoryAdapter);
         getDataFromIntent();
+        initCategoryListAdapter();
+
+
     }
 
     private void initCategoryListAdapter() {
@@ -133,10 +134,16 @@ public class CourseInforActivity extends AppCompatActivity {
                 categoryArrayList.add(c);
             }
         }
+        categoryAdapter = new CategoryAdapter(this, categoryArrayList);
+        spnCate.setAdapter(categoryAdapter);
+        for (int i = 0; i < categoryAdapter.getCount(); i++) {
 
-        ArrayAdapter<Category> arrayAdapter = new ArrayAdapter<Category>(this, android.R.layout.simple_spinner_item, categoryArrayList);
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spnCate.setAdapter(arrayAdapter);
+            Category category = (Category) spnCate.getItemAtPosition(i);
+            if (category.getId() == courseDTO.getCourse().getCategoryId()) {
+                spnCate.setSelection(i);
+                break;
+            }
+        }
 
         spnCate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -200,7 +207,7 @@ public class CourseInforActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 setResult(Activity.RESULT_OK, intent);
                 finish();
-            }else{
+            } else {
                 Toast.makeText(CourseInforActivity.this, "Thay đổi thông tin khóa học không thành công", Toast.LENGTH_SHORT).show();
             }
 
@@ -225,7 +232,7 @@ public class CourseInforActivity extends AppCompatActivity {
                         Intent intent = new Intent();
                         setResult(Activity.RESULT_OK, intent);
                         finish();
-                    }else{
+                    } else {
                         Toast.makeText(CourseInforActivity.this, "Thay đổi thông tin khóa học không thành công", Toast.LENGTH_SHORT).show();
                     }
 

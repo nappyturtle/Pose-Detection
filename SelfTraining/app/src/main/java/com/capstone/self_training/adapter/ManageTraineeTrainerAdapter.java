@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.capstone.self_training.R;
 import com.capstone.self_training.dto.EnrollmentDTO;
+import com.capstone.self_training.model.Account;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -18,9 +19,9 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ManageTraineeTrainerAdapter extends BaseAdapter{
-    private List<EnrollmentDTO> list;
+    private List<Account> list;
     private Context context;
-    public ManageTraineeTrainerAdapter(List<EnrollmentDTO> list, Context context){
+    public ManageTraineeTrainerAdapter(List<Account> list, Context context){
         this.list = list;
         this.context = context;
     }
@@ -54,8 +55,8 @@ public class ManageTraineeTrainerAdapter extends BaseAdapter{
             viewHolder = (ViewHolder) convertView.getTag();
         }
         // gán giá trị
-        final EnrollmentDTO dto = list.get(position);
-        Picasso.get().load(dto.getAccountThumbnail()).into(viewHolder.circleImageView);
+        final Account dto = list.get(position);
+        Picasso.get().load(dto.getImgUrl()).into(viewHolder.circleImageView);
 
         viewHolder.name.setText(dto.getUsername().toString());
 

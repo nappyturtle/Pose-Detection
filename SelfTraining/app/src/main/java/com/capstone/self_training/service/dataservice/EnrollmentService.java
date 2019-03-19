@@ -1,6 +1,7 @@
 package com.capstone.self_training.service.dataservice;
 
 import com.capstone.self_training.dto.EnrollmentDTO;
+import com.capstone.self_training.model.Account;
 import com.capstone.self_training.model.Enrollment;
 import com.capstone.self_training.service.iService.IEnrollmentService;
 
@@ -33,6 +34,18 @@ public class EnrollmentService {
             e.printStackTrace();
         }
         return courseDTOS;
+    }
+
+    public List<Account> getAllTrainerOfBoughtCourse(String token, int accountId) {
+        iEnrollmentService = DataService.getEnrollmentService();
+        Call<List<Account>> call = iEnrollmentService.getAllTrainerOfBoughtCourse(token, accountId);
+        List<Account> accountList = null;
+        try {
+            accountList = call.execute().body();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return accountList;
     }
 
     public boolean createEnrollment(String token, Enrollment enrollment) {

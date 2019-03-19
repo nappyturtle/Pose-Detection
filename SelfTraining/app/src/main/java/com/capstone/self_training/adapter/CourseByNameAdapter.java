@@ -47,14 +47,14 @@ public class CourseByNameAdapter extends ArrayAdapter<Course> {
         if (cur != null) {
             if (cur.getName().equalsIgnoreCase("miễn phí") || cur.getName().equalsIgnoreCase("mien phi") || cur.getPrice() == 0) {
                 // 17/3/2019 - KietPT đã chỉnh lại sửa giao diện spinner miễn phí giống như thu phí
-                tvCourseName.setText("Miễn phí");
+                tvCourseName.setText(cur.getName());
                 //tvCourseName.setTextColor(android.R.color.holo_green_light);
 //                tvCourseName.setTextColor(R.color.holo_green_light);
 //                tvCourseName.setGravity(View.TEXT_ALIGNMENT_TEXT_START);
 //                tvCourseItemPrice.setVisibility(View.INVISIBLE);
 //                ivCourseThumbnail.setVisibility(View.INVISIBLE);
 
-                tvCourseItemPrice.setText(cur.getPrice() + " đ");
+                tvCourseItemPrice.setText("Miễn phí");
                 tvCourseItemPrice.setTextColor(Color.RED);
 
                 Picasso.get().load(cur.getThumbnail()).fit().into(ivCourseThumbnail);

@@ -1,6 +1,7 @@
 package com.capstone.self_training.service.iService;
 
 import com.capstone.self_training.dto.EnrollmentDTO;
+import com.capstone.self_training.model.Account;
 import com.capstone.self_training.model.Enrollment;
 import com.capstone.self_training.util.Constants;
 
@@ -19,6 +20,9 @@ public interface IEnrollmentService {
 
     @GET("enrollment/getAllBoughtCourseTrainer")
     Call<List<EnrollmentDTO>> getAllBoughtCourseTrainername(@Header(Constants.header_string) String token,@Query("accountId") int accountId);
+
+    @GET("enrollment/getAllTrainerOfBoughtCourse")
+    Call<List<Account>> getAllTrainerOfBoughtCourse(@Header(Constants.header_string) String token, @Query("accountId") int accountId);
 
     @POST("enrollment/createEnrollment")
     Call<Boolean> createEnrollment(@Header(Constants.header_string) String token, @Body Enrollment enrollment);

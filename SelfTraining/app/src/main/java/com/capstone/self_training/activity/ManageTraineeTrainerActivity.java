@@ -11,6 +11,7 @@ import android.widget.ListView;
 import com.capstone.self_training.R;
 import com.capstone.self_training.adapter.ManageTraineeTrainerAdapter;
 import com.capstone.self_training.dto.EnrollmentDTO;
+import com.capstone.self_training.model.Account;
 import com.capstone.self_training.util.CheckConnection;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class ManageTraineeTrainerActivity extends AppCompatActivity {
     private ListView listView;
     private ManageTraineeTrainerAdapter adapter;
     private Toolbar toolbar;
-    private ArrayList<EnrollmentDTO> dtoList;
+    private ArrayList<Account> dtoList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +41,7 @@ public class ManageTraineeTrainerActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getApplicationContext(),TraineeChannelActivity.class);
-                intent.putExtra("accountTemp",dtoList.get(i).getAccountId()+"_-/-_"+dtoList.get(i).getUsername());
+                intent.putExtra("accountTemp",dtoList.get(i).getId()+"_-/-_"+dtoList.get(i).getUsername());
                 startActivity(intent);
             }
         });
@@ -49,8 +50,8 @@ public class ManageTraineeTrainerActivity extends AppCompatActivity {
     // lấy danh sách trainer từ màn hình BoughtCourseActivity
     private void getDataManagement() {
         Intent intent = getIntent();
-        List<EnrollmentDTO> listTemp = (List<EnrollmentDTO>) intent.getSerializableExtra("listManagement");
-        for(EnrollmentDTO dto : listTemp){
+        List<Account> listTemp = (List<Account>) intent.getSerializableExtra("listManagement");
+        for(Account dto : listTemp){
             dtoList.add(dto);
             adapter.notifyDataSetChanged();
         }

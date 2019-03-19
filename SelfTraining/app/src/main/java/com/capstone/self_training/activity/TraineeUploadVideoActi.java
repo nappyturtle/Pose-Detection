@@ -60,7 +60,7 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
     private Button btnUploadVideo;
     private TextView txtVideoName;
     private VideoView videoView;
-
+    private Button btnOpenCamera;
     private StorageReference storageReference;
 
     private Uri selectedVideoUri;
@@ -84,6 +84,7 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
 
         init();
 
+        clickToOpenCamera();
         requestRead();
 
         uploadVideo();
@@ -129,12 +130,19 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
         btnUploadVideo = (Button) findViewById(R.id.btnUploadVideo);
         txtVideoName = (TextView) findViewById(R.id.txtVideoName);
         videoView = (VideoView) findViewById(R.id.vwVideo);
-
+        btnOpenCamera = (Button) findViewById(R.id.btnUploadVideoOpenCamera);
         storageReference = FirebaseStorage.getInstance().getReference();
         mPerferences = PreferenceManager.getDefaultSharedPreferences(this);
         mEditor = mPerferences.edit();
 
+    }
+    private void clickToOpenCamera(){
+        btnOpenCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+            }
+        });
     }
 
     public void openChooseVideoView() {

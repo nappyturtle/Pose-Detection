@@ -35,8 +35,8 @@ public class Fragment_Trending extends Fragment {
     private List<Video> videos;
     private List<Account> accounts;
     private VideoService videoService;
-    private int page;
-    private int size;
+    private int page = 0;
+    private int size = 2;
     boolean limitedData = false;
     boolean isLoading = false;
     //int currentItem, totalItems, firstItem;
@@ -50,8 +50,8 @@ public class Fragment_Trending extends Fragment {
         view = inflater.inflate(R.layout.fragment_trending, container, false);
         if (CheckConnection.haveNetworkConnection(getContext())) {
             init();
-            page = 0;
-            size = 2;
+//            page = 0;
+//            size = 2;
             loadData(page, size);
             loadMoreData();
             return view;
@@ -125,7 +125,7 @@ public class Fragment_Trending extends Fragment {
                 account.setImgUrl(dto.getImgUrl());
                 account.setId(dto.getAccountId());
                 accounts.add(account);
-                trendingVideoAdapter.notifyDataSetChanged();
+                //trendingVideoAdapter.notifyDataSetChanged();
             }
         }
     }

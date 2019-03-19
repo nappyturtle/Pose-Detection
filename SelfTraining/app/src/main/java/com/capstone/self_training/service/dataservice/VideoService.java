@@ -26,6 +26,18 @@ public class VideoService {
         return null;
     }
 
+    public boolean editVideo(String token, Video video) {
+        iVideoService = DataService.getVideoService();
+        Call<Boolean> call = iVideoService.editVideo(token, video);
+        boolean response = false;
+        try {
+            response = call.execute().body();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return response;
+    }
+
     public List<VideoDTO> getVideosByDate(int page, int size) {
         iVideoService = DataService.getVideoService();
         Call<List<VideoDTO>> call = iVideoService.getVideosByDate(page, size);
@@ -41,6 +53,18 @@ public class VideoService {
     public List<VideoDTO> getVideosByTrainer(int id) {
         iVideoService = DataService.getVideoService();
         Call<List<VideoDTO>> call = iVideoService.getVideosByTrainer(id);
+        List<VideoDTO> videoDTOS = null;
+        try {
+            videoDTOS = call.execute().body();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return videoDTOS;
+    }
+
+    public List<VideoDTO> getAllVideoByCourseIdToEdit(String token, int id) {
+        iVideoService = DataService.getVideoService();
+        Call<List<VideoDTO>> call = iVideoService.getAllVideoByCourseIdToEdit(token,id);
         List<VideoDTO> videoDTOS = null;
         try {
             videoDTOS = call.execute().body();

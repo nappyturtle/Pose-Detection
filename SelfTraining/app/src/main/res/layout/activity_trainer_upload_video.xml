@@ -27,7 +27,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="30dp"
+                android:layout_marginHorizontal="10dp"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -97,7 +97,7 @@
                     android:id="@+id/textView3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="50dp"
+                    android:layout_marginHorizontal="30dp"
                     android:layout_marginVertical="10dp"
                     android:text="Hình nền"
                     android:textSize="18sp"
@@ -124,7 +124,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="30dp"
+                android:layout_marginHorizontal="20dp"
                 android:layout_marginVertical="10dp"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -132,7 +132,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginHorizontal="10dp"
                     android:layout_marginVertical="10dp"
                     android:text="Video"
                     android:textSize="18sp"
@@ -159,13 +159,13 @@
 
                     <Button
                         android:id="@+id/btnTrainerChooseVideo"
-                        android:layout_width="150dp"
+                        android:layout_width="120dp"
                         android:layout_height="wrap_content"
                         android:text="Chọn Video" />
 
                     <Button
                         android:id="@+id/btnTrainerUpVideo"
-                        android:layout_width="150dp"
+                        android:layout_width="120dp"
                         android:layout_height="wrap_content"
                         android:text="Đăng Video" />
 

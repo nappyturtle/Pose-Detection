@@ -65,7 +65,7 @@
                         android:paddingLeft="20dp"
                         android:paddingRight="10dp"
                         android:text="Bai Tap Yoga 1 abc xyz asd sad"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
 
                     <LinearLayout
                         android:layout_width="match_parent"

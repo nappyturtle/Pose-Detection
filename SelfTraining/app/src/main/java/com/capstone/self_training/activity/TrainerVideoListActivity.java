@@ -1,6 +1,8 @@
 package com.capstone.self_training.activity;
 
+import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
@@ -28,23 +30,26 @@ public class TrainerVideoListActivity extends AppCompatActivity {
     private List<Video> videos;
     private List<VideoDTO> videoDTOS;
     private VideoService videoService;
-
+    public static final int REQUEST_CODE_EDIT_VIDEO = 0x789;
+    int courseId;
+    private SharedPreferences mPerferences;
+    String token;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trainer_video_list);
 
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
+//        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+//        StrictMode.setThreadPolicy(policy);
 
-        toolbar = findViewById(R.id.toolbar_trainer_list_video);
-        setupToolbar();
 
-        rcListVideo = findViewById(R.id.rv_trainer_list_video);
-        videoService = new VideoService();
 
-        initVideoAdapter();
+        Intent intent = getIntent();
+        courseId = intent.getIntExtra("courseId",0);
 
+
+        init();
+        getDataRecyclerView(courseId);
     }
 
     private void setupToolbar() {
@@ -59,26 +64,35 @@ public class TrainerVideoListActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_EDIT_VIDEO && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
+        }
+    }
 
+    private void init() {
+        toolbar = findViewById(R.id.toolbar_trainer_list_video);
+        rcListVideo = findViewById(R.id.rv_trainer_list_video);
+        mPerferences = PreferenceManager.getDefaultSharedPreferences(this);
+        token = mPerferences.getString(getString(R.string.token),"");
+        if (videos == null) {
+            videos = new ArrayList<>();
+        }
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        rcListVideo.setLayoutManager(layoutManager);
+        videoListAdapter = new VideoListAdapter(videos, TrainerVideoListActivity.this);
+        rcListVideo.setAdapter(videoListAdapter);
+        setupToolbar();
+    }
+    private void getDataRecyclerView(int courseId){
+        videoService = new VideoService();
+        videoDTOS = videoService.getAllVideoByCourseIdToEdit(token,courseId);
 
-    private void initVideoAdapter() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        int accountId = sharedPreferences.getInt(getString(R.string.id), 0);
-        if (accountId != 0) {
-            videoDTOS = videoService.getVideosByTrainer(accountId);
-            if (videos == null) {
-                videos = new ArrayList<>();
+        if(videoDTOS != null){
+            for (VideoDTO v : videoDTOS) {
+                videos.add(v.getVideo());
+                videoListAdapter.notifyDataSetChanged();
             }
-            if(videoDTOS != null){
-                for (VideoDTO v : videoDTOS) {
-                    videos.add(v.getVideo());
-                }
-            }
-
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-            rcListVideo.setLayoutManager(layoutManager);
-            videoListAdapter = new VideoListAdapter(videos, getApplicationContext());
-            rcListVideo.setAdapter(videoListAdapter);
         }
     }
 }

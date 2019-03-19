@@ -27,6 +27,7 @@ import com.capstone.self_training.adapter.BoughtCourseAdapter;
 import com.capstone.self_training.adapter.BoughtTrainerCourseAdapter;
 import com.capstone.self_training.adapter.SuggestionAdapter;
 import com.capstone.self_training.dto.EnrollmentDTO;
+import com.capstone.self_training.model.Account;
 import com.capstone.self_training.model.Suggestion;
 import com.capstone.self_training.service.dataservice.EnrollmentService;
 import com.capstone.self_training.util.CheckConnection;
@@ -42,7 +43,7 @@ public class BoughtCourseActivity extends AppCompatActivity {
     private BoughtCourseAdapter boughtCourseAdapter;
     private BoughtTrainerCourseAdapter boughtTrainerCourseAdapter;
     private List<EnrollmentDTO> enrollmentList;
-    private List<EnrollmentDTO> trainerCourseList;
+    private List<Account> trainerCourseList;
     private EnrollmentService enrollmentService;
     private int page = 0;
     private int size = 5;
@@ -167,8 +168,8 @@ public class BoughtCourseActivity extends AppCompatActivity {
     // để hiển thị danh sách những trainer của những course đã mua
     private void loadDataRecylcerView() {
         enrollmentService = new EnrollmentService();
-        List<EnrollmentDTO> enrollmentDTOSTemp = enrollmentService.getAllBoughtCourseTrainername(token, accountId);
-        for (EnrollmentDTO dto : enrollmentDTOSTemp) {
+        List<Account> accountList = enrollmentService.getAllTrainerOfBoughtCourse(token, accountId);
+        for (Account dto : accountList) {
             trainerCourseList.add(dto);
             boughtTrainerCourseAdapter.notifyDataSetChanged();
         }

@@ -63,6 +63,7 @@ public class TrainerUploadedCourseActivity extends AppCompatActivity {
     private TextView uploadedCourse_totalTextView_id;
     private CourseService courseService;
     public static final int REQUEST_CODE_EDIT_COURSE = 0x456;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,9 +75,21 @@ public class TrainerUploadedCourseActivity extends AppCompatActivity {
             getItemCourse();
             loadDataListView(page,size);
             loadMoreDataListview();
+            getAllTrainee();
         } else {
             CheckConnection.showConnection(this,"Kiểm tra kết nối Internet của bạn !!!");
         }
+    }
+
+    private void getAllTrainee() {
+        uploadedCourse_totalTextView_id.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),ManageTraineeTrainerActivity.class);
+                intent.putExtra("listManagement", (Serializable) traineeList);
+                startActivity(intent);
+            }
+        });
     }
 
     private void loadMoreDataListview() {
@@ -154,9 +167,13 @@ public class TrainerUploadedCourseActivity extends AppCompatActivity {
         uploadedCourseListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(getApplicationContext(), BoughtVideoListActivity.class);
-                intent.putExtra("courseId", courseList.get(i).getCourse().getId());
-                startActivity(intent);
+                if(courseList.get(i).getNumberOfVideoInCourse() == 0){
+                    Toast.makeText(TrainerUploadedCourseActivity.this, "Không có video nào cả", Toast.LENGTH_SHORT).show();
+                }else {
+                    Intent intent = new Intent(getApplicationContext(), TrainerVideoListActivity.class);
+                    intent.putExtra("courseId", courseList.get(i).getCourse().getId());
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -240,4 +257,10 @@ public class TrainerUploadedCourseActivity extends AppCompatActivity {
             super.run();
         }
     }
+
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        loadDataListView(page,size);
+//    }
 }

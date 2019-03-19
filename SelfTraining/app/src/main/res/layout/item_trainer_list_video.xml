@@ -12,12 +12,24 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:orientation="horizontal">
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/iv_video_thumbnail"
-            android:layout_width="150dp"
-            android:layout_height="100dp"
-            android:background="@drawable/ic_video" />
+
+            <ImageView
+                android:id="@+id/iv_video_thumbnail"
+                android:layout_width="150dp"
+                android:layout_height="100dp"
+                android:background="@drawable/ic_video" />
+            <ImageView
+                android:id="@+id/iv_video_thumbnail_play_video"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_play" />
+        </FrameLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -31,9 +43,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:ellipsize="end"
-                android:maxLines="2"
+                android:maxLines="1"
                 android:text="Video Name"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
+                android:textStyle="bold"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
 
             <!--<LinearLayout-->
                 <!--android:layout_width="match_parent"-->

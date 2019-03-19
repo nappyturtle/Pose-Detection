@@ -59,14 +59,15 @@ public class TrainerUploadedCourseAdapter extends BaseAdapter {
         if(convertView == null){
             courseViewHolder = new CourseViewHolder();
             LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = layoutInflater.inflate(R.layout.item_bought_course, null);
+            convertView = layoutInflater.inflate(R.layout.item_course_uploaded_by_trainer, null);
 
-            courseViewHolder.thumbnailCourse = (ImageView) convertView.findViewById(R.id.iv_course__bought_thumbnail);
-            courseViewHolder.quantityVideo = (TextView) convertView.findViewById(R.id.tv_bought_video_quantity);
-            courseViewHolder.coursename = (TextView) convertView.findViewById(R.id.tv__bought_course_name);
-            courseViewHolder.trainername = (TextView) convertView.findViewById(R.id.tv_bought_trainer_name);
-            courseViewHolder.postTime = (TextView) convertView.findViewById(R.id.tv_bought_course_created_time);
-            courseViewHolder.price = (TextView) convertView.findViewById(R.id.txtPrice_item_bought_course);
+            courseViewHolder.thumbnailCourse = (ImageView) convertView.findViewById(R.id.iv_course_uploaded_by_trainer_thumbnail);
+            courseViewHolder.quantityVideo = (TextView) convertView.findViewById(R.id.tv_uploaded_by_trainer_video_quantity);
+            courseViewHolder.coursename = (TextView) convertView.findViewById(R.id.tv_uploaded_by_trainer_course_name);
+            courseViewHolder.trainername = (TextView) convertView.findViewById(R.id.tv_uploaded_by_trainer_trainer_name);
+            courseViewHolder.postTime = (TextView) convertView.findViewById(R.id.tv_uploaded_by_trainer_course_created_time);
+            courseViewHolder.price = (TextView) convertView.findViewById(R.id.txtPrice_course_uploaded_by_trainer_course);
+            courseViewHolder.imgEdit = (ImageView) convertView.findViewById(R.id.edit_img_course_upload_by_trainer);
             convertView.setTag(courseViewHolder);
         }else{
             courseViewHolder = (CourseViewHolder)convertView.getTag();
@@ -87,7 +88,7 @@ public class TrainerUploadedCourseAdapter extends BaseAdapter {
             courseViewHolder.price.setText(courseDTO.getCourse().getPrice() + ".000đ");
             courseViewHolder.price.setTextColor(Color.RED);
         }
-        courseViewHolder.thumbnailCourse.setOnClickListener(new View.OnClickListener() {
+        courseViewHolder.imgEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context,CourseInforActivity.class);
@@ -106,6 +107,7 @@ public class TrainerUploadedCourseAdapter extends BaseAdapter {
         public TextView trainername;
         public TextView postTime;
         public TextView price;
+        public ImageView imgEdit;
     }
 
 }

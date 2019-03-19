@@ -11,6 +11,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 public interface IVideoService {
@@ -44,4 +45,10 @@ public interface IVideoService {
     Call<List<VideoDTO>> searchVideoOrderByDate(@Query("searchValue") String searchValue);
     @GET("video/searchOrderByView")
     Call<List<VideoDTO>> searchVideoOrderByView(@Query("searchValue") String searchValue);
+
+    @GET("video/getAllVideoByCourseIdToEdit")
+    Call<List<VideoDTO>> getAllVideoByCourseIdToEdit(@Header(Constants.header_string) String token,@Query("courseId") int courseId);
+
+    @PUT("video/editVideo")
+    Call<Boolean> editVideo(@Header(Constants.header_string) String token,@Body Video video);
 }
