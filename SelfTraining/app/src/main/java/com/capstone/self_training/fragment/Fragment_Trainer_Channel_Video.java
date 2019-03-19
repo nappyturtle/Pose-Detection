@@ -1,6 +1,8 @@
 package com.capstone.self_training.fragment;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,7 +14,9 @@ import android.view.ViewGroup;
 
 import com.capstone.self_training.R;
 import com.capstone.self_training.adapter.VideoListAdapter;
+import com.capstone.self_training.model.Account;
 import com.capstone.self_training.model.Video;
+import com.capstone.self_training.service.dataservice.AccountService;
 import com.capstone.self_training.service.dataservice.VideoService;
 
 import java.util.ArrayList;
@@ -25,6 +29,9 @@ public class Fragment_Trainer_Channel_Video extends Fragment {
     private List<Video> videoList;
     private VideoService videoService;
     private int trainerAccountId;
+    private SharedPreferences sharedPreferences;
+    private AccountService accountService;
+    private Account trainer;
 
     @Nullable
     @Override
@@ -41,10 +48,14 @@ public class Fragment_Trainer_Channel_Video extends Fragment {
             videoList = new ArrayList<>();
         }
         videoList = videoService.getAllFreeVideosByAccount(trainerAccountId);
+
+        accountService = new AccountService(getContext());
+        trainer = accountService.getAccount(trainerAccountId);
+
         if (videoList != null) {
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
             rc_trainer_channel_video.setLayoutManager(layoutManager);
-            videoListAdapter = new VideoListAdapter(videoList, getContext());
+            videoListAdapter = new VideoListAdapter(videoList, getContext(), trainer);
             rc_trainer_channel_video.setAdapter(videoListAdapter);
         }
     }

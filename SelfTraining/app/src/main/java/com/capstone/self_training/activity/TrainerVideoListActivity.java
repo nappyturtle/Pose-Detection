@@ -69,9 +69,12 @@ public class TrainerVideoListActivity extends AppCompatActivity {
             if (videos == null) {
                 videos = new ArrayList<>();
             }
-            for (VideoDTO v : videoDTOS) {
-                videos.add(v.getVideo());
+            if(videoDTOS != null){
+                for (VideoDTO v : videoDTOS) {
+                    videos.add(v.getVideo());
+                }
             }
+
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
             rcListVideo.setLayoutManager(layoutManager);
             videoListAdapter = new VideoListAdapter(videos, getApplicationContext());
