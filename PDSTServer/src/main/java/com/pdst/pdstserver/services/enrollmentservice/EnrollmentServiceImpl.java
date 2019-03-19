@@ -105,4 +105,27 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         }
         return false;
     }
+
+    @Override
+    public List<Account> getAllTrainerOfBoughtCourse(int accountId) {
+        List<Enrollment> enrollmentList = enrollmentRepository.findAllByAccountId(accountId);
+        List<Account> dtoList = new ArrayList<>();
+        for (Enrollment enrollment : enrollmentList) {
+            Course course = courseRepository.findCourseById(enrollment.getCourseId());
+            Account account = accountRepository.findAccountById(course.getAccountId());
+
+            dtoList.add(account);
+        }
+
+        //remove duplicate items
+        for (int i = 0; i < dtoList.size(); i++) {
+            for (int j = i + 1; j < dtoList.size(); j++) {
+                if (dtoList.get(i).getId() == dtoList.get(j).getId()) {
+                    dtoList.remove(j);
+                    j--;
+                }
+            }
+        }
+        return dtoList;
+    }
 }

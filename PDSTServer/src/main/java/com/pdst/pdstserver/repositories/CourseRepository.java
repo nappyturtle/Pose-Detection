@@ -32,5 +32,5 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
     @Query("SELECT COUNT (c.id) FROM Course c WHERE c.accountId = ?1 AND c.price > 0")
     int countAllCoursesByAccountId(int accountId);
 
-    List<Course> findAllByAccountId(Pageable pageable, int accountId);
+    List<Course> findAllByAccountIdOrderByCreatedTimeDesc(Pageable pageable, int accountId);
 }

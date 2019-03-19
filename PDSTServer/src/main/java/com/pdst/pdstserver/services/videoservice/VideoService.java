@@ -14,8 +14,10 @@ public interface VideoService {
     List<VideoDTO> getAllVideosByTopNumOfView(int page,int size);
     Optional<Video> getVideoById(int id);
     boolean createVideo(Video video);
+    boolean editVideo(Video video);
     List<VideoDTO> getAllVideosByTrainer(int accountId);
     List<VideoDTO> getAllVideoByCourseId(int page, int size, int courseId);
+    List<VideoDTO> getAllVideoByCourseIdToEdit(int courseId);
     List<VideoDTO> getAllBoughtVideoRelated(int courseId, int videoId);
     int countVideosByCourseId(int courseId);
     List<Video>getAllFreeVideosByAccount(int accountId);

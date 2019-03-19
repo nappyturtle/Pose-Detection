@@ -12,9 +12,12 @@ import java.util.List;
 public interface VideoRepository extends JpaRepository<Video, Integer>{
     Video findVideoById(Integer id);
 //    List<Video> findAllByAccountIdOrderByCreatedTimeDesc(int accountId);
-    List<Video> findAllByCourseId(Pageable pageable,Integer courseId);
+    List<Video> findAllByCourseIdOrderByCreatedTimeDesc(Pageable pageable,Integer courseId);
+    List<Video> findAllByCourseId(Integer courseId);
     Integer countVideoByCourseId(Integer courseId);
     Integer countVideoByCourseId(int courseId);
     List<Video> findTop6ByCourseIdOrderByCreatedTimeDesc(int courseId);
     List<Video> findAllByCourseIdOrderByCreatedTimeDesc(int courseId);
+    List<Video> findAllByOrderByCreatedTimeDesc(Pageable pageable);
+    List<Video> findAllByOrderByNumOfViewDesc(Pageable pageable);
 }

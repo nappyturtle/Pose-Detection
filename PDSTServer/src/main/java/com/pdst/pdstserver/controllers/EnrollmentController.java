@@ -1,6 +1,7 @@
 package com.pdst.pdstserver.controllers;
 
 import com.pdst.pdstserver.dtos.EnrollmentDTO;
+import com.pdst.pdstserver.models.Account;
 import com.pdst.pdstserver.models.Enrollment;
 import com.pdst.pdstserver.services.enrollmentservice.EnrollmentService;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,11 @@ public class EnrollmentController {
     @GetMapping("getAllBoughtCourseTrainer")
     public List<EnrollmentDTO> getAllBoughtCourseWithTrainername(@RequestParam(value = "accountId") int accountId) {
         return enrollmentService.getAllBoughtCourseWithTrainername(accountId);
+    }
+
+    @GetMapping("getAllTrainerOfBoughtCourse")
+    public List<Account> getAllTrainerOfBoughtCourse(@RequestParam(value = "accountId") int accountId) {
+        return enrollmentService.getAllTrainerOfBoughtCourse(accountId);
     }
 
     @PostMapping("createEnrollment")

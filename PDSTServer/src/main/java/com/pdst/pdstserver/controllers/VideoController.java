@@ -72,6 +72,12 @@ public class VideoController {
         return resultPage;
     }
 
+    @GetMapping("getAllVideoByCourseIdToEdit")
+    public List<VideoDTO> getAllVideoByCourseIdToEdit(@RequestParam(value = "courseId") int courseId) {
+        List<VideoDTO> resultPage = videoService.getAllVideoByCourseIdToEdit(courseId);
+        return resultPage;
+    }
+
     @GetMapping("getAllBoughtVideoRelated")
     public List<VideoDTO> getAllBoughtVideoRelated(@RequestParam(value = "courseId") int courseId, @RequestParam(value = "videoId") int videoId) {
         List<VideoDTO> resultPage = videoService.getAllBoughtVideoRelated(courseId, videoId);
@@ -114,6 +120,10 @@ public class VideoController {
             }
         }
         return videoDTOList;
+    }
+    @PutMapping(value = "editVideo")
+    public boolean editVideo(@RequestBody Video video){
+        return videoService.editVideo(video);
     }
 
 }

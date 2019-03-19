@@ -39,7 +39,7 @@ public class VideoServiceImpl implements VideoService {
     @Override
     public List<VideoDTO> getAllVideosOrderByDate(int page, int size) {
         System.out.println("page - size = " + page + " - " + size);
-        Page<Video> videos = videoRepository.findAll(new PageRequest(page, size, Sort.Direction.DESC, "createdTime"));
+        List<Video> videos = videoRepository.findAllByOrderByCreatedTimeDesc(new PageRequest(page, size));
 
         List<VideoDTO> dtos = new ArrayList<>();
         for (Video video : videos) {
@@ -98,6 +98,20 @@ public class VideoServiceImpl implements VideoService {
         }
     }
 
+    @Override
+    public boolean editVideo(Video video) {
+        Video videoTemp = videoRepository.findVideoById(video.getId());
+        videoTemp.setTitle(video.getTitle());
+        videoTemp.setThumnailUrl(video.getThumnailUrl());
+        videoTemp.setCourseId(video.getCourseId());
+        videoTemp.setUpdatedTime(video.getUpdatedTime());
+        Video res = videoRepository.save(videoTemp);
+        if(res != null){
+            return true;
+        }
+        return false;
+    }
+
     //cho nay chua biet sua sao, tam thoi comment lai - VuVG 03/05/2019
     @Override
     public List<VideoDTO> getAllVideosByTrainer(int accountId) {
@@ -118,7 +132,23 @@ public class VideoServiceImpl implements VideoService {
     @Override
     public List<VideoDTO> getAllVideoByCourseId(int page, int size, int courseId) {
         System.out.println("page - size = " + page + " - " + size);
-        List<Video> videos = videoRepository.findAllByCourseId(new PageRequest(page, size, Sort.Direction.DESC, "createdTime"), courseId);
+        List<Video> videos = videoRepository.findAllByCourseIdOrderByCreatedTimeDesc(new PageRequest(page, size), courseId);
+        List<VideoDTO> dtos = new ArrayList<>();
+        for (Video video : videos) {
+            Course course = courseRepository.findCourseById(video.getCourseId());
+            Account account = accountRepository.findAccountById(course.getAccountId());
+            VideoDTO dto = new VideoDTO();
+            dto.setVideo(video);
+            dto.setUsername(account.getUsername());
+            dto.setImgUrl(account.getImgUrl());
+            dtos.add(dto);
+        }
+        return dtos;
+    }
+
+    @Override
+    public List<VideoDTO> getAllVideoByCourseIdToEdit(int courseId) {
+        List<Video> videos = videoRepository.findAllByCourseId(courseId);
         List<VideoDTO> dtos = new ArrayList<>();
         for (Video video : videos) {
             Course course = courseRepository.findCourseById(video.getCourseId());
@@ -172,7 +202,7 @@ public class VideoServiceImpl implements VideoService {
     @Override
     public List<VideoDTO> getAllVideosByTopNumOfView(int page, int size) {
         System.out.println("page - size = " + page + " - " + size);
-        Page<Video> videos = videoRepository.findAll(new PageRequest(page, size, Sort.Direction.DESC, "numOfView"));
+        List<Video> videos = videoRepository.findAllByOrderByNumOfViewDesc(new PageRequest(page, size));
 
         List<VideoDTO> dtos = new ArrayList<>();
         for (Video video : videos) {
