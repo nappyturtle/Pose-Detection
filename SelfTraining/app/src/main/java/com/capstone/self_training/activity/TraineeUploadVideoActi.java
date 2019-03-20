@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
@@ -19,26 +20,26 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.support.v7.widget.ToolbarWidgetWrapper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 import android.widget.VideoView;
 
 import com.capstone.self_training.R;
+import com.capstone.self_training.fragment.CameraFragment;
 import com.capstone.self_training.helper.TimeHelper;
-import com.capstone.self_training.model.Account;
 import com.capstone.self_training.model.Suggestion;
 import com.capstone.self_training.model.Video;
-import com.capstone.self_training.service.dataservice.AccountService;
 import com.capstone.self_training.service.dataservice.SuggestionService;
 import com.capstone.self_training.util.MP4Demuxer;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -49,9 +50,6 @@ import org.jcodec.common.io.NIOUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.channels.SeekableByteChannel;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 public class TraineeUploadVideoActi extends AppCompatActivity {
     private static final int SELECT_VIDEO = 3;
@@ -61,6 +59,8 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
     private TextView txtVideoName;
     private VideoView videoView;
     private Button btnOpenCamera;
+    private android.support.v7.widget.Toolbar tbUploadVideo;
+    private FrameLayout flUploadVideo;
     private StorageReference storageReference;
 
     private Uri selectedVideoUri;
@@ -134,12 +134,26 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference();
         mPerferences = PreferenceManager.getDefaultSharedPreferences(this);
         mEditor = mPerferences.edit();
-
+        flUploadVideo = (FrameLayout) findViewById(R.id.frmViewVideo);
+        tbUploadVideo = (android.support.v7.widget.Toolbar) findViewById(R.id.textView);
     }
-    private void clickToOpenCamera(){
+
+    private void clickToOpenCamera() {
         btnOpenCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                CameraFragment cmr = CameraFragment.newInstance();
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.TraineeUploadVideoActi, cmr)
+                        .commit();
+                btnChooseFile.setVisibility(View.GONE);
+                btnUploadVideo.setVisibility(View.GONE);
+                txtVideoName.setVisibility(View.GONE);
+                videoView.setVisibility(View.GONE);
+                btnOpenCamera.setVisibility(View.GONE);
+                flUploadVideo.setVisibility(View.GONE);
+                tbUploadVideo.setVisibility(View.GONE);
+
 
             }
         });
@@ -256,7 +270,7 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.e("Upload thumbnail suggestion: ",e.getMessage());
+                        Log.e("Upload thumbnail suggestion: ", e.getMessage());
                     }
                 }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                     @Override

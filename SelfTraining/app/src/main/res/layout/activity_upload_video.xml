@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".activity.TraineeUploadVideoActi"
     android:orientation="vertical"
+    android:id="@+id/TraineeUploadVideoActi"
     >
 
     <android.support.v7.widget.Toolbar
