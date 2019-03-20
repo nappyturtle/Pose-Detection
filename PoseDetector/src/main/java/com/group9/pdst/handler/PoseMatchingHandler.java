@@ -35,9 +35,7 @@ public class PoseMatchingHandler {
             //
             ConstantUtilities.jedis.set(suggestionId + "_isCompare", "false");
             boolean flag = checkMatchingPrecondition(simgList.get(trainerFrame), simgName, trainerFolder, suggestionId);
-            //
             if (flag) {
-
                 ConstantUtilities.jedis.set(suggestionId + "_isCompare", "true");
                 for (int j = 0; j < imgList.size(); j++) {
                     String uri = ConstantUtilities.domain + "poseDetect.html";
@@ -77,17 +75,21 @@ public class PoseMatchingHandler {
                 }
 
             }
-            if (finalPoseResult != null && finalPoseResult.getMaxMatchingPercentage() >= 0.7) {
+            if (finalPoseResult != null) {
 //            if (finalPoseResult != null && finalPoseResult.getMaxMatchingPercentage() >= 0.8) {
-                String suggestion = "Tư thế của bạn khớp: " + CalculationUtilities.roundingPercentage(finalPoseResult.getMinMatchingPercentage())
-                        + "% - " + CalculationUtilities.roundingPercentage(finalPoseResult.getMaxMatchingPercentage()) + "%\n" + finalPoseResult.getDescription();
-                SuggestionDetail suggestionDetail = new SuggestionDetail(finalPoseResult.getImgUrl(), finalPoseResult.getStandardImgUrl(), suggestion, suggestionId);
-                finalResult.add(suggestionDetail);
-                trainerFrame = i;
+                if(finalPoseResult.getMaxMatchingPercentage() >= 0.7) {
+                    String suggestion = "Tư thế của bạn khớp: " + CalculationUtilities.roundingPercentage(finalPoseResult.getMinMatchingPercentage())
+                            + "% - " + CalculationUtilities.roundingPercentage(finalPoseResult.getMaxMatchingPercentage()) + "%\n" + finalPoseResult.getDescription();
+                    SuggestionDetail suggestionDetail = new SuggestionDetail(finalPoseResult.getImgUrl(), finalPoseResult.getStandardImgUrl(), suggestion, suggestionId);
+                    finalResult.add(suggestionDetail);
+                    trainerFrame = i;
+                }
 //                imgList.remove(traineeFrame);
             }
             else {
-                ConstantUtilities.jedis.set(suggestionId + "_important", ConstantUtilities.jedis.get(suggestionId + "backup_important"));
+                if(ConstantUtilities.jedis.get(suggestionId + "backup_important") != null) {
+                    ConstantUtilities.jedis.set(suggestionId + "_important", ConstantUtilities.jedis.get(suggestionId + "backup_important"));
+                }
             }
         }
         return finalResult;
@@ -136,8 +138,6 @@ public class PoseMatchingHandler {
         double maxPosePercentage = 0;
         double minPosePercentage = 0;
         double totalWeight = 0;
-        Position trainerPointPosition = null;
-        Position traineePointPosition = null;
 
         boolean isChanged = false;
         String description = "Các bộ phận quan trọng trong tư thế này";
@@ -158,7 +158,8 @@ public class PoseMatchingHandler {
         }
         //xu ly loai bo cac diem thua va tao diem than - torso lam trong tam
         handler.pretreatment(trainerPoints, traineePoints);
-        for (int i = 0; i < trainerPoints.size(); i++) {
+        int i = 0;
+        while(i < trainerPoints.size()) {
             System.out.println("\n===========AAAA==============\n");
             double distanceRatio = 1;
             double weight = 1;
@@ -168,17 +169,58 @@ public class PoseMatchingHandler {
                 KeyPointVector trainerPointVector = TransUtilities.createVectorFromKeypoint(trainerPoints, trainerPoint, "torso");
                 KeyPointVector traineePointVector = TransUtilities.createVectorFromKeypoint(traineePoints, traineePoint, "torso");
                 if(trainerPoint.getPart().contains("left")) {
-                    trainerPointPosition = trainerPoint.getPosition();
-                    traineePointPosition = traineePoint.getPosition();
-                }
-                if(trainerPoint.getPart().contains("right")) {
-                    double trainerDistance = CalculationUtilities.calculateEuclideanDistance(trainerPointPosition.getX() - trainerPoint.getPosition().getX(), trainerPointPosition.getY() - trainerPoint.getPosition().getY());
-                    double traineeDistance = CalculationUtilities.calculateEuclideanDistance(traineePointPosition.getX() - traineePoint.getPosition().getX(), traineePointPosition.getY() - traineePoint.getPosition().getY());
-//                    System.out.println("Trainer " + trainerPoint.getPart() + " distance: " + trainerDistance);
-//                    System.out.println("Trainee " + traineePoint.getPart() + " distance: " + traineeDistance);
+                    i++;
+                    KeyPoint trainerRightPoint = trainerPoints.get(i);
+                    KeyPoint traineeRightPoint = traineePoints.get(i);
+                    double x = trainerRightPoint.getPosition().getX() - trainerPoint.getPosition().getX();
+                    double y = trainerRightPoint.getPosition().getY() - trainerPoint.getPosition().getY();
+                    double trainerDistance = CalculationUtilities.calculateEuclideanDistance(x, y);
+                    KeyPointVector v1 = new KeyPointVector(new Position(x, y));
+                    x = traineeRightPoint.getPosition().getX() - traineePoint.getPosition().getX();
+                    y = traineeRightPoint.getPosition().getY() - traineePoint.getPosition().getY();
+                    double traineeDistance = CalculationUtilities.calculateEuclideanDistance(x, y);
+                    KeyPointVector v2 = new KeyPointVector(new Position(x, y));
+                    double distanceCosine = CalculationUtilities.calculateCosine(v1, v2);
                     distanceRatio = 1 - Math.abs(traineeDistance - trainerDistance)/standardDeviation;
-//                    distanceRatio = trainerDistance > traineeDistance ? traineeDistance/trainerDistance : trainerDistance/traineeDistance;
+                    distanceRatio = (distanceCosine + distanceRatio)/2;
+                    //Right
+                    KeyPointVector trainerRightPointVector = TransUtilities.createVectorFromKeypoint(trainerPoints, trainerRightPoint, "torso");
+                    KeyPointVector traineeRightPointVector = TransUtilities.createVectorFromKeypoint(traineePoints, traineeRightPoint, "torso");
+                    double maxPointPercentage = CalculationUtilities.calculateCosine(trainerRightPointVector, traineeRightPointVector) * distanceRatio;
+                    double minPointPercentage = maxPointPercentage * Math.min(traineeRightPoint.getScore()/trainerRightPoint.getScore(), trainerRightPoint.getScore()/traineeRightPoint.getScore());
+                    if(maxPointPercentage - minPointPercentage > 0.1) {
+                        maxPointPercentage = (maxPointPercentage + minPointPercentage)/2;
+                    }
+                    if(maxPointPercentage < Math.cos(Math.toRadians(45))) {
+                        isChanged = true;
+                    }
+
+                    MatchingPointResult point = new MatchingPointResult(trainerRightPoint.getPart(), maxPointPercentage, minPointPercentage);
+
+                    if ("false".equals(isCompare)) {
+                        changePoints.add(mapper.writeValueAsString(point));
+                    }
+                    else {
+                        double maxScore = Math.max(traineeRightPoint.getScore(), trainerRightPoint.getScore());
+                        double minScore = Math.min(traineeRightPoint.getScore(), trainerRightPoint.getScore());
+                        double confidenceRatio = minScore / maxScore;
+                        System.out.println("Point: \n" + point);
+                        System.out.println("Score: " + confidenceRatio);
+                        for (String changedPointJSON : changePoints) {
+                            MatchingPointResult changedPoint = mapper.readValue(changedPointJSON, MatchingPointResult.class);
+                            if (changedPoint.getPart().equals(point.getPart())) {
+                                weight = TransUtilities.getWeight(changedPoint.getMaxMatchingPercentage());
+                                importantPoint += getNoteworthyPoint(changedPoint, point, confidenceRatio);
+                                break;
+                            }
+                        }
+                    }
+                    totalWeight += weight;
+                    keyPointsResult.add(point);
+                    maxPosePercentage += point.getMaxMatchingPercentage() * weight;
+                    minPosePercentage += point.getMinMatchingPercentage() * weight;
                 }
+                //Left
                 System.out.println("Distance ratio: " + distanceRatio);
                 double maxPointPercentage = CalculationUtilities.calculateCosine(trainerPointVector, traineePointVector) * distanceRatio;
                 double minPointPercentage = maxPointPercentage * Math.min(traineePoint.getScore()/trainerPoint.getScore(), trainerPoint.getScore()/traineePoint.getScore());
@@ -186,12 +228,9 @@ public class PoseMatchingHandler {
                     maxPointPercentage = (maxPointPercentage + minPointPercentage)/2;
                 }
                 if(maxPointPercentage < Math.cos(Math.toRadians(45))) {
-//                    System.out.println("Change Part: " + traineePoint.getPart());
                     isChanged = true;
                 }
-
                 MatchingPointResult point = new MatchingPointResult(trainerPoint.getPart(), maxPointPercentage, minPointPercentage);
-
                 if ("false".equals(isCompare)) {
                     changePoints.add(mapper.writeValueAsString(point));
                     System.out.println("Point: " + point.getPart());
@@ -216,8 +255,8 @@ public class PoseMatchingHandler {
                 keyPointsResult.add(point);
                 maxPosePercentage += point.getMaxMatchingPercentage() * weight;
                 minPosePercentage += point.getMinMatchingPercentage() * weight;
-
             }
+            i++;
         }
 
 
@@ -234,7 +273,9 @@ public class PoseMatchingHandler {
         System.out.println(matchingPoseResult + "\n========================\n");
         if ("false".equals(isCompare)) {
             ConstantUtilities.jedis.set(suggestionId + "_important", mapper.writeValueAsString(changePoints));
-            ConstantUtilities.jedis.set(suggestionId + "backup_important", importantJSON);
+            if(importantJSON != null) {
+                ConstantUtilities.jedis.set(suggestionId + "backup_important", importantJSON);
+            }
             if(isChanged) {
                 ConstantUtilities.jedis.set(suggestionId + "_changed", "true");
             }
@@ -247,12 +288,12 @@ public class PoseMatchingHandler {
 
     //tra ve description cac diem quan trong cua dong tac
     private String getNoteworthyPoint(MatchingPointResult importantPoint, MatchingPointResult point, double confidenceRatio) {
-        if (importantPoint.getMaxMatchingPercentage() < Math.cos(Math.toRadians(15))) {
+        if (importantPoint.getMaxMatchingPercentage() < 0.95 && confidenceRatio > 0.5) {
             if (confidenceRatio < 0.8) {
                 point.setMaxMatchingPercentage(point.getMaxMatchingPercentage() * confidenceRatio);
                 point.setMinMatchingPercentage(point.getMinMatchingPercentage() * confidenceRatio);
             }
-            if (point.getMinMatchingPercentage() >= Math.cos(Math.toRadians(60))) {
+            if (point.getMinMatchingPercentage() >= 0.4) {
                 return TransUtilities.transPartToVietnamese(point.getPart()) + ": khớp " + CalculationUtilities.roundingPercentage(point.getMinMatchingPercentage()) + "% - "
                         + CalculationUtilities.roundingPercentage(point.getMaxMatchingPercentage()) + "%\n";
             } else {

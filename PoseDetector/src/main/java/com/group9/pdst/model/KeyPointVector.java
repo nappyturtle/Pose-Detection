@@ -5,4 +5,8 @@ public class KeyPointVector extends KeyPoint {
         this.setPosition(position);
         this.setPart(part);
     }
+
+    public KeyPointVector(Position position) {
+        this.setPosition(position);
+    }
 }

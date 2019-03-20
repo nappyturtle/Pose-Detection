@@ -48,6 +48,7 @@ public class PdstApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
         fileStorage.deleteAll();
         fileStorage.init();
+        ConstantUtilities.jedis.flushAll();
     }
 
 }
