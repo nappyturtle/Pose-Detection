@@ -37,9 +37,10 @@ public class VideoController {
         return resultPage;
     }
 
-    @GetMapping("getAllVideosByTrainer")
-    public List<VideoDTO> getAllVideoByTrainer(@RequestParam(value = "accountId") int accountId) {
-        List<VideoDTO> resultPage = videoService.getAllVideosByTrainer(accountId);
+    @GetMapping("getAllVideosRelatedByCourseId")
+    public List<VideoDTO> getAllVideoByTrainer(@RequestParam(value = "courseId") int courseId,
+                                               @RequestParam(value = "currentVideoId") int currentVideoId) {
+        List<VideoDTO> resultPage = videoService.getAllVideosRelatedByCourseId(courseId,currentVideoId);
         return resultPage;
     }
 

@@ -14,7 +14,7 @@ public class SecurityConstants {
     public static final String GET_ALL_VIDEO = "/video/getAllVideosByDate";
     public static final String GET_ALL_CATEGORY = "/category/categories";
     public static final String GET_ACCOUNT_BY_ID = "/account/update/{id}";
-    public static final String GET_ALL_VIDEO_TRAINER = "/video/getAllVideosByTrainer";
+    public static final String GET_ALL_VIDEO_RELATED= "/video/getAllVideosRelatedByCourseId";
     public static final String GET_ALL_VIDEO_TRENDING = "/video/getAllVideosByTopNumOfView";
     public static final String GET_ALL_COURSE_WITH_PRICE = "/course/getAllCourses";
     public static final String CREATE_SUGGESTIONDETAIL = "/suggestiondetail/createSuggestionDetails";

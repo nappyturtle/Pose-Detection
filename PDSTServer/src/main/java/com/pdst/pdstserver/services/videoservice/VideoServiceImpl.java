@@ -8,7 +8,6 @@ import com.pdst.pdstserver.models.Video;
 import com.pdst.pdstserver.repositories.AccountRepository;
 import com.pdst.pdstserver.repositories.CourseRepository;
 import com.pdst.pdstserver.repositories.VideoRepository;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -17,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static java.util.Comparator.comparing;
+
 @Service
 public class VideoServiceImpl implements VideoService {
 
@@ -24,7 +25,8 @@ public class VideoServiceImpl implements VideoService {
     private final AccountRepository accountRepository;
     private final CourseRepository courseRepository;
 
-    public VideoServiceImpl(VideoRepository videoRepository, AccountRepository accountRepository, CourseRepository courseRepository) {
+    public VideoServiceImpl(VideoRepository videoRepository, AccountRepository accountRepository,
+                            CourseRepository courseRepository) {
         this.videoRepository = videoRepository;
         this.accountRepository = accountRepository;
         this.courseRepository = courseRepository;
@@ -39,14 +41,14 @@ public class VideoServiceImpl implements VideoService {
     @Override
     public List<VideoDTO> getAllVideosOrderByDate(int page, int size) {
         System.out.println("page - size = " + page + " - " + size);
-        List<Video> videos = videoRepository.findAllByOrderByCreatedTimeDesc(new PageRequest(page, size));
 
+        List<Video> videos = videoRepository.getAllVideoByCourseFree(PageRequest.of(page,size,Sort.by("createdTime").descending()));
         List<VideoDTO> dtos = new ArrayList<>();
+
         for (Video video : videos) {
             Course course = courseRepository.findCourseById(video.getCourseId());
-//            Account account = accountRepository.findAccountById(video.getAccountId());
             //VuVG - 15/03/2019 - Chỉ lấy các video free
-            if(course.getPrice() == 0) {
+            //if(course.getPrice() == 0) {
                 Account account = accountRepository.findAccountById(course.getAccountId());
                 VideoDTO dto = new VideoDTO();
                 dto.setVideo(video);
@@ -54,9 +56,11 @@ public class VideoServiceImpl implements VideoService {
                 dto.setImgUrl(account.getImgUrl());
                 dto.setAccountId(account.getId());
                 dtos.add(dto);
-            }
+            //}
         }
         return dtos;
+//
+
     }
 
     @Override
@@ -106,27 +110,35 @@ public class VideoServiceImpl implements VideoService {
         videoTemp.setCourseId(video.getCourseId());
         videoTemp.setUpdatedTime(video.getUpdatedTime());
         Video res = videoRepository.save(videoTemp);
-        if(res != null){
+        if (res != null) {
             return true;
         }
         return false;
     }
 
     //cho nay chua biet sua sao, tam thoi comment lai - VuVG 03/05/2019
+    // đã sửa lại thành lấy những video liên quan đến course đó, nhưng ko lấy video hiện tại
     @Override
-    public List<VideoDTO> getAllVideosByTrainer(int accountId) {
-//        List<Video> videos = videoRepository.findAllByAccountIdOrderByCreatedTimeDesc(accountId);
-//        List<VideoDTO> dtos = new ArrayList<>();
-//        for (Video video : videos) {
-//            Account account = accountRepository.findAccountById(video.getAccountId());
-//            VideoDTO dto = new VideoDTO();
-//            dto.setVideo(video);
-//            dto.setUsername(account.getUsername());
-//            dto.setImgUrl(account.getImgUrl());
-//            dtos.add(dto);
-//    }
-//        return dtos;
-        return null;
+    public List<VideoDTO> getAllVideosRelatedByCourseId(int courseId, int currentVideoId) {
+       List<Video> listTemp = videoRepository.findTop6ByCourseIdOrderByCreatedTimeDesc(courseId);
+
+        List<VideoDTO> dtoList = new ArrayList<>();
+        for (int i = 0; i < listTemp.size(); i++) {
+            if (listTemp.get(i).getId() == currentVideoId) {
+                listTemp.remove(i);
+            }
+        }
+        for (Video video : listTemp) {
+            System.out.println("da vao dây roi neeeeeeeee!!!!!");
+            Course course = courseRepository.findCourseById(courseId);
+            Account account = accountRepository.findAccountById(course.getAccountId());
+            VideoDTO dto = new VideoDTO();
+            dto.setVideo(video);
+            dto.setUsername(account.getUsername());
+            dto.setImgUrl(account.getImgUrl());
+            dtoList.add(dto);
+        }
+        return dtoList;
     }
 
     @Override
@@ -202,21 +214,21 @@ public class VideoServiceImpl implements VideoService {
     @Override
     public List<VideoDTO> getAllVideosByTopNumOfView(int page, int size) {
         System.out.println("page - size = " + page + " - " + size);
-        List<Video> videos = videoRepository.findAllByOrderByNumOfViewDesc(new PageRequest(page, size));
+        List<Video> videos = videoRepository.getAllVideoByCourseFree(PageRequest.of(page,size,Sort.by("numOfView").descending()));
 
         List<VideoDTO> dtos = new ArrayList<>();
         for (Video video : videos) {
             Course course = courseRepository.findCourseById(video.getCourseId());
 //            Account account = accountRepository.findAccountById(video.getAccountId());
             //VuVG - 15/03/2019 - Chỉ lấy các video free
-            if(course.getPrice() == 0) {
+            //if (course.getPrice() == 0) {
                 Account account = accountRepository.findAccountById(course.getAccountId());
                 VideoDTO dto = new VideoDTO();
                 dto.setVideo(video);
                 dto.setUsername(account.getUsername());
                 dto.setImgUrl(account.getImgUrl());
                 dtos.add(dto);
-            }
+            //}
         }
         return dtos;
     }
@@ -227,7 +239,7 @@ public class VideoServiceImpl implements VideoService {
         List<VideoDTO> dtos = new ArrayList<>();
         for (Video video : videos) {
             Course course = courseRepository.findCourseById(video.getCourseId());
-            if(course.getPrice() == 0) {
+            if (course.getPrice() == 0) {
                 Account account = accountRepository.findAccountById(course.getAccountId());
                 VideoDTO dto = new VideoDTO();
                 dto.setVideo(video);
