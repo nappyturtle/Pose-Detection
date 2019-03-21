@@ -22,8 +22,9 @@ public interface IVideoService {
     Call<List<VideoDTO>> getVideosByDate(@Query("page") int page, @Query("size") int size);
 
 
-    @GET("video/getAllVideosByTrainer")
-    Call<List<VideoDTO>> getVideosByTrainer(@Query("accountId") int accountId);
+    @GET("video/getAllVideosRelatedByCourseId")
+    Call<List<VideoDTO>> getAllVideosRelatedByCourseId(@Query("courseId") int courseId,
+                                                       @Query("currentVideoId") int currentVideoId);
 
     @GET("video/getAllVideosByTopNumOfView")
     Call<List<VideoDTO>> getAllVideosByTopNumOfView(@Query("page") int page, @Query("size") int size);

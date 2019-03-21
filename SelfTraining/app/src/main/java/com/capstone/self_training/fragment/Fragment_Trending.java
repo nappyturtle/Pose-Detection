@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,10 +36,10 @@ public class Fragment_Trending extends Fragment {
     private List<Video> videos;
     private List<Account> accounts;
     private VideoService videoService;
-    private int page = 0;
-    private int size = 2;
-    boolean limitedData = false;
-    boolean isLoading = false;
+    private int page;
+    private int size;
+    boolean limitedData;
+    boolean isLoading;
     //int currentItem, totalItems, firstItem;
     private LinearLayoutManager linearLayoutManager;
     private ProgressBar progressBar;
@@ -50,8 +51,10 @@ public class Fragment_Trending extends Fragment {
         view = inflater.inflate(R.layout.fragment_trending, container, false);
         if (CheckConnection.haveNetworkConnection(getContext())) {
             init();
-//            page = 0;
-//            size = 2;
+            page = 0;
+            size = 3;
+            limitedData = false;
+            isLoading = false;
             loadData(page, size);
             loadMoreData();
             return view;
@@ -111,7 +114,7 @@ public class Fragment_Trending extends Fragment {
 
         videoService = new VideoService();
         List<VideoDTO> videoDTOS = videoService.getAllVideosByTopNumOfView(page, size);
-
+        Log.e("pageTrending = ", String.valueOf(page));
         if (videoDTOS.size() <= 0) {
             limitedData = true;
             CheckConnection.showConnection(getContext(), "Đã hết dữ liệu");

@@ -65,7 +65,7 @@ public class PlayVideoActivity extends AppCompatActivity implements SurfaceHolde
         StrictMode.setThreadPolicy(policy);
 
         VideoService videoService = new VideoService();
-        //List<VideoDTO> list = videoService.getVideosByTrainer(playingVideo.getAccountId());
+        List<VideoDTO> list = videoService.getAllVideosRelatedByCourseId(playingVideo.getCourseId(),playingVideo.getId());
 
         if (isFullScreen() == false) {
             setContentView(R.layout.activity_play_video);
@@ -106,9 +106,9 @@ public class PlayVideoActivity extends AppCompatActivity implements SurfaceHolde
             videos = new ArrayList<>();
 
 
-            //relateVideoAdapter = new RelateVideoAdapter(list, this);
+            relateVideoAdapter = new RelateVideoAdapter(list, this);
 
-            //relate_video_list.setAdapter(relateVideoAdapter);
+            relate_video_list.setAdapter(relateVideoAdapter);
 
         } else {
             setContentView(R.layout.activity_fullscreen_video);

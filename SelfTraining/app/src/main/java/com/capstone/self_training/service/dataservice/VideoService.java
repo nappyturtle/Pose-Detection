@@ -50,9 +50,9 @@ public class VideoService {
         return videoDTOS;
     }
 
-    public List<VideoDTO> getVideosByTrainer(int id) {
+    public List<VideoDTO> getAllVideosRelatedByCourseId(int courseId,int currentVideoId) {
         iVideoService = DataService.getVideoService();
-        Call<List<VideoDTO>> call = iVideoService.getVideosByTrainer(id);
+        Call<List<VideoDTO>> call = iVideoService.getAllVideosRelatedByCourseId(courseId,currentVideoId);
         List<VideoDTO> videoDTOS = null;
         try {
             videoDTOS = call.execute().body();

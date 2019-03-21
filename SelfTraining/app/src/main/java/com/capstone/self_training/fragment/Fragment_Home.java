@@ -45,8 +45,8 @@ public class Fragment_Home extends Fragment {
     private VideoService videoService;
     private int page;
     private int size;
-    boolean limitedData = false;
-    boolean isLoading = false;
+    boolean limitedData;
+    boolean isLoading;
     //int currentItem, totalItems, firstItem;
     private LinearLayoutManager linearLayoutManager;
     private ProgressBar progressBar;
@@ -61,7 +61,9 @@ public class Fragment_Home extends Fragment {
         if (CheckConnection.haveNetworkConnection(getContext())) {
             init();
             page = 0;
-            size = 2;
+            size = 3;
+            limitedData = false;
+            isLoading = false;
             loadData(page, size);
             loadMoreData();
 
@@ -122,7 +124,7 @@ public class Fragment_Home extends Fragment {
 
     private void loadData(int page, int size) {
         videoService = new VideoService();
-
+        Log.e("pageHome = ", String.valueOf(page));
         List<VideoDTO> videoDTOS = videoService.getVideosByDate(page, size);
         if (videoDTOS.size() <= 0) {
             limitedData = true;
