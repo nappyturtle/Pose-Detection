@@ -1,10 +1,10 @@
 package com.pdst.pdstserver.security;
 
-import com.pdst.pdstserver.models.Account;
 import com.pdst.pdstserver.repositories.AccountRepository;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -28,10 +28,22 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
         this.accountRepository = accountRepository;
     }
 
-
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/**html")
+                .antMatchers("/**css")
+                .antMatchers("/**js")
+                .antMatchers("/resources/**")
+                .antMatchers("/bower_components/**")
+                .antMatchers("/dist/**")
+                .antMatchers("/plugins/**")
+                .antMatchers("/management/**")
+                .antMatchers("/favicon.*");
     }
 
     @Override
@@ -56,6 +68,7 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
                 .antMatchers(HttpMethod.GET, SEARCH_COURSE).permitAll()
                 .antMatchers(HttpMethod.GET, "/account/accounts").hasAuthority("Admin")
                 .antMatchers(HttpMethod.GET, "/account/staff/accounts").hasAuthority("Staff")
+                .antMatchers("/", "/public/webadmin/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JWTGeneration(authenticationManager(), accountRepository))
