@@ -43,7 +43,8 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
                 .antMatchers("/dist/**")
                 .antMatchers("/plugins/**")
                 .antMatchers("/management/**")
-                .antMatchers("/favicon.*");
+                .antMatchers("/favicon.*")
+                .antMatchers("/js/**");
     }
 
     @Override
