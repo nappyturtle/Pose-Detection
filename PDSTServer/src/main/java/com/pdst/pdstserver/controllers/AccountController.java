@@ -34,6 +34,8 @@ public class AccountController {
         this.enrollmentService = enrollmentService;
     }
 
+
+
     @GetMapping("accounts")
     public List<Account> getAllAccounts() {
         return accountService.getAllAccounts();
@@ -87,6 +89,11 @@ public class AccountController {
         trainerInfo.setTotalCourse(totalTrainerCourse);
         trainerInfo.setTotalRegister(totalRegister);
         return trainerInfo;
+    }
+
+    @GetMapping("getAllAccountByRoleId")
+    public List<Account> getAllAccountByRoleId(@RequestParam(value = "roleId") int roleId){
+        return accountService.getAllAccountByRoleId(roleId);
     }
 
 }
