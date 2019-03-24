@@ -31,7 +31,8 @@
         <activity android:name=".activity.UpdateProfileActivity" />
         <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.TrainerUploadVideoActi" />
-        <activity android:name=".activity.TraineeUploadVideoActi" />
+        <activity android:name=".activity.TraineeUploadVideoActi"
+            android:configChanges = "orientation"/>
         <activity android:name=".activity.SuggestionDetailActi" />
         <activity android:name=".activity.SuggestionListActi" />
         <activity android:name=".activity.MainActivity_Home" />

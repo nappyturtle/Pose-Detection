@@ -1,6 +1,7 @@
 package com.capstone.self_training.fragment;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -108,11 +109,15 @@ public class CameraFragment extends CameraVideoFragment {
             if (mPerferences == null) {
 
             } else {
-                mSpeechRecognizer.stopListening();
-                mSpeechRecognizer.startListening(mSpeechRecognizerIntent);
-                mEditor.putString(getString(R.string.testSpeech), editText_Camera.getText().toString());
-                mEditor.apply();
-                editText_Camera.setText("");
+                Activity activity = getActivity();
+                if (isAdded() && activity != null) {
+                    mSpeechRecognizer.stopListening();
+                    mSpeechRecognizer.startListening(mSpeechRecognizerIntent);
+                    mEditor.putString(getString(R.string.testSpeech), editText_Camera.getText().toString());
+                    mEditor.apply();
+                    editText_Camera.setText("");
+                }
+
                 handler.postDelayed(test, 6000); //wait 6 sec and run again
             }
         }
@@ -149,10 +154,13 @@ public class CameraFragment extends CameraVideoFragment {
 
             @Override
             public void onFinish() {
-                mPerferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-                mEditor = mPerferences.edit();
-//                editText_Camera.setText(mPerferences.getString(getString(R.string.testSpeech), "default"));
-//                Toast.makeText(getContext(), editText_Camera.getText().toString(), Toast.LENGTH_LONG).show();
+                if (getContext() == null) {
+
+                } else {
+                    mPerferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+                    mEditor = mPerferences.edit();
+                }
+
                 this.start();
             }
         };
@@ -264,7 +272,11 @@ public class CameraFragment extends CameraVideoFragment {
                             timer.cancel();
                             mTimer.cancel();
                             mSpeechRecognizer.cancel();
-                            mSpeechRecognizer.destroy();
+                            try {
+                                mSpeechRecognizer.destroy();
+                            } catch (Exception e) {
+                                Log.e(TAG, "Exception:" + e.toString());
+                            }
                             Intent i = new Intent(getContext(), TraineeUploadVideoActi.class);
                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(i);
@@ -285,7 +297,11 @@ public class CameraFragment extends CameraVideoFragment {
                             timer.cancel();
                             mTimer.cancel();
                             mSpeechRecognizer.cancel();
-                            mSpeechRecognizer.destroy();
+                            try {
+                                mSpeechRecognizer.destroy();
+                            } catch (Exception e) {
+                                Log.e(TAG, "Exception:" + e.toString());
+                            }
                             Intent i = new Intent(getContext(), TraineeUploadVideoActi.class);
                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(i);
@@ -331,7 +347,11 @@ public class CameraFragment extends CameraVideoFragment {
                         timer.cancel();
                         mTimer.cancel();
                         mSpeechRecognizer.cancel();
-                        mSpeechRecognizer.destroy();
+                        try {
+                            mSpeechRecognizer.destroy();
+                        } catch (Exception e) {
+                            Log.e(TAG, "Exception:" + e.toString());
+                        }
                         Intent i = new Intent(getContext(), TraineeUploadVideoActi.class);
                         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(i);
