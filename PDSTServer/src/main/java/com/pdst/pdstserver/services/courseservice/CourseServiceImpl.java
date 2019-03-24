@@ -2,20 +2,22 @@ package com.pdst.pdstserver.services.courseservice;
 
 
 import com.pdst.pdstserver.dtos.CourseDTO;
+import com.pdst.pdstserver.dtos.CourseDTOFrontEnd;
 import com.pdst.pdstserver.dtos.EnrollmentDTO;
 import com.pdst.pdstserver.models.Account;
+import com.pdst.pdstserver.models.Category;
 import com.pdst.pdstserver.models.Course;
 import com.pdst.pdstserver.models.Enrollment;
-import com.pdst.pdstserver.repositories.AccountRepository;
-import com.pdst.pdstserver.repositories.CourseRepository;
-import com.pdst.pdstserver.repositories.EnrollmentRepository;
-import com.pdst.pdstserver.repositories.VideoRepository;
+import com.pdst.pdstserver.repositories.*;
 import com.pdst.pdstserver.services.enrollmentservice.EnrollmentService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 
@@ -25,13 +27,15 @@ public class CourseServiceImpl implements CourseService {
     private final AccountRepository accountRepository;
     private final VideoRepository videoRepository;
     private final EnrollmentRepository enrollmentRepository;
+    private final CategoryRepository categoryRepository;
 
     public CourseServiceImpl(CourseRepository courseRepository, AccountRepository accountRepository
-    ,VideoRepository videoRepository ,EnrollmentRepository enrollmentRepository) {
+            , VideoRepository videoRepository, EnrollmentRepository enrollmentRepository, CategoryRepository categoryRepository) {
         this.courseRepository = courseRepository;
         this.accountRepository = accountRepository;
         this.videoRepository = videoRepository;
         this.enrollmentRepository = enrollmentRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
@@ -56,7 +60,7 @@ public class CourseServiceImpl implements CourseService {
             Integer countVideo = videoRepository.countVideoByCourseId(course.getId());
             List<Enrollment> enrollmentList = enrollmentRepository.findAllByCourseId(course.getId());
             traineeList = new ArrayList<>();
-            for(Enrollment enrollment : enrollmentList){
+            for (Enrollment enrollment : enrollmentList) {
                 Account trainee = accountRepository.findAccountById(enrollment.getAccountId());
                 traineeList.add(trainee);
             }
@@ -90,7 +94,7 @@ public class CourseServiceImpl implements CourseService {
         temp.setThumbnail(course.getThumbnail());
         temp.setPrice(course.getPrice());
         Course res = courseRepository.save(temp);
-        if(res != null){
+        if (res != null) {
             return true;
         }
         return false;
@@ -109,6 +113,40 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public int countAllCoursesByAccountId(int accountId) {
         return courseRepository.countAllCoursesByAccountId(accountId);
+    }
+
+    @Override
+    public List<CourseDTOFrontEnd> getAllCourseByStaffOrAdmin() {
+        List<Course> courses = courseRepository.findAll();
+        List<CourseDTOFrontEnd> courseDTOFrontEnds = new ArrayList<>();
+        for (Course c : courses) {
+            CourseDTOFrontEnd courseDTOFrontEnd = new CourseDTOFrontEnd();
+            Account account = accountRepository.findAccountById(c.getAccountId());
+            Category category = categoryRepository.getOne(c.getCategoryId());
+            courseDTOFrontEnd.setId(c.getId());
+            courseDTOFrontEnd.setCoursename(c.getName());
+            courseDTOFrontEnd.setCategoryname(category.getName());
+            courseDTOFrontEnd.setAccountname(account.getUsername());
+            courseDTOFrontEnd.setPrice(c.getPrice());
+            courseDTOFrontEnd.setThumbnail(c.getThumbnail());
+            courseDTOFrontEnd.setStatus(c.getStatus());
+            courseDTOFrontEnds.add(courseDTOFrontEnd);
+        }
+        return courseDTOFrontEnds;
+    }
+
+    @Override
+    public boolean editCourseByStaffOrAdmin(int id, String status) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        Date date = Calendar.getInstance().getTime();
+        Course course = courseRepository.findCourseById(id);
+        course.setStatus(status);
+        course.setUpdatedTime(sdf.format(date));
+        Course courseRes = courseRepository.save(course);
+        if (courseRes != null) {
+            return true;
+        }
+        return false;
     }
 
 }

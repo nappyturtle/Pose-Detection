@@ -1,5 +1,6 @@
 package com.pdst.pdstserver.services.SuggestionService;
 
+import com.pdst.pdstserver.dtos.SuggestionDTOFrontEnd;
 import com.pdst.pdstserver.handlers.SendRequest;
 import com.pdst.pdstserver.models.Account;
 import com.pdst.pdstserver.models.Course;
@@ -15,9 +16,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class SuggestionServiceImpl implements SuggestionService {
@@ -53,6 +53,7 @@ public class SuggestionServiceImpl implements SuggestionService {
                 dto.setVideoId(suggestion.getVideoId());
                 dto.setThumnailUrl(video.get().getThumnailUrl());
                 dto.setCreatedTime(suggestion.getCreatedTime());
+                dto.setStatus(suggestion.getStatus());
                 listDTO.add(dto);
             }
         } catch (Exception e) {
@@ -100,6 +101,38 @@ public class SuggestionServiceImpl implements SuggestionService {
             e.printStackTrace();
         }
         return listDTO;
+    }
+
+    @Override
+    public List<SuggestionDTOFrontEnd> getAllSuggestionByStaffOrAdmin() {
+        List<Suggestion> suggestions = suggestionRepository.findAll();
+        List<SuggestionDTOFrontEnd> suggestionDTOFrontEnds = new ArrayList<>();
+        for(Suggestion su : suggestions){
+            SuggestionDTOFrontEnd suggestionDTOFrontEnd = new SuggestionDTOFrontEnd();
+            Account account = accountRepository.findAccountById(su.getAccountId());
+            Video video = videoRepository.findVideoById(su.getVideoId());
+            suggestionDTOFrontEnd.setId(su.getId());
+            suggestionDTOFrontEnd.setVideoname(video.getTitle());
+            suggestionDTOFrontEnd.setAccountname(account.getUsername());
+            suggestionDTOFrontEnd.setThumnailUrl(su.getThumnailUrl());
+            suggestionDTOFrontEnd.setStatus(su.getStatus());
+            suggestionDTOFrontEnds.add(suggestionDTOFrontEnd);
+        }
+        return suggestionDTOFrontEnds;
+    }
+
+    @Override
+    public boolean editStatusSuggestionByStaffOrAdmin(int id, String status) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        Date date = Calendar.getInstance().getTime();
+        Suggestion suggestion = suggestionRepository.getOne(id);
+        suggestion.setStatus(status);
+        suggestion.setUpdatedTime(sdf.format(date));
+        Suggestion suggestionRes = suggestionRepository.save(suggestion);
+        if(suggestionRes != null){
+            return true;
+        }
+        return false;
     }
 
     @Override

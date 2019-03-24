@@ -1,6 +1,7 @@
 package com.pdst.pdstserver.controllers;
 
 import com.pdst.pdstserver.dtos.SuggestionDTO;
+import com.pdst.pdstserver.dtos.SuggestionDTOFrontEnd;
 import com.pdst.pdstserver.services.SuggestionService.SuggestionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,17 @@ public class SuggestionController {
 
         return suggestionService.getAllSuggestions();
     }
+    @GetMapping("getAllSuggestionByStaffOrAdmin")
+    public List<SuggestionDTOFrontEnd> getAllSuggestionByStaffOrAdmin() {
+
+        return suggestionService.getAllSuggestionByStaffOrAdmin();
+    }
+    @PutMapping("editStatusSuggestionByStaffOrAdmin")
+    public boolean editStatusSuggestionByStaffOrAdmin(int id, String status) {
+
+        return suggestionService.editStatusSuggestionByStaffOrAdmin(id, status);
+    }
+
 
     @PostMapping(value = "/create")
     public ResponseEntity<Void> createSuggestion(@RequestBody SuggestionDTO suggestion) {

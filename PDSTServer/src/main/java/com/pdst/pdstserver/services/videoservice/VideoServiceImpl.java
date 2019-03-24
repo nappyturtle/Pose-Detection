@@ -1,6 +1,7 @@
 package com.pdst.pdstserver.services.videoservice;
 
 import com.pdst.pdstserver.dtos.VideoDTO;
+import com.pdst.pdstserver.dtos.VideoDTOFrontEnd;
 import com.pdst.pdstserver.handlers.SendRequest;
 import com.pdst.pdstserver.models.Account;
 import com.pdst.pdstserver.models.Course;
@@ -12,9 +13,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import static java.util.Comparator.comparing;
 
@@ -35,7 +35,14 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public List<Video> getAllVideos() {
-        return videoRepository.findAll();
+        List<Video> listTemp = videoRepository.findAll();
+        List<Video> videos = new ArrayList<>();
+        for(Video video : listTemp){
+            Course course = courseRepository.getOne(video.getCourseId());
+            video.setFolderName(course.getName());
+            videos.add(video);
+        }
+        return videos;
     }
 
     @Override
@@ -249,5 +256,41 @@ public class VideoServiceImpl implements VideoService {
             }
         }
         return dtos;
+    }
+
+    @Override
+    public List<VideoDTOFrontEnd> getAllVideoByStaffOrAdmin() {
+        List<Video> listTemp = videoRepository.findAll();
+        List<VideoDTOFrontEnd> listVideoDTOFrontEnd = new ArrayList<>();
+
+
+        for(Video video : listTemp){
+            VideoDTOFrontEnd videoDTOFrontEnd = new VideoDTOFrontEnd();
+            Course course = courseRepository.getOne(video.getCourseId());
+            videoDTOFrontEnd.setId(video.getId());
+            videoDTOFrontEnd.setTitle(video.getTitle());
+            videoDTOFrontEnd.setThumnailUrl(video.getThumnailUrl());
+            videoDTOFrontEnd.setContentUrl(video.getContentUrl());
+            videoDTOFrontEnd.setNumOfView(video.getNumOfView());
+            videoDTOFrontEnd.setStatus(video.getStatus());
+            videoDTOFrontEnd.setCourseName(course.getName());
+            listVideoDTOFrontEnd.add(videoDTOFrontEnd);
+        }
+        return listVideoDTOFrontEnd;
+    }
+
+    @Override
+    public boolean editVideoStatusByStaffOrAdmin(int id, String status) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        Date date = Calendar.getInstance().getTime();
+        System.out.println("id = "+id);
+        Video video = videoRepository.findVideoById(id);
+        video.setStatus(status);
+        video.setUpdatedTime(sdf.format(date));
+        Video videRes = videoRepository.save(video);
+        if(videRes != null){
+            return true;
+        }
+        return false;
     }
 }

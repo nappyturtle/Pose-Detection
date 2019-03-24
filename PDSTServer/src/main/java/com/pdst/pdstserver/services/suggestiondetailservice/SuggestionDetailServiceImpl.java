@@ -1,5 +1,7 @@
 package com.pdst.pdstserver.services.suggestiondetailservice;
 
+import com.pdst.pdstserver.dtos.SuggestionDTOFrontEnd;
+import com.pdst.pdstserver.dtos.SuggestionDetailDTOFrontEnd;
 import com.pdst.pdstserver.models.SuggestionDetail;
 import com.pdst.pdstserver.repositories.SuggestionDetailRepository;
 
@@ -10,6 +12,10 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -50,6 +56,37 @@ public class SuggestionDetailServiceImpl implements SuggestionDetailService {
         suggestionDetail1.setComment(suggestionDetailTemp.getComment());
         SuggestionDetail checked = suggestionDetailRepository.save(suggestionDetail1);
         if(checked != null){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public List<SuggestionDetailDTOFrontEnd> getAllSuggestionDetailByStaffOrAdmin() {
+        List<SuggestionDetail> suggestionDetails = suggestionDetailRepository.findAll();
+        List<SuggestionDetailDTOFrontEnd> dtoList = new ArrayList<>();
+        for(SuggestionDetail suggestionDetail :  suggestionDetails){
+            SuggestionDetailDTOFrontEnd dto = new SuggestionDetailDTOFrontEnd();
+            dto.setId(suggestionDetail.getId());
+            dto.setImgUrl(suggestionDetail.getImgUrl());
+            dto.setStandardImgUrl(suggestionDetail.getStandardImgUrl());
+            dto.setDescription(suggestionDetail.getDescription());
+            dto.setStatus(suggestionDetail.getStatus());
+            dto.setComment(suggestionDetail.getComment());
+            dtoList.add(dto);
+        }
+        return dtoList;
+    }
+
+    @Override
+    public boolean editStatusSuggestionDetailByStaffOrAdmin(int id, String status) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        Date date = Calendar.getInstance().getTime();
+        SuggestionDetail suggestionDetail = suggestionDetailRepository.findById(id);
+        suggestionDetail.setStatus(status);
+        suggestionDetail.setUpdatedTime(sdf.format(date));
+        SuggestionDetail suggestionDetail1Res = suggestionDetailRepository.save(suggestionDetail);
+        if(suggestionDetail1Res != null){
             return true;
         }
         return false;

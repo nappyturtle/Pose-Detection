@@ -2,6 +2,7 @@ package com.pdst.pdstserver.services.courseservice;
 
 
 import com.pdst.pdstserver.dtos.CourseDTO;
+import com.pdst.pdstserver.dtos.CourseDTOFrontEnd;
 import com.pdst.pdstserver.models.Course;
 import com.pdst.pdstserver.models.Enrollment;
 
@@ -17,4 +18,6 @@ public interface CourseService {
     List<Course> getAllCoursesWithPriceByAccountId(int accountId);
 
     int countAllCoursesByAccountId(int accountId);
+    List<CourseDTOFrontEnd> getAllCourseByStaffOrAdmin();
+    boolean editCourseByStaffOrAdmin(int id, String status);
 }

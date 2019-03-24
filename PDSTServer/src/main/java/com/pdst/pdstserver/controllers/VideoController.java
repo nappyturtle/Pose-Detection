@@ -1,6 +1,7 @@
 package com.pdst.pdstserver.controllers;
 
 import com.pdst.pdstserver.dtos.VideoDTO;
+import com.pdst.pdstserver.dtos.VideoDTOFrontEnd;
 import com.pdst.pdstserver.handlers.SearchUtil;
 import com.pdst.pdstserver.models.Suggestion;
 import com.pdst.pdstserver.models.Video;
@@ -29,6 +30,16 @@ public class VideoController {
     @GetMapping("getAllVideos")
     public List<Video> getAllVideos() {
         return videoService.getAllVideos();
+    }
+
+    @GetMapping("getAllVideoByStaffOrAdmin")
+    public List<VideoDTOFrontEnd> getAllVideoByStaffOrAdmin() {
+        return videoService.getAllVideoByStaffOrAdmin();
+    }
+
+    @PutMapping("editVideoStatusByStaffOrAdmin")
+    public boolean editVideoStatusByStaffOrAdmin(int id, String status) {
+        return videoService.editVideoStatusByStaffOrAdmin(id, status);
     }
 
     @GetMapping("getAllVideosByDate")

@@ -25,5 +25,6 @@ public class SecurityConstants {
     public static final String SEARCH_VIDEO_ORDERED_BY_DATE = "/video/searchOrderByDate";
     public static final String SEARCH_VIDEO_ORDERED_BY_VIEW = "/video/searchOrderByView";
     public static final String GET_UNBOUGHT_COURSES = "/course/getUnboughtCourses";
+    public static final String GET_ALL_SUGGESTION = "/suggestion/suggestions";
 
 }

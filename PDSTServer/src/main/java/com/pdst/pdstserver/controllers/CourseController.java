@@ -1,6 +1,7 @@
 package com.pdst.pdstserver.controllers;
 
 import com.pdst.pdstserver.dtos.CourseDTO;
+import com.pdst.pdstserver.dtos.CourseDTOFrontEnd;
 import com.pdst.pdstserver.dtos.EnrollmentDTO;
 import com.pdst.pdstserver.handlers.SearchUtil;
 import com.pdst.pdstserver.models.Account;
@@ -37,6 +38,18 @@ public class CourseController {
     public List<Course> getAllEnrollments() {
         return courseService.getAllCourses();
     }
+
+
+    @GetMapping("getAllCourseByStaffOrAdmin")
+    public List<CourseDTOFrontEnd> getAllCourseByStaffOrAdmin() {
+        return courseService.getAllCourseByStaffOrAdmin();
+    }
+
+    @PutMapping("editCourseByStaffOrAdmin")
+    public boolean editCourseByStaffOrAdmin(int id, String status) {
+        return courseService.editCourseByStaffOrAdmin(id, status);
+    }
+
 
     @GetMapping("getAllCoursesByAccountId")
     public List<Course> getAllCoursesByAccountId(@RequestParam(value = "accountId") int id) {

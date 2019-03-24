@@ -1,6 +1,7 @@
 package com.pdst.pdstserver.services.videoservice;
 
 import com.pdst.pdstserver.dtos.VideoDTO;
+import com.pdst.pdstserver.dtos.VideoDTOFrontEnd;
 import com.pdst.pdstserver.models.Video;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,4 +23,6 @@ public interface VideoService {
     int countVideosByCourseId(int courseId);
     List<Video>getAllFreeVideosByAccount(int accountId);
     List<VideoDTO> getAllFreeVideos();
+    List<VideoDTOFrontEnd> getAllVideoByStaffOrAdmin();
+    boolean editVideoStatusByStaffOrAdmin(int id, String status);
 }

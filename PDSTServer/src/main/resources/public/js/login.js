@@ -20,7 +20,8 @@ function signin() {
                 /*if (typeof (Storage) != undefined) {
 
                 }*/
-                localStorage.setItem("staff", JSON.stringify(res));
+
+                localStorage.setItem('staff', JSON.stringify(res));
                 window.location.href = "dashboard.html";
             } else {
                 console.log("null");
