@@ -234,6 +234,7 @@ public class VideoServiceImpl implements VideoService {
                 dto.setVideo(video);
                 dto.setUsername(account.getUsername());
                 dto.setImgUrl(account.getImgUrl());
+                dto.setAccountId(account.getId());
                 dtos.add(dto);
             //}
         }
@@ -292,5 +293,10 @@ public class VideoServiceImpl implements VideoService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public int countAllVideos() {
+        return videoRepository.countAllVideos();
     }
 }

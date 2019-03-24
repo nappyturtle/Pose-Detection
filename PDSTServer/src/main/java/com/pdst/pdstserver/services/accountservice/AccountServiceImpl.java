@@ -88,5 +88,15 @@ public class AccountServiceImpl implements AccountService {
         return accountRepository.findAllByRoleIdOrderByCreatedTimeDesc(roleId);
     }
 
+    @Override
+    public Account updateAccount(Account account) {
+        return accountRepository.save(account);
+    }
+
+    @Override
+    public int countTotalUserAccount(int roleId) {
+        return accountRepository.countAllByRoleId(roleId);
+    }
+
 
 }

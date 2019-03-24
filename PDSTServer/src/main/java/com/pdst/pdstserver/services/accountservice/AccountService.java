@@ -20,4 +20,8 @@ public interface AccountService {
     Account loginForStaff(String username, String password);
 
     List<Account> getAllAccountByRoleId(int roleId);
+
+    Account updateAccount(Account account);
+
+    int countTotalUserAccount(int roleId);
 }

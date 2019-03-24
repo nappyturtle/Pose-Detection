@@ -45,7 +45,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public List<Course> getAllCourseByAccountId(int id) {
-        return courseRepository.findAllByAccountId(id);
+        return courseRepository.findAllByAccountIdOrderByCreatedTimeAsc(id);
     }
 
     @Override
@@ -147,6 +147,11 @@ public class CourseServiceImpl implements CourseService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public int countAllCourses() {
+        return courseRepository.countAllCourses();
     }
 
 }

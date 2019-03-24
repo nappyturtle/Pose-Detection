@@ -21,4 +21,6 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
 
     List<Account> findAllByRoleIdOrderByCreatedTimeDesc(int roleId);
 
+    int countAllByRoleId(int roleId);
+
 }

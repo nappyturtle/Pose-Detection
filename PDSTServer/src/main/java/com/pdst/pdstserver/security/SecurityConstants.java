@@ -27,4 +27,6 @@ public class SecurityConstants {
     public static final String GET_UNBOUGHT_COURSES = "/course/getUnboughtCourses";
     public static final String GET_ALL_ACCOUNT_BY_ROLE = "/account/getAllAccountByRoleId";
     public static final String GET_ALL_SUGGESTION = "/suggestion/suggestions";
+    public static final String UPDATE_ACCOUNT = "/account/updateAccount";
+    public static final String GET_DATAFORDASHBOARD = "/account/getDataForDashboard";
 }

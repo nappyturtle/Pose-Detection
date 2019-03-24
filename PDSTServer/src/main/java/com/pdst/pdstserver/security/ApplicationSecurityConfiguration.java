@@ -73,6 +73,8 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
                 .antMatchers(HttpMethod.GET, "/account/staff/accounts").hasAuthority("Staff")
                 .antMatchers("/", "/public/webadmin/**").permitAll()
                 .antMatchers(HttpMethod.GET, GET_ALL_ACCOUNT_BY_ROLE).permitAll()
+                .antMatchers(HttpMethod.POST, UPDATE_ACCOUNT).permitAll()
+                .antMatchers(HttpMethod.GET, GET_DATAFORDASHBOARD).permitAll()
                 //.antMatchers(HttpMethod.GET, GET_ALL_ACCOUNT_BY_ROLE).hasAnyAuthority("Staff")
                 .anyRequest().authenticated()
                 .and()

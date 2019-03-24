@@ -8,6 +8,7 @@ import com.pdst.pdstserver.security.SecurityConstants;
 import com.pdst.pdstserver.services.accountservice.AccountService;
 import com.pdst.pdstserver.services.courseservice.CourseService;
 import com.pdst.pdstserver.services.enrollmentservice.EnrollmentService;
+import com.pdst.pdstserver.services.videoservice.VideoService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -27,13 +30,14 @@ public class AccountController {
     private final AccountService accountService;
     private final CourseService courseService;
     private final EnrollmentService enrollmentService;
+    private final VideoService videoService;
 
-    public AccountController(AccountService accountService, CourseService courseService, EnrollmentService enrollmentService) {
+    public AccountController(AccountService accountService, CourseService courseService, EnrollmentService enrollmentService, VideoService videoService) {
         this.accountService = accountService;
         this.courseService = courseService;
         this.enrollmentService = enrollmentService;
+        this.videoService = videoService;
     }
-
 
 
     @GetMapping("accounts")
@@ -91,9 +95,32 @@ public class AccountController {
         return trainerInfo;
     }
 
+    @PostMapping("updateAccount")
+    public boolean updateAccount(@RequestBody Account account) {
+        Account accountUpdated = accountService.updateAccount(account);
+        if (accountUpdated == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     @GetMapping("getAllAccountByRoleId")
-    public List<Account> getAllAccountByRoleId(@RequestParam(value = "roleId") int roleId){
+    public List<Account> getAllAccountByRoleId(@RequestParam(value = "roleId") int roleId) {
         return accountService.getAllAccountByRoleId(roleId);
     }
 
+
+    @GetMapping("getDataForDashboard")
+    public Map<String, Integer> getDataForDashboard() {
+        int totalUser = 0, totalVideo = 0, totalCourse = 0;
+        totalUser = accountService.countTotalUserAccount(3) + accountService.countTotalUserAccount(4);
+        totalVideo = videoService.countAllVideos();
+        totalCourse = courseService.countAllCourses();
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("totalUser", totalUser);
+        map.put("totalVideo", totalVideo);
+        map.put("totalCourse", totalCourse);
+        return map;
+    }
 }

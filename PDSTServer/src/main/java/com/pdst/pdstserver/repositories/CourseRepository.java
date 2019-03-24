@@ -16,7 +16,7 @@ import java.util.List;
 public interface CourseRepository extends JpaRepository<Course, Integer> {
     Course findCourseById(Integer id);
 
-    List<Course> findAllByAccountId(int id);
+    List<Course> findAllByAccountIdOrderByCreatedTimeAsc(int id);
 
     @Query(value = "select c, a.username from Course c left join Account a on c.accountId = a.id where c.price <> 0")
     List<CourseDTO> getAllCoursesWithPrice();
@@ -33,4 +33,7 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
     int countAllCoursesByAccountId(int accountId);
 
     List<Course> findAllByAccountIdOrderByCreatedTimeDesc(Pageable pageable, int accountId);
+
+    @Query("SELECT COUNT (c.id) FROM Course c")
+    int countAllCourses();
 }

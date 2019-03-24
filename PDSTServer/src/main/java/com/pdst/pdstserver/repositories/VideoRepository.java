@@ -37,4 +37,7 @@ public interface VideoRepository extends JpaRepository<Video, Integer>{
 //                "order by v.createdTime desc"
 //    )
 //    List<Video> getAllVideoByCourseFree(Pageable pageable);
+
+    @Query(value = "select count(v.id) from Video v")
+    int countAllVideos();
 }
