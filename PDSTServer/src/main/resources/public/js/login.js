@@ -17,12 +17,16 @@ function signin() {
         success: function (res) {
             if (res != null) {
                 console.log(res);
-                /*if (typeof (Storage) != undefined) {
-
-                }*/
+                if (res.roleId == 1 || res.roleId == 2) {
+                    if (typeof (Storage) != undefined) {
 
                 localStorage.setItem('staff', JSON.stringify(res));
-                window.location.href = "dashboard.html";
+                    }
+                    window.location.href = "dashboard.html";
+                } else {
+                    window.location.href = "403.html";
+                }
+
             } else {
                 console.log("null");
             }
