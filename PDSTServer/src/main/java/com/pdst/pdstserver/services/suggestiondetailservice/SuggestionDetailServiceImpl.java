@@ -79,11 +79,11 @@ public class SuggestionDetailServiceImpl implements SuggestionDetailService {
     }
 
     @Override
-    public boolean editStatusSuggestionDetailByStaffOrAdmin(int id, String status) {
+    public boolean editStatusSuggestionDetailByStaffOrAdmin(SuggestionDetailDTOFrontEnd dto) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date date = Calendar.getInstance().getTime();
-        SuggestionDetail suggestionDetail = suggestionDetailRepository.findById(id);
-        suggestionDetail.setStatus(status);
+        SuggestionDetail suggestionDetail = suggestionDetailRepository.findById(dto.getId());
+        suggestionDetail.setStatus(dto.getStatus());
         suggestionDetail.setUpdatedTime(sdf.format(date));
         SuggestionDetail suggestionDetail1Res = suggestionDetailRepository.save(suggestionDetail);
         if(suggestionDetail1Res != null){

@@ -12,5 +12,5 @@ public interface SuggestionDetailService {
     SuggestionDetail createSuggestionDetail(SuggestionDetail suggestionDetail);
     Boolean saveComment(SuggestionDetail suggestionDetail);
     List<SuggestionDetailDTOFrontEnd> getAllSuggestionDetailByStaffOrAdmin();
-    boolean editStatusSuggestionDetailByStaffOrAdmin(int id, String status);
+    boolean editStatusSuggestionDetailByStaffOrAdmin(SuggestionDetailDTOFrontEnd dto);
 }

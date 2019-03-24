@@ -19,6 +19,6 @@ public interface CourseService {
 
     int countAllCoursesByAccountId(int accountId);
     List<CourseDTOFrontEnd> getAllCourseByStaffOrAdmin();
-    boolean editCourseByStaffOrAdmin(int id, String status);
+    boolean editCourseByStaffOrAdmin(CourseDTOFrontEnd dto);
     int countAllCourses();
 }

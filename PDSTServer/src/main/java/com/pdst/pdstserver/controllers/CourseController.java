@@ -46,8 +46,8 @@ public class CourseController {
     }
 
     @PutMapping("editCourseByStaffOrAdmin")
-    public boolean editCourseByStaffOrAdmin(int id, String status) {
-        return courseService.editCourseByStaffOrAdmin(id, status);
+    public boolean editCourseByStaffOrAdmin(@RequestBody CourseDTOFrontEnd dto) {
+        return courseService.editCourseByStaffOrAdmin(dto);
     }
 
 

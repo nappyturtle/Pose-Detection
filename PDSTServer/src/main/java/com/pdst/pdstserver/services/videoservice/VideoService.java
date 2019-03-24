@@ -24,6 +24,6 @@ public interface VideoService {
     List<Video>getAllFreeVideosByAccount(int accountId);
     List<VideoDTO> getAllFreeVideos();
     List<VideoDTOFrontEnd> getAllVideoByStaffOrAdmin();
-    boolean editVideoStatusByStaffOrAdmin(int id, String status);
+    boolean editVideoStatusByStaffOrAdmin(VideoDTOFrontEnd dto);
     int countAllVideos();
 }

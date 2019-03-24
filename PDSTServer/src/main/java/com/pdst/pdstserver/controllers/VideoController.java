@@ -38,8 +38,8 @@ public class VideoController {
     }
 
     @PutMapping("editVideoStatusByStaffOrAdmin")
-    public boolean editVideoStatusByStaffOrAdmin(int id, String status) {
-        return videoService.editVideoStatusByStaffOrAdmin(id, status);
+    public boolean editVideoStatusByStaffOrAdmin(@RequestBody VideoDTOFrontEnd dto) {
+        return videoService.editVideoStatusByStaffOrAdmin(dto);
     }
 
     @GetMapping("getAllVideosByDate")

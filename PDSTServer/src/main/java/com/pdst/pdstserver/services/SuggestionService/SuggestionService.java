@@ -2,6 +2,7 @@ package com.pdst.pdstserver.services.SuggestionService;
 
 import com.pdst.pdstserver.dtos.SuggestionDTO;
 import com.pdst.pdstserver.dtos.SuggestionDTOFrontEnd;
+import com.pdst.pdstserver.dtos.SuggestionDetailDTOFrontEnd;
 
 import java.util.List;
 
@@ -12,5 +13,5 @@ public interface SuggestionService {
 	boolean updateSuggestionStatus(int id, String status);
     List<SuggestionDTO> getSuggestionByTrainer(int page, int size, int trainerId, int traineeId);
     List<SuggestionDTOFrontEnd> getAllSuggestionByStaffOrAdmin();
-    boolean editStatusSuggestionByStaffOrAdmin(int id, String status);
+    boolean editStatusSuggestionByStaffOrAdmin(SuggestionDTOFrontEnd dto);
 }

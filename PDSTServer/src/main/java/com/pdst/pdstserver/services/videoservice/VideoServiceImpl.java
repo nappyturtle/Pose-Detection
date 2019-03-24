@@ -273,20 +273,19 @@ public class VideoServiceImpl implements VideoService {
             videoDTOFrontEnd.setThumnailUrl(video.getThumnailUrl());
             videoDTOFrontEnd.setContentUrl(video.getContentUrl());
             videoDTOFrontEnd.setNumOfView(video.getNumOfView());
-            videoDTOFrontEnd.setStatus(video.getStatus());
             videoDTOFrontEnd.setCourseName(course.getName());
+            videoDTOFrontEnd.setStatus(video.getStatus());
             listVideoDTOFrontEnd.add(videoDTOFrontEnd);
         }
         return listVideoDTOFrontEnd;
     }
 
     @Override
-    public boolean editVideoStatusByStaffOrAdmin(int id, String status) {
+    public boolean editVideoStatusByStaffOrAdmin(VideoDTOFrontEnd dto) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date date = Calendar.getInstance().getTime();
-        System.out.println("id = "+id);
-        Video video = videoRepository.findVideoById(id);
-        video.setStatus(status);
+        Video video = videoRepository.findVideoById(dto.getId());
+        video.setStatus(dto.getStatus());
         video.setUpdatedTime(sdf.format(date));
         Video videRes = videoRepository.save(video);
         if(videRes != null){

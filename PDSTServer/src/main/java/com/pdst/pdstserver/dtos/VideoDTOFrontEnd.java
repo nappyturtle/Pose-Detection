@@ -8,8 +8,8 @@ public class VideoDTOFrontEnd implements Serializable {
     private String thumnailUrl;
     private String contentUrl;
     private Integer numOfView;
-    private String status;
     private String courseName;
+    private String status;
 
     public VideoDTOFrontEnd() {
     }

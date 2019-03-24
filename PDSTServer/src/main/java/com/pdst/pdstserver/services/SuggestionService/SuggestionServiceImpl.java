@@ -122,11 +122,11 @@ public class SuggestionServiceImpl implements SuggestionService {
     }
 
     @Override
-    public boolean editStatusSuggestionByStaffOrAdmin(int id, String status) {
+    public boolean editStatusSuggestionByStaffOrAdmin(SuggestionDTOFrontEnd dto) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date date = Calendar.getInstance().getTime();
-        Suggestion suggestion = suggestionRepository.getOne(id);
-        suggestion.setStatus(status);
+        Suggestion suggestion = suggestionRepository.getOne(dto.getId());
+        suggestion.setStatus(dto.getStatus());
         suggestion.setUpdatedTime(sdf.format(date));
         Suggestion suggestionRes = suggestionRepository.save(suggestion);
         if(suggestionRes != null){

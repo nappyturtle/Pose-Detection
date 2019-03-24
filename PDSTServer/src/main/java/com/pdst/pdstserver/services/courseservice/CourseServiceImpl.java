@@ -136,11 +136,11 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public boolean editCourseByStaffOrAdmin(int id, String status) {
+    public boolean editCourseByStaffOrAdmin(CourseDTOFrontEnd dto) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date date = Calendar.getInstance().getTime();
-        Course course = courseRepository.findCourseById(id);
-        course.setStatus(status);
+        Course course = courseRepository.findCourseById(dto.getId());
+        course.setStatus(dto.getStatus());
         course.setUpdatedTime(sdf.format(date));
         Course courseRes = courseRepository.save(course);
         if (courseRes != null) {

@@ -2,6 +2,7 @@ package com.pdst.pdstserver.controllers;
 
 import com.pdst.pdstserver.dtos.SuggestionDTO;
 import com.pdst.pdstserver.dtos.SuggestionDTOFrontEnd;
+import com.pdst.pdstserver.dtos.SuggestionDetailDTOFrontEnd;
 import com.pdst.pdstserver.services.SuggestionService.SuggestionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,9 +32,9 @@ public class SuggestionController {
         return suggestionService.getAllSuggestionByStaffOrAdmin();
     }
     @PutMapping("editStatusSuggestionByStaffOrAdmin")
-    public boolean editStatusSuggestionByStaffOrAdmin(int id, String status) {
+    public boolean editStatusSuggestionByStaffOrAdmin(@RequestBody SuggestionDTOFrontEnd dto) {
 
-        return suggestionService.editStatusSuggestionByStaffOrAdmin(id, status);
+        return suggestionService.editStatusSuggestionByStaffOrAdmin(dto);
     }
 
 

@@ -31,8 +31,8 @@ public class SuggestionDetailController {
     }
 
     @PutMapping("editStatusSuggestionDetailByStaffOrAdmin")
-    public boolean getAllSuggestionDetails(int id, String status) {
-        return suggestionDetailService.editStatusSuggestionDetailByStaffOrAdmin(id, status);
+    public boolean getAllSuggestionDetails(@RequestBody SuggestionDetailDTOFrontEnd dto) {
+        return suggestionDetailService.editStatusSuggestionDetailByStaffOrAdmin(dto);
     }
 
 
