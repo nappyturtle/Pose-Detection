@@ -13,7 +13,12 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
 
     List<Account> findAllByRoleIdGreaterThanEqual(int role_id);
 
-    Account findByUsernameAndStatusEquals(String username,String status);
+    Account findByUsernameAndStatusEquals(String username, String status);
+
     Account findAccountById(Integer id);
+
+    Account findAccountByUsernameAndPassword(String username, String password);
+
+    List<Account> findAllByRoleIdOrderByCreatedTimeDesc(int roleId);
 
 }

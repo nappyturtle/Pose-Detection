@@ -50,18 +50,18 @@ public class AccountServiceImpl implements AccountService {
             Account checkExistedAccount = accountRepository.findAccountById(account.getId());
             if (checkExistedAccount != null) {
                 System.out.println("da vao aaaaaaaaaaaaaaaaaaaaaaaaa");
-                    checkExistedAccount.setEmail(account.getEmail());
-                    checkExistedAccount.setPhone(account.getPhone());
-                    checkExistedAccount.setGender(account.getGender());
-                    checkExistedAccount.setImgUrl(account.getImgUrl());
-                    checkExistedAccount.setAddress(account.getAddress());
-                    checkExistedAccount.setRoleId(account.getRoleId());
-                    checkExistedAccount.setStatus(account.getStatus());
-                    checkExistedAccount.setUpdatedTime(LocalDateTime.now().toString());
+                checkExistedAccount.setEmail(account.getEmail());
+                checkExistedAccount.setPhone(account.getPhone());
+                checkExistedAccount.setGender(account.getGender());
+                checkExistedAccount.setImgUrl(account.getImgUrl());
+                checkExistedAccount.setAddress(account.getAddress());
+                checkExistedAccount.setRoleId(account.getRoleId());
+                checkExistedAccount.setStatus(account.getStatus());
+                checkExistedAccount.setUpdatedTime(LocalDateTime.now().toString());
 
                 return accountRepository.save(checkExistedAccount);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -76,6 +76,16 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Account getAccountById(int id) {
         return accountRepository.findAccountById(id);
+    }
+
+    @Override
+    public Account loginForStaff(String username, String password) {
+        return accountRepository.findAccountByUsernameAndPassword(username, password);
+    }
+
+    @Override
+    public List<Account> getAllAccountByRoleId(int roleId) {
+        return accountRepository.findAllByRoleIdOrderByCreatedTimeDesc(roleId);
     }
 
 

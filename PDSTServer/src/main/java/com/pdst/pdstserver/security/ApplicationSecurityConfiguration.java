@@ -44,8 +44,9 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
                 .antMatchers("/plugins/**")
                 .antMatchers("/management/**")
                 .antMatchers("/favicon.*")
+                .antMatchers("/js/**")
 				.antMatchers("/js/**js")
-				.antMatchers("/js/**");
+                .antMatchers("/**txt");
     }
 
     @Override
@@ -71,6 +72,8 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
                 .antMatchers(HttpMethod.GET, "/account/accounts").hasAuthority("Admin")
                 .antMatchers(HttpMethod.GET, "/account/staff/accounts").hasAuthority("Staff")
                 .antMatchers("/", "/public/webadmin/**").permitAll()
+                .antMatchers(HttpMethod.GET, GET_ALL_ACCOUNT_BY_ROLE).permitAll()
+                //.antMatchers(HttpMethod.GET, GET_ALL_ACCOUNT_BY_ROLE).hasAnyAuthority("Staff")
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JWTGeneration(authenticationManager(), accountRepository))
