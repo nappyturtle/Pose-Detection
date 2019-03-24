@@ -18,6 +18,25 @@ $(document).ready(function () {
             window.location.href = "403.html";
         }
     }
+
+    $.ajax({
+        url: "/account/getDataForDashboard",
+        type: "GET",
+        headers: {
+            "content-type": "application/json; charset=UTF-8"
+        },
+        dataType: "json",
+        success: function (res) {
+            if (res != null) {
+                $("#total_video").html(res.totalVideo);
+                $("#total_course").html(res.totalCourse);
+                $("#total_user").html(res.totalUser);
+            } else {
+                console.log("null");
+            }
+        }
+    })
+
 })
 
 /*
