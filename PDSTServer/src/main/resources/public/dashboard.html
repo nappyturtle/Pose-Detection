@@ -69,10 +69,12 @@
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header">
-                                <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image" id="dropdown-menu-imgUrl">
+                                <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image"
+                                     id="dropdown-menu-imgUrl">
 
                                 <p>
-                                    <span id="dropdown-menu-username">Alexander Pierce</span> - <span id="dropdown-menu-role">Web Developer</span>
+                                    <span id="dropdown-menu-username">Alexander Pierce</span> - <span
+                                        id="dropdown-menu-role">Web Developer</span>
                                     <!--<small>Member since Nov. 2012</small>-->
                                 </p>
                             </li>
@@ -121,9 +123,10 @@
                     <ul class="treeview-menu">
                         <li><a href="management/account/account.html"><i class="fa fa-circle-o"></i> Quản lý tài
                             khoản</a></li>
-            <li><a href="management/video/layout.html"><i class="fa fa-circle-o"></i> Quản lý videos</a></li>
-                        <li><a href="pages/tables/data.html"><i class="fa fa-circle-o"></i> Quản lý khóa học</a></li>
-                        <li><a href="pages/tables/data.html"><i class="fa fa-circle-o"></i> Quản lý doanh thu</a></li>
+                        <li><a href="management/video/layout.html"><i class="fa fa-circle-o"></i> Quản lý videos</a>
+                        </li>
+                        <li><a href="management/course/layout.html"><i class="fa fa-circle-o"></i> Quản lý khóa học</a></li>
+                        <li><a href="#"><i class="fa fa-circle-o"></i> Quản lý doanh thu</a></li>
                     </ul>
                 </li>
             </ul>
@@ -153,7 +156,7 @@
                     <!-- small box -->
                     <div class="small-box bg-aqua">
                         <div class="inner">
-                            <h3>150</h3>
+                            <h3 id="total_video"></h3>
 
                             <p>Videos</p>
                         </div>
@@ -168,7 +171,7 @@
                     <!-- small box -->
                     <div class="small-box bg-green">
                         <div class="inner">
-                            <h3>53<sup style="font-size: 20px">%</sup></h3>
+                            <h3 id="total_course"></h3>
 
                             <p>Khóa Học</p>
                         </div>
@@ -183,7 +186,7 @@
                     <!-- small box -->
                     <div class="small-box bg-yellow">
                         <div class="inner">
-                            <h3>44</h3>
+                            <h3 id="total_user"></h3>
 
                             <p>Tài Khoản</p>
                         </div>
@@ -199,7 +202,7 @@
                     <!-- small box -->
                     <div class="small-box bg-red">
                         <div class="inner">
-                            <h3>65</h3>
+                            <h3></h3>
 
                             <p>Doanh Thu</p>
                         </div>
@@ -218,13 +221,7 @@
         <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
-    <footer class="main-footer">
-        <div class="pull-right hidden-xs">
-            <b>Version</b> 2.4.0
-        </div>
-        <strong>Copyright &copy; 2014-2016 <a href="https://adminlte.io">Almsaeed Studio</a>.</strong> All rights
-        reserved.
-    </footer>
+
 
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
@@ -460,7 +457,7 @@
 <!-- AdminLTE for demo purposes -->
 
 <script src="dist/js/demo.js"></script>
-<script language="JavaScript" src="dist/js/pages/dashboard.js"></script>
+<script language="JavaScript" src="js/dashboard.js"></script>
 </body>
 
 </html>
