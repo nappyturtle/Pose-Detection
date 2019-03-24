@@ -17,10 +17,10 @@ $(document).ready(function () {
                 $("#dropdown-menu-role").html("Staff");
             }
 
-            var roleId = 3;
+            var roleTrainerId = 3;
             var dataSrc;
             $.ajax({
-                url: "/account/getAllAccountByRoleId?roleId=" + roleId,
+                url: "/account/getAllAccountByRoleId?roleId=" + roleTrainerId,
                 type: "GET",
                 success: function (res) {
                     console.log(res)
