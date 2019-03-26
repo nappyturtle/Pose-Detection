@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.ManageTraineeTrainerActivity"
+    tools:context=".activity.ManageTraineeActivity"
     android:orientation="vertical">
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/manageTraineeTrainer_toolbar_id"
+        android:id="@+id/manageTrainee_toolbar_id"
         android:minHeight="?attr/actionBarSize"
         app:titleTextColor="#868683"
         app:title="Danh sách quản lí"
@@ -22,6 +22,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:id="@+id/listview_manage_trainerTrainee"
+        android:id="@+id/listview_manage_trainee"
         ></ListView>
 </LinearLayout>

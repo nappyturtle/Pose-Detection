@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.capstone.self_training.R;
 import com.capstone.self_training.activity.TraineeChannelActivity;
+import com.capstone.self_training.activity.TrainerChannelActivity;
 import com.capstone.self_training.dto.EnrollmentDTO;
 import com.capstone.self_training.model.Account;
 import com.squareup.picasso.Picasso;
@@ -47,8 +48,10 @@ public class BoughtTrainerCourseAdapter extends RecyclerView.Adapter<BoughtTrain
         holder.circleImageViewTrainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context,TraineeChannelActivity.class);
-                intent.putExtra("accountTemp",account.getId()+"_-/-_"+account.getUsername());
+                Intent intent = new Intent(context,TrainerChannelActivity.class);
+                //intent.putExtra("accountTemp",account.getId()+"_-/-_"+account.getUsername());
+                intent.putExtra("ACCOUNID_FROM_TRAINER_PROFILE",account.getId());
+                intent.putExtra("ACCONTNAME_FROM_TRAINER_PROFILE",account.getUsername());
                 context.startActivity(intent);
             }
         });

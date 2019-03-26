@@ -29,6 +29,7 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.capstone.self_training.R;
+import com.capstone.self_training.activity.OnBackPressed;
 import com.capstone.self_training.activity.TraineeUploadVideoActi;
 import com.capstone.self_training.activity.TrainerUploadVideoActi;
 import com.capstone.self_training.camera.AutoFitTextureView;
@@ -63,7 +64,7 @@ import butterknife.Unbinder;
  * Use the {@link CameraFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CameraFragment extends CameraVideoFragment {
+public class CameraFragment extends CameraVideoFragment implements OnBackPressed{
 
     private static final String TAG = "CameraFragment";
     private static final String VIDEO_DIRECTORY_NAME = "Seft_Training";
@@ -218,6 +219,8 @@ public class CameraFragment extends CameraVideoFragment {
         });
 
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -376,6 +379,15 @@ public class CameraFragment extends CameraVideoFragment {
 
     @Override
     public void onDestroyView() {
+        stopTest();
+        timer.cancel();
+        mTimer.cancel();
+        mSpeechRecognizer.cancel();
+        try {
+            mSpeechRecognizer.destroy();
+        } catch (Exception e) {
+            Log.e(TAG, "Exception:" + e.toString());
+        }
         super.onDestroyView();
         unbinder.unbind();
     }
@@ -447,6 +459,19 @@ public class CameraFragment extends CameraVideoFragment {
                         Uri.parse("package:" + getContext()));
                 getContext().startActivity(intent);
             }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        stopTest();
+        timer.cancel();
+        mTimer.cancel();
+        mSpeechRecognizer.cancel();
+        try {
+            mSpeechRecognizer.destroy();
+        } catch (Exception e) {
+            Log.e(TAG, "Exception:" + e.toString());
         }
     }
 }

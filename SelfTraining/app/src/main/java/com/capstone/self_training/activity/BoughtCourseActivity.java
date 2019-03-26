@@ -69,6 +69,8 @@ public class BoughtCourseActivity extends AppCompatActivity {
 
         if (CheckConnection.haveNetworkConnection(this)) {
             init();
+            page = 0;
+            size = 5;
             loadDataListView(page, size);
             loadDataRecylcerView();
             displayToolBar();
@@ -85,7 +87,7 @@ public class BoughtCourseActivity extends AppCompatActivity {
         bought_course_totalTextView_id.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),ManageTraineeTrainerActivity.class);
+                Intent intent = new Intent(getApplicationContext(),ManageTrainerActivity.class);
                 intent.putExtra("listManagement", (Serializable) trainerCourseList);
                 startActivity(intent);
             }

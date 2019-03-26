@@ -85,7 +85,7 @@ public class TrainerUploadedCourseActivity extends AppCompatActivity {
         uploadedCourse_totalTextView_id.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),ManageTraineeTrainerActivity.class);
+                Intent intent = new Intent(getApplicationContext(),ManageTraineeActivity.class);
                 intent.putExtra("listManagement", (Serializable) traineeList);
                 startActivity(intent);
             }

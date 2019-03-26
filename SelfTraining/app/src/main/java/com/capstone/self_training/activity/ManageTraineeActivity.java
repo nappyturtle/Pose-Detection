@@ -10,14 +10,13 @@ import android.widget.ListView;
 
 import com.capstone.self_training.R;
 import com.capstone.self_training.adapter.ManageTraineeTrainerAdapter;
-import com.capstone.self_training.dto.EnrollmentDTO;
 import com.capstone.self_training.model.Account;
 import com.capstone.self_training.util.CheckConnection;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ManageTraineeTrainerActivity extends AppCompatActivity {
+public class ManageTraineeActivity extends AppCompatActivity {
 
     private ListView listView;
     private ManageTraineeTrainerAdapter adapter;
@@ -26,7 +25,7 @@ public class ManageTraineeTrainerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_manage_trainee_trainer);
+        setContentView(R.layout.activity_manage_trainee);
         if(CheckConnection.haveNetworkConnection(this)){
             init();
             displayToolBar();
@@ -69,8 +68,8 @@ public class ManageTraineeTrainerActivity extends AppCompatActivity {
     }
 
     private void init() {
-        toolbar = (Toolbar) findViewById(R.id.manageTraineeTrainer_toolbar_id);
-        listView = (ListView) findViewById(R.id.listview_manage_trainerTrainee);
+        toolbar = (Toolbar) findViewById(R.id.manageTrainee_toolbar_id);
+        listView = (ListView) findViewById(R.id.listview_manage_trainee);
         dtoList = new ArrayList<>();
         adapter = new ManageTraineeTrainerAdapter(dtoList,getApplicationContext());
         listView.setAdapter(adapter);

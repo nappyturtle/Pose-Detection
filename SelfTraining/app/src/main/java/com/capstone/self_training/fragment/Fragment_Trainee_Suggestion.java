@@ -44,8 +44,8 @@ public class Fragment_Trainee_Suggestion extends Fragment {
     private SharedPreferences mPerferences;
     private SharedPreferences.Editor mEditor;
     private View progressBar;
-    private int page = 0;
-    private int size = 5;
+    private int page;
+    private int size;
     private int checkedSuggestionList = 0;
     private TextView txtIsEmptySuggestion;
     private boolean limitedData = false;
@@ -59,6 +59,8 @@ public class Fragment_Trainee_Suggestion extends Fragment {
         traineeId = savedInstanceState.getInt("accountId");
         if (CheckConnection.haveNetworkConnection(getContext())) {
             init();
+            page = 0;
+            size = 6;
             loadData(page, size);
             loadMoreData();
             getSuggestionItem();
