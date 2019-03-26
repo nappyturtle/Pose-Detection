@@ -1,7 +1,7 @@
 $(document).ready(function () {
     currentStaff = JSON.parse(localStorage.getItem("staff"));
     if (currentStaff != undefined) {
-        if (currentStaff.roleId == 1 || currentStaff == 2) {
+        if (currentStaff.roleId == 1 || currentStaff.roleId == 2) {
             console.log("init..............: " + currentStaff.token);
             $("#navbar-nav-imgUrl").attr('src', currentStaff.imgUrl);
             $("#navbar-nav-username").html(currentStaff.username);
