@@ -154,15 +154,11 @@
                             <table id="tblTrainer" class="table table-bordered table-striped">
                                 <thead>
                                 <tr>
+                                    <th>Stt</th>
+                                    <th>Hình đại diện</th>
                                     <th>Tài khoản</th>
                                     <th>Email</th>
-                                    <th>Số điện Thoại</th>
-                                    <th>Giới tính</th>
-                                    <th>Hình đại diện</th>
-                                    <th>Địa chỉ</th>
                                     <th>Trạng thái</th>
-                                    <th>Thời gian tạo</th>
-                                    <th>Thời gian cập nhập</th>
                                     <th></th>
                                 </tr>
                                 </thead>
@@ -181,7 +177,6 @@
                 <!-- /.col -->
             </div>
             <!-- /.row -->
-
             <div class="row">
                 <div class="col-xs-12">
 
@@ -194,15 +189,11 @@
                             <table id="tblTrainee" class="table table-bordered table-striped">
                                 <thead>
                                 <tr>
+                                    <th></th>
+                                    <th>Hình đại diện</th>
                                     <th>Tài khoản</th>
                                     <th>Email</th>
-                                    <th>Số điện Thoại</th>
-                                    <th>Giới tính</th>
-                                    <th>Hình đại diện</th>
-                                    <th>Địa chỉ</th>
                                     <th>Trạng thái</th>
-                                    <th>Thời gian tạo</th>
-                                    <th>Thời gian cập nhập</th>
                                     <th></th>
                                 </tr>
                                 </thead>
@@ -220,6 +211,28 @@
                 </div>
                 <!-- /.col -->
             </div>
+
+            <div class="modal modal-info fade" id="modal-info">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Cập nhập tài khoản</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p id="mUpdateInfo">One fine body&hellip;</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
+
         </section>
         <!-- /.content -->
     </div>
@@ -248,6 +261,6 @@
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
 
-<script language="JavaScript" src="account.js"></script>
+<script language="JavaScript" src="../../js/account.js"></script>
 </body>
 </html>
