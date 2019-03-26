@@ -143,19 +143,19 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
         btnOpenCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CameraFragment cmr = CameraFragment.newInstance();
-                getFragmentManager().beginTransaction()
-                        .replace(R.id.TraineeUploadVideoActi, cmr)
-                        .commit();
-                btnChooseFile.setVisibility(View.GONE);
-                btnUploadVideo.setVisibility(View.GONE);
-                txtVideoName.setVisibility(View.GONE);
-                videoView.setVisibility(View.GONE);
-                btnOpenCamera.setVisibility(View.GONE);
-                flUploadVideo.setVisibility(View.GONE);
-                tbUploadVideo.setVisibility(View.GONE);
-
-
+//                CameraFragment cmr = CameraFragment.newInstance();
+//                getFragmentManager().beginTransaction()
+//                        .replace(R.id.TraineeUploadVideoActi, cmr)
+//                        .commit();
+//                btnChooseFile.setVisibility(View.GONE);
+//                btnUploadVideo.setVisibility(View.GONE);
+//                txtVideoName.setVisibility(View.GONE);
+//                videoView.setVisibility(View.GONE);
+//                btnOpenCamera.setVisibility(View.GONE);
+//                flUploadVideo.setVisibility(View.GONE);
+//                tbUploadVideo.setVisibility(View.GONE);
+                Intent intent = new Intent(TraineeUploadVideoActi.this, OpenCameraActi.class);
+                startActivity(intent);
             }
         });
     }

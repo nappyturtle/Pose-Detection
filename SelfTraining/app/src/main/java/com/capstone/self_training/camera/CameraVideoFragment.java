@@ -74,15 +74,15 @@ public abstract class CameraVideoFragment extends BaseFragment {
 
     static {
         DEFAULT_ORIENTATIONS.append(Surface.ROTATION_90, 0);
-        DEFAULT_ORIENTATIONS.append(Surface.ROTATION_0, 90);
+        DEFAULT_ORIENTATIONS.append(Surface.ROTATION_0, 270);
         DEFAULT_ORIENTATIONS.append(Surface.ROTATION_270, 180);
-        DEFAULT_ORIENTATIONS.append(Surface.ROTATION_180, 270);
+        DEFAULT_ORIENTATIONS.append(Surface.ROTATION_180, 180);
     }
 
 
     private File mCurrentFile;
 
-    private static final String VIDEO_DIRECTORY_NAME = "Seft_Training";
+    private static final String VIDEO_DIRECTORY_NAME = "Seft_Training_Data_Save";
 
     /**
      * An {@link AutoFitTextureView} for camera preview.
@@ -568,7 +568,7 @@ public abstract class CameraVideoFragment extends BaseFragment {
          * set output file in media recorder
          */
         mMediaRecorder.setOutputFile(mCurrentFile.getAbsolutePath());
-        CamcorderProfile profile = CamcorderProfile.get(CamcorderProfile.QUALITY_720P);
+        CamcorderProfile profile = CamcorderProfile.get(CamcorderProfile.QUALITY_480P);
         mMediaRecorder.setVideoFrameRate(profile.videoFrameRate);
         mMediaRecorder.setVideoSize(profile.videoFrameWidth, profile.videoFrameHeight);
         mMediaRecorder.setVideoEncodingBitRate(profile.videoBitRate);
@@ -576,16 +576,18 @@ public abstract class CameraVideoFragment extends BaseFragment {
         mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
         mMediaRecorder.setAudioEncodingBitRate(profile.audioBitRate);
         mMediaRecorder.setAudioSamplingRate(profile.audioSampleRate);
+        //mMediaRecorder.setOrientationHint(90);
 
         int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
-        switch (mSensorOrientation) {
-            case SENSOR_ORIENTATION_DEFAULT_DEGREES:
-                mMediaRecorder.setOrientationHint(DEFAULT_ORIENTATIONS.get(rotation));
-                break;
-            case SENSOR_ORIENTATION_INVERSE_DEGREES:
-                mMediaRecorder.setOrientationHint(INVERSE_ORIENTATIONS.get(rotation));
-                break;
-        }
+        mMediaRecorder.setOrientationHint(DEFAULT_ORIENTATIONS.get(rotation));
+//        switch (mSensorOrientation) {
+//            case SENSOR_ORIENTATION_DEFAULT_DEGREES:
+//                mMediaRecorder.setOrientationHint(DEFAULT_ORIENTATIONS.get(rotation));
+//                break;
+//            case SENSOR_ORIENTATION_INVERSE_DEGREES:
+//                mMediaRecorder.setOrientationHint(INVERSE_ORIENTATIONS.get(rotation));
+//                break;
+//        }
         mMediaRecorder.prepare();
     }
 
@@ -637,6 +639,7 @@ public abstract class CameraVideoFragment extends BaseFragment {
         } catch (CameraAccessException | IOException e) {
             e.printStackTrace();
         }
+
     }
 
     private void closePreviewSession() {

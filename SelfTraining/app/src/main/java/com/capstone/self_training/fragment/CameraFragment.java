@@ -112,7 +112,7 @@ public class CameraFragment extends CameraVideoFragment {
                 Activity activity = getActivity();
                 if (isAdded() && activity != null) {
                     mSpeechRecognizer.stopListening();
-                    mSpeechRecognizer.startListening(mSpeechRecognizerIntent);
+                     mSpeechRecognizer.startListening(mSpeechRecognizerIntent);
                     mEditor.putString(getString(R.string.testSpeech), editText_Camera.getText().toString());
                     mEditor.apply();
                     editText_Camera.setText("");
