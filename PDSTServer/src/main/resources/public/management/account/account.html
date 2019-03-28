@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="../../bower_components/font-awesome/css/font-awesome.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="../../bower_components/Ionicons/css/ionicons.min.css">
-     <!--DataTables-->
+    <!--DataTables-->
     <link rel="stylesheet" href="../../bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
     <!-- DataTables Editor-->
     <!--<link rel="stylesheet" href="../../bower_components/Editor-1.9.0/css/editor.dataTables.css">-->
@@ -63,17 +63,19 @@
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header">
-                                <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image" id="dropdown-menu-imgUrl">
+                                <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image"
+                                     id="dropdown-menu-imgUrl">
 
                                 <p>
-                                    <span id="dropdown-menu-username">Alexander Pierce</span> - <span id="dropdown-menu-role">Web Developer</span>
+                                    <span id="dropdown-menu-username">Alexander Pierce</span> - <span
+                                        id="dropdown-menu-role">Web Developer</span>
                                     <!--<small>Member since Nov. 2012</small>-->
                                 </p>
                             </li>
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-right">
-                                    <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                    <a href="#" class="btn btn-default btn-flat" id="btn-sign-out">Sign out</a>
                                 </div>
                             </li>
                         </ul>
@@ -117,8 +119,23 @@
                             lý tài khoản</a></li>
                         <li><a href="../video/layout.html"><i class="fa fa-circle-o"></i> Quản lý video</a></li>
                         <li><a href="../course/layout.html"><i class="fa fa-circle-o"></i> Quản lý khóa học</a></li>
-                        <li><a href="../suggestion/layout.html"><i class="fa fa-circle-o"></i> Quản lý kết quả tập</a></li>
-                        <li><a href="../suggestiondetail/layout.html"><i class="fa fa-circle-o"></i> Quản lý kết quả tập chi tiết</a></li>
+                        <li><a href="../suggestion/layout.html"><i class="fa fa-circle-o"></i> Quản lý kết quả tập</a>
+                        </li>
+                        <li><a href="../suggestiondetail/layout.html"><i class="fa fa-circle-o"></i> Quản lý kết quả tập
+                            chi tiết</a></li>
+                    </ul>
+                </li>
+
+                <li class="treeview">
+                    <a href="createnewaccount.html">
+                        <i class="fa fa-user"></i> <span>Tạo tài khoản mới</span>
+                        <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="../../createnewaccount.html?roleId=3"><i class="fa fa-circle-o"></i> Tạo tài khoản trainer</a></li>
+                        <li id="admin-authorized"><a href="../../createnewaccount.html?roleId=2"><i class="fa fa-circle-o"></i> Tạo tài khoản nhân viên</a></li>
                     </ul>
                 </li>
             </ul>
@@ -151,7 +168,7 @@
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
-                            <table id="tblTrainer" class="table table-bordered table-striped">
+                            <table id="tblTrainer" style="width: 100% !important;" class="table table-bordered table-striped">
                                 <thead>
                                 <tr>
                                     <th>Stt</th>
@@ -186,7 +203,7 @@
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
-                            <table id="tblTrainee" class="table table-bordered table-striped">
+                            <table id="tblTrainee" style="width: 100% !important;" class="table table-bordered table-striped">
                                 <thead>
                                 <tr>
                                     <th></th>

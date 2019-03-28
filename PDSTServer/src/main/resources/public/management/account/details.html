@@ -82,7 +82,7 @@
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-right">
-                                    <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                    <a href="#" class="btn btn-default btn-flat" id="btn-sign-out">Sign out</a>
                                 </div>
                             </li>
                         </ul>
@@ -132,6 +132,19 @@
                             chi tiết</a></li>
                     </ul>
                 </li>
+
+                <li class="treeview">
+                    <a href="createnewaccount.html">
+                        <i class="fa fa-user"></i> <span>Tạo tài khoản mới</span>
+                        <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="../../createnewaccount.html?roleId=3"><i class="fa fa-circle-o"></i> Tạo tài khoản trainer</a></li>
+                        <li id="admin-authorized"><a href="../../createnewaccount.html?roleId=2"><i class="fa fa-circle-o"></i> Tạo tài khoản nhân viên</a></li>
+                    </ul>
+                </li>
             </ul>
         </section>
         <!-- /.sidebar -->
@@ -160,127 +173,163 @@
                 <div class="col-md-10">
 
                     <div class="box box-primary">
-
-                        <div class="box-body box-profile">
-                            <img style="width: 160px; height: 160px" class="profile-user-img img-responsive img-circle"
-                                 id="detail-profile-user-img"
-                                 src="../../dist/img/user4-128x128.jpg" alt="User profile picture">
-
-                            <h3 class="profile-username text-center" id="detail-profile-username">Nina Mcintire</h3>
-
-                            <p class="text-muted text-center profile-user-role" id="detail-profile-role">Trainer</p>
-
-                        </div>
-
                         <div class="box-body">
 
-                            <div class="form-group col-md-12">
-                                <div class="col-md-1"></div>
-                                <div class="col-md-10">
-                                    <label>Email</label>
-                                    <div class="input-group">
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-mail-reply"></i>
-                                        </div>
-                                        <input type="text" class="form-control" id="detail-profile-email">
-                                    </div>
-                                </div>
+                            <div class="box-body box-profile">
+                                <img style="width: 160px; height: 160px"
+                                     class="profile-user-img img-responsive img-circle"
+                                     id="detail-profile-user-img"
+                                     src="../../dist/img/user4-128x128.jpg" alt="User profile picture">
 
-                                <!-- /.input group -->
+                                <h3 class="profile-username text-center" id="detail-profile-username">Nina Mcintire</h3>
+
+                                <p class="text-muted text-center profile-user-role" id="detail-profile-role">Trainer</p>
+
                             </div>
-                            <!-- /.form group -->
 
-                            <!-- phone mask -->
-                            <div class="form-group col-md-12">
+                            <div class="box-body">
 
-                                <div class="col-md-1"></div>
-                                <div class="col-md-10">
-                                    <label>Số điện thoại</label>
-
-                                    <div class="input-group">
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-phone"></i>
+                                <div class="form-group col-md-12">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-10">
+                                        <label>Email</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="glyphicon glyphicon-envelope"></i>
+                                            </div>
+                                            <input type="text" class="form-control" id="detail-profile-email">
                                         </div>
-                                        <input type="text" class="form-control"
-                                               data-inputmask='"mask": "9999999999"'
-                                               data-mask id="detail-profile-phone" id="detail-profile-phone">
-                                    </div>
-                                </div>
-
-                                <!-- /.input group -->
-                            </div>
-                            <!-- /.form group -->
-
-                            <!-- IP mask -->
-                            <div class="form-group col-md-12">
-                                <div class="col-md-1"></div>
-                                <div class="col-md-10">
-                                    <label>Giới tính</label>
-
-                                    <div class="input-group">
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-genderless"></i>
-                                        </div>
-                                        <input type="text" class="form-control" id="detail-profile-gender" disabled>
-                                    </div>
-                                    <!-- /.input group -->
-                                </div>
-                            </div>
-                            <!-- /.form group -->
-
-                            <!-- IP mask -->
-                            <div class="form-group col-md-12">
-                                <div class="col-md-1"></div>
-                                <div class="col-md-10">
-                                    <label>Địa chỉ</label>
-
-                                    <div class="input-group">
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-address-card"></i>
-                                        </div>
-                                        <input type="text" class="form-control" id="detail-profile-address">
-                                    </div>
-                                    <!-- /.input group -->
-                                </div>
-                            </div>
-                            <!-- /.form group -->
-
-                            <!-- IP mask -->
-                            <div class="form-group col-md-12">
-                                <div class="col-md-1"></div>
-                                <div class="col-md-10">
-                                    <label style="margin-bottom: 8px">Trạng thái</label>
-
-                                    <div class="input-group col-md-12">
-                                        <label class="col-md-4">
-                                            <input type="radio" name="r3" class="flat-red rd-active" id="rdActive"> Đang hoạt động
-                                        </label>
-                                        <label>
-                                            <input type="radio" name="r3" class="flat-red rd-inactive" id="rdInActive"> Ngưng hoạt động
-                                        </label>
                                     </div>
 
                                     <!-- /.input group -->
                                 </div>
-                            </div>
-                            <!-- /.form group -->
+                                <!-- /.form group -->
 
-                            <div class="form-group col-md-12">
-                                <div class="col-md-9"></div>
-                                <div class="col-md-2">
-                                    <button class="btn btn-info btn-block">Cập nhập</button>
+                                <!-- phone mask -->
+                                <div class="form-group col-md-12">
+
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-10">
+                                        <label>Số điện thoại</label>
+
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-phone"></i>
+                                            </div>
+                                            <input type="text" class="form-control"
+                                                   data-inputmask='"mask": "9999999999"'
+                                                   data-mask id="detail-profile-phone">
+                                        </div>
+                                    </div>
+
+                                    <!-- /.input group -->
                                 </div>
-                            </div>
-                            <!-- /.form group -->
+                                <!-- /.form group -->
 
+                                <!-- IP mask -->
+                                <div class="form-group col-md-12">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-10">
+                                        <label>Giới tính</label>
+
+                                        <div class="input-group col-md-12 col-xs-12"
+                                             style="border: 1px solid rgba(0,0,0,0.20); padding-top: 5px">
+                                            <label class="col-md-4 col-xs-4">
+                                                <input type="radio" name="r4-gender" class="flat-red rd-active" id="rdMale">
+                                                Nam
+                                            </label>
+                                            <label>
+                                                <input type="radio" name="r4-gender" class="flat-red rd-inactive"
+                                                       id="rdFemale"> Nữ
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.form group -->
+
+                                <!-- IP mask -->
+                                <div class="form-group col-md-12">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-10">
+                                        <label>Địa chỉ</label>
+
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-address-card"></i>
+                                            </div>
+                                            <input type="text" class="form-control" id="detail-profile-address">
+                                        </div>
+                                        <!-- /.input group -->
+                                    </div>
+                                </div>
+                                <!-- /.form group -->
+
+                                <!-- IP mask -->
+                                <div class="form-group col-md-12">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-10">
+                                        <label style="margin-bottom: 8px">Trạng thái</label>
+
+                                        <div class="input-group col-md-12 col-xs-12"
+                                             style="border: 1px solid rgba(0,0,0,0.20); padding-top: 5px">
+                                            <label class="col-md-4 col-xs-4">
+                                                <input type="radio" name="r3-status" class="flat-red rd-active" id="rdActive">
+                                                Đang
+                                                hoạt động
+                                            </label>
+                                            <label>
+                                                <input type="radio" name="r3-status" class="flat-red rd-inactive"
+                                                       id="rdInActive">
+                                                Ngưng hoạt động
+                                            </label>
+                                        </div>
+
+                                        <!-- /.input group -->
+                                    </div>
+                                </div>
+                                <!-- /.form group -->
+
+                                <div class="form-group col-md-12">
+                                    <div class="col-md-9"></div>
+                                    <div class="col-md-2">
+                                        <button class="btn btn-info btn-block" id="btn-profile-update"
+                                                data-toggle="modal" data-target="#modal-info">Cập nhập
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- /.form group -->
+
+                            </div>
+                            <!-- /.box-body -->
                         </div>
-                        <!-- /.box-body -->
                     </div>
                     <!-- /.box -->
 
                 </div>
             </div>
             <!-- /.row -->
+
+            <div class="modal modal-info fade" id="modal-info">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Cập nhập tài khoản</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p id="mUpdateInfo">One fine body&hellip;</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-outline" id="btn-save-change">Save changes</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
 
         </section>
         <!-- /.content -->
