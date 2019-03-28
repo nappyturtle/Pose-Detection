@@ -11,6 +11,6 @@ public class SearchUtil {
             if(data.toLowerCase().contains(tokens[i])) count++;
         }
 //        System.out.println("Matching: " + count/dataLength);
-        return count/dataLength;
+        return count/total;
     }
 }

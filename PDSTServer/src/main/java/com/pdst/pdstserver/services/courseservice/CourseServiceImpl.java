@@ -122,10 +122,22 @@ public class CourseServiceImpl implements CourseService {
         for (Course c : courses) {
             CourseDTOFrontEnd courseDTOFrontEnd = new CourseDTOFrontEnd();
             Account account = accountRepository.findAccountById(c.getAccountId());
-            Category category = categoryRepository.getOne(c.getCategoryId());
+            //VuVG - 28/3/2019
+            //Các course miễn phí được tạo khi tạo tài khoản có category là null
+            //nên kiểm tra null và set tên là Miễn Phí
+            Integer cateId = c.getCategoryId();
+            if(cateId != null) {
+                Category category = categoryRepository.getOne(cateId);
+                courseDTOFrontEnd.setCategoryname(category.getName());
+            }
+            else {
+                courseDTOFrontEnd.setCategoryname("Miễn Phí");
+            }
+            //
+//            Category category = categoryRepository.getOne(c.getCategoryId());
             courseDTOFrontEnd.setId(c.getId());
             courseDTOFrontEnd.setCoursename(c.getName());
-            courseDTOFrontEnd.setCategoryname(category.getName());
+//            courseDTOFrontEnd.setCategoryname(category.getName());
             courseDTOFrontEnd.setAccountname(account.getUsername());
             courseDTOFrontEnd.setPrice(c.getPrice());
             courseDTOFrontEnd.setThumbnail(c.getThumbnail());
