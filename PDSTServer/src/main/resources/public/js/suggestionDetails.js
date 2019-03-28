@@ -50,21 +50,22 @@ $(document).ready(function () {
                     var div = "<div class='col-md-10' style='margin-bottom: 10px'>" +
                         "<div class='row'>" +
                         "<div class='col-md-2'></div>" +
-                        "<div class='col-md-4' style='margin: 10px'>" +
+                        "<div class='col-md-4' style='margin: 5px'>" +
                         "<p style='text-align: center'>Hình từ video mẫu</p>" +
                         "<img class='card-img-top' src='" + res[i].standardImgUrl + "' alt='Card image cap' width='300px' height='200px' />" +
                         "</div>" +
-                        "<div class='col-md-4' style='margin: 10px'>" +
+                        "<div class='col-md-4' style='margin: 5px'>" +
                         "<p style='text-align: center'>Hình từ video tập theo</p>" +
                         "<img class='card-img-top' src='" + res[i].imgUrl + "'alt='Card image cap' width='300px' height='200px' />" +
                         "</div>" +
                         "</div>" +
                         "<div class='row'>" +
                         "<div class='col-md-3'></div>" +
-                        "<div class='col-md-7' style='text-align: center'>" +
+                        "<div class='col-md-6' style='text-align: center'>" +
                         "<a class='btn btn-primary' id='" + ("btn") + res[i].id + "' href='" + ("details.html?suggestionDetailId=") + res[i].id + "'>Xem chi tiết</a>" +
                         "</div>" +
                         "</div>" +
+                        "<hr>" +
                         "</div>";
                     $(".box-body").append(div);
                 }
