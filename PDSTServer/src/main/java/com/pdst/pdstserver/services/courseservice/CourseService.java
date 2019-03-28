@@ -21,4 +21,5 @@ public interface CourseService {
     List<CourseDTOFrontEnd> getAllCourseByStaffOrAdmin();
     boolean editCourseByStaffOrAdmin(CourseDTOFrontEnd dto);
     int countAllCourses();
+    CourseDTOFrontEnd getCourseDetailById(int courseId);
 }

@@ -32,6 +32,11 @@ public class VideoController {
         return videoService.getAllVideos();
     }
 
+    @GetMapping("getVideoDetailById/{videoId}")
+    public VideoDTOFrontEnd getVideoDetailById(@PathVariable(value = "videoId") int videoId) {
+        return videoService.getVideoDetailById(videoId);
+    }
+
     @GetMapping("getAllVideoByStaffOrAdmin")
     public List<VideoDTOFrontEnd> getAllVideoByStaffOrAdmin() {
         return videoService.getAllVideoByStaffOrAdmin();

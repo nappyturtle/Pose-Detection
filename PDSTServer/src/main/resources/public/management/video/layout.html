@@ -63,18 +63,16 @@
                                 <img src="" class="img-circle" alt="User Image" id="dropdown-menu-imgUrl">
 
                                 <p>
-                                    <span id="dropdown-menu-username">Alexander Pierce</span> - <span id="dropdown-menu-role">Web Developer</span>
+                                    <span id="dropdown-menu-username">Alexander Pierce</span> - <span
+                                        id="dropdown-menu-role">Web Developer</span>
                                     <!--<small>Member since Nov. 2012</small>-->
                                 </p>
                             </li>
 
                             <!-- Menu Footer-->
                             <li class="user-footer">
-                                <div class="pull-left">
-                                    <a href="#" class="btn btn-default btn-flat">Profile</a>
-                                </div>
                                 <div class="pull-right">
-                                    <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                    <a href="#" class="btn btn-default btn-flat" id="btn-sign-out">Sign out</a>
                                 </div>
                             </li>
                         </ul>
@@ -118,10 +116,25 @@
                     <ul class="treeview-menu">
                         <li><a href="../account/account.html"><i class="fa fa-circle-o"></i> Quản
                             lý tài khoản</a></li>
-                        <li class="active"><a href="../video/layout.html"><i class="fa fa-circle-o"></i> Quản lý video</a></li>
+                        <li class="active"><a href="../video/layout.html"><i class="fa fa-circle-o"></i> Quản lý
+                            video</a></li>
                         <li><a href="../course/layout.html"><i class="fa fa-circle-o"></i> Quản lý khóa học</a></li>
-                        <li><a href="../suggestion/layout.html"><i class="fa fa-circle-o"></i> Quản lý kết quả tập</a></li>
-                        <li><a href="../suggestiondetail/layout.html"><i class="fa fa-circle-o"></i> Quản lý kết quả tập chi tiết</a></li>
+                        <li><a href="../suggestion/layout.html"><i class="fa fa-circle-o"></i> Quản lý kết quả tập</a>
+                        </li>
+
+                    </ul>
+                </li>
+
+                <li class="treeview">
+                    <a href="createnewaccount.html">
+                        <i class="fa fa-user"></i> <span>Tạo tài khoản mới</span>
+                        <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="../../createnewaccount.html?roleId=3"><i class="fa fa-circle-o"></i> Tạo tài khoản trainer</a></li>
+                        <li id="admin-authorized"><a href="../../createnewaccount.html?roleId=2"><i class="fa fa-circle-o"></i> Tạo tài khoản nhân viên</a></li>
                     </ul>
                 </li>
             </ul>
@@ -159,11 +172,8 @@
                                 <tr>
                                     <th>Stt</th>
                                     <th>Tên video</th>
-                                    <th>Ảnh đại diện</th>
-                                    <th>Nội dung</th>
-                                    <th>Số lượt xem</th>
+                                    <th>Số lượt view</th>
                                     <th>Khóa học</th>
-                                    <th>Trạng thái</th>
                                     <th></th>
                                 </tr>
                                 </thead>
@@ -194,7 +204,6 @@
 </div>
 <!-- ./wrapper -->
 
-<!-- jQuery 3 -->
 <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
 <script src="../../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>

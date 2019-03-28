@@ -26,6 +26,13 @@ public class SuggestionController {
 
         return suggestionService.getAllSuggestions();
     }
+
+    @GetMapping("getSuggestionById/{suggestionId}")
+    public SuggestionDTOFrontEnd getSuggestionById(@PathVariable(value = "suggestionId") int suggestionId) {
+
+        return suggestionService.getSuggestionById(suggestionId);
+    }
+
     @GetMapping("getAllSuggestionByStaffOrAdmin")
     public List<SuggestionDTOFrontEnd> getAllSuggestionByStaffOrAdmin() {
 

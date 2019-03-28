@@ -71,11 +71,8 @@
 
                             <!-- Menu Footer-->
                             <li class="user-footer">
-                                <div class="pull-left">
-                                    <a href="#" class="btn btn-default btn-flat">Profile</a>
-                                </div>
                                 <div class="pull-right">
-                                    <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                    <a href="#" class="btn btn-default btn-flat" id="btn-sign-out">Sign out</a>
                                 </div>
                             </li>
                         </ul>
@@ -123,8 +120,20 @@
                         <li><a href="../course/layout.html"><i class="fa fa-circle-o"></i> Quản lý khóa học</a></li>
                         <li><a href="../suggestion/layout.html"><i class="fa fa-circle-o"></i> Quản lý kết quả tập</a>
                         </li>
-                        <li class="active"><a href="../suggestiondetail/layout.html"><i class="fa fa-circle-o"></i> Quản
-                            lý kết quả tập chi tiết</a></li>
+
+                    </ul>
+                </li>
+
+                <li class="treeview">
+                    <a href="createnewaccount.html">
+                        <i class="fa fa-user"></i> <span>Tạo tài khoản mới</span>
+                        <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="../../createnewaccount.html?roleId=3"><i class="fa fa-circle-o"></i> Tạo tài khoản trainer</a></li>
+                        <li id="admin-authorized"><a href="../../createnewaccount.html?roleId=2"><i class="fa fa-circle-o"></i> Tạo tài khoản nhân viên</a></li>
                     </ul>
                 </li>
             </ul>
@@ -137,7 +146,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Quản lý kết quả tập chỉ tiết
+                Quản lý kết danh sách quả tập chi tiết
             </h1>
             <ol class="breadcrumb">
                 <li><a href="../../dashboard.html"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
@@ -157,25 +166,36 @@
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
-                            <table id="tblSuggestionDetail" class="table table-bordered table-striped">
-                                <thead>
-                                <tr>
-                                    <th>Stt</th>
-                                    <th>Ảnh huấn luyên vien</th>
-                                    <th>Ảnh học viên</th>
-                                    <th>Mô tả</th>
-                                    <th>Trạng thái</th>
-                                    <th>Bình luận</th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
 
-                                </tbody>
-                                <tfoot>
+                            <!--<div class="col-md-10" style="margin-bottom: 10px">-->
+                                <!--<div class="row">-->
+                                    <!--<div class="col-md-2"></div>-->
+                                    <!--<div class="col-md-4" style="margin: 10px">-->
+                                        <!--<p style="text-align: center">Hình trainer</p>-->
+                                        <!--<img class="card-img-top"-->
+                                             <!--src="https://firebasestorage.googleapis.com/v0/b/demouploadvideo-bdc04.appspot.com/o/homnay%2FImage%2FFrame04?alt=media&token=c6b04458-8b01-49ff-af0a-c424274713c8"-->
+                                             <!--alt="Card image cap"-->
+                                             <!--width="300px" height="200px"-->
+                                        <!--&gt;-->
+                                    <!--</div>-->
+                                    <!--<div class="col-md-4" style="margin: 10px">-->
+                                        <!--<p style="text-align: center">Hình trainee</p>-->
+                                        <!--<img class="card-img-top"-->
+                                             <!--src="https://firebasestorage.googleapis.com/v0/b/demouploadvideo-bdc04.appspot.com/o/homnay%2FImage%2FFrame04?alt=media&token=c6b04458-8b01-49ff-af0a-c424274713c8"-->
+                                             <!--alt="Card image cap"-->
+                                             <!--width="300px" height="200px"-->
+                                        <!--&gt;-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="row">-->
+                                    <!--<div class="col-md-3"></div>-->
+                                    <!--<div class="col-md-7" style="text-align: center">-->
+                                        <!--<button class="btn btn-primary">Xem chi tiết</button>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
 
-                                </tfoot>
-                            </table>
+
                         </div>
                         <!-- /.box-body -->
                     </div>
@@ -212,6 +232,6 @@
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
 <!-- page script -->
-<script language="JavaScript" src="../../js/managementDataSuggestionDetail.js"></script>
+<script language="JavaScript" src="../../js/suggestionDetails.js"></script>
 </body>
 </html>

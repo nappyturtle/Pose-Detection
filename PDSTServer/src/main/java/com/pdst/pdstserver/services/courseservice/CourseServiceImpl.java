@@ -119,6 +119,7 @@ public class CourseServiceImpl implements CourseService {
     public List<CourseDTOFrontEnd> getAllCourseByStaffOrAdmin() {
         List<Course> courses = courseRepository.findAll();
         List<CourseDTOFrontEnd> courseDTOFrontEnds = new ArrayList<>();
+        int count = 0;
         for (Course c : courses) {
             CourseDTOFrontEnd courseDTOFrontEnd = new CourseDTOFrontEnd();
             Account account = accountRepository.findAccountById(c.getAccountId());
@@ -135,6 +136,7 @@ public class CourseServiceImpl implements CourseService {
             }
             //
 //            Category category = categoryRepository.getOne(c.getCategoryId());
+            courseDTOFrontEnd.setStt(count+1);
             courseDTOFrontEnd.setId(c.getId());
             courseDTOFrontEnd.setCoursename(c.getName());
 //            courseDTOFrontEnd.setCategoryname(category.getName());
@@ -143,6 +145,7 @@ public class CourseServiceImpl implements CourseService {
             courseDTOFrontEnd.setThumbnail(c.getThumbnail());
             courseDTOFrontEnd.setStatus(c.getStatus());
             courseDTOFrontEnds.add(courseDTOFrontEnd);
+            count++;
         }
         return courseDTOFrontEnds;
     }
@@ -153,7 +156,10 @@ public class CourseServiceImpl implements CourseService {
         Date date = Calendar.getInstance().getTime();
         Course course = courseRepository.findCourseById(dto.getId());
         course.setStatus(dto.getStatus());
+        course.setName(dto.getCoursename());
         course.setUpdatedTime(sdf.format(date));
+        course.setPrice(dto.getPrice());
+        course.setCategoryId(dto.getCategoryId());
         Course courseRes = courseRepository.save(course);
         if (courseRes != null) {
             return true;
@@ -164,6 +170,25 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public int countAllCourses() {
         return courseRepository.countAllCourses();
+    }
+
+    @Override
+    public CourseDTOFrontEnd getCourseDetailById(int courseId) {
+
+        Course course = courseRepository.findCourseById(courseId);
+        List<Category> categoryList = categoryRepository.findAll();
+        Account account = accountRepository.findAccountById(course.getAccountId());
+        CourseDTOFrontEnd dto = new CourseDTOFrontEnd();
+
+        dto.setId(course.getId());
+        dto.setCoursename(course.getName());
+        dto.setThumbnail(course.getThumbnail());
+        dto.setAccountname(account.getUsername());
+        dto.setPrice(course.getPrice());
+        dto.setStatus(course.getStatus());
+        dto.setCategoryId(course.getCategoryId());
+        dto.setCategoryList(categoryList);
+        return dto;
     }
 
 }

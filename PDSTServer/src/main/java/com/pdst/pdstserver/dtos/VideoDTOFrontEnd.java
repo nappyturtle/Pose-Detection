@@ -3,16 +3,58 @@ package com.pdst.pdstserver.dtos;
 import java.io.Serializable;
 
 public class VideoDTOFrontEnd implements Serializable {
+    private int stt;
     private int id;
     private String title;
-    private String thumnailUrl;
-    private String contentUrl;
+    private String thumnail;
+    private String content;
     private Integer numOfView;
-    private String courseName;
+    private String coursename;
     private String status;
 
     public VideoDTOFrontEnd() {
     }
+
+    public String getThumnail() {
+        return thumnail;
+    }
+
+    public void setThumnail(String thumnail) {
+        this.thumnail = thumnail;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getCoursename() {
+        return coursename;
+    }
+
+    public void setCoursename(String coursename) {
+        this.coursename = coursename;
+    }
+
+    public VideoDTOFrontEnd(int stt, int id, String title, Integer numOfView, String coursename) {
+        this.stt = stt;
+        this.id = id;
+        this.title = title;
+        this.numOfView = numOfView;
+        this.coursename = coursename;
+    }
+
+    public int getStt() {
+        return stt;
+    }
+
+    public void setStt(int stt) {
+        this.stt = stt;
+    }
+
 
     public int getId() {
         return id;
@@ -30,21 +72,6 @@ public class VideoDTOFrontEnd implements Serializable {
         this.title = title;
     }
 
-    public String getThumnailUrl() {
-        return thumnailUrl;
-    }
-
-    public void setThumnailUrl(String thumnailUrl) {
-        this.thumnailUrl = thumnailUrl;
-    }
-
-    public String getContentUrl() {
-        return contentUrl;
-    }
-
-    public void setContentUrl(String contentUrl) {
-        this.contentUrl = contentUrl;
-    }
 
     public Integer getNumOfView() {
         return numOfView;
@@ -62,11 +89,5 @@ public class VideoDTOFrontEnd implements Serializable {
         this.status = status;
     }
 
-    public String getCourseName() {
-        return courseName;
-    }
 
-    public void setCourseName(String courseName) {
-        this.courseName = courseName;
-    }
 }

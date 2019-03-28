@@ -62,17 +62,14 @@ public class SuggestionDetailServiceImpl implements SuggestionDetailService {
     }
 
     @Override
-    public List<SuggestionDetailDTOFrontEnd> getAllSuggestionDetailByStaffOrAdmin() {
-        List<SuggestionDetail> suggestionDetails = suggestionDetailRepository.findAll();
+    public List<SuggestionDetailDTOFrontEnd> getAllSuggestionDetailByStaffOrAdmin(int suggestionId) {
+        List<SuggestionDetail> suggestionDetails = suggestionDetailRepository.findAllBySuggestionIdAndStatus(suggestionId,"active");
         List<SuggestionDetailDTOFrontEnd> dtoList = new ArrayList<>();
         for(SuggestionDetail suggestionDetail :  suggestionDetails){
             SuggestionDetailDTOFrontEnd dto = new SuggestionDetailDTOFrontEnd();
             dto.setId(suggestionDetail.getId());
             dto.setImgUrl(suggestionDetail.getImgUrl());
             dto.setStandardImgUrl(suggestionDetail.getStandardImgUrl());
-            dto.setDescription(suggestionDetail.getDescription());
-            dto.setStatus(suggestionDetail.getStatus());
-            dto.setComment(suggestionDetail.getComment());
             dtoList.add(dto);
         }
         return dtoList;
@@ -83,12 +80,30 @@ public class SuggestionDetailServiceImpl implements SuggestionDetailService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date date = Calendar.getInstance().getTime();
         SuggestionDetail suggestionDetail = suggestionDetailRepository.findById(dto.getId());
-        suggestionDetail.setStatus(dto.getStatus());
+        if(!dto.getStatus().equals("on")){
+            suggestionDetail.setStatus(dto.getStatus());
+        }
+
+        suggestionDetail.setDescription(dto.getDescription());
+        suggestionDetail.setComment(dto.getComment());
         suggestionDetail.setUpdatedTime(sdf.format(date));
         SuggestionDetail suggestionDetail1Res = suggestionDetailRepository.save(suggestionDetail);
         if(suggestionDetail1Res != null){
             return true;
         }
         return false;
+    }
+
+    @Override
+    public SuggestionDetailDTOFrontEnd getSuggestionDetailById(int suggestionDetailId) {
+        SuggestionDetail suggestionDetail = suggestionDetailRepository.findById(suggestionDetailId);
+        SuggestionDetailDTOFrontEnd dto = new SuggestionDetailDTOFrontEnd();
+        dto.setId(suggestionDetail.getId());
+        dto.setImgUrl(suggestionDetail.getImgUrl());
+        dto.setStandardImgUrl(suggestionDetail.getStandardImgUrl());
+        dto.setComment(suggestionDetail.getComment());
+        dto.setDescription(suggestionDetail.getDescription());
+        dto.setStatus(suggestionDetail.getStatus());
+        return dto;
     }
 }

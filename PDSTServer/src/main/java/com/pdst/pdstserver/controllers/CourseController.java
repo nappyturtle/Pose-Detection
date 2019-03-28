@@ -39,6 +39,11 @@ public class CourseController {
         return courseService.getAllCourses();
     }
 
+    @GetMapping("getCourseDetailById/{courseId}")
+    public CourseDTOFrontEnd getCourseDetailById(@PathVariable(value = "courseId") int courseId) {
+        return courseService.getCourseDetailById(courseId);
+    }
+
 
     @GetMapping("getAllCourseByStaffOrAdmin")
     public List<CourseDTOFrontEnd> getAllCourseByStaffOrAdmin() {
@@ -47,6 +52,7 @@ public class CourseController {
 
     @PutMapping("editCourseByStaffOrAdmin")
     public boolean editCourseByStaffOrAdmin(@RequestBody CourseDTOFrontEnd dto) {
+        System.out.println(dto.getId() + " - "+dto.getCoursename() + "-" + dto.getPrice());
         return courseService.editCourseByStaffOrAdmin(dto);
     }
 

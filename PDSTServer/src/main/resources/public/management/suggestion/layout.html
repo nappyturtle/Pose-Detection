@@ -70,11 +70,8 @@
 
                             <!-- Menu Footer-->
                             <li class="user-footer">
-                                <div class="pull-left">
-                                    <a href="#" class="btn btn-default btn-flat">Profile</a>
-                                </div>
                                 <div class="pull-right">
-                                    <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                    <a href="#" class="btn btn-default btn-flat" id="btn-sign-out">Sign out</a>
                                 </div>
                             </li>
                         </ul>
@@ -121,7 +118,19 @@
                         <li><a href="../video/layout.html"><i class="fa fa-circle-o"></i> Quản lý video</a></li>
                         <li><a href="../course/layout.html"><i class="fa fa-circle-o"></i> Quản lý khóa học</a></li>
                         <li class="active"><a href="../suggestion/layout.html"><i class="fa fa-circle-o"></i> Quản lý kết quả tập</a></li>
-                        <li><a href="../suggestiondetail/layout.html"><i class="fa fa-circle-o"></i> Quản lý kết quả tập chi tiết</a></li>
+                    </ul>
+                </li>
+
+                <li class="treeview">
+                    <a href="createnewaccount.html">
+                        <i class="fa fa-user"></i> <span>Tạo tài khoản mới</span>
+                        <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="../../createnewaccount.html?roleId=3"><i class="fa fa-circle-o"></i> Tạo tài khoản trainer</a></li>
+                        <li id="admin-authorized"><a href="../../createnewaccount.html?roleId=2"><i class="fa fa-circle-o"></i> Tạo tài khoản nhân viên</a></li>
                     </ul>
                 </li>
             </ul>
@@ -160,8 +169,6 @@
                                     <th>Stt</th>
                                     <th>Tên video</th>
                                     <th>Học viên</th>
-                                    <th>Hình đại diện</th>
-                                    <th>Trạng thái</th>
                                     <th></th>
                                 </tr>
                                 </thead>

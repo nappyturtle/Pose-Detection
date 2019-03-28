@@ -3,11 +3,20 @@ package com.pdst.pdstserver.dtos;
 import java.io.Serializable;
 
 public class SuggestionDTOFrontEnd implements Serializable {
+    private int stt;
     private int id;
     private String videoname;
     private String accountname;
     private String thumnailUrl;
     private String status;
+
+    public int getStt() {
+        return stt;
+    }
+
+    public void setStt(int stt) {
+        this.stt = stt;
+    }
 
     public int getId() {
         return id;

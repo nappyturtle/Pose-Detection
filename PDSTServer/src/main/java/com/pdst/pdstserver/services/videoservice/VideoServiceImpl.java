@@ -37,7 +37,7 @@ public class VideoServiceImpl implements VideoService {
     public List<Video> getAllVideos() {
         List<Video> listTemp = videoRepository.findAll();
         List<Video> videos = new ArrayList<>();
-        for(Video video : listTemp){
+        for (Video video : listTemp) {
             Course course = courseRepository.getOne(video.getCourseId());
             video.setFolderName(course.getName());
             videos.add(video);
@@ -49,20 +49,20 @@ public class VideoServiceImpl implements VideoService {
     public List<VideoDTO> getAllVideosOrderByDate(int page, int size) {
         System.out.println("page - size = " + page + " - " + size);
 
-        List<Video> videos = videoRepository.getAllVideoByCourseFree(PageRequest.of(page,size,Sort.by("createdTime").descending()));
+        List<Video> videos = videoRepository.getAllVideoByCourseFree(PageRequest.of(page, size, Sort.by("createdTime").descending()));
         List<VideoDTO> dtos = new ArrayList<>();
 
         for (Video video : videos) {
             Course course = courseRepository.findCourseById(video.getCourseId());
             //VuVG - 15/03/2019 - Chỉ lấy các video free
             //if(course.getPrice() == 0) {
-                Account account = accountRepository.findAccountById(course.getAccountId());
-                VideoDTO dto = new VideoDTO();
-                dto.setVideo(video);
-                dto.setUsername(account.getUsername());
-                dto.setImgUrl(account.getImgUrl());
-                dto.setAccountId(account.getId());
-                dtos.add(dto);
+            Account account = accountRepository.findAccountById(course.getAccountId());
+            VideoDTO dto = new VideoDTO();
+            dto.setVideo(video);
+            dto.setUsername(account.getUsername());
+            dto.setImgUrl(account.getImgUrl());
+            dto.setAccountId(account.getId());
+            dtos.add(dto);
             //}
         }
         return dtos;
@@ -127,7 +127,7 @@ public class VideoServiceImpl implements VideoService {
     // đã sửa lại thành lấy những video liên quan đến course đó, nhưng ko lấy video hiện tại
     @Override
     public List<VideoDTO> getAllVideosRelatedByCourseId(int courseId, int currentVideoId) {
-       List<Video> listTemp = videoRepository.findTop6ByCourseIdOrderByCreatedTimeDesc(courseId);
+        List<Video> listTemp = videoRepository.findTop6ByCourseIdOrderByCreatedTimeDesc(courseId);
 
         List<VideoDTO> dtoList = new ArrayList<>();
         for (int i = 0; i < listTemp.size(); i++) {
@@ -221,7 +221,7 @@ public class VideoServiceImpl implements VideoService {
     @Override
     public List<VideoDTO> getAllVideosByTopNumOfView(int page, int size) {
         System.out.println("page - size = " + page + " - " + size);
-        List<Video> videos = videoRepository.getAllVideoByCourseFree(PageRequest.of(page,size,Sort.by("numOfView").descending()));
+        List<Video> videos = videoRepository.getAllVideoByCourseFree(PageRequest.of(page, size, Sort.by("numOfView").descending()));
 
         List<VideoDTO> dtos = new ArrayList<>();
         for (Video video : videos) {
@@ -229,13 +229,13 @@ public class VideoServiceImpl implements VideoService {
 //            Account account = accountRepository.findAccountById(video.getAccountId());
             //VuVG - 15/03/2019 - Chỉ lấy các video free
             //if (course.getPrice() == 0) {
-                Account account = accountRepository.findAccountById(course.getAccountId());
-                VideoDTO dto = new VideoDTO();
-                dto.setVideo(video);
-                dto.setUsername(account.getUsername());
-                dto.setImgUrl(account.getImgUrl());
-                dto.setAccountId(account.getId());
-                dtos.add(dto);
+            Account account = accountRepository.findAccountById(course.getAccountId());
+            VideoDTO dto = new VideoDTO();
+            dto.setVideo(video);
+            dto.setUsername(account.getUsername());
+            dto.setImgUrl(account.getImgUrl());
+            dto.setAccountId(account.getId());
+            dtos.add(dto);
             //}
         }
         return dtos;
@@ -264,18 +264,13 @@ public class VideoServiceImpl implements VideoService {
         List<Video> listTemp = videoRepository.findAll();
         List<VideoDTOFrontEnd> listVideoDTOFrontEnd = new ArrayList<>();
 
-
-        for(Video video : listTemp){
-            VideoDTOFrontEnd videoDTOFrontEnd = new VideoDTOFrontEnd();
-            Course course = courseRepository.getOne(video.getCourseId());
-            videoDTOFrontEnd.setId(video.getId());
-            videoDTOFrontEnd.setTitle(video.getTitle());
-            videoDTOFrontEnd.setThumnailUrl(video.getThumnailUrl());
-            videoDTOFrontEnd.setContentUrl(video.getContentUrl());
-            videoDTOFrontEnd.setNumOfView(video.getNumOfView());
-            videoDTOFrontEnd.setCourseName(course.getName());
-            videoDTOFrontEnd.setStatus(video.getStatus());
+        int count = 0;
+        for (Video video : listTemp) {
+            Course course = courseRepository.findCourseById(video.getCourseId());
+            VideoDTOFrontEnd videoDTOFrontEnd = new VideoDTOFrontEnd(count + 1, video.getId(), video.getTitle(), video.getNumOfView()
+                    , course.getName());
             listVideoDTOFrontEnd.add(videoDTOFrontEnd);
+            count++;
         }
         return listVideoDTOFrontEnd;
     }
@@ -285,10 +280,12 @@ public class VideoServiceImpl implements VideoService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date date = Calendar.getInstance().getTime();
         Video video = videoRepository.findVideoById(dto.getId());
+        video.setTitle(dto.getTitle());
+        video.setNumOfView(dto.getNumOfView());
         video.setStatus(dto.getStatus());
         video.setUpdatedTime(sdf.format(date));
         Video videRes = videoRepository.save(video);
-        if(videRes != null){
+        if (videRes != null) {
             return true;
         }
         return false;
@@ -297,5 +294,20 @@ public class VideoServiceImpl implements VideoService {
     @Override
     public int countAllVideos() {
         return videoRepository.countAllVideos();
+    }
+
+    @Override
+    public VideoDTOFrontEnd getVideoDetailById(int videoId) {
+        Video video = videoRepository.findVideoById(videoId);
+        Course course = courseRepository.findCourseById(video.getCourseId());
+        VideoDTOFrontEnd dto = new VideoDTOFrontEnd();
+        dto.setId(video.getId());
+        dto.setTitle(video.getTitle());
+        dto.setThumnail(video.getThumnailUrl());
+        dto.setContent(video.getContentUrl());
+        dto.setNumOfView(video.getNumOfView());
+        dto.setCoursename(course.getName());
+        dto.setStatus(video.getStatus());
+        return dto;
     }
 }

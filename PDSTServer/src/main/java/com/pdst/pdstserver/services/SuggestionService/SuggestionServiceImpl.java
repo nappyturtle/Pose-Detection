@@ -105,18 +105,19 @@ public class SuggestionServiceImpl implements SuggestionService {
 
     @Override
     public List<SuggestionDTOFrontEnd> getAllSuggestionByStaffOrAdmin() {
-        List<Suggestion> suggestions = suggestionRepository.findAll();
+        List<Suggestion> suggestions = suggestionRepository.findAllByOrderByCreatedTimeDesc();
         List<SuggestionDTOFrontEnd> suggestionDTOFrontEnds = new ArrayList<>();
+        int count = 0;
         for(Suggestion su : suggestions){
             SuggestionDTOFrontEnd suggestionDTOFrontEnd = new SuggestionDTOFrontEnd();
             Account account = accountRepository.findAccountById(su.getAccountId());
             Video video = videoRepository.findVideoById(su.getVideoId());
+            suggestionDTOFrontEnd.setStt(count+1);
             suggestionDTOFrontEnd.setId(su.getId());
             suggestionDTOFrontEnd.setVideoname(video.getTitle());
             suggestionDTOFrontEnd.setAccountname(account.getUsername());
-            suggestionDTOFrontEnd.setThumnailUrl(su.getThumnailUrl());
-            suggestionDTOFrontEnd.setStatus(su.getStatus());
             suggestionDTOFrontEnds.add(suggestionDTOFrontEnd);
+            count++;
         }
         return suggestionDTOFrontEnds;
     }
@@ -126,13 +127,30 @@ public class SuggestionServiceImpl implements SuggestionService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date date = Calendar.getInstance().getTime();
         Suggestion suggestion = suggestionRepository.getOne(dto.getId());
-        suggestion.setStatus(dto.getStatus());
+        if(!dto.getStatus().equals("on")){
+            suggestion.setStatus(dto.getStatus());
+        }
+
         suggestion.setUpdatedTime(sdf.format(date));
         Suggestion suggestionRes = suggestionRepository.save(suggestion);
         if(suggestionRes != null){
             return true;
         }
         return false;
+    }
+
+    @Override
+    public SuggestionDTOFrontEnd getSuggestionById(int suggestionId) {
+        Suggestion suggestion = suggestionRepository.findSuggestionById(suggestionId);
+        Video video = videoRepository.findVideoById(suggestion.getVideoId());
+        Account account = accountRepository.findAccountById(suggestion.getAccountId());
+        SuggestionDTOFrontEnd dto = new SuggestionDTOFrontEnd();
+        dto.setId(suggestion.getId());
+        dto.setVideoname(video.getTitle());
+        dto.setAccountname(account.getUsername());
+        dto.setThumnailUrl(suggestion.getThumnailUrl());
+        dto.setStatus(suggestion.getStatus());
+        return dto;
     }
 
     @Override

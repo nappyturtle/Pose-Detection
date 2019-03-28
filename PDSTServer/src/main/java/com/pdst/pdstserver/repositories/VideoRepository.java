@@ -40,4 +40,6 @@ public interface VideoRepository extends JpaRepository<Video, Integer>{
 
     @Query(value = "select count(v.id) from Video v")
     int countAllVideos();
+
+    List<Video> findAllByOrderByCreatedTimeDesc();
 }

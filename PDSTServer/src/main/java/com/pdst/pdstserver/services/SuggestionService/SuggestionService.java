@@ -14,4 +14,5 @@ public interface SuggestionService {
     List<SuggestionDTO> getSuggestionByTrainer(int page, int size, int trainerId, int traineeId);
     List<SuggestionDTOFrontEnd> getAllSuggestionByStaffOrAdmin();
     boolean editStatusSuggestionByStaffOrAdmin(SuggestionDTOFrontEnd dto);
+    SuggestionDTOFrontEnd getSuggestionById(int suggestionId);
 }

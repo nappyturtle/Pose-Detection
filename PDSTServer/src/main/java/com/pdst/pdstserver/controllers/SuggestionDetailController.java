@@ -25,9 +25,15 @@ public class SuggestionDetailController {
         return suggestionDetailService.getAllSuggestionDetails();
     }
 
-    @GetMapping("getAllSuggestionDetailByStaffOrAdmin")
-    public List<SuggestionDetailDTOFrontEnd> getAllSuggestionDetailByStaffOrAdmin() {
-        return suggestionDetailService.getAllSuggestionDetailByStaffOrAdmin();
+    @GetMapping("getAllSuggestionDetailByStaffOrAdmin/{suggestionId}")
+    public List<SuggestionDetailDTOFrontEnd> getAllSuggestionDetailByStaffOrAdmin(@PathVariable(value = "suggestionId") int suggestionId) {
+        return suggestionDetailService.getAllSuggestionDetailByStaffOrAdmin(suggestionId);
+    }
+
+
+    @GetMapping("getSuggestionDetailById/{suggestionDetailId}")
+    public SuggestionDetailDTOFrontEnd getSuggestionDetailById(@PathVariable(value = "suggestionDetailId") int suggestionDetailId) {
+        return suggestionDetailService.getSuggestionDetailById(suggestionDetailId);
     }
 
     @PutMapping("editStatusSuggestionDetailByStaffOrAdmin")
