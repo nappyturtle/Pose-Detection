@@ -3,10 +3,10 @@ var editor;
 $(document).ready(function () {
     currentStaff = JSON.parse(localStorage.getItem("staff"));
     if (currentStaff != undefined && currentStaff != null) {
-        /*$("#btn-sign-out").click(function () {
+        $("#btn-sign-out").click(function () {
             localStorage.removeItem("staff");
-            window.location.href = "../login.html";
-        })*/
+            window.location.href = "../../login.html";
+        })
         if (currentStaff.roleId != 1) {
             $("#admin-authorized").prop('hidden', true);
         }
