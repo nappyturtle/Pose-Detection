@@ -29,4 +29,5 @@ public class SecurityConstants {
     public static final String GET_ALL_SUGGESTION = "/suggestion/suggestions";
     public static final String UPDATE_ACCOUNT = "/account/updateAccount";
     public static final String GET_DATAFORDASHBOARD = "/account/getDataForDashboard";
+    public static final String CREATE_NEW_ACCOUNT = "/account/createNewAccount";
 }

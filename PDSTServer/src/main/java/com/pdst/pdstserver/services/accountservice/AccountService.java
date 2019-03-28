@@ -24,4 +24,8 @@ public interface AccountService {
     Account updateAccount(Account account);
 
     int countTotalUserAccount(int roleId);
+
+    Account createNewAccount(Account account);
+
+    Account getAccountByUsername(String username);
 }

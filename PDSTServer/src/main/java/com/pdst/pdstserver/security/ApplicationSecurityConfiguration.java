@@ -45,8 +45,9 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
                 .antMatchers("/management/**")
                 .antMatchers("/favicon.*")
                 .antMatchers("/js/**")
-				.antMatchers("/js/**js")
-                .antMatchers("/**txt");
+                .antMatchers("/js/**js")
+                .antMatchers("/**txt")
+                .antMatchers("/account/details/**");
     }
 
     @Override
@@ -75,6 +76,7 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
                 .antMatchers(HttpMethod.GET, GET_ALL_ACCOUNT_BY_ROLE).permitAll()
                 .antMatchers(HttpMethod.POST, UPDATE_ACCOUNT).permitAll()
                 .antMatchers(HttpMethod.GET, GET_DATAFORDASHBOARD).permitAll()
+                .antMatchers(HttpMethod.POST, CREATE_NEW_ACCOUNT).permitAll()
                 //.antMatchers(HttpMethod.GET, GET_ALL_ACCOUNT_BY_ROLE).hasAnyAuthority("Staff")
                 .anyRequest().authenticated()
                 .and()

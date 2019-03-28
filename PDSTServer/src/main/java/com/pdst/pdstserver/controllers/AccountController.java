@@ -1,5 +1,6 @@
 package com.pdst.pdstserver.controllers;
 
+import com.pdst.pdstserver.constant.Constant;
 import com.pdst.pdstserver.dtos.AccountDTO;
 import com.pdst.pdstserver.dtos.TrainerInfo;
 import com.pdst.pdstserver.models.Account;
@@ -110,7 +111,6 @@ public class AccountController {
         return accountService.getAllAccountByRoleId(roleId);
     }
 
-
     @GetMapping("getDataForDashboard")
     public Map<String, Integer> getDataForDashboard() {
         int totalUser = 0, totalVideo = 0, totalCourse = 0;
@@ -122,5 +122,30 @@ public class AccountController {
         map.put("totalVideo", totalVideo);
         map.put("totalCourse", totalCourse);
         return map;
+    }
+
+    @PostMapping("createNewAccount")
+    public Map<String, String> createNewAccount(@RequestBody Account account) {
+        HashMap<String, String> res = new HashMap<>();
+        account.setImgUrl(Constant.DEFAULT_USER_LOGO_URL);
+        boolean result = accountService.createAccount(account);
+        if (result) {
+            res.put("message", "success");
+            Account newAccount = accountService.getAccountByUsername(account.getUsername().trim());
+            if (newAccount != null && newAccount.getRoleId() == 3) {
+                Course freeCourseOfNewTrainer = new Course();
+                freeCourseOfNewTrainer.setAccountId(newAccount.getId());
+                freeCourseOfNewTrainer.setStatus("active");
+                freeCourseOfNewTrainer.setName("Miễn phí");
+                freeCourseOfNewTrainer.setCreatedTime(newAccount.getCreatedTime());
+                freeCourseOfNewTrainer.setPrice(0);
+                freeCourseOfNewTrainer.setThumbnail(Constant.DEFAULT_APP_LOGO_URL);
+                courseService.createCourse(freeCourseOfNewTrainer);
+            }
+        } else {
+            res.put("message", "fail");
+        }
+
+        return res;
     }
 }
