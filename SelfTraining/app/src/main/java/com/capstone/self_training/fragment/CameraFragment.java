@@ -2,9 +2,11 @@ package com.capstone.self_training.fragment;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -31,7 +33,6 @@ import android.widget.VideoView;
 import com.capstone.self_training.R;
 import com.capstone.self_training.activity.OnBackPressed;
 import com.capstone.self_training.activity.TraineeUploadVideoActi;
-import com.capstone.self_training.activity.TrainerUploadVideoActi;
 import com.capstone.self_training.camera.AutoFitTextureView;
 import com.capstone.self_training.camera.CameraVideoFragment;
 import com.coremedia.iso.IsoFile;
@@ -89,6 +90,7 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
     Handler handler = new Handler(Looper.getMainLooper());
     SpeechRecognizer mSpeechRecognizer;
     Intent mSpeechRecognizerIntent;
+    AudioManager audioManager;
 
     public CameraFragment() {
         // Required empty public constructor
@@ -138,7 +140,12 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         checkPermission();
+        Context context = getContext();
+        audioManager = (AudioManager) context.getSystemService(context.AUDIO_SERVICE);
 
+        audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
+        audioManager.startBluetoothSco();
+        audioManager.setBluetoothScoOn(true);
         mSpeechRecognizer = SpeechRecognizer.createSpeechRecognizer(this.getContext());
         mSpeechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
