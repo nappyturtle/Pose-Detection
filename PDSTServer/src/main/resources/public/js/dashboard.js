@@ -1,6 +1,10 @@
 $(document).ready(function () {
     currentStaff = JSON.parse(localStorage.getItem("staff"));
-    if (currentStaff != undefined) {
+    console.log(currentStaff);
+    if (currentStaff != undefined && currentStaff != null) {
+        if (currentStaff.roleId != 1) {
+            $("#admin-authorized").prop('hidden', true);
+        }
         if (currentStaff.roleId == 1 || currentStaff.roleId == 2) {
             console.log("init..............: " + currentStaff.token);
             $("#navbar-nav-imgUrl").attr('src', currentStaff.imgUrl);
@@ -17,6 +21,8 @@ $(document).ready(function () {
         } else {
             window.location.href = "403.html";
         }
+    } else {
+        window.location.href = "403.html";
     }
 
     $.ajax({
@@ -35,6 +41,11 @@ $(document).ready(function () {
                 console.log("null");
             }
         }
+    })
+
+    $("#btn-sign-out").click(function () {
+        localStorage.removeItem("staff");
+        window.location.href = "../login.html";
     })
 
 })

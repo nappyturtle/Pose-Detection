@@ -2,8 +2,15 @@ var editor;
 
 $(document).ready(function () {
     currentStaff = JSON.parse(localStorage.getItem("staff"));
-    if (currentStaff != undefined) {
-        if (currentStaff.roleId == 1 || currentStaff == 2) {
+    if (currentStaff != undefined && currentStaff != null) {
+        /*$("#btn-sign-out").click(function () {
+            localStorage.removeItem("staff");
+            window.location.href = "../login.html";
+        })*/
+        if (currentStaff.roleId != 1) {
+            $("#admin-authorized").prop('hidden', true);
+        }
+        if (currentStaff.roleId == 1 || currentStaff.roleId == 2) {
             console.log("init..............: " + currentStaff);
             $("#navbar-nav-imgUrl").attr('src', currentStaff.imgUrl);
             $("#navbar-nav-username").html(currentStaff.username);
@@ -22,8 +29,10 @@ $(document).ready(function () {
             initDataTable(4);
 
         } else {
-            window.location.href = "403.html";
+            window.location.href = "../403.html";
         }
+    } else {
+        window.location.href = "../403.html";
     }
 
     function initDataTable(roleId) {
@@ -45,16 +54,22 @@ $(document).ready(function () {
                     searching: true,
                     ordering: true,
                     info: true,
-                    //autoWidth: true,
+                    autoWidth: true,
                     data: res,
                     columnDefs: [
+                        {
+                            searchable: false,
+                            orderable: false,
+                            targets: 0
+                        },
                         {
                             targets: 1,
                             searchable: false,
                             orderable: false,
+                            className: 'dt-body-center',
                             render: function (data, type, row) {
                                 if (type === 'display') {
-                                    data = '<img style="width: 50px; height: 50px" src="' + data + ' "/>';
+                                    data = '<img style="width: 50px; height: 50px; vertical-align: middle" src="' + data + ' "/>';
                                 }
                                 return data;
                             }
@@ -62,48 +77,73 @@ $(document).ready(function () {
                             targets: 4,
                             searchable: false,
                             orderable: false,
-                            className: 'dt-body-center',
-                            render: function (data, type, full, meta) {
-                                return '<input type="checkbox" class="editor-active dt-body-center">';
-                            }
+                            className: 'dt-body-center'
                         }
                     ],
                     columns: [
                         {
                             data: null,
-                            "sortable": false,
-                            render: function () {
-                                return '<p></p>'
-                            }
+                            sortable: false,
+                            width: 50,
+                            orderable: false,
+                            className: 'row-index',
+                            /*render: function (index) {
+                                return '<p class="stt"></p>'
+                            }*/
                         },
-                        {data: "imgUrl"},
-                        {data: "username"},
-                        {data: "email"},
-                        {data: "status"},
+                        {
+                            data: "imgUrl",
+                            className: "col-xs-2"
+                        }
+                        ,
+                        {
+                            data: "username"
+                        }
+                        ,
+                        {
+                            data: "email"
+                        }
+                        ,
+                        {
+                            data: "status"
+                        }
+                        ,
                         {
                             data: "id",
-                            searchable: false,
-                            orderable: false,
-                            render: function (data, type, row) {
-                                if (type === 'display') {
-                                    data = '<button type="button" class="btn btn-info btn-get-details" value="' + data + '">Xem chi tiết</button>';
+                            searchable:
+                                false,
+                            orderable:
+                                false,
+                            render:
+
+                                function (data, type, row) {
+                                    if (type === 'display') {
+                                        data = '<button type="button" class="btn btn-info btn-get-details" value="' + data + '">Xem chi tiết</button>';
+                                    }
+                                    return data;
                                 }
-                                return data;
-                            }
                         }
                     ],
-                    rowCallback: function (row, data) {
-                        // Set the checked state of the checkbox in the table
-                        $('input.editor-active', row).prop('checked', data.status == "active");
+                    order: [[1, 'asc']],
+                    rowCallback: function (row, data, index) {
+                        $('.row-index', row).html(index + 1);
                     },
                     buttons: [
                         {extend: "edit"},
                     ],
-                    select: {
-                        style: 'os',
-                        selector: 'td:first-child'
-                    }
+                    select:
+                        {
+                            style: 'os',
+                            selector:
+                                'td:first-child'
+                        }
                 });
+                /* dataSrc.on('draw.dt', function () {
+                     var PageInfo = $table.DataTable().page.info();
+                     t.column(0, {page: 'current'}).nodes().each(function (cell, i) {
+                         cell.innerHTML = i + 1 + PageInfo.start;
+                     });
+                 });*/
                 //updateData($table, dataSrc);
                 getAccountDetails($table, dataSrc);
             }
