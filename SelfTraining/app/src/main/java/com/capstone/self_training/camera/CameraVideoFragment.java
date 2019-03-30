@@ -644,7 +644,6 @@ public abstract class CameraVideoFragment extends BaseFragment {
         } catch (CameraAccessException | IOException e) {
             e.printStackTrace();
         }
-
     }
 
     private void closePreviewSession() {

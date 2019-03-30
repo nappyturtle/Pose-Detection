@@ -115,12 +115,10 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
                 Activity activity = getActivity();
                 if (isAdded() && activity != null) {
                     mSpeechRecognizer.stopListening();
-                     mSpeechRecognizer.startListening(mSpeechRecognizerIntent);
+                    mSpeechRecognizer.startListening(mSpeechRecognizerIntent);
                     mEditor.putString(getString(R.string.testSpeech), editText_Camera.getText().toString());
                     mEditor.apply();
-                    editText_Camera.setText("");
                 }
-
                 handler.postDelayed(test, 6000); //wait 6 sec and run again
             }
         }
@@ -140,12 +138,13 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         checkPermission();
-        Context context = getContext();
-        audioManager = (AudioManager) context.getSystemService(context.AUDIO_SERVICE);
+//
+//        Context context = getContext();
+//        audioManager = (AudioManager) context.getSystemService(context.AUDIO_SERVICE);
+//        audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
+//        audioManager.startBluetoothSco();
+//        audioManager.setBluetoothScoOn(true);
 
-        audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
-        audioManager.startBluetoothSco();
-        audioManager.setBluetoothScoOn(true);
         mSpeechRecognizer = SpeechRecognizer.createSpeechRecognizer(this.getContext());
         mSpeechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
@@ -240,7 +239,7 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
         mPerferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         mEditor = mPerferences.edit();
         startTest();
-        mTimer = new CountDownTimer(4000, 1000) {
+        mTimer = new CountDownTimer(2500, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
 
