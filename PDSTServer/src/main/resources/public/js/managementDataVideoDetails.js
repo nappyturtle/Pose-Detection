@@ -16,8 +16,7 @@ $(document).ready(function () {
             console.log("init..............: " + currentStaff);
             $("#navbar-nav-imgUrl").attr('src', currentStaff.imgUrl);
             $("#navbar-nav-username").html(currentStaff.username);
-            $("#pull-lelf-user-img").attr('src', currentStaff.imgUrl);
-            $("#pull-lelf-username").html(currentStaff.username);
+
             $("#dropdown-menu-imgUrl").attr('src', currentStaff.imgUrl);
             $("#dropdown-menu-username").html(currentStaff.username);
             if (currentStaff.roleId == 1) {
@@ -28,68 +27,77 @@ $(document).ready(function () {
             //init course data
             initVideoDetail(parseInt(videoId, 10));
 
-            editVideoDetail(parseInt(videoId, 10), currentStaff.token);
+            clickButtonUpdate(parseInt(videoId, 10));
+
+
         } else {
             window.location.href = "403.html";
         }
-    }else {
+    } else {
         window.location.href = "403.html";
     }
 })
-
-function editVideoDetail(videoId, token) {
+function clickButtonUpdate(courseId) {
+    $("#btn-video-update").click(function () {
+        $("#mUpdateInfo").html("Bạn có muốn thay đổi thông tin!");
+        $("#btn-save-change").show();
+    })
+    $("#btn-save-change").click(function () {
+        editVideoDetail(courseId)
+    })
+}
+function editVideoDetail(videoId) {
 
     console.log('da vao edit course nay ne ');
 
-    $('form').submit(function (event) {
-        event.preventDefault();
-        console.log("You pressed OK!");
-        var radioValue = $("input[name='r3-status']").iCheck('update')[0].checked;
-        console.log('radioValue = ' + radioValue);
-        var status = "";
-        if (radioValue) {
-            status = "active"
+    var radioValue = $("input[name='r3-status']").iCheck('update')[0].checked;
+    console.log('radioValue = ' + radioValue);
+    var status = "";
+    if (radioValue) {
+        status = "active"
+    } else {
+        status = "inactive";
+    }
+    var formData = {
+        id: videoId,
+        //title: $("#detail-video-name").val(),
+        //numOfView: parseInt($('#detail-video-numOfView').val(), 10),
+        status: status
+    };
+
+    $.ajax({
+        url: "/video/editVideoStatusByStaffOrAdmin",
+        type: "PUT",
+        data: JSON.stringify(formData),
+        headers: {
+            "content-type": "application/json; charset=UTF-8",
+            "Authorization": currentStaff.token
+        },
+        dataType: "json",
+
+    }).done(function (res) {
+        console.log(res);
+
+        if (res != null) {
+            if (res == true) {
+                $("#mUpdateInfo").html("Cập nhập thành công!");
+                setInterval(function () {
+                    $('#modal-info').modal('hide');
+                    $("#btn-save-change").hide();
+                }, 2000);
+                location.reload();
+            } else {
+                $("#mUpdateInfo").html("Cập nhập thất bại!");
+                setInterval(function () {
+                    $('#modal-info').modal('hide');
+                    $("#btn-save-change").hide();
+                }, 2000);
+                location.reload();
+            }
         } else {
-            status = "inactive";
+            console.log("cập nhập thất bại");
         }
-        var formData = {
-            id          : videoId,
-            title       : $("#detail-video-name").val(),
-            numOfView   : parseInt($('#detail-video-numOfView').val(), 10),
-            status      : status
-        };
-        //alert("Your are a - " + title + "-" + numOfView + "-" + status);
-        var r = confirm("Bạn có muốn thay đổi thông tin không?");
-        if (r == true) {
-            $.ajax({
-                url: "/video/editVideoStatusByStaffOrAdmin",
-                type: "PUT",
-                data: JSON.stringify(formData),
-                headers: {
-                    "content-type": "application/json; charset=UTF-8",
-                    "Authorization": token
-                },
-                dataType: "json",
 
-            }).done(function (res) {
-                console.log(res);
-                if (res != null) {
-                    if (res == true) {
-                        alert("Cập nhập thành công!");
-                        location.reload();
-                    } else {
-                        alert("Cập nhập thất bại!")
-                    }
-                } else {
-                    console.log("update thật bại");
-                }
-
-            });
-
-
-        } else {
-            console.log("You pressed Cancel!");
-        }
     });
 
 }
@@ -114,14 +122,23 @@ function initVideoDetail(videoId) {
                     //$("#rdActive").prop("checked", true);
                     $("#rdActive").iCheck('check');
                     $("#rdActive").val(res.status);
+                    $("#rdInActive").val("inactive");
                 } else {
                     //$("#rdInActive").prop("checked", true);
                     $("#rdInActive").iCheck('check');
                     $("#rdInActive").val(res.status);
+                    $("#rdActive").val("active");
                 }
                 // $('#detail-video-content source').attr('src', res.content);
                 // $("#detail-video-content")[0].load();
-                $('#detail-video-content').attr('src', res.content);
+                // $('#videoLink').attr('href', res.content);
+                // $('.mfp-hidden').attr("style", "display: none !important");
+
+                // var content = $('#videoLink').attr('href');
+                // console.log(content);
+                // displayVideo(content);
+                //$("#videoLink").attr("href",res.content);
+                displayVideo(res.content, res.title);
 
             } else {
                 console.log("null");
@@ -129,4 +146,15 @@ function initVideoDetail(videoId) {
         }
     })
 }
+
+function displayVideo(content, title) {
+    $("#videoLink").click(function () {
+        $("#detail-video-content").attr("src", content);
+        $("#myModalLabel").html(title);
+    });
+
+
+}
+
+
 

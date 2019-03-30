@@ -51,6 +51,7 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
                 .antMatchers("/favicon.*")
                 .antMatchers("/js/**")
                 .antMatchers("/js/**js")
+                .antMatchers("/css/**css")
                 .antMatchers("/**txt")
                 .antMatchers("/account/details/**");
     }

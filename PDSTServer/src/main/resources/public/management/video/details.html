@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../../bower_components/bootstrap/dist/css/bootstrap.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="../../bower_components/font-awesome/css/font-awesome.min.css">
+
     <!-- Ionicons -->
     <link rel="stylesheet" href="../../bower_components/Ionicons/css/ionicons.min.css">
     <!-- daterange picker -->
@@ -30,6 +31,7 @@
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="../../dist/css/skins/_all-skins.min.css">
 
+    <link rel="stylesheet" href="../../css/videoDetail.css"/>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -40,6 +42,8 @@
     <!-- Google Font -->
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -50,7 +54,7 @@
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-mini"><b>S</b>T</span>
             <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b>Seft</b>Trainging</span>
+            <span class="logo-lg"><b>Self-Training</b></span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top">
@@ -96,15 +100,15 @@
         <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar">
             <!-- Sidebar user panel -->
-            <div class="user-panel">
-                <div class="pull-left image">
-                    <img src="" class="img-circle" alt="User Image" id="pull-lelf-user-img">
-                </div>
-                <div class="pull-left info">
-                    <p id="pull-lelf-username">Alexander Pierce</p>
-                    <i class="fa fa-circle text-success"></i> Online
-                </div>
-            </div>
+            <!--<div class="user-panel">-->
+            <!--<div class="pull-left image">-->
+            <!--<img src="" class="img-circle" alt="User Image" id="pull-lelf-user-img">-->
+            <!--</div>-->
+            <!--<div class="pull-left info">-->
+            <!--<p id="pull-lelf-username">Alexander Pierce</p>-->
+            <!--<i class="fa fa-circle text-success"></i> Online-->
+            <!--</div>-->
+            <!--</div>-->
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu" data-widget="tree">
                 <li class="header">MAIN NAVIGATION</li>
@@ -128,9 +132,8 @@
                             video</a></li>
                         <li><a href="../course/layout.html"><i class="fa fa-circle-o"></i> Quản lý khóa
                             học</a></li>
-                        <li><a href="../suggestion/layout.html"><i class="fa fa-circle-o"></i> Quản lý kết quả tập</a>
-                        </li>
-
+                        <!--<li><a href="../suggestion/layout.html"><i class="fa fa-circle-o"></i> Quản lý kết quả tập</a>-->
+                        <!--</li>-->
                     </ul>
                 </li>
 
@@ -142,8 +145,10 @@
             </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="../../createnewaccount.html?roleId=3"><i class="fa fa-circle-o"></i> Tạo tài khoản trainer</a></li>
-                        <li id="admin-authorized"><a href="../../createnewaccount.html?roleId=2"><i class="fa fa-circle-o"></i> Tạo tài khoản nhân viên</a></li>
+                        <li><a href="../../createnewaccount.html?roleId=3"><i class="fa fa-circle-o"></i> Tạo tài khoản
+                            trainer</a></li>
+                        <li id="admin-authorized"><a href="../../createnewaccount.html?roleId=2"><i
+                                class="fa fa-circle-o"></i> Tạo tài khoản nhân viên</a></li>
                     </ul>
                 </li>
             </ul>
@@ -158,12 +163,12 @@
             <h1>
                 Chi tiết video
             </h1>
-            <ol class="breadcrumb">
-                <li><a href="../../dashboard.html"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-                <li>Quản lý</a></li>
-                <li><a href="../course/layout.html">Quản lý video</a></li>
-                <li class="active">Chi tiết video</li>
-            </ol>
+            <!--<ol class="breadcrumb">-->
+            <!--<li><a href="../../dashboard.html"><i class="fa fa-dashboard"></i> Dashboard</a></li>-->
+            <!--<li>Quản lý</a></li>-->
+            <!--<li><a href="../course/layout.html">Quản lý video</a></li>-->
+            <!--<li class="active">Chi tiết video</li>-->
+            <!--</ol>-->
         </section>
 
         <!-- Main content -->
@@ -173,56 +178,144 @@
                 <div class="col-md-1"></div>
                 <div class="col-md-10">
 
-                    <div class="box box-primary">
+                    <div class="box box-primary col-md-12">
 
-                        <div class="box-body box-profile">
-                            <img style="width: 160px; height: 160px" class="profile-user-img img-responsive img-circle"
+                        <!--<div class="box-body box-profile">-->
+                        <!--<img style="width: 160px; height: 160px" class="profile-user-img img-responsive img-circle"-->
+                        <!--id="detail-video-thumbnailImg"-->
+                        <!--src="" alt="User profile picture">-->
+                        <!--</div>-->
+
+                        <div class="col-md-1"></div>
+                        <div class="col-md-4">
+                            <label style="margin-top: 50px">Ảnh đại diện</label>
+                            <img style="width: 400px; height: 250px; margin-top: 5px"
+                                 class="img-responsive img-thumbnail"
                                  id="detail-video-thumbnailImg"
-                                 src="" alt="User profile picture">
+                                 src="../../dist/img/user4-128x128.jpg" alt="User profile picture">
                         </div>
-                        <form method="post">
-                            <div class="box-body">
+
+                            <div class="col-md-7" style="margin-top: 50px;">
+                                <!-- khóa học-->
                                 <div class="form-group col-md-12">
                                     <div class="col-md-1"></div>
                                     <div class="col-md-10">
+                                        <label>Khóa học</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-certificate" aria-hidden="true"></i>
+                                            </div>
+                                            <input type="text" class="form-control" id="detail-video-name" readonly>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <!--<div class="form-group col-md-12">-->
+                                <!--<div class="col-md-1"></div>-->
+                                <!--<div class="col-md-10">-->
+                                <!--<div class="row">-->
+                                <!--<div class="col-sm-8"><label>Tên khóa học</label></div>-->
+                                <!--<div class="col-sm-3"><label>Số lượt xem</label></div>-->
+                                <!--</div>-->
+
+                                <!--<div class="row">-->
+                                <!--<div class="col-sm-8">-->
+                                <!--<div class="input-group">-->
+                                <!--<div class="input-group-addon">-->
+                                <!--<i class="fa fa-list-alt"></i>-->
+                                <!--</div>-->
+
+                                <!--<input type="text" class="form-control" readonly-->
+                                <!--data-mask id="detail-course-name"-->
+                                <!--id="detail-course-name">-->
+                                <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="col-sm-3">-->
+                                <!--<input type="text" class="form-control"-->
+                                <!--id="detail-video-numOfView">-->
+                                <!--</div>-->
+                                <!--</div>-->
+
+                                <!--</div>-->
+                                <!--</div>-->
+
+                                <!-- Tên video-->
+                                <div class="form-group col-md-12">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-8">
                                         <label>Tên video</label>
                                         <div class="input-group">
                                             <div class="input-group-addon">
-                                                <i class="fa fa-certificate"></i>
+                                                <i class="fa fa-video-camera" aria-hidden="true"></i>
                                             </div>
-                                            <input type="text" class="form-control" id="detail-video-name">
+                                            <input type="text" class="form-control" id="detail-course-name" readonly>
                                         </div>
                                     </div>
 
-                                    <!-- /.input group -->
                                 </div>
-                                <!-- /.form group -->
 
+                                <!-- Số lượt xem-->
                                 <div class="form-group col-md-12">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-5">
+                                        <label>Số lượt xem</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-eye" aria-hidden="true"></i>
+                                            </div>
+                                            <input type="text" class="form-control" id="detail-video-numOfView"
+                                                   readonly>
+                                        </div>
+                                    </div>
 
+                                </div>
+
+
+                                <!--<div class="form-group col-md-12 w-100">-->
+                                <!--<div class="col-md-1"></div>-->
+                                <!--<div class="col-md-10">-->
+                                <!--<label>Nội dung</label>-->
+
+                                <!--<div class="embed-responsive embed-responsive-16by9">-->
+                                <!--<iframe id="detail-video-content"-->
+                                <!--class="embed-responsive-item" src="" allowfullscreen></iframe>-->
+                                <!--</div>-->
+                                <!--&lt;!&ndash;<a class="embed-responsive embed-responsive-16by9"&ndash;&gt;-->
+                                <!--&lt;!&ndash;href="" id="detail-video-content">Link Video</a>&ndash;&gt;-->
+                                <!--</div>-->
+
+                                <!--</div>-->
+
+                                <div class="form-group col-md-10">
                                     <div class="col-md-1"></div>
                                     <div class="col-md-10">
-                                        <div class="row">
-                                            <div class="col-sm-8"><label>Tên khóa học</label></div>
-                                            <div class="col-sm-3"><label>Số lượt xem</label></div>
-                                        </div>
+                                        <div class="col-md-6"><label>Nội dung:</label></div>
+                                        <div class="col-md-6">
+                                            <a type="text" href="" id="videoLink" style="text-decoration:underline" data-toggle="modal" data-target="#myModal">Click để
+                                                xem</a>
+                                            <!--<div id="videostory" class="mfp-hidden">-->
+                                                <!--<iframe id="detail-video-content" frameborder="0"-->
+                                                <!--class="embed-responsive-item" src="" allowfullscreen></iframe>-->
+                                                <!--<a href="#" class="close">X</a>-->
+                                            <!--</div>-->
+                                            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="font-size:36px;color:black">&times;</button>
+                                                            <h4 class="modal-title" id="myModalLabel"></h4>
+                                                        </div>
 
-                                        <div class="row">
-                                            <div class="col-sm-8">
-                                                <div class="input-group">
-                                                    <div class="input-group-addon">
-                                                        <i class="fa fa-list-alt"></i>
+                                                        <div class="modal-body-video">
+                                                            <iframe src="" id="detail-video-content" class="embed-responsive-item" name="info" seamless="" height="100%" width="100%" allowfullscreen></iframe>
+                                                        </div>
+
                                                     </div>
-
-                                                    <input type="text" class="form-control" readonly
-                                                           data-mask id="detail-course-name"
-                                                           id="detail-course-name">
                                                 </div>
                                             </div>
-                                            <div class="col-sm-3">
-                                                <input type="text" class="form-control"
-                                                       id="detail-video-numOfView">
-                                            </div>
+
+
                                         </div>
 
                                     </div>
@@ -230,60 +323,33 @@
 
 
 
-                                <div class="form-group col-md-12 w-100">
-
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-10">
-                                        <label>Nội dung</label>
-
-                                            <!--<div class="input-group-addon">-->
-                                                <!--<i class="fa fa-file-video-o"></i>-->
-                                            <!--</div>-->
-                                            <!--<video class="form-control" height="500px" controls-->
-
-                                                   <!--id="detail-video-content">-->
-                                                <!--<source src=""-->
-                                                        <!--type="video/mp4"/>-->
-                                            <!--</video>-->
-
-                                        <div class="embed-responsive embed-responsive-16by9">
-                                            <iframe id="detail-video-content"
-                                                    class="embed-responsive-item" src="" allowfullscreen></iframe>
-                                        </div>
-                                    </div>
-
-                                    <!-- /.input group -->
-                                </div>
-
-                                <!-- IP mask -->
+                                <!-- Trang thái-->
                                 <div class="form-group col-md-12">
                                     <div class="col-md-1"></div>
-                                    <div class="col-md-10">
-                                        <label style="margin-bottom: 8px">Trạng thái</label>
+                                    <div class="col-md-11">
+                                        <label>Trạng thái</label>
 
                                         <div class="input-group col-md-12">
-                                            <label class="col-md-4">
+                                            <label class="col-md-6" style="font-size:17px">
                                                 <input type="radio" name="r3-status" class="flat-red rd-active"
                                                        id="rdActive"/> Đang hoạt động</label>
-                                            <label>
+                                            <label class="col-md-6" style="font-size:17px">
                                                 <input type="radio" name="r3-status" class="flat-red rd-inactive"
                                                        id="rdInActive"/> Ngưng hoạt động</label>
                                         </div>
-
-                                        <!-- /.input group -->
                                     </div>
                                 </div>
-                                <!-- /.form group -->
 
+                                <!-- Button -->
                                 <div class="form-group col-md-12">
-                                    <div class="col-md-9"></div>
-                                    <div class="col-md-2">
-                                        <button class="btn btn-info btn-block" type="submit">Cập nhập</button>
+                                    <div class="col-md-7"></div>
+                                    <div class="col-md-4">
+                                        <button class="btn btn-info btn-block" type="submit"id="btn-video-update"
+                                                data-toggle="modal" data-target="#modal-info">Cập nhập</button>
                                     </div>
                                 </div>
                                 <!-- /.form group -->
                             </div>
-                        </form>
                         <!-- /.box-body -->
                     </div>
                     <!-- /.box -->
@@ -292,6 +358,26 @@
             </div>
             <!-- /.row -->
 
+            <div class="modal modal-info fade" id="modal-info">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="font-size: 36px; color: black">
+                                <span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Thay đổi thông tin khóa học</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p id="mUpdateInfo">One fine body&hellip;</p>
+                        </div>
+                        <div class="modal-footer">
+                            <!--<button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Đóng</button>-->
+                            <button type="button" class="btn btn-outline" id="btn-save-change">Thay đổi</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
         </section>
         <!-- /.content -->
     </div>
@@ -304,8 +390,11 @@
 
 <!-- jQuery 3 -->
 <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+
 <!-- Bootstrap 3.3.7 -->
+
 <script src="../../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
 <!-- Select2 -->
 <script src="../../bower_components/select2/dist/js/select2.full.min.js"></script>
 <!-- InputMask -->
@@ -337,12 +426,6 @@
         //Initialize Select2 Elements
         $('.select2').select2()
 
-        //Datemask dd/mm/yyyy
-        $('#datemask').inputmask('dd/mm/yyyy', {'placeholder': 'dd/mm/yyyy'})
-        //Datemask2 mm/dd/yyyy
-        $('#datemask2').inputmask('mm/dd/yyyy', {'placeholder': 'mm/dd/yyyy'})
-        //Money Euro
-        $('[data-mask]').inputmask()
 
         //iCheck for checkbox and radio inputs
         $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
@@ -363,5 +446,6 @@
     })
 </script>
 <script language="JavaScript" src="../../js/managementDataVideoDetails.js"></script>
+
 </body>
 </html>

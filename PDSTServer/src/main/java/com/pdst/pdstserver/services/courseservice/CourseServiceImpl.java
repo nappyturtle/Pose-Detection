@@ -156,10 +156,10 @@ public class CourseServiceImpl implements CourseService {
         Date date = Calendar.getInstance().getTime();
         Course course = courseRepository.findCourseById(dto.getId());
         course.setStatus(dto.getStatus());
-        course.setName(dto.getCoursename());
+        //course.setName(dto.getCoursename());
         course.setUpdatedTime(sdf.format(date));
-        course.setPrice(dto.getPrice());
-        course.setCategoryId(dto.getCategoryId());
+        //course.setPrice(dto.getPrice());
+        //course.setCategoryId(dto.getCategoryId());
         Course courseRes = courseRepository.save(course);
         if (courseRes != null) {
             return true;
@@ -176,7 +176,8 @@ public class CourseServiceImpl implements CourseService {
     public CourseDTOFrontEnd getCourseDetailById(int courseId) {
 
         Course course = courseRepository.findCourseById(courseId);
-        List<Category> categoryList = categoryRepository.findAll();
+        Category category = categoryRepository.findCategoryById(course.getCategoryId());
+        //List<Category> categoryList = categoryRepository.findAll();
         Account account = accountRepository.findAccountById(course.getAccountId());
         CourseDTOFrontEnd dto = new CourseDTOFrontEnd();
 
@@ -187,7 +188,8 @@ public class CourseServiceImpl implements CourseService {
         dto.setPrice(course.getPrice());
         dto.setStatus(course.getStatus());
         dto.setCategoryId(course.getCategoryId());
-        dto.setCategoryList(categoryList);
+        //dto.setCategoryList(categoryList);
+        dto.setCategoryname(category.getName());
         return dto;
     }
 

@@ -51,8 +51,13 @@ $(document).ready(function () {
                     data: res
                     ,
                     columns: [
-
-                        {data: "stt"},
+                        {
+                            data: "stt",
+                            sortable: true,
+                            width: 50,
+                            orderable: true,
+                            className: 'row-index'
+                        },
                         {data: "title"},
                         {data: "numOfView"},
                         {data: "coursename"},

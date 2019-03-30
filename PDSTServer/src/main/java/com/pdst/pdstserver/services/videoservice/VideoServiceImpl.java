@@ -280,8 +280,8 @@ public class VideoServiceImpl implements VideoService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date date = Calendar.getInstance().getTime();
         Video video = videoRepository.findVideoById(dto.getId());
-        video.setTitle(dto.getTitle());
-        video.setNumOfView(dto.getNumOfView());
+        //video.setTitle(dto.getTitle());
+        //video.setNumOfView(dto.getNumOfView());
         video.setStatus(dto.getStatus());
         video.setUpdatedTime(sdf.format(date));
         Video videRes = videoRepository.save(video);

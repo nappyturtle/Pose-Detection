@@ -14,8 +14,8 @@ $(document).ready(function () {
             console.log("init..............: " + currentStaff.token);
             $("#navbar-nav-imgUrl").attr('src', currentStaff.imgUrl);
             $("#navbar-nav-username").html(currentStaff.username);
-            $("#pull-lelf-user-img").attr('src', currentStaff.imgUrl);
-            $("#pull-lelf-username").html(currentStaff.username);
+            // $("#pull-lelf-user-img").attr('src', currentStaff.imgUrl);
+            // $("#pull-lelf-username").html(currentStaff.username);
             $("#dropdown-menu-imgUrl").attr('src', currentStaff.imgUrl);
             $("#dropdown-menu-username").html(currentStaff.username);
             if (currentStaff.roleId == 1) {
@@ -52,7 +52,13 @@ $(document).ready(function () {
                     ,
                     columns: [
 
-                        {data: "stt"},
+                        {
+                            data: "stt",
+                            sortable: true,
+                            width: 50,
+                            orderable: true,
+                            className: 'row-index'
+                        },
                         {data: "coursename"},
                         {data: "categoryname"},
                         {data: "accountname"},

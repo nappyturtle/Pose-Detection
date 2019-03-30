@@ -1,0 +1,42 @@
+/*body{*/
+    /*background-color:#333;*/
+    /*color:#ccc;*/
+/*}*/
+
+/*.container{*/
+    /*margin-top:60px;*/
+    /*padding: 60px;*/
+    /*border:10px;*/
+    /*border-radius:26px;*/
+
+    /*background: url('http://25.media.tumblr.com/ad80d557aee5736d7b01ca13846781f5/tumblr_n10n5ygMJI1st5lhmo1_1280.jpg');*/
+
+/*}*/
+/* change standard modal behavior */
+.modal-body-video {
+    height: 600px;
+    overflow: auto;
+}
+
+
+.modal-backdrop {
+    background-color: #424530;
+}
+
+.modal-backdrop.fade.in
+{
+    opacity: .8;
+}
+
+.modal-lg {
+    max-width: 900px;}
+@media (min-width: 768px) {
+    .modal-lg {
+        width: 100%;
+    }
+}
+@media (min-width: 992px) {
+    .modal-lg {
+        width: 900px;
+    }
+}

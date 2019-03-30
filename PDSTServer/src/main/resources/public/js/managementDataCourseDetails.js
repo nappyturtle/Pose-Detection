@@ -16,8 +16,8 @@ $(document).ready(function () {
             console.log("init..............: " + currentStaff);
             $("#navbar-nav-imgUrl").attr('src', currentStaff.imgUrl);
             $("#navbar-nav-username").html(currentStaff.username);
-            $("#pull-lelf-user-img").attr('src', currentStaff.imgUrl);
-            $("#pull-lelf-username").html(currentStaff.username);
+            // $("#pull-lelf-user-img").attr('src', currentStaff.imgUrl);
+            // $("#pull-lelf-username").html(currentStaff.username);
             $("#dropdown-menu-imgUrl").attr('src', currentStaff.imgUrl);
             $("#dropdown-menu-username").html(currentStaff.username);
             if (currentStaff.roleId == 1) {
@@ -28,22 +28,30 @@ $(document).ready(function () {
             //init course data
             initCourseDetail(parseInt(courseId, 10));
 
-            editCourseDetail(parseInt(courseId, 10), currentStaff.token);
+            clickButtonUpdate(parseInt(courseId, 10));
         } else {
             window.location.href = "403.html";
         }
-    }else {
+    } else {
         window.location.href = "403.html";
     }
 
 })
-
-function editCourseDetail(courseId, token) {
+function clickButtonUpdate(courseId) {
+    $("#btn-course-update").click(function () {
+        $("#mUpdateInfo").html("Bạn có muốn thay đổi thông tin!");
+        $("#btn-save-change").show();
+    })
+    $("#btn-save-change").click(function () {
+        editCourseDetail(courseId)
+    })
+}
+function editCourseDetail(courseId) {
 
     console.log('da vao edit course nay ne ');
 
-    $('form').submit(function (event) {
-        event.preventDefault();
+    // $('form').submit(function (event) {
+    //     event.preventDefault();
         console.log("You pressed OK!");
         var radioValue = $("input[name='r3-status']").iCheck('update')[0].checked;
 
@@ -55,44 +63,58 @@ function editCourseDetail(courseId, token) {
         }
         var formData = {
             id: courseId,
+            /*
             coursename: $("#detail-course-name").val(),
             categoryId: parseInt($('#slt-category option:selected').val(), 10),
             price: parseInt($("#detail-course-price").val(), 10),
+            */
             status: status
         };
-        //alert("Your are a - " + courseId + "-" + coursename + "-" + categoryId + "-" + price + "-" + status);
-        var r = confirm("Bạn có muốn thay đổi thông tin không?");
-        if (r == true) {
+
             $.ajax({
                 url: "/course/editCourseByStaffOrAdmin",
                 type: "PUT",
                 data: JSON.stringify(formData),
                 headers: {
                     "content-type": "application/json; charset=UTF-8",
-                    "Authorization": token
+                    "Authorization": currentStaff.token
                 },
                 dataType: "json",
 
             }).done(function (res) {
                 console.log(res);
+                // if (res != null) {
+                //     if (res == true) {
+                //         alert("Cập nhập thành công!");
+                //         location.reload();
+                //     } else {
+                //         alert("Cập nhập thất bại!")
+                //     }
+                // } else {
+                //     console.log("update thật bại");
+                // }
+
                 if (res != null) {
                     if (res == true) {
-                        alert("Cập nhập thành công!");
+                        $("#mUpdateInfo").html("Cập nhập thành công!");
+                        setInterval(function () {
+                            $('#modal-info').modal('hide');
+                            $("#btn-save-change").hide();
+                        },2000);
                         location.reload();
                     } else {
-                        alert("Cập nhập thất bại!")
+                        $("#mUpdateInfo").html("Cập nhập thất bại!");
+                        setInterval(function () {
+                            $('#modal-info').modal('hide');
+                            $("#btn-save-change").hide();
+                        },2000);
+                        location.reload();
                     }
                 } else {
-                    console.log("update thật bại");
+                    console.log("cập nhập thất bại");
                 }
 
             });
-
-
-        } else {
-            console.log("You pressed Cancel!");
-        }
-    });
 
 }
 
@@ -111,23 +133,32 @@ function initCourseDetail(courseId) {
                 $("#detail-course-thumbnailImg").attr('src', res.thumbnail);
                 $("#detail-course-name").val(res.coursename);
                 $("#detail-course-trainer").val(res.accountname);
-                $("#detail-course-price").val(res.price);
+
+                // Convert to String and add dots every 3 digits
+                var moneyDots = res.price.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
+
+                $("#detail-course-price").val(moneyDots+".000");
+                $("#detail-course-category").val(res.categoryname);
                 if (res.status.toLowerCase() == "active") {
                     //$("#rdActive").prop("checked", true);
                     $("#rdActive").iCheck('check');
                     $("#rdActive").val(res.status);
+                    $("#rdInActive").val("inactive");
                 } else {
                     //$("#rdInActive").prop("checked", true);
                     $("#rdInActive").iCheck('check');
                     $("#rdInActive").val(res.status);
+                    $("#rdActive").val("active");
                 }
 
+                /*
                 $('#slt-category').html('');
                 //iterate over the data and append a select option
                 // $('#slt-category').append('<option value="0">Chọn danh mục...</option>');
                 $.each(res.categoryList, function (key, val) {
                     $('#slt-category').append('<option value="' + val.id + '"' + (val.id == res.categoryId ? ' selected' : '') + '>' + val.name + '</option>');
                 })
+                */
             } else {
                 console.log("null");
             }

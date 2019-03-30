@@ -52,7 +52,7 @@ public class CourseController {
 
     @PutMapping("editCourseByStaffOrAdmin")
     public boolean editCourseByStaffOrAdmin(@RequestBody CourseDTOFrontEnd dto) {
-        System.out.println(dto.getId() + " - "+dto.getCoursename() + "-" + dto.getPrice());
+        System.out.println(dto.getId() + " - "+dto.getStatus());
         return courseService.editCourseByStaffOrAdmin(dto);
     }
 
