@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Seft Training | Tạo tài khoản</title>
+    <title>Self-Training | Tạo tài khoản</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
@@ -47,7 +47,7 @@
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-mini"><b>S</b>T</span>
             <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b>Seft</b>Trainging</span>
+            <span class="logo-lg"><b>Self-</b>Training</span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top">
@@ -78,6 +78,9 @@
                             </li>
                             <!-- Menu Footer-->
                             <li class="user-footer">
+                                <div class="pull-left">
+                                    <a href="management/account/profile.html" class="btn btn-default btn-flat">Tài khoản</a>
+                                </div>
                                 <div class="pull-right">
                                     <a href="#" class="btn btn-default btn-flat" id="btn-sign-out">Sign out</a>
                                 </div>
@@ -92,22 +95,10 @@
     <aside class="main-sidebar">
         <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar">
-            <!-- Sidebar user panel -->
-            <div class="user-panel">
-                <div class="pull-left image">
-                    <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image" id="pull-lelf-user-img">
-                </div>
-                <div class="pull-left info">
-                    <p id="pull-lelf-username">Alexander Pierce</p>
-                    <i class="fa fa-circle text-success"></i> Online
-                </div>
-            </div>
-            <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu" data-widget="tree">
-                <li class="header">MAIN NAVIGATION</li>
                 <li>
                     <a href="../../dashboard.html">
-                        <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                        <i class="fa fa-dashboard"></i> <span>Trang chủ</span>
                     </a>
                 </li>
 
@@ -121,27 +112,13 @@
                     <ul class="treeview-menu">
                         <li><a href="management/account/account.html"><i class="fa fa-circle-o"></i> Quản
                             lý tài khoản</a></li>
-                        <li><a href="management/video/layout.html"><i class="fa fa-circle-o"></i> Quản lý video</a></li>
-                        <li><a href="management/course/layout.html"><i class="fa fa-circle-o"></i> Quản lý khóa học</a>
+                        <li id="li-video-url"><a href="management/video/layout.html"><i class="fa fa-circle-o"></i> Quản lý video</a></li>
+                        <li id="li-course-url"><a href="management/course/layout.html"><i class="fa fa-circle-o"></i> Quản lý khóa học</a>
                         </li>
-                        <li><a href="management/suggestion/layout.html"><i class="fa fa-circle-o"></i> Quản lý kết quả
+                        <!--<li><a href="management/suggestion/layout.html"><i class="fa fa-circle-o"></i> Quản lý kết quả
                             tập</a>
-                        </li>
+                        </li>-->
 
-                    </ul>
-                </li>
-                <li class="treeview active">
-                    <a href="createnewaccount.html">
-                        <i class="fa fa-user"></i> <span>Tạo tài khoản mới</span>
-                        <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li id="menu-create-trainer"><a href="createnewaccount.html?roleId=3"><i class="fa fa-circle-o"></i> Tạo tài khoản
-                            trainer</a></li>
-                        <li id="admin-authorized"><a href="createnewaccount.html?roleId=2"><i
-                                class="fa fa-circle-o"></i> Tạo tài khoản nhân viên</a></li>
                     </ul>
                 </li>
             </ul>
@@ -156,11 +133,6 @@
             <h1>
                 Tạo tài khoản
             </h1>
-            <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-                <li class="#">Tạo tài khoản</li>
-                <li class="active">Tạo tài khoản <span id="breadcrumnb-role">trainer</span></li>
-            </ol>
         </section>
 
         <!-- Main content -->
@@ -169,76 +141,95 @@
             <div class="row">
                 <div class="col-md-1"></div>
                 <div class="col-md-10">
-
                     <div class="box box-primary">
                         <div class="box-body">
 
                             <div class="box-body box-profile">
                                 <h3 class="profile-username text-center">Tạo tài khoản mới</h3>
                             </div>
+                            <div class="col-md-6">
 
-                            <!--<form id="createForm">-->
-                            <div class="col-xs-12">
-                                <div class="col-xs-1"></div>
-                                <div class="col-xs-10">
-                                    <div class="form-group has-feedback">
-                                        <input class="form-control" placeholder="Username"
+                                <div class="form-group">
+                                    <label>Tên đăng nhập</label><span>  (4 đến 12 ký tự)</span>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="glyphicon glyphicon-user"></i>
+                                        </div>
+                                        <input class="form-control" placeholder="Tên đăng nhập" minlength="4" maxlength="12"
                                                id="create-username" required>
-                                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
                                     </div>
-                                    <div class="form-group has-feedback">
-                                        <input type="email" class="form-control" placeholder="Email"
-                                               id="create-email"
-                                               required>
-                                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-                                    </div>
+                                </div>
 
-                                    <div class="form-group has-feedback">
-                                        <input type="number" class="form-control" placeholder="Phone"
-                                               data-inputmask='"mask": "9999999999"' data-mask id="create-phone">
-                                        <span class="glyphicon glyphicon-phone form-control-feedback"></span>
-                                    </div>
-
-                                    <div class="form-group has-feedback">
-                                        <input type="password" class="form-control" placeholder="Password"
+                                <div class="form-group">
+                                    <label>Mật khẩu</label><span>  (ít nhất 6 ký tự)</span>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="glyphicon glyphicon-lock"></i>
+                                        </div>
+                                        <input type="password" class="form-control" placeholder="Mật khẩu" minlength="6"
                                                name="password"
                                                id="create-password" required>
-                                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                                     </div>
-                                    <div class="form-group has-feedback">
-                                        <input type="password" class="form-control" placeholder="Retype password"
-                                               name="retypePass"
-                                               id="create-retype-password" required>
-                                        <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
-                                    </div>
+                                </div>
 
-                                    <div class="row">
-                                        <div class="col-xs-8">
+                                <div class="form-group">
+                                    <label>Số điện thoại</label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="glyphicon glyphicon-phone"></i>
                                         </div>
-                                        <!-- /.col -->
-                                        <div class="col-xs-4">
-                                            <button type="submit" class="btn btn-primary btn-block btn-flat"
-                                                    data-toggle="modal" data-target="#modal-info"
-                                                    id="btn-create-new-account">Tạo tài
-                                                khoản
-                                            </button>
-                                        </div>
-                                        <!-- /.col -->
+                                        <input id="create-phone" type="number" class="form-control"
+                                               placeholder="Số điện thoại"
+                                               maxlength="10">
+                                        <!--<input type="text" class="form-control" data-inputmask='"mask": "(999) 999-9999"' data-mask>-->
                                     </div>
                                 </div>
 
                             </div>
-                            <!--</form>-->
-                            <!-- /.box-body -->
+                            <div class="col-mid-6">
+
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="glyphicon glyphicon-envelope"></i>
+                                        </div>
+                                        <input type="email" class="form-control" placeholder="Email"
+                                               id="create-email"
+                                               required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Xác nhận mật khẩu</label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="glyphicon glyphicon-log-in"></i>
+                                        </div>
+                                        <input type="password" class="form-control" placeholder="Xác nhận mật khẩu"
+                                               name="retypePass"
+                                               id="create-retype-password" required>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-8"></div>
+                                <div class="col-xs-4">
+                                    <button type="submit" class="btn btn-primary btn-block btn-flat"
+                                            data-toggle="modal" data-target="#modal-default"
+                                            id="btn-create-new-account">Tạo tài
+                                        khoản
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <!-- /.box -->
-
                 </div>
-            </div>
-            <!-- /.row -->
 
-            <div class="modal modal-info fade" id="modal-info">
+            </div>
+
+            <div class="modal fade" id="modal-default">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -250,8 +241,8 @@
                             <p id="mUpdateInfo">One fine body&hellip;</p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Đóng</button>
-                            <button type="button" class="btn btn-outline" id="btn-save-change">Thay đổi</button>
+                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Đóng</button>
+                            <button type="button" class="btn btn-primary" id="btn-save-change">Cập nhật</button>
                         </div>
                     </div>
                     <!-- /.modal-content -->
@@ -261,6 +252,7 @@
             <!-- /.modal -->
 
         </section>
+
         <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
