@@ -1,7 +1,4 @@
 $(document).ready(function () {
-    var url_string = window.location.href;
-    var url = new URL(url_string);
-    var accountId = url.searchParams.get("accountId");
 
     currentStaff = JSON.parse(localStorage.getItem("staff"));
     if (currentStaff != undefined && currentStaff != null) {
@@ -29,9 +26,10 @@ $(document).ready(function () {
                 $("#dropdown-menu-role").html("Staff");
             }
 
+            console.log(currentStaff);
             //init account data
             $.ajax({
-                url: "/account/update/" + accountId,
+                url: "/account/update/" + currentStaff.id,
                 type: "GET",
                 headers: {
                     "content-type": "application/json; charset=UTF-8"
@@ -52,23 +50,27 @@ $(document).ready(function () {
                             $("#detail-profile-role").html("Trainee");
                         } else if (res.roleId == 2) {
                             $("#detail-profile-role").html("Nhân viên");
+                        } else if (res.roleId == 1) {
+                            $("#detail-profile-role").html("Admin");
                         }
 
                         if (res.gender != null) {
                             if (res.gender.toLowerCase() == "male") {
-                                /*$("#rdMale").iCheck('check');*/
-                                $("#detail-profile-gender").val("Nam");
+                                $("#rdMale").iCheck('check');
+                                /*$("#detail-profile-gender").val("Nam");*/
                             } else if (res.gender.toLowerCase() == "female") {
-                                /*$("#rdFemale").iCheck('check');*/
-                                $("#detail-profile-gender").val("Nữ")
+                                $("#rdFemale").iCheck('check');
+                                /*$("#detail-profile-gender").val("Nữ")*/
                             }
                         }
 
                         if (res.status != null) {
                             if (res.status.toLowerCase() == "active") {
-                                $("#rdActive").iCheck('check');
+                                /*$("#rdActive").iCheck('check');*/
+                                $("#detail-profile-status").val("Đang hoạt động").css('color', 'green');
                             } else {
-                                $("#rdInActive").iCheck('check');
+                                /*$("#rdInActive").iCheck('check');*/
+                                $("#detail-profile-status").val("Ngừng hoạt động").css('color', 'red');
                             }
                         }
 
@@ -77,18 +79,8 @@ $(document).ready(function () {
                         })
 
                         $("#btn-profile-update").click(function () {
-                            var rdStatus = $("input[name='r3-status']").iCheck('update')[0].checked;
-                            var checkingStatus = "";
-                            if (rdStatus) {
-                                checkingStatus = "active"
-                            } else {
-                                checkingStatus = "inactive";
-                            }
-                            if (checkingStatus == res.status) {
-                                $("#mUpdateInfo").html("Chưa có thông tin nào được thay đổi...");
-                                $("#btn-save-change").hide();
-                            } else {
-                                $("#mUpdateInfo").html("Bạn có muốn thay đổi thông tin ?");
+                            if (validData()) {
+                                $("#mUpdateInfo").html("Bạn có muốn cập nhật thông tin không ?");
                                 $("#btn-save-change").show();
                             }
                         })
@@ -98,6 +90,26 @@ $(document).ready(function () {
                 }
             })
 
+            function validData() {
+                var email = $("#detail-profile-email").val();
+                if ($("#detail-profile-email").val().toString() == "") {
+                    $("#mUpdateInfo").html("Lỗi: Email không được bỏ trống!");
+                    $("#btn-save-change").hide();
+                    return false;
+                } else if (!validateEmail(email)) {
+                    $("#mUpdateInfo").html("Lỗi: Email không đúng định dạng!");
+                    $("#btn-save-change").hide();
+                    return false;
+                }
+
+                return true;
+            }
+
+            function validateEmail(email) {
+                var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                return re.test(email);
+            }
+
             function update($account) {
                 var today = new Date();
                 var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
@@ -106,20 +118,20 @@ $(document).ready(function () {
                 var isMale = false;
                 console.log(dateTime);
                 $account.updatedTime = dateTime;
-                /*$account.email = $("#detail-profile-email").val();
+                $account.email = $("#detail-profile-email").val();
                 $account.phone = $("#detail-profile-phone").val();
-                $account.address = $("#detail-profile-address").val();*/
+                $account.address = $("#detail-profile-address").val();
 
-                /*var rdGender = $("input[name='r4-gender']").iCheck('update')[0].checked;
+                var rdGender = $("input[name='r4-gender']").iCheck('update')[0].checked;
                 var gender = "";
                 if (rdGender) {
                     gender = "male"
                 } else {
                     gender = "female";
                 }
-                $account.gender = gender;*/
+                $account.gender = gender;
 
-                var rdStatus = $("input[name='r3-status']").iCheck('update')[0].checked;
+                /*var rdStatus = $("input[name='r3-status']").iCheck('update')[0].checked;
                 var status = "";
                 if (rdStatus) {
                     status = "active"
@@ -127,7 +139,7 @@ $(document).ready(function () {
                     status = "inactive";
                 }
                 $account.status = status;
-                console.log($account);
+                console.log($account);*/
 
                 $.ajax({
                     url: "/account/updateAccount",

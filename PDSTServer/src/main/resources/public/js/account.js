@@ -3,6 +3,12 @@ var editor;
 $(document).ready(function () {
     currentStaff = JSON.parse(localStorage.getItem("staff"));
     if (currentStaff != undefined && currentStaff != null) {
+        if (currentStaff.roleId == 1) {
+            $("#li-course-url").hide();
+            $("#li-video-url").hide();
+            $("#course-box-info").hide();
+            $("#video-box-info").hide();
+        }
         $("#btn-sign-out").click(function () {
             localStorage.removeItem("staff");
             window.location.href = "../../login.html";
@@ -24,9 +30,16 @@ $(document).ready(function () {
                 $("#dropdown-menu-role").html("Staff");
             }
 
-            initDataTable(3);
-
-            initDataTable(4);
+            var _data;
+            if (currentStaff.roleId == 1) {
+                getData(2);
+                $("#createNewAccount").html("Tạo nhân viên");
+                $("#btn-create-new-account").attr('href', "../../createnewaccount.html?roleId=2");
+            } else if (currentStaff.roleId == 2) {
+                getData(3);
+                $("#createNewAccount").html("Tạo trainer");
+                $("#btn-create-new-account").attr('href', "../../createnewaccount.html?roleId=3");
+            }
 
         } else {
             window.location.href = "../403.html";
@@ -35,130 +48,137 @@ $(document).ready(function () {
         window.location.href = "../403.html";
     }
 
-    function initDataTable(roleId) {
-        var $table;
-        var dataSrc
-        if (roleId == 3) {
-            $table = $("#tblTrainer");
-        } else if (roleId == 4) {
-            $table = $("#tblTrainee");
-        }
+    function getData(roleId) {
         $.ajax({
             url: "/account/getAllAccountByRoleId?roleId=" + roleId,
             type: "GET",
             success: function (res) {
-                console.log(res)
-                dataSrc = $table.DataTable({
-                    paging: true,
-                    lengthChange: true,
-                    searching: true,
-                    ordering: true,
-                    info: true,
-                    autoWidth: true,
-                    data: res,
-                    columnDefs: [
-                        {
-                            searchable: false,
-                            orderable: false,
-                            targets: 0
+                if (roleId == 2) {
+                    initDataTable(res);
+                } else if (roleId == 3) {
+                    $.ajax({
+                        url: "/account/getAllAccountByRoleId?roleId=" + 4,
+                        type: "GET",
+                        success: function (resForTrainee) {
+                            var data = res.concat(resForTrainee);
+                            initDataTable(data);
                         },
-                        {
-                            targets: 1,
-                            searchable: false,
-                            orderable: false,
-                            className: 'dt-body-center',
-                            render: function (data, type, row) {
-                                if (type === 'display') {
-                                    data = '<img style="width: 50px; height: 50px; vertical-align: middle" src="' + data + ' "/>';
-                                }
-                                return data;
-                            }
-                        }, {
-                            targets: 4,
-                            searchable: false,
-                            orderable: false,
-                            className: 'dt-body-center'
+                        fail: function () {
                         }
-                    ],
-                    columns: [
-                        {
-                            data: null,
-                            sortable: false,
-                            width: 50,
-                            orderable: false,
-                            className: 'row-index',
-                            /*render: function (index) {
-                                return '<p class="stt"></p>'
-                            }*/
-                        },
-                        {
-                            data: "imgUrl",
-                            className: "col-xs-2"
-                        }
-                        ,
-                        {
-                            data: "username"
-                        }
-                        ,
-                        {
-                            data: "email"
-                        }
-                        ,
-                        {
-                            data: "status"
-                        }
-                        ,
-                        {
-                            data: "id",
-                            searchable:
-                                false,
-                            orderable:
-                                false,
-                            render:
-
-                                function (data, type, row) {
-                                    if (type === 'display') {
-                                        data = '<button type="button" class="btn btn-info btn-get-details" value="' + data + '">Xem chi tiết</button>';
-                                    }
-                                    return data;
-                                }
-                        }
-                    ],
-                    order: [[1, 'asc']],
-                    rowCallback: function (row, data, index) {
-                        $('.row-index', row).html(index + 1);
-                    },
-                    buttons: [
-                        {extend: "edit"},
-                    ],
-                    select:
-                        {
-                            style: 'os',
-                            selector:
-                                'td:first-child'
-                        }
-                });
-                /* dataSrc.on('draw.dt', function () {
-                     var PageInfo = $table.DataTable().page.info();
-                     t.column(0, {page: 'current'}).nodes().each(function (cell, i) {
-                         cell.innerHTML = i + 1 + PageInfo.start;
-                     });
-                 });*/
-                //updateData($table, dataSrc);
-                getAccountDetails($table, dataSrc);
+                    });
+                }
+            },
+            fail: function () {
             }
-        })
+        });
+    }
+
+    function initDataTable($dataSrc) {
+        var $table;
+        var $dataTable;
+        $table = $("#tblAccount");
+        $dataTable = $table.DataTable({
+            paging: true,
+            lengthChange: true,
+            searching: true,
+            ordering: true,
+            info: true,
+            autoWidth: true,
+            data: $dataSrc,
+            columnDefs: [
+                {
+                    searchable: false,
+                    orderable: false,
+                    targets: 0
+                }
+            ],
+            columns: [
+                {
+                    data: null,
+                    sortable: false,
+                    width: 30,
+                    orderable: false,
+                    className: 'row-index',
+                    /*render: function (index) {
+                        return '<p class="stt"></p>'
+                    }*/
+                },
+                {data: "username"},
+                {data: "email"},
+                {
+                    data: "roleId",
+                    className: 'account-role'
+                },
+                {
+                    data: "status",
+                    className: 'account-status'
+                }
+                ,
+                {
+                    data: "id",
+                    searchable:
+                        false,
+                    orderable:
+                        false,
+                    render:
+
+                        function (data, type, row) {
+                            if (type === 'display') {
+                                data = '<button type="button" class="btn btn-info btn-sm btn-get-details" value="' + data + '">Xem chi tiết</button>';
+                            }
+                            return data;
+                        }
+                }
+            ],
+            order: [[1, 'asc']],
+            rowCallback: function (row, data, index) {
+                $('.row-index', row).html(index + 1);
+                var status = data.status;
+                if (status != null) {
+                    if (status == "active") {
+                        $('.account-status', row).html("Đang hoạt động")
+                            .css('color', 'green')
+                            .css('font-weight', 'bold')
+                            .css('text-align', 'center');
+                    } else {
+                        $('.account-status', row).html("Ngừng hoạt động")
+                            .css('color', 'red')
+                            .css('font-weight', 'bold')
+                            .css('text-align', 'center');
+                    }
+                }
+                var roleId = data.roleId;
+                if (roleId == 2) {
+                    $('.account-role', row).html("Nhân viên");
+                } else if (roleId == 3) {
+                    $('.account-role', row).html("Trainer");
+                } else if (roleId == 4) {
+                    $('.account-role', row).html("Trainee");
+                }
+            },
+            buttons: [
+                {extend: "edit"},
+            ],
+            select:
+                {
+                    style: 'os',
+                    selector:
+                        'td:first-child'
+                }
+        });
+        //return $dataTable;
+        getAccountDetails($table);
     }
 
 
-    function getAccountDetails($table, dataSrc) {
+    function getAccountDetails($table) {
         $table.on('click', 'tbody .btn-get-details', function (e) {
             var accountId = $(this).closest('tr').find('.btn-get-details').val();
             window.location.href = "details.html?accountId=" + accountId;
         })
     }
 
-    function updateData($table, dataSrc) {
+    /*function updateData($table, dataSrc) {
         $table.on('click', 'tbody .btn-edit', function (e) {
             var data_row = dataSrc.row($(this).parents('tr')).data();
             var status;
@@ -207,6 +227,6 @@ $(document).ready(function () {
                 }
             })
         })
-    }
+    }*/
 })
 

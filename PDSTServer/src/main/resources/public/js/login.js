@@ -16,11 +16,10 @@ function signin() {
         dataType: "json",
         success: function (res) {
             if (res != null) {
-                console.log(res);
                 if (res.roleId == 1 || res.roleId == 2) {
+                    console.log(res.roleId)
                     if (typeof (Storage) != undefined) {
-
-                localStorage.setItem('staff', JSON.stringify(res));
+                        localStorage.setItem('staff', JSON.stringify(res));
                     }
                     window.location.href = "dashboard.html";
                 } else {

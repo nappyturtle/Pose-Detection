@@ -1,9 +1,13 @@
 $(document).ready(function () {
+    $(".wrapper").css('font-size', '18px');
     currentStaff = JSON.parse(localStorage.getItem("staff"));
     console.log(currentStaff);
     if (currentStaff != undefined && currentStaff != null) {
-        if (currentStaff.roleId != 1) {
-            $("#admin-authorized").prop('hidden', true);
+        if (currentStaff.roleId == 1) {
+            $("#li-course-url").hide();
+            $("#li-video-url").hide();
+            $("#course-box-info").hide();
+            $("#video-box-info").hide();
         }
         if (currentStaff.roleId == 1 || currentStaff.roleId == 2) {
             console.log("init..............: " + currentStaff.token);
