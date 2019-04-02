@@ -1,6 +1,6 @@
 package com.pdst.pdstserver.security;
 
-import com.pdst.pdstserver.repositories.AccountRepository;
+import com.pdst.pdstserver.account.AccountRepository;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

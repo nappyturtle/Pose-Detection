@@ -80,7 +80,7 @@ function editVideoDetail(videoId) {
 
         if (res != null) {
             if (res == true) {
-                $("#mUpdateInfo").html("Cập nhập thành công!");
+                $("#mUpdateInfo").html("Cập nhật thành công!");
                 setInterval(function () {
                     $('#modal-info').modal('hide');
                     $("#btn-save-change").hide();
@@ -88,7 +88,7 @@ function editVideoDetail(videoId) {
                 }, 2000);
 
             } else {
-                $("#mUpdateInfo").html("Cập nhập thất bại!");
+                $("#mUpdateInfo").html("Cập nhật thất bại!");
                 setInterval(function () {
                     $('#modal-info').modal('hide');
                     $("#btn-save-change").hide();
@@ -97,7 +97,7 @@ function editVideoDetail(videoId) {
 
             }
         } else {
-            console.log("cập nhập thất bại");
+            console.log("cập nhật thất bại");
         }
 
     });
@@ -154,8 +154,10 @@ function displayVideo(content, title) {
         $("#detail-video-content").attr("src", content);
         $("#myModalLabel").html(title);
     });
-
-
+}
+function stopVideo() {
+    var iframe = document.getElementById("detail-video-content");
+    iframe.src = "";
 }
 
 

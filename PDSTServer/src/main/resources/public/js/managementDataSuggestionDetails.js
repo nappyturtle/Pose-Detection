@@ -70,10 +70,10 @@ function editSuggestion(suggestionId, token) {
                 console.log(res);
                 if (res != null) {
                     if (res == true) {
-                        alert("Cập nhập thành công!");
+                        alert("Cập nhật thành công!");
                         location.reload();
                     } else {
-                        alert("Cập nhập thất bại!")
+                        alert("Cập nhật thất bại!")
                     }
                 } else {
                     console.log("update thật bại");

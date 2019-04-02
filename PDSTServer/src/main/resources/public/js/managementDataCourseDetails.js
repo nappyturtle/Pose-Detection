@@ -96,7 +96,7 @@ function editCourseDetail(courseId) {
 
                 if (res != null) {
                     if (res == true) {
-                        $("#mUpdateInfo").html("Cập nhập thành công!");
+                        $("#mUpdateInfo").html("Cập nhật thành công!");
                         setTimeout(function () {
                             $('#modal-info').modal('hide');
                             $("#btn-save-change").hide();
@@ -113,7 +113,7 @@ function editCourseDetail(courseId) {
 
                     }
                 } else {
-                    console.log("cập nhập thất bại");
+                    console.log("cập nhật thất bại");
                 }
 
             });
