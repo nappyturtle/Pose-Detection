@@ -22,11 +22,13 @@ import android.widget.Toast;
 import com.capstone.self_training.R;
 import com.capstone.self_training.activity.SuggestionDetailByTrainerActivity;
 import com.capstone.self_training.adapter.SuggestionAdapter;
+import com.capstone.self_training.dto.SuggestionDTO;
 import com.capstone.self_training.model.Suggestion;
 import com.capstone.self_training.service.dataservice.SuggestionService;
 import com.capstone.self_training.util.CheckConnection;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
@@ -35,7 +37,7 @@ public class Fragment_Suggestion extends Fragment {
 
     private View view;
     private ListView listViewSuggestion;
-    private ArrayList<Suggestion> suggestionList;
+    private List<SuggestionDTO> suggestionList;
     private SuggestionAdapter suggestionAdapter;
     private String token;
     private int trainerId;
@@ -110,7 +112,7 @@ public class Fragment_Suggestion extends Fragment {
     private void loadData(int page, int size) {
 
         SuggestionService suggestionService = new SuggestionService();
-        ArrayList<Suggestion> listTemp = (ArrayList<Suggestion>) suggestionService.getSuggestionListByTrainer(token, page, size, trainerId, traineeId);
+        List<SuggestionDTO> listTemp =suggestionService.getSuggestionListByTrainer(token, page, size, trainerId, traineeId);
         if (listTemp.size() <= 0 && checkedSuggestionList == 0) {
             listViewSuggestion.setVisibility(View.INVISIBLE);
             txtIsEmptySuggestion.setVisibility(View.VISIBLE);
@@ -121,7 +123,7 @@ public class Fragment_Suggestion extends Fragment {
             Toast.makeText(getContext(), "Đã hết dữ liệu", Toast.LENGTH_SHORT).show();
         } else {
             listViewSuggestion.removeFooterView(progressBar);
-            for (Suggestion su : listTemp) {
+            for (SuggestionDTO su : listTemp) {
                 suggestionList.add(su);
                 suggestionAdapter.notifyDataSetChanged();
             }

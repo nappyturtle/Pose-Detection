@@ -190,32 +190,32 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
                 }
                 if (checked) {
                     Toast.makeText(TraineeUploadVideoActi.this, "da vao upload video", Toast.LENGTH_SHORT).show();
-                    checkVideoLength();
+                    //checkVideoLength();
                     confirmUploadingVideo();
                 }
             }
         });
     }
 
-    private void checkVideoLength() {
-        double frameRate = 0;
-        try {
-            SeekableByteChannel bc = (SeekableByteChannel) NIOUtils.readableFileChannel(String.valueOf(selectedPath));
-            DemuxerTrack vt;
-            try (MP4Demuxer dm = new MP4Demuxer((org.jcodec.common.io.SeekableByteChannel) bc)) {
-                vt = dm.getVideoTrack();
-            }
-            frameRate = vt.getMeta().getTotalDuration();
-            if (frameRate > 30) {
-                Toast.makeText(this, "Please input again ", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Okkkkk ", Toast.LENGTH_SHORT).show();
-            }
-            System.out.println("frame rate ===== " + frameRate);
-        } catch (Exception e) {
-
-        }
-    }
+//    private void checkVideoLength() {
+//        double frameRate = 0;
+//        try {
+//            SeekableByteChannel bc = (SeekableByteChannel) NIOUtils.readableFileChannel(String.valueOf(selectedPath));
+//            DemuxerTrack vt;
+//            try (MP4Demuxer dm = new MP4Demuxer((org.jcodec.common.io.SeekableByteChannel) bc)) {
+//                vt = dm.getVideoTrack();
+//            }
+//            frameRate = vt.getMeta().getTotalDuration();
+//            if (frameRate > 30) {
+//                Toast.makeText(this, "Please input again ", Toast.LENGTH_SHORT).show();
+//            } else {
+//                Toast.makeText(this, "Okkkkk ", Toast.LENGTH_SHORT).show();
+//            }
+//            System.out.println("frame rate ===== " + frameRate);
+//        } catch (Exception e) {
+//
+//        }
+//    }
 
     private String createFolderName(String username) {
         return username + "-" + System.currentTimeMillis();

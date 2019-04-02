@@ -1,5 +1,6 @@
 package com.capstone.self_training.service.iService;
 
+import com.capstone.self_training.dto.SuggestionDTO;
 import com.capstone.self_training.model.Suggestion;
 import com.capstone.self_training.util.Constants;
 
@@ -17,11 +18,11 @@ public interface ISuggestionService {
     Call<Void> createSuggestion(@Header(Constants.header_string) String token,@Body Suggestion suggestion);
 
     @GET("suggestion/suggestionsByTrainee")
-    Call<List<Suggestion>> getSuggestionList(@Header(Constants.header_string) String token,@Query("page") int page,
-                                             @Query("size") int size,@Query("id") int accountId);
+    Call<List<SuggestionDTO>> getSuggestionList(@Header(Constants.header_string) String token, @Query("page") int page,
+                                                @Query("size") int size, @Query("id") int accountId);
 
     @GET("suggestion/getSuggestionByTrainer")
-    Call<List<Suggestion>> getSuggestionByTrainer(@Header(Constants.header_string) String token,@Query("page") int page,
+    Call<List<SuggestionDTO>> getSuggestionByTrainer(@Header(Constants.header_string) String token,@Query("page") int page,
                                              @Query("size") int size,@Query("trainerId") int trainerId
             ,@Query("traineeId") int traineeId);
 }

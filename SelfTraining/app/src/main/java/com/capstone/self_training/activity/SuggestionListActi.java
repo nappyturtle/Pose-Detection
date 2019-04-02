@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.capstone.self_training.R;
 import com.capstone.self_training.adapter.SuggestionAdapter;
+import com.capstone.self_training.dto.SuggestionDTO;
 import com.capstone.self_training.model.Suggestion;
 import com.capstone.self_training.service.dataservice.DataService;
 import com.capstone.self_training.service.dataservice.SuggestionService;
@@ -40,7 +41,7 @@ public class SuggestionListActi extends AppCompatActivity {
 
     private Toolbar toolbar;
     private ListView listView;
-    private ArrayList<Suggestion> suggestionList;
+    private List<SuggestionDTO> suggestionList;
     private SuggestionAdapter suggestionAdapter;
     private TextView txtSuggestionIsEmpty;
     private View progressBar;
@@ -125,7 +126,7 @@ public class SuggestionListActi extends AppCompatActivity {
 //        StrictMode.setThreadPolicy(policy);
 
         SuggestionService suggestionService = new SuggestionService();
-        ArrayList<Suggestion> listTemp = (ArrayList<Suggestion>) suggestionService.getSuggestionList(token, page, size, id);
+        List<SuggestionDTO> listTemp = suggestionService.getSuggestionList(token, page, size, id);
         if (listTemp.size() <= 0 && checkedSuggestionList == 0) {// nếu chưa có course
             // checkedSuggestionList = 0 ở đây có nghĩa là chưa có data
             listView.setVisibility(View.INVISIBLE);
@@ -139,7 +140,7 @@ public class SuggestionListActi extends AppCompatActivity {
                 Toast.makeText(this, "Đã hết dữ liệu", Toast.LENGTH_SHORT).show();
         } else {
             listView.removeFooterView(progressBar);
-            for (Suggestion su : listTemp) {
+            for (SuggestionDTO su : listTemp) {
                 suggestionList.add(su);
                 suggestionAdapter.notifyDataSetChanged();
             }

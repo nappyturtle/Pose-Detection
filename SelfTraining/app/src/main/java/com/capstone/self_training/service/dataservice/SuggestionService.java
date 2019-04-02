@@ -2,6 +2,7 @@ package com.capstone.self_training.service.dataservice;
 
 import android.util.Log;
 
+import com.capstone.self_training.dto.SuggestionDTO;
 import com.capstone.self_training.model.Suggestion;
 import com.capstone.self_training.service.iService.ISuggestionService;
 
@@ -24,10 +25,10 @@ public class SuggestionService {
         return null;
     }
 
-    public List<Suggestion> getSuggestionList(String token,int page, int size,  int accountId) {
+    public List<SuggestionDTO> getSuggestionList(String token, int page, int size, int accountId) {
         iSuggestionService = DataService.getSuggestionService();
-        List<Suggestion> suggestionList = null;
-        Call<List<Suggestion>> callBack = iSuggestionService.getSuggestionList(token,page,size,accountId);
+        List<SuggestionDTO> suggestionList = null;
+        Call<List<SuggestionDTO>> callBack = iSuggestionService.getSuggestionList(token,page,size,accountId);
         try{
             suggestionList = callBack.execute().body();
         }catch (Exception e){
@@ -36,10 +37,10 @@ public class SuggestionService {
         return suggestionList;
     }
 
-    public List<Suggestion> getSuggestionListByTrainer(String token,int page, int size,  int trainerId, int traineeId) {
+    public List<SuggestionDTO> getSuggestionListByTrainer(String token,int page, int size,  int trainerId, int traineeId) {
         iSuggestionService = DataService.getSuggestionService();
-        List<Suggestion> suggestionList = null;
-        Call<List<Suggestion>> callBack = iSuggestionService.getSuggestionByTrainer(token,page,size,trainerId,traineeId);
+        List<SuggestionDTO> suggestionList = null;
+        Call<List<SuggestionDTO>> callBack = iSuggestionService.getSuggestionByTrainer(token,page,size,trainerId,traineeId);
         try{
             suggestionList = callBack.execute().body();
         }catch (Exception e){
