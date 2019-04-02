@@ -209,7 +209,7 @@ table.dataTable tr.even {
 }
 
 table.dataTable tr.odd {
-    background-color: white;
+    background-color: #e0ebfc;
 }
 
 table.dataTable {
@@ -219,7 +219,6 @@ table.dataTable {
 table.dataTable .row-index {
     text-align: center;
 }
-
 
 table.dataTables thead {
     vertical-align: middle !important;

@@ -49,14 +49,19 @@ public class SuggestionDetailController {
 
     @PostMapping("createSuggestionDetails")
     public String createSuggestionDetails(@RequestBody List<SuggestionDetail> suggestionDetails) {
-        for (int i = 0; i < suggestionDetails.size(); i++) {
-            SuggestionDetail suggestionDetail =  suggestionDetails.get(i);
-            suggestionDetail.setCreatedTime(LocalDateTime.now().toString());
-            suggestionDetailService.createSuggestionDetail(suggestionDetail);
+        if(suggestionDetails.size() != 0) {
+            for (int i = 0; i < suggestionDetails.size(); i++) {
+                SuggestionDetail suggestionDetail =  suggestionDetails.get(i);
+                suggestionDetail.setCreatedTime(LocalDateTime.now().toString());
+                suggestionDetailService.createSuggestionDetail(suggestionDetail);
+            }
+            suggestionService.updateSuggestionStatus(suggestionDetails.get(0).getSuggestionId(), "active");
+            return "Success";
         }
-        suggestionService.updateSuggestionStatus(suggestionDetails.get(0).getSuggestionId(), "active");
+        else return "Video của bạn không hề khớp với video mẫu";
+
 //        suggestionService
-        return "Success";
+
     }
     @PutMapping("saveComment")
     public boolean createComment(@RequestBody SuggestionDetail suggestionDetail){

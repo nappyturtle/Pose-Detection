@@ -84,15 +84,17 @@ function editVideoDetail(videoId) {
                 setInterval(function () {
                     $('#modal-info').modal('hide');
                     $("#btn-save-change").hide();
+                    location.reload();
                 }, 2000);
-                location.reload();
+
             } else {
                 $("#mUpdateInfo").html("Cập nhập thất bại!");
                 setInterval(function () {
                     $('#modal-info').modal('hide');
                     $("#btn-save-change").hide();
+                    location.reload();
                 }, 2000);
-                location.reload();
+
             }
         } else {
             console.log("cập nhập thất bại");

@@ -142,12 +142,24 @@ $(document).ready(function () {
                         if (res != null) {
                             if (res == true) {
                                 $("#mUpdateInfo").html("Cập nhật thành công!");
-                                $("#btn-save-change").hide();
+                                // $("#btn-save-change").hide();
                                 //dismissDialog();
+                                //VuVG 2/4/2019
+                                setTimeout(function () {
+                                    $('#modal-info').modal('hide');
+                                    $("#btn-save-change").hide();
+                                    location.reload();
+                                },2000);
                             } else {
                                 $("#mUpdateInfo").html("Cập nhật thất bại!");
-                                $("#btn-save-change").hide();
+                                // $("#btn-save-change").hide();
                                 //dismissDialog();
+                                //VuVG 2/4/2019
+                                setTimeout(function () {
+                                    $('#modal-info').modal('hide');
+                                    $("#btn-save-change").hide();
+                                    location.reload();
+                                },2000);
                             }
                         } else {
                             console.log("cập nhật thất bại");
