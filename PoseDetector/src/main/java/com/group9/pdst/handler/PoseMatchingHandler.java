@@ -76,7 +76,6 @@ public class PoseMatchingHandler {
 
             }
             if (finalPoseResult != null) {
-//            if (finalPoseResult != null && finalPoseResult.getMaxMatchingPercentage() >= 0.8) {
                 if(finalPoseResult.getMaxMatchingPercentage() >= 0.7) {
                     String suggestion = "Tư thế của bạn khớp: " + CalculationUtilities.roundingPercentage(finalPoseResult.getMinMatchingPercentage())
                             + "% - " + CalculationUtilities.roundingPercentage(finalPoseResult.getMaxMatchingPercentage()) + "%\n" + finalPoseResult.getDescription();
@@ -84,7 +83,6 @@ public class PoseMatchingHandler {
                     finalResult.add(suggestionDetail);
                     trainerFrame = i;
                 }
-//                imgList.remove(traineeFrame);
             }
             else {
                 if(ConstantUtilities.jedis.get(suggestionId + "backup_important") != null) {
@@ -146,66 +144,70 @@ public class PoseMatchingHandler {
         String isCompare = ConstantUtilities.jedis.get(suggestionId + "_isCompare");
         if ("true".equals(isCompare) && importantJSON != null) {
             changePoints = mapper.readValue(importantJSON, List.class);
-            //
-            System.out.println("Changed point: ");
-            for (int i = 0; i < changePoints.size(); i++) {
-                String s =  changePoints.get(i);
-                MatchingPointResult matchingPointResult = mapper.readValue(s, MatchingPointResult.class);
-                System.out.println(matchingPointResult);
-            }
-            System.out.println("===========\n");
-            //
         }
         //xu ly loai bo cac diem thua va tao diem than - torso lam trong tam
         handler.pretreatment(trainerPoints, traineePoints);
         int i = 0;
         while(i < trainerPoints.size()) {
-            System.out.println("\n===========AAAA==============\n");
-            double distanceRatio = 1;
+            double partLRMatchingPercentage = 1;
             double weight = 1;
             KeyPoint trainerPoint = trainerPoints.get(i);
             KeyPoint traineePoint = traineePoints.get(i);
             if (!"torso".equals(trainerPoint.getPart())) {
+                System.out.println("=============================");
+                System.out.println("Part: " + traineePoint.getPart());
                 KeyPointVector trainerPointVector = TransUtilities.createVectorFromKeypoint(trainerPoints, trainerPoint, "torso");
                 KeyPointVector traineePointVector = TransUtilities.createVectorFromKeypoint(traineePoints, traineePoint, "torso");
                 if(trainerPoint.getPart().contains("left")) {
+                    //get right part
                     i++;
                     KeyPoint trainerRightPoint = trainerPoints.get(i);
                     KeyPoint traineeRightPoint = traineePoints.get(i);
+                    //different of Trainer left part - right part
                     double x = trainerRightPoint.getPosition().getX() - trainerPoint.getPosition().getX();
                     double y = trainerRightPoint.getPosition().getY() - trainerPoint.getPosition().getY();
-                    double trainerDistance = CalculationUtilities.calculateEuclideanDistance(x, y);
+                    //vector between left part - right part of Trainer
                     KeyPointVector v1 = new KeyPointVector(new Position(x, y));
+
+                    //different of Trainee left part - right part
                     x = traineeRightPoint.getPosition().getX() - traineePoint.getPosition().getX();
                     y = traineeRightPoint.getPosition().getY() - traineePoint.getPosition().getY();
-                    double traineeDistance = CalculationUtilities.calculateEuclideanDistance(x, y);
+                    //vector between left part - right part of Trainee
                     KeyPointVector v2 = new KeyPointVector(new Position(x, y));
-                    double distanceCosine = CalculationUtilities.calculateCosine(v1, v2);
-                    distanceRatio = 1 - Math.abs(traineeDistance - trainerDistance)/standardDeviation;
-                    distanceRatio = (distanceCosine + distanceRatio)/2;
-                    //Right
+                    
+                    partLRMatchingPercentage = CalculationUtilities.calculateVectorDistanceMatchingPercentage(v1, v2);
+                    System.out.println("LR Percentage: " + partLRMatchingPercentage);
+                    //Matching right part between Trainer - Trainee
                     KeyPointVector trainerRightPointVector = TransUtilities.createVectorFromKeypoint(trainerPoints, trainerRightPoint, "torso");
                     KeyPointVector traineeRightPointVector = TransUtilities.createVectorFromKeypoint(traineePoints, traineeRightPoint, "torso");
-                    double maxPointPercentage = CalculationUtilities.calculateCosine(trainerRightPointVector, traineeRightPointVector) * distanceRatio;
-                    double minPointPercentage = maxPointPercentage * Math.min(traineeRightPoint.getScore()/trainerRightPoint.getScore(), trainerRightPoint.getScore()/traineeRightPoint.getScore());
-                    if(maxPointPercentage - minPointPercentage > 0.1) {
-                        maxPointPercentage = (maxPointPercentage + minPointPercentage)/2;
-                    }
-                    if(maxPointPercentage < Math.cos(Math.toRadians(45))) {
-                        isChanged = true;
-                    }
+                    double maxPointPercentage = CalculationUtilities.calculateCosine(trainerRightPointVector, traineeRightPointVector) ;
+                    System.out.println("Right cos: " + maxPointPercentage);
+                    maxPointPercentage = 1 - (Math.toDegrees(Math.acos(maxPointPercentage)) / 90);
 
+                    System.out.println("Right: " + maxPointPercentage);
+                    maxPointPercentage = maxPointPercentage * partLRMatchingPercentage;
+//                    maxPointPercentage = (maxPointPercentage + partLRMatchingPercentage)/2;
+                    double maxScore = Math.max(traineeRightPoint.getScore(), trainerRightPoint.getScore());
+                    double minScore = Math.min(traineeRightPoint.getScore(), trainerRightPoint.getScore());
+                    double confidenceRatio = minScore / maxScore;
+                    System.out.println("Confidence: " + confidenceRatio);
+                    double minPointPercentage = maxPointPercentage * confidenceRatio;
+                    if (confidenceRatio < 0.8) {
+                        maxPointPercentage = maxPointPercentage * confidenceRatio;
+                        minPointPercentage = minPointPercentage * confidenceRatio;
+                    }
+//                    if(maxPointPercentage - minPointPercentage > 0.1) {
+//                        maxPointPercentage = (maxPointPercentage + minPointPercentage)/2;
+//                    }
                     MatchingPointResult point = new MatchingPointResult(trainerRightPoint.getPart(), maxPointPercentage, minPointPercentage);
 
                     if ("false".equals(isCompare)) {
                         changePoints.add(mapper.writeValueAsString(point));
+                        if(maxPointPercentage < Math.cos(Math.toRadians(45))) {
+                            isChanged = true;
+                        }
                     }
                     else {
-                        double maxScore = Math.max(traineeRightPoint.getScore(), trainerRightPoint.getScore());
-                        double minScore = Math.min(traineeRightPoint.getScore(), trainerRightPoint.getScore());
-                        double confidenceRatio = minScore / maxScore;
-                        System.out.println("Point: \n" + point);
-                        System.out.println("Score: " + confidenceRatio);
                         for (String changedPointJSON : changePoints) {
                             MatchingPointResult changedPoint = mapper.readValue(changedPointJSON, MatchingPointResult.class);
                             if (changedPoint.getPart().equals(point.getPart())) {
@@ -220,28 +222,36 @@ public class PoseMatchingHandler {
                     maxPosePercentage += point.getMaxMatchingPercentage() * weight;
                     minPosePercentage += point.getMinMatchingPercentage() * weight;
                 }
-                //Left
-                System.out.println("Distance ratio: " + distanceRatio);
-                double maxPointPercentage = CalculationUtilities.calculateCosine(trainerPointVector, traineePointVector) * distanceRatio;
-                double minPointPercentage = maxPointPercentage * Math.min(traineePoint.getScore()/trainerPoint.getScore(), trainerPoint.getScore()/traineePoint.getScore());
-                if(maxPointPercentage - minPointPercentage > 0.1) {
-                    maxPointPercentage = (maxPointPercentage + minPointPercentage)/2;
+                //Matching left part between Trainer - Trainee
+                double maxPointPercentage = CalculationUtilities.calculateCosine(trainerPointVector, traineePointVector);
+                System.out.println("Left cos: " + maxPointPercentage);
+                System.out.println();
+                maxPointPercentage = 1 - (Math.toDegrees(Math.acos(maxPointPercentage)) / 90);
+                System.out.println("Left: " + maxPointPercentage);
+                maxPointPercentage = maxPointPercentage * partLRMatchingPercentage;
+//                maxPointPercentage = (maxPointPercentage + partLRMatchingPercentage)/2;
+                double maxScore = Math.max(traineePoint.getScore(), trainerPoint.getScore());
+                double minScore = Math.min(traineePoint.getScore(), trainerPoint.getScore());
+                double confidenceRatio = minScore / maxScore;
+                System.out.println("Confidence: " + confidenceRatio);
+                double minPointPercentage = maxPointPercentage * confidenceRatio;
+                //
+                if (confidenceRatio < 0.8) {
+                    maxPointPercentage = maxPointPercentage * confidenceRatio;
+                    minPointPercentage = minPointPercentage * confidenceRatio;
                 }
-                if(maxPointPercentage < Math.cos(Math.toRadians(45))) {
-                    isChanged = true;
-                }
+//                if(maxPointPercentage - minPointPercentage > 0.1) {
+//                    maxPointPercentage = (maxPointPercentage + minPointPercentage)/2;
+//                }
+                //
                 MatchingPointResult point = new MatchingPointResult(trainerPoint.getPart(), maxPointPercentage, minPointPercentage);
                 if ("false".equals(isCompare)) {
                     changePoints.add(mapper.writeValueAsString(point));
-                    System.out.println("Point: " + point.getPart());
-                    System.out.println("Match: " + point.getMaxMatchingPercentage() + "\n");
+                    if(maxPointPercentage < Math.cos(Math.toRadians(45))) {
+                        isChanged = true;
+                    }
                 }
                 else {
-                    double maxScore = Math.max(traineePoint.getScore(), trainerPoint.getScore());
-                    double minScore = Math.min(traineePoint.getScore(), trainerPoint.getScore());
-                    double confidenceRatio = minScore / maxScore;
-                    System.out.println("Point: \n" + point);
-                    System.out.println("Score: " + confidenceRatio);
                         for (String changedPointJSON : changePoints) {
                             MatchingPointResult changedPoint = mapper.readValue(changedPointJSON, MatchingPointResult.class);
                             if (changedPoint.getPart().equals(point.getPart())) {
@@ -289,10 +299,6 @@ public class PoseMatchingHandler {
     //tra ve description cac diem quan trong cua dong tac
     private String getNoteworthyPoint(MatchingPointResult importantPoint, MatchingPointResult point, double confidenceRatio) {
         if (importantPoint.getMaxMatchingPercentage() < 0.95 && confidenceRatio > 0.5) {
-            if (confidenceRatio < 0.8) {
-                point.setMaxMatchingPercentage(point.getMaxMatchingPercentage() * confidenceRatio);
-                point.setMinMatchingPercentage(point.getMinMatchingPercentage() * confidenceRatio);
-            }
             if (point.getMinMatchingPercentage() >= 0.4) {
                 return TransUtilities.transPartToVietnamese(point.getPart()) + ": khớp " + CalculationUtilities.roundingPercentage(point.getMinMatchingPercentage()) + "% - "
                         + CalculationUtilities.roundingPercentage(point.getMaxMatchingPercentage()) + "%\n";
