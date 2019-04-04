@@ -74,8 +74,9 @@
                                      id="dropdown-menu-imgUrl">
 
                                 <p>
-                                    <span id="dropdown-menu-username" class="navbar-username">Alexander Pierce</span> - <span
-                                        id="dropdown-menu-role">Web Developer</span>
+                                    <span id="dropdown-menu-username" class="navbar-username">Alexander Pierce</span> -
+                                    <span
+                                            id="dropdown-menu-role">Web Developer</span>
                                     <!--<small>Member since Nov. 2012</small>-->
                                 </p>
                             </li>
@@ -168,12 +169,6 @@
                                              id="detail-profile-user-img"
                                              src="../../dist/img/user4-128x128.jpg" alt="User profile picture">
 
-                                        <!--<h3 class="profile-username text-center" id="detail-profile-username">Nina
-                                            Mcintire</h3>-->
-
-                                        <p class="text-muted text-center profile-user-role" id="detail-profile-role">
-                                            Trainer</p>
-
                                     </div>
                                 </div>
                                 <div class="col-md-7">
@@ -188,7 +183,7 @@
                                         <input class="change-info" hidden value="email@mail.com"
                                                id="input-detail-profile-email" style="padding: 5px">
                                         <span id="detail-profile-email"
-                                        class="init-info">phat@mail.com</span>
+                                              class="init-info">phat@mail.com</span>
                                     </div>
 
                                     <div class="form-group">
@@ -206,9 +201,10 @@
                                     <div class="form-group">
                                         <label>Số điện thoại: </label><span> </span>
                                         <input class="change-info" hidden value="email@mail.com" type="number"
-                                               id="input-detail-profile-phone" style="width: 120px; padding: 5px" maxlength="10"/>
-                                               <!--data-inputmask='"mask": "9999999999"'
-                                               data-mask>-->
+                                               id="input-detail-profile-phone" style="width: 120px; padding: 5px"
+                                               maxlength="10"/>
+                                        <!--data-inputmask='"mask": "9999999999"'
+                                        data-mask>-->
                                         <span id="detail-profile-phone" class="init-info">0312412424</span>
                                     </div>
 
@@ -228,6 +224,12 @@
                                                 <option value="inactive" style="color:red;">Ngưng hoạt động</option>
                                             </select>
                                         </div>
+                                    </div>
+
+                                    <div class="form-group init-info">
+                                        <label>Vị trí: </label><span> </span>
+                                        <span id="detail-profile-role">
+                                            Trainer</span>
                                     </div>
                                     <!--<div class="form-group">
                                         <div class="form-group col-md-6">
@@ -354,21 +356,27 @@
 
                                 </div>
                             </div>
-                            <div class="col-md-12"
-                                 style="align-items: center; display: flex; justify-content: center;">
-                                <button type="button" class="btn btn-success btn-sm btn-block init-info"
-                                        style="width: 80%; font-size: 18px" id="btn-profile-change-info">
-                                    Thay đổi thông tin
-                                </button>
+                            <div class="col-md-12">
+                                <div class="col-md-12">
+                                    <div class="col-md-4"></div>
+                                    <div class="col-md-4">
+                                        <button type="button" class="btn btn-success btn-sm btn-block init-info"
+                                                style="font-size: 18px" id="btn-profile-change-info">
+                                            Thay đổi thông tin
+                                        </button>
+                                    </div>
+
+                                </div>
                                 <div hidden class="change-info col-md-12">
-                                    <div class="col-md-6">
+                                    <div class="col-md-2"></div>
+                                    <div class="col-md-4">
                                         <button id="btn-profile-update" data-toggle="modal"
                                                 class="btn btn-block btn-info btn-sm"
                                                 style="font-size: 18px;"
                                                 data-target="#modal-default">Cập nhật
                                         </button>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <button class="btn btn-block btn-sm btn-default" id="btn-profile-cancel-update"
                                                 style="font-size: 18px">Đóng
                                         </button>
