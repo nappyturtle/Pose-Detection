@@ -1,6 +1,6 @@
 package com.pdst.pdstserver.utils;
 
-import com.pdst.pdstserver.video.Video;
+import com.pdst.pdstserver.model.Video;
 import org.json.JSONException;
 import org.json.JSONObject;
 

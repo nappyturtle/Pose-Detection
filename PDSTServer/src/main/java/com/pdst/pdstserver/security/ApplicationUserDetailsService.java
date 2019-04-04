@@ -1,8 +1,8 @@
 package com.pdst.pdstserver.security;
 
-import com.pdst.pdstserver.account.Account;
-import com.pdst.pdstserver.account.AccountRepository;
-import com.pdst.pdstserver.role.RoleRepository;
+import com.pdst.pdstserver.model.Account;
+import com.pdst.pdstserver.repository.AccountRepository;
+import com.pdst.pdstserver.repository.RoleRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
