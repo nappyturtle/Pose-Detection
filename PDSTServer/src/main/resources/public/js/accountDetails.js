@@ -26,8 +26,24 @@ $(document).ready(function () {
             if (currentStaff.roleId == 1) {
                 $("#dropdown-menu-role").html("Admin");
             } else {
-                $("#dropdown-menu-role").html("Staff");
+                $("#dropdown-menu-role").html("Nhân viên");
             }
+
+            $.ajax({
+                url: "/account/update/" + currentStaff.id,
+                type: "GET",
+                headers: {
+                    "content-type": "application/json; charset=UTF-8"
+                },
+                dataType: "json",
+                success: function (res) {
+                    if (res.fullname != null) {
+                        $(".navbar-username").html(res.fullname);
+                    } else {
+                        $(".navbar-username").html(res.username);
+                    }
+                }
+            })
 
             //init account data
             $.ajax({
@@ -42,9 +58,14 @@ $(document).ready(function () {
                         console.log(res);
                         $("#detail-profile-user-img").attr('src', res.imgUrl);
                         $("#detail-profile-username").html(res.username);
-                        $("#detail-profile-phone").val(res.phone);
-                        $("#detail-profile-email").val(res.email);
-                        $("#detail-profile-address").val(res.address);
+                        $("#detail-profile-phone").html(res.phone);
+                        $("#detail-profile-email").html(res.email);
+                        $("#detail-profile-address").html(res.address);
+                        if (res.fullname != null) {
+                            $("#detail-profile-fullname").html(res.fullname);
+                        } else {
+                            $("#detail-profile-fullname").html(res.username);
+                        }
 
                         if (res.roleId == 3) {
                             $("#detail-profile-role").html("Trainer");
@@ -57,40 +78,71 @@ $(document).ready(function () {
                         if (res.gender != null) {
                             if (res.gender.toLowerCase() == "male") {
                                 /*$("#rdMale").iCheck('check');*/
-                                $("#detail-profile-gender").val("Nam");
+                                $("#detail-profile-gender").html("Nam");
                             } else if (res.gender.toLowerCase() == "female") {
                                 /*$("#rdFemale").iCheck('check');*/
-                                $("#detail-profile-gender").val("Nữ")
+                                $("#detail-profile-gender").html("Nữ")
                             }
                         }
 
                         if (res.status != null) {
                             if (res.status.toLowerCase() == "active") {
-                                $("#rdActive").iCheck('check');
+                                //$("#rdActive").iCheck('check');
+                                $("#detail-profile-status").html("Đang hoạt động").css('color', 'green');
                             } else {
-                                $("#rdInActive").iCheck('check');
+                                //$("#rdInActive").iCheck('check');
+                                $("#detail-profile-status").html("Ngưng hoạt động").css('color', 'red');
                             }
                         }
+
+                        $("#btn-profile-change-info").click(function () {
+                            $(".change-info").show();
+                            $("#detail-profile-email").hide();
+                            $("#detail-profile-phone").hide();
+                            $("#detail-profile-gender").hide();
+                            $("#detail-profile-address").hide();
+                            $("#detail-profile-status").hide();
+                            $("#input-detail-profile-address").val(res.address);
+                            $("#input-detail-profile-email").val(res.email);
+                            $("#input-detail-profile-phone").val(res.phone);
+                            //$("#chk-detail-profile-gender").css('width', '15px').css('height', '15px');
+                            $("#div-detail-profile-gender").css('display', 'inline-block');
+                            if (res.gender != null) {
+                                if (res.gender.toLowerCase() == "male") {
+                                    $("#select-detail-profile-gender").val("male");
+                                } else if (res.gender.toLowerCase() == "female") {
+                                    $("#select-detail-profile-gender").val("female");
+                                }
+                            }
+
+                            $("#div-detail-profile-status").css('display', 'inline-block');
+                            if (res.status != null) {
+                                if (res.status.toLowerCase() == "active") {
+                                    $("#select-detail-profile-status").val("active");
+                                } else {
+                                    //$("#rdInActive").iCheck('check');
+                                    $("#select-detail-profile-status").val("inactive");
+                                }
+                            }
+
+                            $("#btn-profile-change-info").hide();
+
+                        });
 
                         $("#btn-save-change").click(function () {
                             update(res);
                         })
 
                         $("#btn-profile-update").click(function () {
-                            var rdStatus = $("input[name='r3-status']").iCheck('update')[0].checked;
-                            var checkingStatus = "";
-                            if (rdStatus) {
-                                checkingStatus = "active"
-                            } else {
-                                checkingStatus = "inactive";
-                            }
-                            if (checkingStatus == res.status) {
-                                $("#mUpdateInfo").html("Chưa có thông tin nào được thay đổi...");
-                                $("#btn-save-change").hide();
-                            } else {
+                            if (validData()) {
                                 $("#mUpdateInfo").html("Bạn có muốn thay đổi thông tin ?");
                                 $("#btn-save-change").show();
                             }
+                        })
+
+                        $("#btn-profile-cancel-update").click(function () {
+                            $(".change-info").hide();
+                            $(".init-info").show();
                         })
                     } else {
                         console.log("null");
@@ -106,9 +158,11 @@ $(document).ready(function () {
                 var isMale = false;
                 console.log(dateTime);
                 $account.updatedTime = dateTime;
-                /*$account.email = $("#detail-profile-email").val();
-                $account.phone = $("#detail-profile-phone").val();
-                $account.address = $("#detail-profile-address").val();*/
+                $account.email = $("#input-detail-profile-email").val();
+                $account.phone = $("#input-detail-profile-phone").val();
+                $account.address = $("#input-detail-profile-address").val();
+                $account.status = $("#select-detail-profile-status option:selected").val();
+                $account.gender = $("#select-detail-profile-gender option:selected").val();
 
                 /*var rdGender = $("input[name='r4-gender']").iCheck('update')[0].checked;
                 var gender = "";
@@ -119,7 +173,7 @@ $(document).ready(function () {
                 }
                 $account.gender = gender;*/
 
-                var rdStatus = $("input[name='r3-status']").iCheck('update')[0].checked;
+                /*var rdStatus = $("input[name='r3-status']").iCheck('update')[0].checked;
                 var status = "";
                 if (rdStatus) {
                     status = "active"
@@ -127,7 +181,7 @@ $(document).ready(function () {
                     status = "inactive";
                 }
                 $account.status = status;
-                console.log($account);
+                console.log($account);*/
 
                 $.ajax({
                     url: "/account/updateAccount",
@@ -143,6 +197,9 @@ $(document).ready(function () {
                             if (res == true) {
                                 $("#mUpdateInfo").html("Cập nhật thành công!");
                                 // $("#btn-save-change").hide();
+                                setTimeout(function () {
+                                    location.reload();
+                                }, 1000);
                                 //dismissDialog();
                                 //VuVG 2/4/2019
                                 setTimeout(function () {
@@ -166,6 +223,42 @@ $(document).ready(function () {
                         }
                     }
                 })
+            }
+
+            function validData() {
+
+                /*if ($("#input-detail-profile-fullname").val().toString().trim() == "") {
+                    $("#mUpdateInfo").html("Lỗi: Tên không đươc bỏ trống!");
+                    $("#btn-save-change").hide();
+                    return false;
+                }*/
+                console.log($("#input-detail-profile-phone").val().toString().trim().length)
+                var email = $("#input-detail-profile-email").val();
+                if ($("#input-detail-profile-email").val().toString() == "") {
+                    $("#mUpdateInfo").html("Lỗi: Email không được bỏ trống!");
+                    $("#btn-save-change").hide();
+                    return false;
+                } else if (!validateEmail(email)) {
+                    $("#mUpdateInfo").html("Lỗi: Email không đúng định dạng!");
+                    $("#btn-save-change").hide();
+                    return false;
+                }
+
+                if ($("#input-detail-profile-phone").val() == "") {
+                    $("#mUpdateInfo").html("Lỗi: Số diện thoại không được bỏ trống!");
+                    $("#btn-save-change").hide();
+                    return false;
+                } else if ($("#input-detail-profile-phone").val().toString().trim().length < 10 || $("#input-detail-profile-phone").val().toString().trim().length > 15) {
+                    $("#mUpdateInfo").html("Lỗi: Số diện thoại không đúng dịnh dạng!");
+                    $("#btn-save-change").hide();
+                    return false;
+                }
+                return true;
+            }
+
+            function validateEmail(email) {
+                var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                return re.test(email);
             }
 
             function dismissDialog() {

@@ -30,6 +30,22 @@ $(document).ready(function () {
                 $("#dropdown-menu-role").html("Staff");
             }
 
+            $.ajax({
+                url: "/account/update/" + currentStaff.id,
+                type: "GET",
+                headers: {
+                    "content-type": "application/json; charset=UTF-8"
+                },
+                dataType: "json",
+                success: function (res) {
+                    if (res.fullname != null) {
+                        $(".navbar-username").html(res.fullname);
+                    } else {
+                        $(".navbar-username").html(res.username);
+                    }
+                }
+            })
+
             var _data;
             if (currentStaff.roleId == 1) {
                 getData(2);
@@ -124,7 +140,7 @@ $(document).ready(function () {
 
                         function (data, type, row) {
                             if (type === 'display') {
-                                data = '<button type="button" class="btn btn-info btn-sm btn-get-details" value="' + data + '">Xem chi tiết</button>';
+                                data = '<button type="button" class="btn btn-default btn-sm btn-get-details" value="' + data + '"><i class="fa fa-fw fa-eye"></i></button>';
                             }
                             return data;
                         }
