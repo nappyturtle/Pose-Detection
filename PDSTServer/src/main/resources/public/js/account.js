@@ -140,7 +140,8 @@ $(document).ready(function () {
 
                         function (data, type, row) {
                             if (type === 'display') {
-                                data = '<button type="button" class="btn btn-default btn-sm btn-get-details" value="' + data + '"><i class="fa fa-fw fa-eye"></i></button>';
+                                // data = '<button type="button" class="btn btn-default btn-sm btn-get-details" value="' + data + '"><i class="fa fa-fw fa-eye"></i></button>';
+                                data = '<i class="fa fa-fw fa-eye" id="' + data + '" style="padding-left: 32%"></i>';
                             }
                             return data;
                         }
@@ -188,8 +189,13 @@ $(document).ready(function () {
 
 
     function getAccountDetails($table) {
-        $table.on('click', 'tbody .btn-get-details', function (e) {
-            var accountId = $(this).closest('tr').find('.btn-get-details').val();
+        // $table.on('click', 'tbody .btn-get-details', function (e) {
+        //     var accountId = $(this).closest('tr').find('.btn-get-details').val();
+        //     window.location.href = "details.html?accountId=" + accountId;
+        // })
+        $table.on('click', 'tbody .fa-eye', function (e) {
+            var iconElement = $(this).closest('tr').find('.fa-eye')
+            var accountId = iconElement.attr('id');
             window.location.href = "details.html?accountId=" + accountId;
         })
     }
