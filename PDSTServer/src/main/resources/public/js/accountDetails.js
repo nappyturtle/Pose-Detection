@@ -97,11 +97,12 @@ $(document).ready(function () {
 
                         $("#btn-profile-change-info").click(function () {
                             $(".change-info").show();
-                            $("#detail-profile-email").hide();
+                            $(".init-info").hide();
+                            /*$("#detail-profile-email").hide();
                             $("#detail-profile-phone").hide();
                             $("#detail-profile-gender").hide();
                             $("#detail-profile-address").hide();
-                            $("#detail-profile-status").hide();
+                            $("#detail-profile-status").hide();*/
                             $("#input-detail-profile-address").val(res.address);
                             $("#input-detail-profile-email").val(res.email);
                             $("#input-detail-profile-phone").val(res.phone);
