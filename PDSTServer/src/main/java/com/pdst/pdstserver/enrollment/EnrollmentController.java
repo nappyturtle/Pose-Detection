@@ -1,6 +1,7 @@
 package com.pdst.pdstserver.enrollment;
 
 import com.pdst.pdstserver.account.Account;
+import com.pdst.pdstserver.course.CourseDTO;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,5 +40,17 @@ public class EnrollmentController {
     @PostMapping("createEnrollment")
     public boolean createEnrollment(@RequestBody Enrollment enrollment) {
         return enrollmentService.saveToEnrollment(enrollment);
+    }
+
+    @GetMapping("checkBoughtCourseUpdatedByTrainer")
+    public CourseDTO checkBoughtCourseUpdatedByTrainer(@RequestParam(value = "traineeId") int traineeId,
+                                                       @RequestParam(value = "courseId") int courseId) {
+        return enrollmentService.checkBoughtCourseUpdatedByTrainer(traineeId, courseId);
+    }
+
+    @GetMapping("checkEnrollmentExistedOrNot")
+    public boolean checkEnrollmentExistedOrNot(@RequestParam(value = "traineeId") int traineeId,
+                                                       @RequestParam(value = "courseId") int courseId) {
+        return enrollmentService.checkEnrollmentExistedOrNot(traineeId, courseId);
     }
 }

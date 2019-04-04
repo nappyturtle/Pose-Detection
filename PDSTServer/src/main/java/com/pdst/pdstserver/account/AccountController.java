@@ -54,7 +54,7 @@ public class AccountController {
     }
 
     @PutMapping("edit")
-    public ResponseEntity updateProfile(@RequestBody AccountDTO account) {
+    public ResponseEntity updateProfile(@RequestBody Account account) {
         Account accountEdited = accountService.editProfile(account);
         if (accountEdited != null) {
             return ResponseEntity.status(OK).body(accountEdited);

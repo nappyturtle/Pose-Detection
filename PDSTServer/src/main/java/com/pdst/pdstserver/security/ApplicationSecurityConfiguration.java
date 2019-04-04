@@ -62,7 +62,7 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
                 .antMatchers(HttpMethod.POST, CREATE_SUGGESTIONDETAIL).permitAll()
-                .antMatchers(HttpMethod.PUT, EDIT_URL).permitAll()
+                //.antMatchers(HttpMethod.PUT, EDIT_URL).permitAll()
                 .antMatchers(HttpMethod.GET, GET_ALL_VIDEO).permitAll()
                 .antMatchers(HttpMethod.GET, GET_ALL_CATEGORY).permitAll()
                 .antMatchers(HttpMethod.GET, GET_ACCOUNT_BY_ID).permitAll()

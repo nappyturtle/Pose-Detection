@@ -10,7 +10,7 @@ public class SecurityConstants {
     public static final String HEADER_STRING = "Authorization";
 
     public static final String SIGN_UP_URL = "/account/sign-up";
-    public static final String EDIT_URL = "/account/edit";
+    //public static final String EDIT_URL = "/account/edit";
     public static final String GET_ALL_VIDEO = "/video/getAllVideosByDate";
     public static final String GET_ALL_CATEGORY = "/category/categories";
     public static final String GET_ACCOUNT_BY_ID = "/account/update/{id}";
@@ -26,7 +26,6 @@ public class SecurityConstants {
     public static final String SEARCH_VIDEO_ORDERED_BY_VIEW = "/video/searchOrderByView";
     public static final String GET_UNBOUGHT_COURSES = "/course/getUnboughtCourses";
     public static final String GET_ALL_ACCOUNT_BY_ROLE = "/account/getAllAccountByRoleId";
-    public static final String GET_ALL_SUGGESTION = "/suggestion/suggestions";
     public static final String UPDATE_ACCOUNT = "/account/updateAccount";
     public static final String GET_DATAFORDASHBOARD = "/account/getDataForDashboard";
     public static final String CREATE_NEW_ACCOUNT = "/account/createNewAccount";

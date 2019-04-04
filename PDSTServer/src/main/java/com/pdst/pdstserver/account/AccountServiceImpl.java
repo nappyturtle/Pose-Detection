@@ -37,7 +37,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account editProfile(AccountDTO account) {
+    public Account editProfile(Account account) {
         try {
             Account checkExistedAccount = accountRepository.findAccountById(account.getId());
             if (checkExistedAccount != null) {
@@ -50,6 +50,7 @@ public class AccountServiceImpl implements AccountService {
                 checkExistedAccount.setRoleId(account.getRoleId());
                 checkExistedAccount.setStatus(account.getStatus());
                 checkExistedAccount.setUpdatedTime(LocalDateTime.now().toString());
+                checkExistedAccount.setFullname(account.getFullname());
 
                 return accountRepository.save(checkExistedAccount);
             }

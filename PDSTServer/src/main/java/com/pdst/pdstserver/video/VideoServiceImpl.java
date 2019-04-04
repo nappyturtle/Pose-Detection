@@ -1,5 +1,7 @@
 package com.pdst.pdstserver.video;
 
+import com.pdst.pdstserver.enrollment.Enrollment;
+import com.pdst.pdstserver.enrollment.EnrollmentRepository;
 import com.pdst.pdstserver.utils.SendRequest;
 import com.pdst.pdstserver.account.Account;
 import com.pdst.pdstserver.course.Course;
@@ -20,12 +22,14 @@ public class VideoServiceImpl implements VideoService {
     private final VideoRepository videoRepository;
     private final AccountRepository accountRepository;
     private final CourseRepository courseRepository;
+    private final EnrollmentRepository enrollmentRepository;
 
     public VideoServiceImpl(VideoRepository videoRepository, AccountRepository accountRepository,
-                            CourseRepository courseRepository) {
+                            CourseRepository courseRepository, EnrollmentRepository enrollmentRepository) {
         this.videoRepository = videoRepository;
         this.accountRepository = accountRepository;
         this.courseRepository = courseRepository;
+        this.enrollmentRepository = enrollmentRepository;
     }
 
 
@@ -63,7 +67,6 @@ public class VideoServiceImpl implements VideoService {
         }
         return dtos;
 //
-
     }
 
     @Override
@@ -145,20 +148,31 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    public List<VideoDTO> getAllVideoByCourseId(int page, int size, int courseId) {
-        System.out.println("page - size = " + page + " - " + size);
-        List<Video> videos = videoRepository.findAllByCourseIdOrderByCreatedTimeDesc(new PageRequest(page, size), courseId);
+    public List<VideoDTO> getAllBoughtVideosByCourseId(int page, int size, int traineeId, int courseId) {
+
+        List<Enrollment> enrollmentList = enrollmentRepository.findAllByAccountId(traineeId);
+        Course course = courseRepository.findCourseById(courseId);
+        Account trainer = accountRepository.findAccountById(course.getAccountId());
         List<VideoDTO> dtos = new ArrayList<>();
-        for (Video video : videos) {
-            Course course = courseRepository.findCourseById(video.getCourseId());
-            Account account = accountRepository.findAccountById(course.getAccountId());
-            VideoDTO dto = new VideoDTO();
-            dto.setVideo(video);
-            dto.setUsername(account.getUsername());
-            dto.setImgUrl(account.getImgUrl());
-            dtos.add(dto);
+        int totalPriceEnrollment = 0;
+        for (Enrollment enrollment : enrollmentList) {
+            totalPriceEnrollment += enrollment.getPrice();
         }
+        if (totalPriceEnrollment >= course.getPrice()) {
+            List<Video> videoUpdated = videoRepository.
+                    findAllByCourseId(PageRequest.of(page, size, Sort.by("createdTime").descending()),courseId);
+            for (Video video : videoUpdated) {
+                VideoDTO dto = new VideoDTO();
+                dto.setVideo(video);
+                dto.setUsername(trainer.getUsername());
+                dto.setImgUrl(trainer.getImgUrl());
+                dtos.add(dto);
+            }
+        }
+
         return dtos;
+
+
     }
 
     @Override
@@ -305,5 +319,33 @@ public class VideoServiceImpl implements VideoService {
         dto.setCoursename(course.getName());
         dto.setStatus(video.getStatus());
         return dto;
+    }
+
+    @Override
+    public List<VideoDTO> getAllUnBoughtVideoByCourseId(int page, int size, int traineeId, int courseId) {
+        List<Enrollment> enrollmentList = enrollmentRepository.findAllByAccountId(traineeId);
+        Course course = courseRepository.findCourseById(courseId);
+        Account trainer = accountRepository.findAccountById(course.getAccountId());
+        List<VideoDTO> dtos = new ArrayList<>();
+        String maxDate = enrollmentRepository.getMaxDateEnrollmentByAccountIdAndCourseId(courseId, traineeId);
+        System.out.println("maxDate = " + maxDate);
+        int totalPriceEnrollment = 0;
+        for (Enrollment enrollment : enrollmentList) {
+            totalPriceEnrollment += enrollment.getPrice();
+        }
+        if (totalPriceEnrollment < course.getPrice()) {
+            List<Video> videoUpdated = videoRepository.
+                    findAllByCreatedTimeLessThanAndCourseId
+                            (PageRequest.of(page, size, Sort.by("createdTime").descending()), maxDate, courseId);
+            for (Video video : videoUpdated) {
+                VideoDTO dto = new VideoDTO();
+                dto.setVideo(video);
+                dto.setUsername(trainer.getUsername());
+                dto.setImgUrl(trainer.getImgUrl());
+                dtos.add(dto);
+            }
+        }
+
+        return dtos;
     }
 }

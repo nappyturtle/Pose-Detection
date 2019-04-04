@@ -86,6 +86,8 @@ public class JWTGeneration extends UsernamePasswordAuthenticationFilter {
             dto.setToken(TOKEN_PREFIX+token);
             dto.setMessage("Đăng nhập thành công");
             dto.setImgUrl(account.getImgUrl());
+            dto.setFullname(account.getFullname());
+
 
             String accResponse = new Gson().toJson(dto);
             response.setStatus(HttpServletResponse.SC_OK);

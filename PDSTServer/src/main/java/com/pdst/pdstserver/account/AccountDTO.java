@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class AccountDTO implements Serializable {
     private int id;
     private String username;
+    private String fullname;
     private String password;
     private String email;
     private String phone;
@@ -17,6 +18,14 @@ public class AccountDTO implements Serializable {
     private String updatedTime;
     private String token;
     private String message;
+
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
+    }
 
     public String getMessage() {
         return message;

@@ -83,16 +83,7 @@ function editCourseDetail(courseId) {
 
             }).done(function (res) {
                 console.log(res);
-                // if (res != null) {
-                //     if (res == true) {
-                //         alert("Cập nhập thành công!");
-                //         location.reload();
-                //     } else {
-                //         alert("Cập nhập thất bại!")
-                //     }
-                // } else {
-                //     console.log("update thật bại");
-                // }
+
 
                 if (res != null) {
                     if (res == true) {
@@ -104,7 +95,7 @@ function editCourseDetail(courseId) {
                         },2000);
 
                     } else {
-                        $("#mUpdateInfo").html("Cập nhật thất bại!");
+                        $("#mUpdateInfo").html("Cập nhập thất bại!");
                         setTimeout(function () {
                             $('#modal-info').modal('hide');
                             $("#btn-save-change").hide();

@@ -81,7 +81,7 @@ function editVideoDetail(videoId) {
         if (res != null) {
             if (res == true) {
                 $("#mUpdateInfo").html("Cập nhật thành công!");
-                setInterval(function () {
+                setTimeout(function () {
                     $('#modal-info').modal('hide');
                     $("#btn-save-change").hide();
                     location.reload();
@@ -89,7 +89,7 @@ function editVideoDetail(videoId) {
 
             } else {
                 $("#mUpdateInfo").html("Cập nhật thất bại!");
-                setInterval(function () {
+                setTimeout(function () {
                     $('#modal-info').modal('hide');
                     $("#btn-save-change").hide();
                     location.reload();

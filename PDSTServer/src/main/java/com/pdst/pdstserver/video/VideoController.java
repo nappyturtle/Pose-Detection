@@ -76,9 +76,21 @@ public class VideoController {
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
     }
 
-    @GetMapping("getAllVideoByCourseId")
-    public List<VideoDTO> getAllVideoByCourseId(@RequestParam(value = "page") int page, @RequestParam(value = "size") int size, @RequestParam(value = "courseId") int courseId) {
-        List<VideoDTO> resultPage = videoService.getAllVideoByCourseId(page, size, courseId);
+    @GetMapping("getAllBoughtVideosByCourseId")
+    public List<VideoDTO> getAllBoughtVideosByCourseId(@RequestParam(value = "page") int page,
+                                                       @RequestParam(value = "size") int size,
+                                                       @RequestParam(value = "traineeId") int traineeId,
+                                                       @RequestParam(value = "courseId") int courseId) {
+        List<VideoDTO> resultPage = videoService.getAllBoughtVideosByCourseId(page, size, traineeId,courseId);
+        return resultPage;
+    }
+
+    @GetMapping("getAllUnBoughtVideoByCourseId")
+    public List<VideoDTO> getAllUnBoughtVideoByCourseId(@RequestParam(value = "page") int page,
+                                                        @RequestParam(value = "size") int size,
+                                                        @RequestParam(value = "traineeId") int traineeId,
+                                                        @RequestParam(value = "courseId") int courseId) {
+        List<VideoDTO> resultPage = videoService.getAllUnBoughtVideoByCourseId(page, size, traineeId,courseId);
         return resultPage;
     }
 

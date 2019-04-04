@@ -2,6 +2,7 @@ package com.pdst.pdstserver.course;
 
 import com.pdst.pdstserver.account.Account;
 import com.pdst.pdstserver.course.Course;
+import com.pdst.pdstserver.video.Video;
 
 import java.io.Serializable;
 import java.util.List;
@@ -12,6 +13,15 @@ public class CourseDTO implements Serializable {
     private int numberOfRegister;
     private int numberOfVideoInCourse;
     private List<Account> traineeList;
+    private List<Video> videoUpdated;
+
+    public List<Video> getVideoUpdated() {
+        return videoUpdated;
+    }
+
+    public void setVideoUpdated(List<Video> videoUpdated) {
+        this.videoUpdated = videoUpdated;
+    }
 
     public List<Account> getTraineeList() {
         return traineeList;

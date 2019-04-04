@@ -11,7 +11,7 @@ public interface VideoService {
     boolean createVideo(Video video);
     boolean editVideo(Video video);
     List<VideoDTO> getAllVideosRelatedByCourseId(int courseId, int currentVideoId);
-    List<VideoDTO> getAllVideoByCourseId(int page, int size, int courseId);
+    List<VideoDTO> getAllBoughtVideosByCourseId(int page, int size, int traineeId, int courseId);
     List<VideoDTO> getAllVideoByCourseIdToEdit(int courseId);
     List<VideoDTO> getAllBoughtVideoRelated(int courseId, int videoId);
     int countVideosByCourseId(int courseId);
@@ -21,4 +21,5 @@ public interface VideoService {
     boolean editVideoStatusByStaffOrAdmin(VideoDTOFrontEnd dto);
     int countAllVideos();
     VideoDTOFrontEnd getVideoDetailById(int videoId);
+    List<VideoDTO> getAllUnBoughtVideoByCourseId(int page, int size,int traineeId,int courseId);
 }

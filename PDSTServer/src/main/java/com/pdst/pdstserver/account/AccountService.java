@@ -7,7 +7,7 @@ public interface AccountService {
 
     List<Account> getAllAccounts();
 
-    Account editProfile(AccountDTO account);
+    Account editProfile(Account account);
 
     List<Account> getAllAccountsByStaff();
 
