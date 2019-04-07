@@ -16,6 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.capstone.self_training.R;
+import com.capstone.self_training.model.Account;
+import com.capstone.self_training.service.dataservice.AccountService;
 import com.capstone.self_training.util.CheckConnection;
 import com.squareup.picasso.Picasso;
 
@@ -28,15 +30,14 @@ public class TrainerProfileActivity extends AppCompatActivity {
     CircleImageView imgAccount;
     TextView txtUsername;
     ImageView imgSetting;
+
     LinearLayout uploadVideo;
     TextView viewSuggestion;
     TextView viewUploadedCourse;
     TextView viewAllBoughtCourse;
     SharedPreferences mPerferences;
     SharedPreferences.Editor mEditor;
-    int id;
-    String username;
-    int roleId;
+    String fullname;
     String token;
     String imageAccount;
     LinearLayout lnSuggestion;
@@ -52,7 +53,6 @@ public class TrainerProfileActivity extends AppCompatActivity {
         if (CheckConnection.haveNetworkConnection(this)) {
             reflect();
             displayToolBar();
-            loadData();
             getAllSuggestion();
             getAllUploadedCourse();
             uploadVideoToStorage();
@@ -83,25 +83,15 @@ public class TrainerProfileActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_UPDATE && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
-            System.out.println("Trainee uploaded profile");
+            Log.e("Trainer uploaded profile","Trainer uploaded profile");
             imageAccount = data.getStringExtra("imgAccount");
-            Log.e("imageAccount TrainerProfileActivity = ", imageAccount);
+            fullname = data.getStringExtra("fullname");
+            txtUsername.setText(fullname);
+            Picasso.get().load(imageAccount)
+                    .placeholder(R.drawable.userlogin).into(imgAccount);
         }
     }
 
-    private void getProfileTrainer() {
-        imgSetting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-//                startActivityForResult(intent, REQUEST_CODE_LOGIN);
-                Intent intent = new Intent(getApplicationContext(), UpdateProfileActivity.class);
-                intent.putExtra("USER_ID", id);
-                startActivityForResult(intent, REQUEST_CODE_UPDATE);
-                //startActivity(intent);
-            }
-        });
-    }
 
     private void uploadVideoToStorage() {
         uploadVideo.setOnClickListener(new View.OnClickListener() {
@@ -171,10 +161,6 @@ public class TrainerProfileActivity extends AppCompatActivity {
                 String.valueOf(mPerferences.getInt(getString(R.string.roleId), 0)) + " - token = " +
                 mPerferences.getString(getString(R.string.token), ""));
 
-        id = mPerferences.getInt(getString(R.string.id), 0);
-        username = mPerferences.getString(getString(R.string.username), "");
-        roleId = mPerferences.getInt(getString(R.string.roleId), 0);
-        token = mPerferences.getString(getString(R.string.token), "");
 
         lnCreateCourse.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -187,18 +173,18 @@ public class TrainerProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(TrainerProfileActivity.this, TrainerChannelActivity.class);
-                intent.putExtra("ACCOUNID_FROM_TRAINER_PROFILE", id);
-                intent.putExtra("ACCONTNAME_FROM_TRAINER_PROFILE", username);
+                intent.putExtra("ACCOUNID_FROM_TRAINER_PROFILE", mPerferences.getInt(getString(R.string.id), 0));
+                intent.putExtra("ACCONTNAME_FROM_TRAINER_PROFILE", mPerferences.getString(getString(R.string.fullname), ""));
                 startActivity(intent);
             }
         });
-    }
-
-    private void loadData() {
-        txtUsername.setText(mPerferences.getString(getString(R.string.username), ""));
-        Picasso.get().load(mPerferences.getString(getString(R.string.imgAccount), ""))
+        AccountService accountService = new AccountService(this);
+        Account currentUser = accountService.getAccount(mPerferences.getInt(getString(R.string.id),0));
+        txtUsername.setText(currentUser.getFullname());
+        Picasso.get().load(currentUser.getImgUrl())
                 .placeholder(R.drawable.userlogin).into(imgAccount);
     }
+
 
     private void displayToolBar() {
         setSupportActionBar(toolbar);
@@ -221,13 +207,13 @@ public class TrainerProfileActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menuChangePassword:
-                Intent intentChangePassword = new Intent(getApplicationContext(), ChangePasswordActivity.class);
+                Intent intentChangePassword = new Intent(TrainerProfileActivity.this, ChangePasswordActivity.class);
                 startActivity(intentChangePassword);
                 break;
             case R.id.menuLogout:
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
                 preferences.edit().clear().commit();
-                Intent intentMain_Home = new Intent(getApplicationContext(), MainActivity_Home.class);
+                Intent intentMain_Home = new Intent(TrainerProfileActivity.this, MainActivity_Home.class);
                 startActivity(intentMain_Home);
                 break;
             default:
@@ -237,12 +223,13 @@ public class TrainerProfileActivity extends AppCompatActivity {
     }
 
 
-    public void updateProfile(View view) {
+    public void updateProfileTrainer(View view) {
         Intent intent = new Intent(getApplicationContext(), UpdateProfileActivity.class);
-        intent.putExtra("USER_ID", id);
+        intent.putExtra("USER_ID", mPerferences.getInt(getString(R.string.id),0));
         startActivityForResult(intent, REQUEST_CODE_UPDATE);
-
-        //startActivity(intent);
     }
+
+
+
 
 }

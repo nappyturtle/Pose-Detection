@@ -45,7 +45,9 @@ public class BoughtVideoListActivity extends AppCompatActivity {
     boolean isLoading = false;
     private BoughtVideoAdapter boughtVideoAdapter;
     private String token;
+    private int traineeId;
     private int courseId;
+    private boolean checked;
     mHandler mHandler;
 
     private SharedPreferences mPerferences;
@@ -61,14 +63,27 @@ public class BoughtVideoListActivity extends AppCompatActivity {
         if (CheckConnection.haveNetworkConnection(this)) {
             init();
             displayToolBar();
-            getCourseId();
-            loadVideoListview(page, size);
+
+            Intent intent = getIntent();
+            courseId = intent.getIntExtra("courseId", 0);
+            checked = intent.getBooleanExtra("checked", true);
+            if (checked) {
+                loadVideoBoughtListview(page, size);
+                loadmoreVideoCourseBoughtListView();
+            } else {
+                loadVideoCourseUnBoughtListview(page, size);
+                loadmoreVideoCourseUnBoughtListView();
+            }
+            Log.e("CourseId BoughtVideoListActivity = ", String.valueOf(courseId));
+
+            //loadVideoListview();
             getItemVideo();
-            loadmoreVideoListView();
+
         } else {
             CheckConnection.showConnection(this, "Kiểm tra internet của bạn!!!");
         }
     }
+
     // hiển thị thanh toolbar
     private void displayToolBar() {
         setSupportActionBar(toolbar);
@@ -82,20 +97,34 @@ public class BoughtVideoListActivity extends AppCompatActivity {
     }
 
     // lấy thêm data bằng cách scroll nó xuống dưới cuối màn hình
-    private void loadmoreVideoListView() {
+    private void loadmoreVideoCourseBoughtListView() {
         listVideo.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-//                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
-//                    isLoading = false;
-//                }
             }
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 if (firstVisibleItem + visibleItemCount == totalItemCount && !isLoading && !limitedData & totalItemCount != 0) {
                     isLoading = true;
-                    ThreadData threadData = new ThreadData();
+                    ThreadDataCourseUpdated threadData = new ThreadDataCourseUpdated();
+                    threadData.start();
+                }
+            }
+        });
+    }
+
+    private void loadmoreVideoCourseUnBoughtListView() {
+        listVideo.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (firstVisibleItem + visibleItemCount == totalItemCount && !isLoading && !limitedData & totalItemCount != 0) {
+                    isLoading = true;
+                    ThreadDataCourseUnBought threadData = new ThreadDataCourseUnBought();
                     threadData.start();
                 }
             }
@@ -115,17 +144,10 @@ public class BoughtVideoListActivity extends AppCompatActivity {
         });
     }
 
-    // lấy courseId từ BoughtCourseActivity gửi qua
-    private void getCourseId() {
-        Intent intent = getIntent();
-        courseId = intent.getIntExtra("courseId",0);
-        Log.e("CourseId BoughtVideoListActivity = ", String.valueOf(courseId));
-    }
-
-    private void loadVideoListview(int page, int size) {
+    private void loadVideoBoughtListview(int page, int size) {
         videoService = new VideoService();
 
-        List<VideoDTO> videoDTOS = videoService.getAllBoughtVideosByCourseId(token, page, size, courseId);
+        List<VideoDTO> videoDTOS = videoService.getAllBoughtVideosByCourseId(token, page, size, traineeId, courseId);
         if (videoDTOS.size() <= 0 && checkedSuggestionList == 0) {// nếu chưa có course
             // checkedSuggestionList = 0 ở đây có nghĩa là chưa có data
             listVideo.setVisibility(View.INVISIBLE);
@@ -150,7 +172,36 @@ public class BoughtVideoListActivity extends AppCompatActivity {
 
             checkedSuggestionList = 1; // data được load lên thì gán = 1
         }
+    }
 
+    private void loadVideoCourseUnBoughtListview(int page, int size) {
+        videoService = new VideoService();
+
+        List<VideoDTO> videoDTOS = videoService.getAllUnBoughtVideoByCourseId(token, page, size, traineeId, courseId);
+        if (videoDTOS.size() <= 0 && checkedSuggestionList == 0) {// nếu chưa có course
+            // checkedSuggestionList = 0 ở đây có nghĩa là chưa có data
+            listVideo.setVisibility(View.INVISIBLE);
+            txtBoughtVideoIsEmpty.setVisibility(View.VISIBLE);
+        } else if (videoDTOS.size() <= 0 && checkedSuggestionList == 1) { // nếu có course nhưng mà load hết dữ liệu
+            // checkedSuggestionList = 1 ở đây có nghĩa là khi đã có data nhưng đã load hết rồi
+            Log.e("ddasdasdasd <=0 ", "dasdasd <= 0");
+            limitedData = true;
+            listVideo.removeFooterView(progressBar);
+            Toast.makeText(this, "Đã hết dữ liệu", Toast.LENGTH_SHORT).show();
+        } else {
+            listVideo.removeFooterView(progressBar);
+            for (VideoDTO dto : videoDTOS) {
+                videos.add(dto.getVideo());
+                Account account = new Account();
+                account.setUsername(dto.getUsername());
+                account.setImgUrl(dto.getImgUrl());
+                accounts.add(account);
+                boughtVideoAdapter.notifyDataSetChanged();
+            }
+            Log.e("ddasdasdasd > 0 ", "dasdasd > 0");
+
+            checkedSuggestionList = 1; // data được load lên thì gán = 1
+        }
     }
 
     private void init() {
@@ -159,12 +210,13 @@ public class BoughtVideoListActivity extends AppCompatActivity {
         txtBoughtVideoIsEmpty = (TextView) findViewById(R.id.txtBoughtVideoIsEmpty);
         videos = new ArrayList<>();
         accounts = new ArrayList<>();
-        boughtVideoAdapter = new BoughtVideoAdapter(videos, getApplicationContext());
+        boughtVideoAdapter = new BoughtVideoAdapter(videos, BoughtVideoListActivity.this);
         listVideo.setAdapter(boughtVideoAdapter);
 
         mPerferences = PreferenceManager.getDefaultSharedPreferences(this);
         mEditor = mPerferences.edit();
 
+        traineeId = mPerferences.getInt(getString(R.string.id), 0);
         token = mPerferences.getString(getString(R.string.token), "");
 
         mHandler = new mHandler();
@@ -182,7 +234,12 @@ public class BoughtVideoListActivity extends AppCompatActivity {
                     listVideo.addFooterView(progressBar);
                     break;
                 case 1:
-                    loadVideoListview(++page, size);
+                    loadVideoBoughtListview(++page, size);
+                    boughtVideoAdapter.notifyDataSetChanged();
+                    isLoading = false;
+                    break;
+                case 2:
+                    loadVideoCourseUnBoughtListview(++page, size);
                     boughtVideoAdapter.notifyDataSetChanged();
                     isLoading = false;
                     break;
@@ -191,7 +248,7 @@ public class BoughtVideoListActivity extends AppCompatActivity {
         }
     }
 
-    public class ThreadData extends Thread {
+    public class ThreadDataCourseUpdated extends Thread {
         @Override
         public void run() {
             mHandler.sendEmptyMessage(0);
@@ -201,6 +258,21 @@ public class BoughtVideoListActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             Message message = mHandler.obtainMessage(1);
+            mHandler.sendMessage(message);
+            super.run();
+        }
+    }
+
+    public class ThreadDataCourseUnBought extends Thread {
+        @Override
+        public void run() {
+            mHandler.sendEmptyMessage(0);
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Message message = mHandler.obtainMessage(2);
             mHandler.sendMessage(message);
             super.run();
         }

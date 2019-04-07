@@ -1,5 +1,4 @@
 package com.capstone.self_training.camera;
-
 import android.Manifest;
 import android.app.Activity;
 import android.content.BroadcastReceiver;

@@ -2,6 +2,7 @@ package com.capstone.self_training.service.iService;
 
 import com.capstone.self_training.dto.TrainerInfo;
 import com.capstone.self_training.model.Account;
+import com.capstone.self_training.util.Constants;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -23,7 +24,7 @@ public interface IAccountService {
     Call<Account> getAccount(@Path("id") int id);
 
     @PUT("account/edit")
-    Call<Void> updateProfile(@Body Account account);
+    Call<Void> updateProfile(@Header(Constants.header_string) String token, @Body Account account);
 
     @GET("account/getTrainerInfo")
     Call<TrainerInfo> getTrainerInfo(@Query(value = "accountId") int accountId);

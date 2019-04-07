@@ -12,7 +12,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -44,6 +47,7 @@ public class PlayBoughtVideoActivity extends AppCompatActivity implements Surfac
     private MediaPlayer mediaPlayer;
     private VideoControllerView controller;
     private boolean isPauseMedia;
+    private Toolbar toolbar;
 
     TextView video_title, video_view, username;
     CircleImageView user_img;
@@ -66,19 +70,26 @@ public class PlayBoughtVideoActivity extends AppCompatActivity implements Surfac
         mPerferences = PreferenceManager.getDefaultSharedPreferences(this);
         mEditor = mPerferences.edit();
         String token = mPerferences.getString(getString(R.string.token),"");
+        int traineeId = mPerferences.getInt(getString(R.string.id),0);
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
         VideoService videoService = new VideoService();
-        List<VideoDTO> list = videoService.getAllBoughtVideoRelated(token,playingVideo.getCourseId(),playingVideo.getId());
+        List<VideoDTO> list = videoService.getAllBoughtVideoRelated(token,traineeId,playingVideo.getCourseId(),playingVideo.getId());
 
+        if(videoService.changeNumberOfViewByVideoId(token,playingVideo.getId())){
+            Log.e("Message = ", "true");
+        }else{
+            Log.e("Message = ", "false");
+        }
         if (isFullScreen() == false) {
             setContentView(R.layout.activity_play_video);
 
             video_title = (TextView) findViewById(R.id.play_video_title);
             video_view = (TextView) findViewById(R.id.play_video_view);
             username = (TextView) findViewById(R.id.play_video_username);
+            toolbar = (Toolbar) findViewById(R.id.playVideo_toolbar_id);
             video_title.setText(playingVideo.getTitle());
             video_view.setText(playingVideo.getNumOfView() + " lượt xem");
             if (account.getUsername() != null) {
@@ -115,6 +126,7 @@ public class PlayBoughtVideoActivity extends AppCompatActivity implements Surfac
             relateVideoAdapter = new RelateBoughtVideoAdapter(list, this);
 
             relate_video_list.setAdapter(relateVideoAdapter);
+            setupToolbar(playingVideo.getTitle());
 
         } else {
             setContentView(R.layout.activity_fullscreen_video);
@@ -138,6 +150,38 @@ public class PlayBoughtVideoActivity extends AppCompatActivity implements Surfac
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.play_video_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_back:
+                Intent intentChangePassword = new Intent(PlayBoughtVideoActivity.this, BoughtVideoListActivity.class);
+                startActivity(intentChangePassword);
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void setupToolbar(String videoname) {
+        setSupportActionBar(toolbar);
+        toolbar.setTitle(videoname);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
 
@@ -256,6 +300,7 @@ public class PlayBoughtVideoActivity extends AppCompatActivity implements Surfac
     public void onBackPressed() {
         super.onBackPressed();
         this.finish();
+
     }
 
     //    @Override
@@ -270,5 +315,6 @@ public class PlayBoughtVideoActivity extends AppCompatActivity implements Surfac
             mediaPlayer.start();
         }
     }
+
 
 }

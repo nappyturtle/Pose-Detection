@@ -77,6 +77,7 @@ public class RelateVideoAdapter extends RecyclerView.Adapter<RelateVideoAdapter.
 
             }
         });
+        holder.tvPayment.setVisibility(View.INVISIBLE);
 
     }
 

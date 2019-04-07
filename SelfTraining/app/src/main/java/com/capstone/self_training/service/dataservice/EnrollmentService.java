@@ -1,5 +1,6 @@
 package com.capstone.self_training.service.dataservice;
 
+import com.capstone.self_training.dto.CourseDTO;
 import com.capstone.self_training.dto.EnrollmentDTO;
 import com.capstone.self_training.model.Account;
 import com.capstone.self_training.model.Enrollment;
@@ -57,5 +58,28 @@ public class EnrollmentService {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public boolean checkEnrollmentExistedOrNot(String token, int traineeId, int courseId) {
+        iEnrollmentService = DataService.getEnrollmentService();
+        Call<Boolean> call = iEnrollmentService.checkEnrollmentExistedOrNot(token, traineeId,courseId);
+        try {
+            return call.execute().body();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public CourseDTO checkBoughtCourseUpdatedByTrainer(String token, int traineeId, int courseId) {
+        iEnrollmentService = DataService.getEnrollmentService();
+        Call<CourseDTO> call = iEnrollmentService.checkBoughtCourseUpdatedByTrainer(token, traineeId, courseId);
+        CourseDTO dto = null;
+        try {
+            dto = call.execute().body();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return dto;
     }
 }

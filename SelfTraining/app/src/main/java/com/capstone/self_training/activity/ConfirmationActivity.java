@@ -19,6 +19,8 @@ import com.capstone.self_training.model.Enrollment;
 import com.capstone.self_training.service.dataservice.EnrollmentService;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
+
 public class ConfirmationActivity extends AppCompatActivity {
     private ImageView imgCourse;
     private TextView txtTitle;
@@ -57,7 +59,9 @@ public class ConfirmationActivity extends AppCompatActivity {
         Picasso.get().load(dto.getCourse().getThumbnail()).fit().into(imgCourse);
         txtTitle.setText(dto.getCourse().getName());
         txtTrainername.setText(dto.getTrainerName());
-        txtPrice.setText(dto.getCourse().getPrice() + ".000 VNĐ");
+        DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
+        String moneyDots = decimalFormat.format(dto.getCourse().getPrice())+",000 đồng ";
+        txtPrice.setText(moneyDots);
 
         Enrollment enrollment = new Enrollment(dto.getCourse().getId(), accountId, dto.getCourse().getPrice(), TimeHelper.getCurrentTime());
         EnrollmentService enrollmentService = new EnrollmentService();

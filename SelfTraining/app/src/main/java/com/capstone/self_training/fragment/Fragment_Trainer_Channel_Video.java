@@ -29,14 +29,18 @@ public class Fragment_Trainer_Channel_Video extends Fragment {
     private List<Video> videoList;
     private VideoService videoService;
     private int trainerAccountId;
-    private SharedPreferences sharedPreferences;
     private AccountService accountService;
     private Account trainer;
-
+    private int currentUserId;
+    private int roleId;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_fragment__trainer__channel__video, container, false);
+        savedInstanceState = getArguments();
+        currentUserId = savedInstanceState.getInt("currentUserId");
+        trainerAccountId = savedInstanceState.getInt("trainerAccountId");
+        roleId = savedInstanceState.getInt("roleId");
         init();
         return view;
     }
@@ -55,12 +59,23 @@ public class Fragment_Trainer_Channel_Video extends Fragment {
         if (videoList != null) {
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
             rc_trainer_channel_video.setLayoutManager(layoutManager);
-            videoListAdapter = new VideoListAdapter(videoList, getContext(), trainer);
+            videoListAdapter = new VideoListAdapter(videoList, getContext(), trainer,currentUserId,roleId);
             rc_trainer_channel_video.setAdapter(videoListAdapter);
         }
     }
 
-    public void getTrainerId(int accountId) {
-        trainerAccountId = accountId;
+//    public void getTrainerId(int accountId) {
+//        trainerAccountId = accountId;
+//    }
+
+    public static Fragment_Trainer_Channel_Video newInstance(int trainerAccountId, int currentUserId, int roleId) {
+        Fragment_Trainer_Channel_Video f = new Fragment_Trainer_Channel_Video();
+        // Supply index input as an argument.
+        Bundle args = new Bundle();
+        args.putInt("currentUserId", currentUserId);
+        args.putInt("roleId", roleId);
+        args.putInt("trainerAccountId", trainerAccountId);
+        f.setArguments(args);
+        return f;
     }
 }

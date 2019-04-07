@@ -2,6 +2,7 @@ package com.capstone.self_training.dto;
 
 import com.capstone.self_training.model.Account;
 import com.capstone.self_training.model.Course;
+import com.capstone.self_training.model.Video;
 
 import java.io.Serializable;
 import java.util.List;
@@ -12,6 +13,15 @@ public class CourseDTO implements Serializable {
     private int numberOfRegister;
     private int numberOfVideoInCourse;
     private List<Account> traineeList;
+    private List<Video> videoUpdated;
+
+    public List<Video> getVideoUpdated() {
+        return videoUpdated;
+    }
+
+    public void setVideoUpdated(List<Video> videoUpdated) {
+        this.videoUpdated = videoUpdated;
+    }
 
     public List<Account> getTraineeList() {
         return traineeList;

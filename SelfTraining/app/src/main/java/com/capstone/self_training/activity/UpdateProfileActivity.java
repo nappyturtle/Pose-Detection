@@ -12,6 +12,7 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -39,8 +40,9 @@ public class UpdateProfileActivity extends AppCompatActivity {
     private TextInputEditText edtAddress;
     private TextInputEditText edtPhone;
     private Button btnUpdate;
+    private TextInputEditText edtFullname;
     private RadioButton rdbMale, rdbFemale;
-
+    private Toolbar toolbar;
     private int userId;
     private AccountService accountService;
     private Account currentUser;
@@ -56,13 +58,27 @@ public class UpdateProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_update_profile);
 
         init();
+        displayToolBar();
+    }
+
+    private void displayToolBar() {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void init() {
         civUserImg = (CircleImageView) findViewById(R.id.civUseImg);
         edtAddress = (TextInputEditText) findViewById(R.id.edtAddress);
+        edtFullname = (TextInputEditText) findViewById(R.id.edtUpdatefullname);
         edtEmail = (TextInputEditText) findViewById(R.id.edtUpdateEmail);
         edtPhone = (TextInputEditText) findViewById(R.id.edtPhoneNumber);
+        toolbar = (Toolbar) findViewById(R.id.toolbar_update_profile_id);
         btnUpdate = (Button) findViewById(R.id.btnUpdateProfile);
         userId = getIntent().getIntExtra("USER_ID", 0);
         rdbMale = (RadioButton) findViewById(R.id.rdbMale);
@@ -98,6 +114,9 @@ public class UpdateProfileActivity extends AppCompatActivity {
                 } else {
                     rdbFemale.setChecked(false);
                 }
+            }
+            if (currentUser.getFullname() != null) {
+                edtFullname.setText(currentUser.getFullname());
             }
         }
     }
@@ -137,12 +156,61 @@ public class UpdateProfileActivity extends AppCompatActivity {
         currentUser.setPhone(edtPhone.getText().toString().trim());
         currentUser.setAddress(edtAddress.getText().toString().trim());
         currentUser.setUpdatedTime(TimeHelper.getCurrentTime());
+        currentUser.setFullname(edtFullname.getText().toString());
 
         return currentUser;
     }
 
     public void updateProfileInfo(View view) {
         confirmUpdateProfile();
+    }
+
+    public void clickYesButton() {
+        final ProgressDialog progressDialog = new ProgressDialog(UpdateProfileActivity.this);
+        progressDialog.setTitle("Đang xử lý");
+        progressDialog.show();
+        if (userImageUri != null) {
+            StorageReference srf = storageReference.child(Constants.USER_IMAGE_FOLDER_UPLOAD_FIREBASE + "/" + currentUser.getUsername());
+            srf.putFile(userImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                    mEditor.putString("imgAccount", taskSnapshot.getDownloadUrl().toString());
+                    mEditor.commit();
+
+                    mEditor.putString("fullname", currentUser.getFullname());
+                    mEditor.commit();
+                    Log.e("imgAccountda commit = ", mPerferences.getString(getString(R.string.imgAccount), ""));
+                    Account accountToEdit = setAccountToEdit(taskSnapshot.getDownloadUrl().toString());
+                    accountService.updateProfile(mPerferences.getString(getString(R.string.token), ""),accountToEdit);
+
+                    Toast.makeText(UpdateProfileActivity.this, "Cập nhập thành công!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent();
+                    intent.putExtra("imgAccount", mPerferences.getString(getString(R.string.imgAccount), ""));
+                    intent.putExtra("fullname", mPerferences.getString(getString(R.string.fullname), ""));
+                    setResult(Activity.RESULT_OK, intent);
+                    finish();
+                    Log.e("imgAccountaaaaaaa = ", mPerferences.getString(getString(R.string.imgAccount), ""));
+                }
+            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                    double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                    progressDialog.setMessage("Hoàn thành " + (int) progress + "%...");
+                    if ((int) progress == 100) {
+                        progressDialog.dismiss();
+                    }
+                }
+            });
+        } else {
+            Account accountToEdit = setAccountToEdit(currentUser.getImgUrl());
+            accountService.updateProfile(mPerferences.getString(getString(R.string.token),""),accountToEdit);
+            Intent intent = new Intent();
+            intent.putExtra("imgAccount", mPerferences.getString(getString(R.string.imgAccount), ""));
+            intent.putExtra("fullname", mPerferences.getString(getString(R.string.fullname), ""));
+            setResult(Activity.RESULT_OK, intent);
+            finish();
+        }
     }
 
     public void confirmUpdateProfile() {
@@ -153,46 +221,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
         alertDialog.setPositiveButton("Có", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                final ProgressDialog progressDialog = new ProgressDialog(getApplicationContext());
-                progressDialog.setTitle("Đang xử lý");
-                progressDialog.show();
-                if (userImageUri != null) {
-                    StorageReference srf = storageReference.child(Constants.USER_IMAGE_FOLDER_UPLOAD_FIREBASE + "/" + currentUser.getUsername());
-                    srf.putFile(userImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                            mEditor.putString("imgAccount", taskSnapshot.getDownloadUrl().toString());
-                            mEditor.commit();
-                            Log.e("imgAccountda commit = ", mPerferences.getString(getString(R.string.imgAccount), ""));
-                            accountService.updateProfile(setAccountToEdit(taskSnapshot.getDownloadUrl().toString()));
-                            Toast.makeText(UpdateProfileActivity.this, "Cập nhập thành công!", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent();
-                            intent.putExtra("imgAccount", mPerferences.getString(getString(R.string.imgAccount), ""));
-                            setResult(Activity.RESULT_OK, intent);
-                            finish();
-                            Log.e("imgAccountaaaaaaa = ", mPerferences.getString(getString(R.string.imgAccount), ""));
-//                            Intent intent = new Intent(getApplicationContext(),TraineeProfileActivity.class);
-//                            startActivity(intent);
-                        }
-                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                            progressDialog.setMessage("Hoàn thành " + (int) progress + "%...");
-                            if ((int) progress == 100) {
-                                progressDialog.dismiss();
-                            }
-                        }
-                    });
-                } else {
-                    progressDialog.setMessage("Hoàn thành " + "10%...");
-                    accountService.updateProfile(setAccountToEdit(currentUser.getImgUrl()));
-                    //double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                    progressDialog.setMessage("Hoàn thành " + "100%");
-                    progressDialog.dismiss();
-                }
-
+                clickYesButton();
             }
         });
         alertDialog.setNegativeButton("Không", new DialogInterface.OnClickListener() {
@@ -208,4 +237,5 @@ public class UpdateProfileActivity extends AppCompatActivity {
         });
         alertDialog.show();
     }
+
 }

@@ -12,6 +12,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface IVideoService {
@@ -29,13 +30,22 @@ public interface IVideoService {
     @GET("video/getAllVideosByTopNumOfView")
     Call<List<VideoDTO>> getAllVideosByTopNumOfView(@Query("page") int page, @Query("size") int size);
 
-    @GET("video/getAllVideoByCourseId")
+    @GET("video/getAllBoughtVideosByCourseId")
     Call<List<VideoDTO>> getAllBoughtVideosByCourseId(@Header(Constants.header_string) String token,
-                                                      @Query("page") int page, @Query("size") int size, @Query("courseId") int courseId);
+                                                      @Query("page") int page, @Query("size") int size,
+                                                      @Query("traineeId") int traineeId,
+                                                      @Query("courseId") int courseId);
+    @GET("video/getAllUnBoughtVideoByCourseId")
+    Call<List<VideoDTO>> getAllUnBoughtVideoByCourseId(@Header(Constants.header_string) String token,
+                                                      @Query("page") int page, @Query("size") int size,
+                                                       @Query("traineeId") int traineeId,
+                                                       @Query("courseId") int courseId);
 
     @GET("video/getAllBoughtVideoRelated")
     Call<List<VideoDTO>> getAllBoughtVideoRelated(@Header(Constants.header_string) String token,
-                                                  @Query("courseId") int courseId, @Query("videoId") int videoId);
+                                                  @Query("traineeId") int traineeId,
+                                                  @Query("courseId") int courseId,
+                                                  @Query("videoId") int videoId);
 
    /* @GET("video/videosByAccount")
     Call<List<VideoDTO>> getVideosByAccountId(@Header(Constants.header_string) String token, @)*/
@@ -52,4 +62,7 @@ public interface IVideoService {
 
     @PUT("video/editVideo")
     Call<Boolean> editVideo(@Header(Constants.header_string) String token,@Body Video video);
+
+    @PUT("video/changeNumberOfViewByVideoId/{videoId}")
+    Call<Boolean> changeNumberOfViewByVideoId(@Header(Constants.header_string) String token,@Path("videoId") long videoId);
 }

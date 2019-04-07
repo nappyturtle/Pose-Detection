@@ -61,14 +61,14 @@ public class VideoInforActivity extends AppCompatActivity {
     private Video video;
     private TextInputEditText edtEditVideoTitle;
     private ImageView ivVideoThumbnail;
-    private Spinner spnCourse;
-    private CourseService courseService;
+    //private Spinner spnCourse;
+    //private CourseService courseService;
     private Button btnSave;
-    private List<Course> courseList;
-    List<Course> courses;
-    CourseByNameAdapter courseByNameAdapter;
+    //private List<Course> courseList;
+    //List<Course> courses;
+    //CourseByNameAdapter courseByNameAdapter;
     private Video videoIntent;
-    private Course courseSelected;
+    //private Course courseSelected;
     private SharedPreferences mPerferences;
     private static int PICK_IMAGE_REQUEST = 1;
     private Uri courseThumbnailUri;
@@ -104,54 +104,54 @@ public class VideoInforActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar_edit_video_by_trainer);
         ivVideoThumbnail = (ImageView) findViewById(R.id.ivEditVideoThumbnail);
         edtEditVideoTitle = (TextInputEditText) findViewById(R.id.edtEditVideoTitle);
-        spnCourse = (Spinner) findViewById(R.id.spnEditVideoCourse);
+        //spnCourse = (Spinner) findViewById(R.id.spnEditVideoCourse);
         btnSave = (Button) findViewById(R.id.btnEditVideo);
         mPerferences = PreferenceManager.getDefaultSharedPreferences(this);
         storageReference = FirebaseStorage.getInstance().getReference();
         token = mPerferences.getString(getString(R.string.token), "");
         accountId = mPerferences.getInt(getString(R.string.id), 0);
-        courseList = new ArrayList<>();
+        //courseList = new ArrayList<>();
 
         getDataFromIntent();
-        initCourseListAdapter(token, accountId);
+        //initCourseListAdapter(token, accountId);
         openFileChooser();
         clickToEditVideoButton();
 
     }
 
-    private void initCourseListAdapter(String token, int id) {
-        courseService = new CourseService();
-
-        courses = courseService.getAllCoursesByAccountId(token, id);
-
-        if (courses != null) {
-            for (Course c : courses) {
-                courseList.add(c);
-            }
-        }
-        courseByNameAdapter = new CourseByNameAdapter(this, (ArrayList<Course>) courseList);
-        spnCourse.setAdapter(courseByNameAdapter);
-        for (int i = 0; i < courseByNameAdapter.getCount(); i++) {
-
-            Course course = (Course) spnCourse.getItemAtPosition(i);
-            if (course.getId() == videoIntent.getCourseId()) {
-                spnCourse.setSelection(i);
-                break;
-            }
-        }
-
-        spnCourse.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                courseSelected = (Course) parent.getItemAtPosition(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-    }
+//    private void initCourseListAdapter(String token, int id) {
+//        courseService = new CourseService();
+//
+//        courses = courseService.getAllCoursesByAccountId(token, id);
+//
+//        if (courses != null) {
+//            for (Course c : courses) {
+//                courseList.add(c);
+//            }
+//        }
+//        courseByNameAdapter = new CourseByNameAdapter(this, (ArrayList<Course>) courseList);
+//        spnCourse.setAdapter(courseByNameAdapter);
+//        for (int i = 0; i < courseByNameAdapter.getCount(); i++) {
+//
+//            Course course = (Course) spnCourse.getItemAtPosition(i);
+//            if (course.getId() == videoIntent.getCourseId()) {
+//                spnCourse.setSelection(i);
+//                break;
+//            }
+//        }
+//
+//        spnCourse.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                courseSelected = (Course) parent.getItemAtPosition(position);
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
+//    }
 
     private void openFileChooser() {
         ivVideoThumbnail.setOnClickListener(new View.OnClickListener() {
@@ -207,15 +207,17 @@ public class VideoInforActivity extends AppCompatActivity {
             video.setUpdatedTime(TimeHelper.getCurrentTime());
             video.setTitle(edtEditVideoTitle.getText().toString());
             video.setThumnailUrl(videoIntent.getThumnailUrl());
-            video.setCourseId(courseSelected.getId());
+            //video.setCourseId(courseSelected.getId());
 
             VideoService videoService = new VideoService();
             if (videoService.editVideo(token, video)) {
                 Toast.makeText(VideoInforActivity.this, "Thay đổi thông tin video thành công", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
                 Intent intent = new Intent();
                 setResult(Activity.RESULT_OK, intent);
                 finish();
             } else {
+                progressDialog.dismiss();
                 Toast.makeText(VideoInforActivity.this, "Thay đổi thông tin video không thành công", Toast.LENGTH_SHORT).show();
             }
 
@@ -231,7 +233,7 @@ public class VideoInforActivity extends AppCompatActivity {
                     video.setUpdatedTime(TimeHelper.getCurrentTime());
                     video.setTitle(edtEditVideoTitle.getText().toString());
                     video.setThumnailUrl(taskSnapshot.getDownloadUrl().toString());
-                    video.setCourseId(courseSelected.getId());
+                    //video.setCourseId(courseSelected.getId());
 
                     VideoService videoService = new VideoService();
                     if (videoService.editVideo(token, video)) {

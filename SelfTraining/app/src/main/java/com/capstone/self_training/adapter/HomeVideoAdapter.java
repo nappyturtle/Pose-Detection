@@ -10,6 +10,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,6 +92,7 @@ public class HomeVideoAdapter extends RecyclerView.Adapter<HomeVideoAdapter.Vide
                 Toast.makeText(context, "View Profile Clicked", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(context, TrainerChannelActivity.class);
                 intent.putExtra("ACCOUNID_FROM_TRAINER_PROFILE", account.getId());
+                Log.e("ACCOUNID_FROM_TRAINER_PROFILE_Fragment_home", String.valueOf(account.getId()));
                 intent.putExtra("ACCONTNAME_FROM_TRAINER_PROFILE", account.getUsername());
                 context.startActivity(intent);
             }

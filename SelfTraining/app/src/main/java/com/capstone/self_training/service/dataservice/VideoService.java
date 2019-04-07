@@ -38,6 +38,18 @@ public class VideoService {
         return response;
     }
 
+    public boolean changeNumberOfViewByVideoId(String token, int videoId) {
+        iVideoService = DataService.getVideoService();
+        Call<Boolean> call = iVideoService.changeNumberOfViewByVideoId(token, videoId);
+        boolean response = false;
+        try {
+            response = call.execute().body();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return response;
+    }
+
     public List<VideoDTO> getVideosByDate(int page, int size) {
         iVideoService = DataService.getVideoService();
         Call<List<VideoDTO>> call = iVideoService.getVideosByDate(page, size);
@@ -86,9 +98,9 @@ public class VideoService {
         return videoDTOS;
     }
 
-    public List<VideoDTO> getAllBoughtVideosByCourseId(String token, int page, int size, int courseId) {
+    public List<VideoDTO> getAllBoughtVideosByCourseId(String token, int page, int size, int traineeId,int courseId) {
         iVideoService = DataService.getVideoService();
-        Call<List<VideoDTO>> call = iVideoService.getAllBoughtVideosByCourseId(token, page, size, courseId);
+        Call<List<VideoDTO>> call = iVideoService.getAllBoughtVideosByCourseId(token, page, size, traineeId,courseId);
         List<VideoDTO> videoDTOS = null;
         try {
             videoDTOS = call.execute().body();
@@ -98,9 +110,21 @@ public class VideoService {
         return videoDTOS;
     }
 
-    public List<VideoDTO> getAllBoughtVideoRelated(String token, int courseId, int videoId) {
+    public List<VideoDTO> getAllUnBoughtVideoByCourseId(String token, int page, int size, int traineeId, int courseId) {
         iVideoService = DataService.getVideoService();
-        Call<List<VideoDTO>> call = iVideoService.getAllBoughtVideoRelated(token, courseId, videoId);
+        Call<List<VideoDTO>> call = iVideoService.getAllUnBoughtVideoByCourseId(token, page, size, traineeId,courseId);
+        List<VideoDTO> videoDTOS = null;
+        try {
+            videoDTOS = call.execute().body();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return videoDTOS;
+    }
+
+    public List<VideoDTO> getAllBoughtVideoRelated(String token, int traineeId,int courseId, int videoId) {
+        iVideoService = DataService.getVideoService();
+        Call<List<VideoDTO>> call = iVideoService.getAllBoughtVideoRelated(token, traineeId,courseId, videoId);
         List<VideoDTO> videoDTOS = null;
         try {
             videoDTOS = call.execute().body();

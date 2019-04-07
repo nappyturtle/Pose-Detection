@@ -74,9 +74,9 @@ public class AccountService {
         return status;
     }
 
-    public void updateProfile(Account account) {
+    public void updateProfile(String token, Account account) {
         iAccountService = DataService.getAccountService();
-        Call<Void> call = iAccountService.updateProfile(account);
+        Call<Void> call = iAccountService.updateProfile(token,account);
         String mess = null;
         try {
             call.execute().body();

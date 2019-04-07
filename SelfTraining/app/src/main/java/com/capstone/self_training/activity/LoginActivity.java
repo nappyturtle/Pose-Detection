@@ -93,6 +93,9 @@ public class LoginActivity extends AppCompatActivity {
                         mEditor.putString(getString(R.string.imgAccount),account.getImgUrl());
                         mEditor.commit();
 
+                        mEditor.putString(getString(R.string.fullname),account.getFullname());
+                        mEditor.commit();
+
                         Intent intent = new Intent();
                         intent.putExtra("Account",account);
                         setResult(Activity.RESULT_OK,intent);

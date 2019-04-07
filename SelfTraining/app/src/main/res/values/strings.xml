@@ -8,7 +8,7 @@
     <string name="imgAccount">com.capstone.self_training.activity.imgAccount</string>
     <!--<string name="result_head">com.capstone.self_training.activity.resultHead</string>-->
     <!--<string name="result_body">com.capstone.self_training.activity.resultBody</string>-->
-    <!--<string name="result_leg">com.capstone.self_training.activity.resultLeg</string>-->
+    <string name="fullname">com.capstone.self_training.activity.fullname</string>
     <string name="full_screen">full screen mode</string>
     <string name="permission_request">This app needs permission for camera and audio recording.</string>
     <string name="camera_error">This device doesn\'t support Camera2 API.</string>

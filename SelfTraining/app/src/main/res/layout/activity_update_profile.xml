@@ -11,7 +11,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
+            app:titleTextColor="#868683"
+            app:title="Thông tin tài khoản"
+            android:id="@+id/toolbar_update_profile_id"
+            >
+        </android.support.v7.widget.Toolbar>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="250dp"
@@ -45,6 +53,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Email"
+                android:inputType="text" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edtUpdatefullname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Tên đầy đủ"
                 android:inputType="text" />
         </android.support.design.widget.TextInputLayout>
 

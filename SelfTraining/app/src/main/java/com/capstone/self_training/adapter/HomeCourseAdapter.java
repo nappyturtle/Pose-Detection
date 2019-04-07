@@ -18,8 +18,10 @@ import com.capstone.self_training.activity.CourseDetailPayment;
 import com.capstone.self_training.activity.LoginActivity;
 import com.capstone.self_training.dto.CourseDTO;
 import com.capstone.self_training.helper.TimeHelper;
+import com.capstone.self_training.service.dataservice.EnrollmentService;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import static android.support.v4.app.ActivityCompat.startActivityForResult;
@@ -28,14 +30,25 @@ public class HomeCourseAdapter extends RecyclerView.Adapter<HomeCourseAdapter.Co
 
     private Context context;
     private List<CourseDTO> list;
-    int accountId;
+    int trainerId;
+    int currentUserId;
+    String token;
     private static final int REQUEST_CODE_LOGIN = 0x9345;
 
-    public HomeCourseAdapter(List<CourseDTO> list, Context context, int accountId) {
+    public HomeCourseAdapter(List<CourseDTO> list, Context context, int trainerId) {
         this.list = list;
         this.context = context;
-        this.accountId = accountId;
+        this.trainerId = trainerId;
     }
+    public HomeCourseAdapter(List<CourseDTO> list, Context context, int trainerId, int currentUserId, String token) {
+        this.list = list;
+        this.context = context;
+        this.trainerId = trainerId;
+        this.currentUserId = currentUserId;
+        this.token = token;
+    }
+
+
 
     @NonNull
     @Override
@@ -49,31 +62,40 @@ public class HomeCourseAdapter extends RecyclerView.Adapter<HomeCourseAdapter.Co
         final CourseDTO courseDto = list.get(position);
         if (courseDto != null) {
             Picasso.get().load(courseDto.getCourse().getThumbnail()).fit().into(holder.ivCourseThumbnail);
-            holder.tvCourseName.setText(courseDto.getCourse().getName().toString().trim());
-            holder.tvTrainerName.setText(courseDto.getTrainerName().toString().trim());
+            holder.tvCourseName.setText(courseDto.getCourse().getName());
+            holder.tvTrainerName.setText(courseDto.getTrainerName());
             holder.tvCreatedTime.setText(TimeHelper.showPeriodOfTime(courseDto.getCourse().getCreatedTime()));
-            holder.tvPrice.setText(courseDto.getCourse().getPrice() + ".000 đ");
+            DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
+            String moneyDots = decimalFormat.format(courseDto.getCourse().getPrice())+",000 đồng ";
+            holder.tvPrice.setText(moneyDots);
             holder.tvRegis.setText(courseDto.getNumberOfRegister() + " lượt đăng kí");
             holder.tvVideoQuantity.setText(courseDto.getNumberOfVideoInCourse() + "");
 
             holder.lnCourseItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (accountId == 0) {
+                    if (currentUserId == 0 && trainerId != 0) {
                         Toast.makeText(context, "Bạn chưa đăng nhập!!!", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(context, LoginActivity.class);
                         ((Activity) context).startActivityForResult(intent, REQUEST_CODE_LOGIN);
-                    } else if (courseDto.getCourse().getAccountId() == accountId) {
+                    } else if (trainerId == currentUserId && currentUserId != 0 && trainerId != 0) {
                         Toast.makeText(context, "Bạn không thể mua khóa học của chính mình", Toast.LENGTH_SHORT).show();
                     } else {
-                        Intent intent = new Intent(context, CourseDetailPayment.class);
-                        intent.putExtra("courseDTO",courseDto);
-                        context.startActivity(intent);
+                        if(checkEnrollmentExisted(token,currentUserId,courseDto.getCourse().getId())){
+                            Toast.makeText(context, "Bạn đã mua khóa học này", Toast.LENGTH_SHORT).show();
+                        }else {
+                            Intent intent = new Intent(context, CourseDetailPayment.class);
+                            intent.putExtra("courseDTO", courseDto);
+                            context.startActivity(intent);
+                        }
                     }
                 }
             });
         }
-
+    }
+    private boolean checkEnrollmentExisted(String token, int traineeId, int courseId){
+        EnrollmentService enrollmentService = new EnrollmentService();
+        return enrollmentService.checkEnrollmentExistedOrNot(token,traineeId,courseId);
     }
 
     @Override

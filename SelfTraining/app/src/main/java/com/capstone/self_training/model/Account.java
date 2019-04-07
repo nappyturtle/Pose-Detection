@@ -48,6 +48,17 @@ public class Account implements Serializable {
     @SerializedName("message")
     @Expose
     private String message;
+    @SerializedName("fullname")
+    @Expose
+    private String fullname;
+
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
+    }
 
     public String getMessage() {
         return message;

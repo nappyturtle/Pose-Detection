@@ -3,6 +3,8 @@ package com.capstone.self_training.activity;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.capstone.self_training.R;
 import com.capstone.self_training.dto.CourseDTO;
@@ -28,6 +31,7 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 
 public class CourseDetailPayment extends AppCompatActivity {
 
@@ -38,6 +42,10 @@ public class CourseDetailPayment extends AppCompatActivity {
     private Button btnPay;
     private CourseDTO dto;
     private Toolbar toolbar;
+    private String token;
+    private int traineeId;
+    private boolean updatedCourse;
+    private SharedPreferences mPerferences;
     public static final int PAYPAL_REQUEST_CODE = 123;
     private static PayPalConfiguration config = new PayPalConfiguration()
             // Start with mock environment.  When ready, switch to sandbox (ENVIRONMENT_SANDBOX)
@@ -50,6 +58,7 @@ public class CourseDetailPayment extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_detail_payment);
         if (CheckConnection.haveNetworkConnection(this)) {
+
             reflect();
             getDataFromIntent();
             Intent intent = new Intent(this, PayPalService.class);
@@ -90,10 +99,10 @@ public class CourseDetailPayment extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 confirmPayment();
-
             }
         });
     }
+
     private void displayToolBar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -113,7 +122,11 @@ public class CourseDetailPayment extends AppCompatActivity {
         alertDialog.setPositiveButton("Có", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                getPayment();
+//                if(checkEnrollmentExisted(token,traineeId,dto.getCourse().getId())){
+//                    Toast.makeText(CourseDetailPayment.this, "Bạn đã mua khóa học này rồi", Toast.LENGTH_SHORT).show();
+//                }else {
+                    getPayment();
+                //}
             }
         });
         alertDialog.setNegativeButton("Không", new DialogInterface.OnClickListener() {
@@ -129,14 +142,26 @@ public class CourseDetailPayment extends AppCompatActivity {
         });
         alertDialog.show();
     }
+    private boolean checkEnrollmentExisted(String token, int traineeId, int courseId){
+        EnrollmentService enrollmentService = new EnrollmentService();
+        return enrollmentService.checkEnrollmentExistedOrNot(token,traineeId,courseId);
+    }
 
     private void getDataFromIntent() {
         Intent intent = getIntent();
         dto = (CourseDTO) intent.getSerializableExtra("courseDTO");
+        updatedCourse = intent.getBooleanExtra("updatedCourse",false);
+//        if(updatedCourse){
+//            saveToPayment();
+//        }else{
+//            Toast.makeText(this, "Bạn đã mua khóa học này rồi", Toast.LENGTH_SHORT).show();
+//        }
         Picasso.get().load(dto.getCourse().getThumbnail()).fit().into(imgCourse);
         txtTitle.setText(dto.getCourse().getName());
         txtTrainername.setText(dto.getTrainerName());
-        txtPrice.setText(dto.getCourse().getPrice() + ".000 VNĐ");
+        DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
+        String moneyDots = decimalFormat.format(dto.getCourse().getPrice()) + ",000 đồng ";
+        txtPrice.setText(moneyDots);
     }
 
     private void reflect() {
@@ -145,7 +170,10 @@ public class CourseDetailPayment extends AppCompatActivity {
         txtTrainername = (TextView) findViewById(R.id.txtTrainer_courseDetail_payment);
         txtPrice = (TextView) findViewById(R.id.price_courseDetail_payment);
         btnPay = (Button) findViewById(R.id.btnPay_courseDetail_payment);
-        toolbar = (Toolbar)findViewById(R.id.toolbar_courseDetail_payment);
+        toolbar = (Toolbar) findViewById(R.id.toolbar_courseDetail_payment);
+        mPerferences = PreferenceManager.getDefaultSharedPreferences(this);
+        token = mPerferences.getString(getString(R.string.token), "");
+        traineeId = mPerferences.getInt(getString(R.string.id), 0);
     }
 
     @Override
@@ -153,6 +181,7 @@ public class CourseDetailPayment extends AppCompatActivity {
         stopService(new Intent(this, PayPalService.class));
         super.onDestroy();
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //If the result is from paypal

@@ -105,16 +105,16 @@
                     />
             </LinearLayout>
         </LinearLayout>
+
         <TextView
-            android:gravity="center"
-            android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Hóa đơn của bạn đã đăng kí thành công"
-            android:textStyle="bold"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:text="Hóa đơn của bạn đã thanh toán thành công"
             android:textColor="#f56912"
             android:textSize="20sp"
-            />
+            android:textStyle="bold" />
         <Button
             android:id="@+id/btnBackToHome_confirmPayment"
             android:layout_marginTop="15dp"

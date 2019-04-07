@@ -35,9 +35,7 @@ public class TraineeProfileActivity extends AppCompatActivity {
     TextView viewBoughtVideo;
     SharedPreferences mPerferences;
     SharedPreferences.Editor mEditor;
-    int id;
-    String username;
-    int roleId;
+    String fullname;
     String token;
     String imageAccount;
     LinearLayout lnSuggestion;
@@ -49,27 +47,19 @@ public class TraineeProfileActivity extends AppCompatActivity {
         if(CheckConnection.haveNetworkConnection(this)){
             reflect();
             displayToolBar();
-            loadData();
             getAllSuggestion();
-            getProfileTrainee();
             getAllBoughtCourse();
         }else{
             CheckConnection.showConnection(this,"Xin vui lòng kiểm tra kết nối internet !!! ");
             finish();
         }
     }
-    private void getProfileTrainee(){
-        imgSetting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-//                startActivityForResult(intent, REQUEST_CODE_LOGIN);
-                Intent intent = new Intent(getApplicationContext(), UpdateProfileActivity.class);
-                intent.putExtra("USER_ID", id);
-                startActivityForResult(intent, REQUEST_CODE_UPDATE);
-                //startActivity(intent);
-            }
-        });
+
+    public void updateProfileTrainee(View view) {
+        Intent intent = new Intent(getApplicationContext(), UpdateProfileActivity.class);
+        intent.putExtra("USER_ID", mPerferences.getInt(getString(R.string.id),0));
+        startActivityForResult(intent, REQUEST_CODE_UPDATE);
+
     }
 
     private void reflect() {
@@ -89,12 +79,8 @@ public class TraineeProfileActivity extends AppCompatActivity {
                 String.valueOf(mPerferences.getInt(getString(R.string.roleId),0)) + " - token = "+
                 mPerferences.getString(getString(R.string.token),""));
 
-        id = mPerferences.getInt(getString(R.string.id),0);
-        username = mPerferences.getString(getString(R.string.username),"");
-        roleId = mPerferences.getInt(getString(R.string.roleId),0);
-        token = mPerferences.getString(getString(R.string.token),"");
-        imageAccount = mPerferences.getString(getString(R.string.imgAccount),"");
-        //Log.e("traineeImage = ",imageAccount);
+        txtUsername.setText(mPerferences.getString(getString(R.string.fullname),""));
+        Picasso.get().load(mPerferences.getString(getString(R.string.imgAccount),"")).into(imgAccount);
     }
     private void displayToolBar() {
         setSupportActionBar(toolbar);
@@ -106,12 +92,7 @@ public class TraineeProfileActivity extends AppCompatActivity {
             }
         });
     }
-    private void loadData() {
-        txtUsername.setText(mPerferences.getString(getString(R.string.username),""));
-        Picasso.get().load(imageAccount)
-//                .placeholder(R.drawable.userlogin).into(imgAccount);
-        .into(imgAccount);
-    }
+
     private void getAllSuggestion() {
         viewSuggestion.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,9 +129,11 @@ public class TraineeProfileActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_UPDATE && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
-            System.out.println("Trainee uploaded profile");
+            Log.e("Trainee uploaded profile","Trainee uploaded profile");
             imageAccount = data.getStringExtra("imgAccount");
-
+            fullname = data.getStringExtra("fullname");
+            Picasso.get().load(imageAccount).into(imgAccount);
+            txtUsername.setText(fullname);
         }
     }
 
@@ -203,4 +186,5 @@ public class TraineeProfileActivity extends AppCompatActivity {
         });
         alertDialog.show();
     }
+
 }

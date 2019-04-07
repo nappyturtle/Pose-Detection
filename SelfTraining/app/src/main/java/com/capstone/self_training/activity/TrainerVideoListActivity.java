@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.capstone.self_training.R;
+import com.capstone.self_training.adapter.TrainerVideoListAdpater;
 import com.capstone.self_training.adapter.VideoListAdapter;
 import com.capstone.self_training.dto.VideoDTO;
 import com.capstone.self_training.model.Video;
@@ -26,7 +27,7 @@ import java.util.List;
 public class TrainerVideoListActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private RecyclerView rcListVideo;
-    VideoListAdapter videoListAdapter;
+    TrainerVideoListAdpater videoListAdapter;
     private List<Video> videos;
     private List<VideoDTO> videoDTOS;
     private VideoService videoService;
@@ -80,7 +81,7 @@ public class TrainerVideoListActivity extends AppCompatActivity {
         }
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         rcListVideo.setLayoutManager(layoutManager);
-        videoListAdapter = new VideoListAdapter(videos, TrainerVideoListActivity.this);
+        videoListAdapter = new TrainerVideoListAdpater(videos, TrainerVideoListActivity.this);
         rcListVideo.setAdapter(videoListAdapter);
         setupToolbar();
     }

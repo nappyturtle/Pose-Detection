@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Danh sách video mới cập nhật"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:textColor="#ff6411"
+        />
+
+    <ListView
+        android:layout_marginTop="5dp"
+        android:id="@+id/listView_video_boughtCourseUpdated"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"></ListView>
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="10"
+
+        >
+        <Button
+            android:background="@drawable/custom_button_dialog_yes"
+            android:id="@+id/btnSave_video_boughtCourseUpdated"
+            android:layout_margin="5dp"
+
+            android:textColor="#ffffff"
+            android:layout_weight="5"
+            android:text="Cập nhật"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:background="@drawable/custom_button_dialog_no"
+            android:id="@+id/btnCancel_video_boughtCourseUpdated"
+            android:layout_margin="5dp"
+            android:layout_weight="5"
+            android:text="Hủy"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</LinearLayout>

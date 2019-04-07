@@ -1,11 +1,16 @@
 package com.capstone.self_training.activity;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,8 +19,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -24,15 +31,20 @@ import android.widget.Toast;
 
 import com.capstone.self_training.R;
 import com.capstone.self_training.adapter.BoughtCourseAdapter;
+import com.capstone.self_training.adapter.BoughtCourseAddedVideoAdapter;
 import com.capstone.self_training.adapter.BoughtTrainerCourseAdapter;
+import com.capstone.self_training.adapter.BoughtVideoAdapter;
 import com.capstone.self_training.adapter.SuggestionAdapter;
+import com.capstone.self_training.dto.CourseDTO;
 import com.capstone.self_training.dto.EnrollmentDTO;
 import com.capstone.self_training.model.Account;
 import com.capstone.self_training.model.Suggestion;
+import com.capstone.self_training.model.Video;
 import com.capstone.self_training.service.dataservice.EnrollmentService;
 import com.capstone.self_training.util.CheckConnection;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +53,7 @@ public class BoughtCourseActivity extends AppCompatActivity {
     private RecyclerView trainerRecyclerView;
     private ListView boughtCourseListView;
     private BoughtCourseAdapter boughtCourseAdapter;
+
     private BoughtTrainerCourseAdapter boughtTrainerCourseAdapter;
     private List<EnrollmentDTO> enrollmentList;
     private List<Account> trainerCourseList;
@@ -87,7 +100,7 @@ public class BoughtCourseActivity extends AppCompatActivity {
         bought_course_totalTextView_id.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),ManageTrainerActivity.class);
+                Intent intent = new Intent(getApplicationContext(), ManageTrainerActivity.class);
                 intent.putExtra("listManagement", (Serializable) trainerCourseList);
                 startActivity(intent);
             }
@@ -202,11 +215,80 @@ public class BoughtCourseActivity extends AppCompatActivity {
         boughtCourseListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                EnrollmentService enrollmentService = new EnrollmentService();
+                CourseDTO dto = enrollmentService.checkBoughtCourseUpdatedByTrainer(token, accountId, enrollmentList.get(i).getCourseId());
+                if (dto != null && dto.getVideoUpdated() != null) {
+                    displayDialogVideoUpdated(dto);
+                } else {
+                    Intent intent = new Intent(getApplicationContext(), BoughtVideoListActivity.class);
+                    intent.putExtra("courseId", enrollmentList.get(i).getCourseId());
+                    intent.putExtra("checked",true);
+                    startActivity(intent);
+                }
+            }
+        });
+    }
+    public void displayDialogVideoUpdated(CourseDTO dto){
+        Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.item_dialog_new_video_from_bought_course);
+        ListView listViewVideoUpdated = (ListView) dialog.findViewById(R.id.listView_video_boughtCourseUpdated);
+        Button btnSave = (Button) dialog.findViewById(R.id.btnSave_video_boughtCourseUpdated);
+        Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel_video_boughtCourseUpdated);
+        List<Video> videos = new ArrayList<>();
+        for(Video v: dto.getVideoUpdated()){
+            videos.add(v);
+        }
+        BoughtCourseAddedVideoAdapter adapter = new BoughtCourseAddedVideoAdapter(videos,BoughtCourseActivity.this);
+        listViewVideoUpdated.setAdapter(adapter);
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                displayDialogCourseUpdated(dto);
+            }
+        });
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
                 Intent intent = new Intent(getApplicationContext(), BoughtVideoListActivity.class);
-                intent.putExtra("courseId", enrollmentList.get(i).getCourseId());
+                intent.putExtra("courseId", dto.getCourse().getId());
+                intent.putExtra("checked",false);
                 startActivity(intent);
             }
         });
+        dialog.show();
+    }
+
+    private void displayDialogCourseUpdated(CourseDTO dto) {
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Danh sách video được cập nhật");
+
+        DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
+        String moneyDots = decimalFormat.format(dto.getCourse().getPrice())+",000 đồng ";
+
+        alertDialog.setMessage("Chỉ cần thêm "+ moneyDots + "để sỡ hữu trọn bộ khóa học này !!!");
+        alertDialog.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(BoughtCourseActivity.this,CourseDetailPayment.class);
+                intent.putExtra("courseDTO",dto);
+                intent.putExtra("updatedCourse",true);
+                startActivity(intent);
+            }
+        });
+        alertDialog.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        dialog.dismiss();
+                    }
+                });
+            }
+        });
+        alertDialog.show();
     }
 
 

@@ -7,6 +7,15 @@
     android:orientation="vertical"
     tools:context=".activity.PlayVideoActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/playVideo_toolbar_id"
+        android:minHeight="?attr/actionBarSize"
+        app:titleTextColor="#868683"
+        app:title="Video"
+        >
+    </android.support.v7.widget.Toolbar>
     <FrameLayout
     android:id="@+id/videoSurfaceContainer"
     android:layout_width="match_parent"
@@ -50,22 +59,16 @@
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                         android:textStyle="bold" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
 
                         <TextView
                             android:id="@+id/play_video_view"
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
                             android:text="1,4 tr lượt xem"
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
 
-                    </LinearLayout>
 
                 </LinearLayout>
 

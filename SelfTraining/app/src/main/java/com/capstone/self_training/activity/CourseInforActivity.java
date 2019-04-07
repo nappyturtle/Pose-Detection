@@ -204,11 +204,13 @@ public class CourseInforActivity extends AppCompatActivity {
             CourseService courseService = new CourseService();
             if (courseService.editCourse(token, course)) {
                 Toast.makeText(CourseInforActivity.this, "Thay đổi thông tin khóa học thành công", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
                 Intent intent = new Intent();
                 setResult(Activity.RESULT_OK, intent);
                 finish();
             } else {
                 Toast.makeText(CourseInforActivity.this, "Thay đổi thông tin khóa học không thành công", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
             }
 
 
