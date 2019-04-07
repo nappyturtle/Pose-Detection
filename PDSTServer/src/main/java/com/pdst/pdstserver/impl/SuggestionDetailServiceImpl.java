@@ -31,6 +31,13 @@ public class SuggestionDetailServiceImpl implements SuggestionDetailService {
         return suggestionDetailRepository.findAll();
     }
 
+    /**
+     @author  KietPT
+     @since   6/4/2019
+
+     - hàm này dùng để lấy danh sách suggestion detail
+     - dùng cho mobile
+     */
     @Override
     public List<SuggestionDetail> getSuggestionDetails(String field, Object value) {
         BeanWrapper beanWrapper = new BeanWrapperImpl(new SuggestionDetail());
@@ -42,12 +49,26 @@ public class SuggestionDetailServiceImpl implements SuggestionDetailService {
         return suggestionDetails;
     }
 
+    /**
+     @author  KietPT
+     @since   6/4/2019
+
+     - hàm này dùng để lấy tạo suggestion detail
+     - dùng cho service
+     */
     @Override
     public SuggestionDetail createSuggestionDetail(SuggestionDetail suggestionDetail) {
         suggestionDetail.setStatus("active");
         return suggestionDetailRepository.saveAndFlush(suggestionDetail);
     }
 
+    /**
+     @author  KietPT
+     @since   6/4/2019
+
+     - hàm này dùng để lấy tạo comment trong suggestion detail
+     - dùng cho mobile
+     */
     @Override
     public Boolean saveComment(SuggestionDetail suggestionDetailTemp) {
 
@@ -60,6 +81,13 @@ public class SuggestionDetailServiceImpl implements SuggestionDetailService {
         return false;
     }
 
+    /**
+     @author  KietPT
+     @since   6/4/2019
+
+     - hàm này dùng để lấy danh sách suggestion detail cho web
+     - dùng cho mobile
+     */
     @Override
     public List<SuggestionDetailDTOFrontEnd> getAllSuggestionDetailByStaffOrAdmin(int suggestionId) {
         List<SuggestionDetail> suggestionDetails = suggestionDetailRepository.findAllBySuggestionIdAndStatus(suggestionId,"active");

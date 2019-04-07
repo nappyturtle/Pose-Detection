@@ -1,5 +1,6 @@
 package com.pdst.pdstserver.repository;
 
+import com.pdst.pdstserver.model.Video;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,7 +16,9 @@ public interface VideoRepository extends JpaRepository<Video, Integer>{
     List<Video> findAllByCourseId(Integer courseId);
     Integer countVideoByCourseId(Integer courseId);
     Integer countVideoByCourseId(int courseId);
+
     List<Video> findTop6ByCourseIdOrderByCreatedTimeDesc(int courseId);
+
     List<Video> findAllByCourseIdOrderByCreatedTimeDesc(int courseId);
 
 
@@ -40,4 +43,6 @@ public interface VideoRepository extends JpaRepository<Video, Integer>{
     List<Video> findAllByOrderByCreatedTimeDesc();
     List<Video> findAllByCreatedTimeGreaterThanAndCourseId(String enrollmentCreatedTime,int courseId);
     List<Video> findAllByCreatedTimeLessThanAndCourseId(Pageable pageable,String enrollmentCreatedTime,int courseId);
+
+    List<Video> findTop6ByCreatedTimeLessThanAndCourseIdOrderByCreatedTimeDesc(String enrollmentCreatedTime,int courseId);
 }

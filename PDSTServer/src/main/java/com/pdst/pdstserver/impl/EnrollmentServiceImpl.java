@@ -42,6 +42,13 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         return enrollmentRepository.findAll();
     }
 
+    /**
+     * @author KietPT
+     * @since 6/4/2019
+     * <p>
+     * - hàm này dùng để lấy danh sách các course đã mua
+     * - dùng cho mobile
+     */
     @Override
     public List<EnrollmentDTO> getAllEnrollmentByAccountId(int page, int size, int accountId) {
         System.out.println("page - size = " + page + " - " + size);
@@ -76,6 +83,13 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         return dtoList;
     }
 
+    /**
+     * @author KietPT
+     * @since 6/4/2019
+     * <p>
+     * - hàm này dùng để lấy danh sách trainer từ những course đã mua
+     * - dùng cho mobile
+     */
     @Override
     public List<EnrollmentDTO> getAllBoughtCourseWithTrainername(int accountId) {
         List<Enrollment> enrollmentList = enrollmentRepository.findAllByAccountId(accountId);
@@ -108,6 +122,14 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         return enrollmentRepository.countAllByCourseId(courseID);
     }
 
+
+    /**
+     * @author KietPT
+     * @since 6/4/2019
+     * <p>
+     * - hàm này dùng để tạo enrollment
+     * - dùng cho mobile
+     */
     @Override
     public boolean saveToEnrollment(Enrollment enrollment) {
         Enrollment resEnrollment = enrollmentRepository.save(enrollment);
@@ -117,6 +139,13 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         return false;
     }
 
+    /**
+     * @author KietPT
+     * @since 6/4/2019
+     * <p>
+     * - hàm này dùng để lấy danh sách trainer từ những course đã mua
+     * - dùng cho mobile
+     */
     @Override
     public List<Account> getAllTrainerOfBoughtCourse(int accountId) {
         List<Enrollment> enrollmentList = enrollmentRepository.findAllByAccountId(accountId);
@@ -150,12 +179,12 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         for (Enrollment enrollment : enrollmentList) {
             totalPriceEnrollment += enrollment.getPrice();
         }
-        String maxDate = enrollmentRepository.getMaxDateEnrollmentByAccountIdAndCourseId(courseId,traineeId);
-        System.out.println("maxDate = "+maxDate);
+        String maxDate = enrollmentRepository.getMaxDateEnrollmentByAccountIdAndCourseId(courseId, traineeId);
+        System.out.println("maxDate = " + maxDate);
 
-        if(totalPriceEnrollment < course.getPrice()) {
+        if (totalPriceEnrollment < course.getPrice()) {
 
-            List<Video> videoUpdated = videoRepository.findAllByCreatedTimeGreaterThanAndCourseId(maxDate,courseId);
+            List<Video> videoUpdated = videoRepository.findAllByCreatedTimeGreaterThanAndCourseId(maxDate, courseId);
             Course courseRes = new Course();
             courseRes.setId(course.getId());
             courseRes.setAccountId(course.getAccountId());
@@ -172,11 +201,12 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 
     @Override
     public boolean checkEnrollmentExistedOrNot(int traineeId, int courseId) {
-        Long enrollment = enrollmentRepository.checkEnrollmentExisted(traineeId,courseId);
-        System.out.println(enrollment);
-        if(enrollment > 0){
-            return true;
+        List<Enrollment> enrollmentList = enrollmentRepository.findAllByAccountIdAndCourseId(traineeId,courseId);
+        System.out.println(enrollmentList.size());
+        if(enrollmentList == null || enrollmentList.size() == 0){
+            return false;
         }
-        return false;
+
+        return true;
     }
 }

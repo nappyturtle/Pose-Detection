@@ -63,6 +63,13 @@ public class SuggestionServiceImpl implements SuggestionService {
         return listDTO;
     }
 
+    /**
+     @author  KietPT
+     @since   6/4/2019
+
+     - hàm này dùng để update status của suggestion (proccessing => active) khi tạo suggeston detail xong
+     - dùng cho service
+     */
     @Override
     public boolean updateSuggestionStatus(int id, String status) {
         Suggestion suggestion = suggestionRepository.getOne(id);
@@ -71,10 +78,17 @@ public class SuggestionServiceImpl implements SuggestionService {
         return true;
     }
 
+    /**
+     @author  KietPT
+     @since   6/4/2019
+
+     - hàm này dùng để lấy danh sách suggestion của trainee được quản lí bởi trainer thông qua course và video
+     - dùng cho mobile
+     */
     @Override
     public List<SuggestionDTO> getSuggestionByTrainer(int page, int size, int trainerId, int traineeId) {
         System.out.println("page - size : "+page + " - "+size);
-        List<Suggestion> list = suggestionRepository.findAllByAccountId(new PageRequest(page,size,Sort.Direction.DESC,"createdTime"),traineeId);
+        List<Suggestion> list = suggestionRepository.findAllByAccountId(PageRequest.of(page,size,Sort.Direction.DESC,"createdTime"),traineeId);
         List<SuggestionDTO> listDTO = new ArrayList<>();
 
         try {
@@ -104,6 +118,13 @@ public class SuggestionServiceImpl implements SuggestionService {
         return listDTO;
     }
 
+    /**
+     @author  KietPT
+     @since   6/4/2019
+
+     - hàm này dùng để lấy danh sách suggestion
+     - dùng cho web
+     */
     @Override
     public List<SuggestionDTOFrontEnd> getAllSuggestionByStaffOrAdmin() {
         List<Suggestion> suggestions = suggestionRepository.findAllByOrderByCreatedTimeDesc();
@@ -123,6 +144,13 @@ public class SuggestionServiceImpl implements SuggestionService {
         return suggestionDTOFrontEnds;
     }
 
+    /**
+     @author  KietPT
+     @since   6/4/2019
+
+     - hàm này dùng để edit status suggestion(active,inactive, processing)
+     - dùng cho web
+     */
     @Override
     public boolean editStatusSuggestionByStaffOrAdmin(SuggestionDTOFrontEnd dto) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -140,6 +168,13 @@ public class SuggestionServiceImpl implements SuggestionService {
         return false;
     }
 
+    /**
+     @author  KietPT
+     @since   6/4/2019
+
+     - hàm này dùng để lấy thông tin suggestion
+     - dùng cho web
+     */
     @Override
     public SuggestionDTOFrontEnd getSuggestionById(int suggestionId) {
         Suggestion suggestion = suggestionRepository.findSuggestionById(suggestionId);
@@ -154,6 +189,13 @@ public class SuggestionServiceImpl implements SuggestionService {
         return dto;
     }
 
+    /**
+     @author  KietPT
+     @since   6/4/2019
+
+     - hàm này dùng để tao suggestion khi trainee/trainer tập theo 1 video nào đó, gửi video đó
+     - dùng cho mobile
+     */
     @Override
     public boolean createSuggestion(SuggestionDTO suggestion) {
 
@@ -169,8 +211,6 @@ public class SuggestionServiceImpl implements SuggestionService {
         Suggestion savedSuggestion = suggestionRepository.save(dbInserted);
         System.out.println("videoId = "+savedSuggestion.getVideoId());
         Video videoRequest = videoRepository.findVideoById(savedSuggestion.getVideoId());
-
-
 
         // gửi request đến service để cắt video
         Thread t = new Thread(new Runnable() {
@@ -196,10 +236,17 @@ public class SuggestionServiceImpl implements SuggestionService {
         }
     }
 
+    /**
+     @author  KietPT
+     @since   6/4/2019
+
+     - hàm này dùng để lấy danh sách suggestion
+     - dùng cho mobile
+     */
     @Override
-    public List<SuggestionDTO> getSuggestionByTrainee(int page, int size, int id) {
+    public List<SuggestionDTO> getSuggestionListById(int page, int size, int id) {
         System.out.println("page - size : "+page + " - "+size);
-        List<Suggestion> list = suggestionRepository.findAllByAccountId(new PageRequest(page,size,Sort.Direction.DESC,"createdTime"),id);
+        List<Suggestion> list = suggestionRepository.findAllByAccountId(PageRequest.of(page,size,Sort.Direction.DESC,"createdTime"),id);
         System.out.println("list = "+list.isEmpty());
 //
         List<SuggestionDTO> listDTO = new ArrayList<>();

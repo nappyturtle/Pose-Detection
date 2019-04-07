@@ -50,6 +50,14 @@ public class VideoServiceImpl implements VideoService {
         return videos;
     }
 
+    /**
+     @author  KietPT
+     @since   6/4/2019
+
+     - hàm này dùng để lấy danh sách các video free cho trang home
+     tao dataset
+     - dùng cho mobile
+     */
     @Override
     public List<VideoDTO> getAllVideosOrderByDate(int page, int size) {
         System.out.println("page - size = " + page + " - " + size);
@@ -71,7 +79,6 @@ public class VideoServiceImpl implements VideoService {
             //}
         }
         return dtos;
-//
     }
 
     @Override
@@ -80,6 +87,14 @@ public class VideoServiceImpl implements VideoService {
     }
 
 
+    /**
+     @author  KietPT
+     @since   6/4/2019
+
+     - hàm này dùng để tạo video, kèm theo đó là gửi request đến service handler để tiến hành cắt video
+     tao dataset
+     - dùng cho mobile
+     */
     @Override
     public boolean createVideo(Video video) {
         // lưu video vào db
@@ -113,6 +128,13 @@ public class VideoServiceImpl implements VideoService {
         }
     }
 
+    /**
+     @author  KietPT
+     @since   6/4/2019
+
+     - hàm này dùng để edit video
+     - dùng cho mobile
+     */
     @Override
     public boolean editVideo(Video video) {
         Video videoTemp = videoRepository.findVideoById(video.getId());
@@ -127,8 +149,14 @@ public class VideoServiceImpl implements VideoService {
         return false;
     }
 
-    //cho nay chua biet sua sao, tam thoi comment lai - VuVG 03/05/2019
-    // đã sửa lại thành lấy những video liên quan đến course đó, nhưng ko lấy video hiện tại
+    /**
+     @author  KietPT
+     @since   6/4/2019
+
+     - hàm này dùng để lấy danh sách các video free cho màn hình trang home, list video kèm theo bên dưới
+     - lấy top 6 những bỏ thằng đang xem nên chỉ còn 5
+     - dùng cho mobile
+     */
     @Override
     public List<VideoDTO> getAllVideosRelatedByCourseId(int courseId, int currentVideoId) {
         List<Video> listTemp = videoRepository.findTop6ByCourseIdOrderByCreatedTimeDesc(courseId);
@@ -140,7 +168,6 @@ public class VideoServiceImpl implements VideoService {
             }
         }
         for (Video video : listTemp) {
-            System.out.println("da vao dây roi neeeeeeeee!!!!!");
             Course course = courseRepository.findCourseById(courseId);
             Account account = accountRepository.findAccountById(course.getAccountId());
             VideoDTO dto = new VideoDTO();
@@ -152,6 +179,14 @@ public class VideoServiceImpl implements VideoService {
         return dtoList;
     }
 
+    /**
+     @author  KietPT
+     @since   6/4/2019
+
+     - hàm này dùng để lấy danh sách các video vs course đã mua và tổng price của enrollment >= price của
+     course hiện tại
+     - dùng cho mobile
+     */
     @Override
     public List<VideoDTO> getAllBoughtVideosByCourseId(int page, int size, int traineeId, int courseId) {
 
@@ -177,9 +212,15 @@ public class VideoServiceImpl implements VideoService {
 
         return dtos;
 
-
     }
 
+    /**
+     @author  KietPT
+     @since   6/4/2019
+
+     - hàm này dùng để lấy danh sách các video để edit, dùng cho mobile
+     - dùng cho mobile
+     */
     @Override
     public List<VideoDTO> getAllVideoByCourseIdToEdit(int courseId) {
         List<Video> videos = videoRepository.findAllByCourseId(courseId);
@@ -196,27 +237,66 @@ public class VideoServiceImpl implements VideoService {
         return dtos;
     }
 
-    @Override
-    public List<VideoDTO> getAllBoughtVideoRelated(int courseId, int videoId) {
-        List<Video> listTemp = videoRepository.findTop6ByCourseIdOrderByCreatedTimeDesc(courseId);
+    /**
+     @author  KietPT
+     @since   6/4/2019
 
-        List<VideoDTO> dtoList = new ArrayList<>();
-        for (int i = 0; i < listTemp.size(); i++) {
-            if (listTemp.get(i).getId() == videoId) {
-                listTemp.remove(i);
+     - hàm này dùng để lấy danh sách các video theo courseId, kiểm tra trong bảng enrollment lấy ra
+       danh sách các enrollment của của accountId và courseId,
+      cộng price của từng thằng lại để kiểm tra
+            + ( nếu < price của courseId hiện tại => chưa mua thêm video trong course đó
+                =>lấy danh sách các video có ngày tạo nhỏ hơn ngày mua course(enrollment date) cuối cùng)
+            + ( nếu >= price của courseId hiện tại => đã mua thêm video trong course đó
+                =>lấy hết các video đó)
+
+     - lấy top 6 những bỏ thằng đang xem nên chỉ còn 5
+     - dùng cho mobile
+     */
+    @Override
+    public List<VideoDTO> getAllBoughtVideoRelated(int traineeId, int courseId, int currentVideoId) {
+
+        List<Enrollment> enrollmentList = enrollmentRepository.findAllByAccountId(traineeId);
+        Course course = courseRepository.findCourseById(courseId);
+        Account trainer = accountRepository.findAccountById(course.getAccountId());
+        List<VideoDTO> dtos = new ArrayList<>();
+        String maxDate = enrollmentRepository.getMaxDateEnrollmentByAccountIdAndCourseId(courseId, traineeId);
+        System.out.println("maxDate = " + maxDate);
+        int totalPriceEnrollment = 0;
+        for (Enrollment enrollment : enrollmentList) {
+            totalPriceEnrollment += enrollment.getPrice();
+        }
+        if (totalPriceEnrollment < course.getPrice()) {
+
+            List<Video> listTemp = videoRepository.findTop6ByCreatedTimeLessThanAndCourseIdOrderByCreatedTimeDesc(maxDate, courseId);
+            for (int i = 0; i < listTemp.size(); i++) {
+                if (listTemp.get(i).getId() == currentVideoId) {
+                    listTemp.remove(i);
+                }
+            }
+            for (Video video : listTemp) {
+                VideoDTO dto = new VideoDTO();
+                dto.setVideo(video);
+                dto.setUsername(trainer.getUsername());
+                dto.setImgUrl(trainer.getImgUrl());
+                dtos.add(dto);
+            }
+        }else{
+            List<Video> listTemp = videoRepository.findTop6ByCourseIdOrderByCreatedTimeDesc(courseId);
+            for (int i = 0; i < listTemp.size(); i++) {
+                if (listTemp.get(i).getId() == currentVideoId) {
+                    listTemp.remove(i);
+                }
+            }
+            for (Video video : listTemp) {
+                VideoDTO dto = new VideoDTO();
+                dto.setVideo(video);
+                dto.setUsername(trainer.getUsername());
+                dto.setImgUrl(trainer.getImgUrl());
+                dtos.add(dto);
             }
         }
-        for (Video video : listTemp) {
-            System.out.println("da vao dây roi neeeeeeeee!!!!!");
-            Course course = courseRepository.findCourseById(courseId);
-            Account account = accountRepository.findAccountById(course.getAccountId());
-            VideoDTO dto = new VideoDTO();
-            dto.setVideo(video);
-            dto.setUsername(account.getUsername());
-            dto.setImgUrl(account.getImgUrl());
-            dtoList.add(dto);
-        }
-        return dtoList;
+
+        return dtos;
     }
 
     @Override
@@ -233,6 +313,14 @@ public class VideoServiceImpl implements VideoService {
         return list;
     }
 
+    /**
+     @author  KietPT
+     @since   6/4/2019
+
+     - hàm này dùng để lấy danh sách các video free và sort theo số lượt view
+     tao dataset
+     - dùng cho mobile
+     */
     @Override
     public List<VideoDTO> getAllVideosByTopNumOfView(int page, int size) {
         System.out.println("page - size = " + page + " - " + size);
@@ -274,6 +362,14 @@ public class VideoServiceImpl implements VideoService {
         return dtos;
     }
 
+    /**
+     @author  KietPT
+     @since   6/4/2019
+
+     - hàm này dùng để lấy danh sách video cho web
+     tao dataset
+     - dùng cho web
+     */
     @Override
     public List<VideoDTOFrontEnd> getAllVideoByStaffOrAdmin() {
         List<Video> listTemp = videoRepository.findAll();
@@ -289,6 +385,15 @@ public class VideoServiceImpl implements VideoService {
         }
         return listVideoDTOFrontEnd;
     }
+
+    /**
+     @author  KietPT
+     @since   6/4/2019
+
+     - hàm này dùng để edit video cho web
+     tao dataset
+     - dùng cho web
+     */
 
     @Override
     public boolean editVideoStatusByStaffOrAdmin(VideoDTOFrontEnd dto) {
@@ -311,6 +416,14 @@ public class VideoServiceImpl implements VideoService {
         return videoRepository.countAllVideos();
     }
 
+    /**
+     @author  KietPT
+     @since   6/4/2019
+
+     - hàm này dùng để lấy video detail cho web
+     tao dataset
+     - dùng cho web
+     */
     @Override
     public VideoDTOFrontEnd getVideoDetailById(int videoId) {
         Video video = videoRepository.findVideoById(videoId);
@@ -326,6 +439,17 @@ public class VideoServiceImpl implements VideoService {
         return dto;
     }
 
+    /**
+     @author  KietPT
+     @since   6/4/2019
+
+     - hàm này dùng để hiển thị những video mới trainer
+     - xét trong bảng enrollment lấy ra record có courseId và accountId(traineeId) đó, tính tổng price
+     (nếu price < price của course hiện tại thì trainee đó chưa mua thêm video của course đó
+     - lấy danh sách những video mới của trainer đó có ngày tạo nhỏ hơn ngày mua course cuối cùng(enrollment date)
+
+     - dùng cho mobile
+     */
     @Override
     public List<VideoDTO> getAllUnBoughtVideoByCourseId(int page, int size, int traineeId, int courseId) {
         List<Enrollment> enrollmentList = enrollmentRepository.findAllByAccountId(traineeId);
@@ -352,5 +476,23 @@ public class VideoServiceImpl implements VideoService {
         }
 
         return dtos;
+    }
+
+    /**
+     @author  KietPT
+     @since   6/4/2019
+
+     - hàm này dùng để tăng số lượt xem cho video
+     - dùng cho mobile
+     */
+    @Override
+    public boolean changeNumberOfViewByVideoId(int videoId) {
+        Video video = videoRepository.findVideoById(videoId);
+        video.setNumOfView(video.getNumOfView()+1);
+        Video videoRes =  videoRepository.save(video);
+        if(videoRes != null){
+            return true;
+        }
+        return false;
     }
 }

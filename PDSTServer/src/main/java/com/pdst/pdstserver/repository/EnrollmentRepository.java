@@ -13,6 +13,7 @@ import java.util.List;
 public interface EnrollmentRepository extends JpaRepository<Enrollment, Integer> {
     List<Enrollment> findAllByAccountId(Pageable pageable, int accountId);
     List<Enrollment> findAllByAccountId(int accountId);
+    List<Enrollment> findAllByAccountIdAndCourseId(int accountId, int courseId);
     List<Enrollment> findAllByCourseId(int courseId);
     Integer countAllByCourseId(int courseId);
 

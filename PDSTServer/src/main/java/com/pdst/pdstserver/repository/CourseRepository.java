@@ -1,5 +1,7 @@
 package com.pdst.pdstserver.repository;
 
+import com.pdst.pdstserver.dto.CourseDTO;
+import com.pdst.pdstserver.model.Course;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
