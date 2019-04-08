@@ -78,7 +78,7 @@ function editCourseDetail(course) {
 
     }).done(function (res) {
         if (res != null) {
-            if (res.message == true) {
+            if (res == true) {
                 $("#mUpdateInfo").html("Cập nhật thành công!");
                 setTimeout(function () {
                     window.location.reload()
@@ -86,6 +86,9 @@ function editCourseDetail(course) {
 
             } else {
                 $("#mUpdateInfo").html("Cập nhập thất bại!");
+                setTimeout(function () {
+                    window.location.reload()
+                }, 2000);
                 /*setTimeout(function () {
                     $('#modal-info').modal('hide');
                     $("#btn-save-change").hide();
