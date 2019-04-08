@@ -151,7 +151,7 @@ $(document).ready(function () {
                 $account.email = $("#input-detail-profile-email").val();
                 $account.phone = $("#input-detail-profile-phone").val();
                 $account.address = $("#input-detail-profile-address").val();
-                $account.status = $("#select-detail-profile-status option:selected").val();
+                //$account.status = $("#select-detail-profile-status option:selected").val();
                 $account.gender = $("#select-detail-profile-gender option:selected").val();
                 $account.fullname = $("#input-detail-profile-fullname").val();
 
