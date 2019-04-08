@@ -14,6 +14,7 @@ $(document).ready(function () {
             $("#li-video-url").hide();
             $("#course-box-info").hide();
             $("#video-box-info").hide();
+            $("#li-category-url").hide();
         }
         if (currentStaff.roleId == 1 || currentStaff.roleId == 2) {
             console.log("init..............: " + currentStaff);

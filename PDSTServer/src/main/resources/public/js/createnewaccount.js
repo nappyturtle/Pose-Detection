@@ -7,6 +7,7 @@ $(document).ready(function () {
                 $("#li-video-url").hide();
                 $("#course-box-info").hide();
                 $("#video-box-info").hide();
+                $("#li-category-url").hide();
             }
             if (currentStaff.roleId == 1 || currentStaff.roleId == 2) {
                 console.log("init..............: " + currentStaff);
@@ -19,8 +20,24 @@ $(document).ready(function () {
                 if (currentStaff.roleId == 1) {
                     $("#dropdown-menu-role").html("Admin");
                 } else {
-                    $("#dropdown-menu-role").html("Staff");
+                    $("#dropdown-menu-role").html("Nhân viên");
                 }
+
+                $.ajax({
+                    url: "/account/update/" + currentStaff.id,
+                    type: "GET",
+                    headers: {
+                        "content-type": "application/json; charset=UTF-8"
+                    },
+                    dataType: "json",
+                    success: function (res) {
+                        if (res.fullname != null) {
+                            $(".navbar-username").html(res.fullname);
+                        } else {
+                            $(".navbar-username").html(res.username);
+                        }
+                    }
+                })
 
                 //init account data
                 var url_string = window.location.href;
@@ -82,13 +99,22 @@ $(document).ready(function () {
                         $("#btn-save-change").hide();
                         return false;
                     } else if ($("#create-password").val().toString().length < 6) {
-                        $("#mUpdateInfo").html("Lỗi: Mật khẩu có ít nhất 4 ký tự!");
+                        $("#mUpdateInfo").html("Lỗi: Mật khẩu có ít nhất 6 ký tự!");
                         $("#btn-save-change").hide();
                         return false;
                     }
 
                     if ($("#create-retype-password").val().toString().trim() !== $("#create-password").val().toString().trim()) {
                         $("#mUpdateInfo").html("Lỗi: Mật khẩu xác nhận không đúng!");
+                        $("#btn-save-change").hide();
+                        return false;
+                    }
+
+                    var phoneNumber = $("#create-phone").val().toString().trim();
+                    var isnum = /^\d+$/.test(phoneNumber);
+                    //console.log(isnum + " = isnum");
+                    if (!isnum) {
+                        $("#mUpdateInfo").html("Lỗi: Số điện thoại không đúng định dạng!");
                         $("#btn-save-change").hide();
                         return false;
                     }
@@ -101,7 +127,8 @@ $(document).ready(function () {
                 }
 
                 $("#btn-save-change").click(function () {
-                    createNewAccount()
+                    createNewAccount();
+
                 })
 
                 function createNewAccount() {
@@ -110,6 +137,9 @@ $(document).ready(function () {
                     $account.phone = $("#create-phone").val();
                     $account.username = $("#create-username").val().toString().trim();
                     $account.password = $("#create-password").val().toString().trim();
+                    $account.phone = $("#create-phone").val().toString().trim();
+                    $account.fullname = $("#create-fullname").val();
+                    $account.address = $("#create-address").val();
                     $account.roleId = newAccountRoleId;
                     $account.status = "active";
                     console.log($account);
@@ -128,6 +158,9 @@ $(document).ready(function () {
                                 if (res.message == "success") {
                                     $("#mUpdateInfo").html("Tạo tài khoản thành công!");
                                     $("#btn-save-change").hide();
+                                    setTimeout(function () {
+                                        location.reload();
+                                    },2000);
                                 } else {
                                     $("#mUpdateInfo").html("Tạo tài khoản thất bại: Tên đăng nhật đã tồn tại!");
                                     $("#btn-save-change").hide();

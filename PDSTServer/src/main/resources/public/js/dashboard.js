@@ -6,8 +6,10 @@ $(document).ready(function () {
         if (currentStaff.roleId == 1) {
             $("#li-course-url").hide();
             $("#li-video-url").hide();
+            $("#li-category-url").hide();
             $("#course-box-info").hide();
             $("#video-box-info").hide();
+            $("#category-box-info").hide();
         }
         if (currentStaff.roleId == 1 || currentStaff.roleId == 2) {
             console.log("init..............: " + currentStaff.token);
@@ -47,10 +49,11 @@ $(document).ready(function () {
     }
 
     $.ajax({
-        url: "/account/getDataForDashboard",
+        url: "/account/getDataForDashboard/" + currentStaff.roleId,
         type: "GET",
         headers: {
-            "content-type": "application/json; charset=UTF-8"
+            "content-type": "application/json; charset=UTF-8",
+            "Authorization": currentStaff.token
         },
         dataType: "json",
         success: function (res) {
@@ -58,6 +61,7 @@ $(document).ready(function () {
                 $("#total_video").html(res.totalVideo);
                 $("#total_course").html(res.totalCourse);
                 $("#total_user").html(res.totalUser);
+                $("#total-cate").html(res.totalCate);
             } else {
                 console.log("null");
             }

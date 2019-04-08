@@ -23,6 +23,23 @@ $(document).ready(function () {
             } else {
                 $("#dropdown-menu-role").html("Staff");
             }
+
+            $.ajax({
+                url: "/account/update/" + currentStaff.id,
+                type: "GET",
+                headers: {
+                    "content-type": "application/json; charset=UTF-8"
+                },
+                dataType: "json",
+                success: function (res) {
+                    if (res.fullname != null) {
+                        $(".navbar-username").html(res.fullname);
+                    } else {
+                        $(".navbar-username").html(res.username);
+                    }
+                }
+            })
+
             initTable();
         } else {
             window.location.href = "403.html";
@@ -67,7 +84,9 @@ $(document).ready(function () {
                             orderable: false,
                             render: function (data, type, row) {
                                 if (type === 'display') {
-                                    data = '<button type="button" class="btn btn-info btn-get-details" value="' + ("btnVideo") + data + '">Xem chi tiết</button>';
+                                    /*data = '<i class="fa fa-fw fa-eye btn-get-details" value="' + ("btnVideo") + data + '" style="padding-left: 32%"></i>';*/
+                                    /*data = '<button type="button" class="btn btn-info btn-get-details" value="' + ("btnVideo") + data + '">Xem chi tiết</button>';*/
+                                    data = '<i class="fa fa-fw fa-eye" id="' + data + '" style="padding-left: 32%"></i>';
                                 }
                                 return data;
                             }
@@ -82,15 +101,20 @@ $(document).ready(function () {
                         selector: 'td:first-child'
                     }
                 });
-                getCourseDtail($('#tblVideo'), dataSrc);
+                getCourseDtail($('#tblVideo'));
             }
         })
     }
 
 
     function getCourseDtail($table, dataSrc) {
-        $table.on('click', 'tbody .btn-get-details', function (e) {
+        /*$table.on('click', 'tbody .btn-get-details', function (e) {
             var videoId = $(this).closest('tr').find('.btn-get-details').val().replace("btnVideo", "");
+            window.location.href = "details.html?videoId=" + videoId;
+        })*/
+        $table.on('click', 'tbody .fa-eye', function (e) {
+            var iconElement = $(this).closest('tr').find('.fa-eye')
+            var videoId = iconElement.attr('id');
             window.location.href = "details.html?videoId=" + videoId;
         })
     }

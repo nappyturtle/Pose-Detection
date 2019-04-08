@@ -22,13 +22,28 @@ $(document).ready(function () {
             if (currentStaff.roleId == 1) {
                 $("#dropdown-menu-role").html("Admin");
             } else {
-                $("#dropdown-menu-role").html("Staff");
+                $("#dropdown-menu-role").html("Nhân viên");
             }
             //init course data
             initVideoDetail(parseInt(videoId, 10));
 
-            clickButtonUpdate(parseInt(videoId, 10));
+            $.ajax({
+                url: "/account/update/" + currentStaff.id,
+                type: "GET",
+                headers: {
+                    "content-type": "application/json; charset=UTF-8"
+                },
+                dataType: "json",
+                success: function (res) {
+                    if (res.fullname != null) {
+                        $(".navbar-username").html(res.fullname);
+                    } else {
+                        $(".navbar-username").html(res.username);
+                    }
+                }
+            })
 
+            /*clickButtonUpdate(parseInt(videoId, 10));*/
 
         } else {
             window.location.href = "403.html";
@@ -37,6 +52,8 @@ $(document).ready(function () {
         window.location.href = "403.html";
     }
 })
+
+/*
 function clickButtonUpdate(courseId) {
     $("#btn-video-update").click(function () {
         $("#mUpdateInfo").html("Bạn có muốn thay đổi thông tin!");
@@ -46,29 +63,14 @@ function clickButtonUpdate(courseId) {
         editVideoDetail(courseId)
     })
 }
-function editVideoDetail(videoId) {
+*/
 
-    console.log('da vao edit course nay ne ');
-
-    var radioValue = $("input[name='r3-status']").iCheck('update')[0].checked;
-    console.log('radioValue = ' + radioValue);
-    var status = "";
-    if (radioValue) {
-        status = "active"
-    } else {
-        status = "inactive";
-    }
-    var formData = {
-        id: videoId,
-        //title: $("#detail-video-name").val(),
-        //numOfView: parseInt($('#detail-video-numOfView').val(), 10),
-        status: status
-    };
+function editVideoDetail(video) {
 
     $.ajax({
         url: "/video/editVideoStatusByStaffOrAdmin",
         type: "PUT",
-        data: JSON.stringify(formData),
+        data: JSON.stringify(video),
         headers: {
             "content-type": "application/json; charset=UTF-8",
             "Authorization": currentStaff.token
@@ -82,19 +84,11 @@ function editVideoDetail(videoId) {
             if (res == true) {
                 $("#mUpdateInfo").html("Cập nhật thành công!");
                 setTimeout(function () {
-                    $('#modal-info').modal('hide');
-                    $("#btn-save-change").hide();
-                    location.reload();
+                    window.location.reload();
                 }, 2000);
 
             } else {
                 $("#mUpdateInfo").html("Cập nhật thất bại!");
-                setTimeout(function () {
-                    $('#modal-info').modal('hide');
-                    $("#btn-save-change").hide();
-                    location.reload();
-                }, 2000);
-
             }
         } else {
             console.log("cập nhật thất bại");
@@ -117,31 +111,65 @@ function initVideoDetail(videoId) {
             if (res != null) {
                 console.log(res);
                 $("#detail-video-thumbnailImg").attr('src', res.thumnail);
-                $("#detail-video-name").val(res.title);
-                $("#detail-course-name").val(res.coursename);
-                $("#detail-video-numOfView").val(res.numOfView);
+                $("#detail-video-name").html(res.title);
+                $("#detail-course-name").html(res.coursename);
+                $("#detail-video-numOfView").html(res.numOfView);
+                $("#detail-course-trainer").html(res.trainerName);
                 if (res.status.toLowerCase() == "active") {
-                    //$("#rdActive").prop("checked", true);
-                    $("#rdActive").iCheck('check');
-                    $("#rdActive").val(res.status);
-                    $("#rdInActive").val("inactive");
+                    $("#detail-video-status").html("Đang hoạt động").css('color', 'green');
                 } else {
-                    //$("#rdInActive").prop("checked", true);
-                    $("#rdInActive").iCheck('check');
-                    $("#rdInActive").val(res.status);
-                    $("#rdActive").val("active");
+                    $("#detail-video-status").html("Ngưng hoạt động").css('color', 'red');
                 }
-                // $('#detail-video-content source').attr('src', res.content);
-                // $("#detail-video-content")[0].load();
-                // $('#videoLink').attr('href', res.content);
-                // $('.mfp-hidden').attr("style", "display: none !important");
 
-                // var content = $('#videoLink').attr('href');
-                // console.log(content);
-                // displayVideo(content);
-                //$("#videoLink").attr("href",res.content);
-                displayVideo(res.content, res.title);
+                var $video = $("#detail-video-content")[0];
+                $video.src = res.content;
+                $("#detail-video-content").attr('poster', res.thumnail);
+                $video.load();
 
+                $("#btn-profile-change-info").click(function () {
+                    $(".change-info").show();
+                    $(".init-info").hide();
+                    $("#btn-profile-change-info").hide();
+
+                    $("#input-detail-video-name").val(res.title);
+                    $("#div-detail-video-status").css('display', 'inline-block');
+                    if (res.status != null) {
+                        if (res.status.toLowerCase() == "active") {
+                            $("#select-detail-video-status").val("active");
+                        } else {
+                            //$("#rdInActive").iCheck('check');
+                            $("#select-detail-video-status").val("inactive");
+                        }
+                    }
+                });
+
+                $("#btn-profile-update").click(function () {
+                    if (validData()) {
+                        $("#mUpdateInfo").html("Bạn có muốn thay đổi thông tin ?");
+                        $("#btn-save-change").show();
+                    }
+                })
+
+                $("#btn-profile-cancel-update").click(function () {
+                    $(".change-info").hide();
+                    $(".init-info").show();
+                })
+
+                $("#btn-save-change").click(function () {
+                    res.title = $("#input-detail-video-name").val()
+                    res.status = $("#select-detail-video-status").val();
+                    console.log(res);
+                    editVideoDetail(res)
+                })
+
+                function validData() {
+                    if ($("#input-detail-video-name").val().toString().trim() == "") {
+                        $("#mUpdateInfo").html("Lỗi: Tên video ko được để trống");
+                        $("#btn-save-change").hide();
+                        return false;
+                    }
+                    return true;
+                }
             } else {
                 console.log("null");
             }
@@ -155,6 +183,7 @@ function displayVideo(content, title) {
         $("#myModalLabel").html(title);
     });
 }
+
 function stopVideo() {
     var iframe = document.getElementById("detail-video-content");
     iframe.src = "";

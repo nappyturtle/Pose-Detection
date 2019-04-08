@@ -21,9 +21,28 @@ $(document).ready(function () {
             if (currentStaff.roleId == 1) {
                 $("#dropdown-menu-role").html("Admin");
             } else {
-                $("#dropdown-menu-role").html("Staff");
+                $("#dropdown-menu-role").html("Nhân viên");
             }
+
+            $.ajax({
+                url: "/account/update/" + currentStaff.id,
+                type: "GET",
+                headers: {
+                    "content-type": "application/json; charset=UTF-8"
+                },
+                dataType: "json",
+                success: function (res) {
+                    if (res.fullname != null) {
+                        $(".navbar-username").html(res.fullname);
+                    } else {
+                        $(".navbar-username").html(res.username);
+                    }
+                }
+            })
+
             initTable();
+
+
         } else {
             window.location.href = "403.html";
         }
@@ -53,10 +72,10 @@ $(document).ready(function () {
                     columns: [
 
                         {
-                            data: "stt",
-                            sortable: true,
-                            width: 50,
-                            orderable: true,
+                            data: null,
+                            sortable: false,
+                            width: 30,
+                            orderable: false,
                             className: 'row-index'
                         },
                         {data: "coursename"},
@@ -68,7 +87,9 @@ $(document).ready(function () {
                             orderable: false,
                             render: function (data, type, row) {
                                 if (type === 'display') {
-                                    data = '<button type="button" class="btn btn-info btn-get-details" value="' + ("btnCourse") + data + '">Xem chi tiết</button>';
+                                    /*data = '<i class="fa fa-fw fa-eye btn-get-details" value="' + ("btnCourse") + data + '" style="padding-left: 32%"></i>';*/
+                                    /*data = '<button type="button" class="btn btn-info btn-get-details" value="' + ("btnCourse") + data + '">Xem chi tiết</button>';*/
+                                    data = '<i class="fa fa-fw fa-eye" id="' + data + '" style="padding-left: 32%"></i>';
                                 }
                                 return data;
                             }
@@ -81,17 +102,21 @@ $(document).ready(function () {
                     select: {
                         style: 'os',
                         selector: 'td:first-child'
+                    },
+                    rowCallback: function (row, data, index) {
+                        $('.row-index', row).html(index + 1);
                     }
                 });
-                getCourseDtail($('#tblCourse'), dataSrc);
+                getCourseDtail($('#tblCourse'));
             }
         })
     }
 
 
-    function getCourseDtail($table, dataSrc) {
-        $table.on('click', 'tbody .btn-get-details', function (e) {
-            var courseId = $(this).closest('tr').find('.btn-get-details').val().replace("btnCourse", "");
+    function getCourseDtail($table) {
+        $table.on('click', 'tbody .fa-eye', function (e) {
+            var iconElement = $(this).closest('tr').find('.fa-eye')
+            var courseId = iconElement.attr('id');
             window.location.href = "details.html?courseId=" + courseId;
         })
     }

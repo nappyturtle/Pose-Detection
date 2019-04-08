@@ -23,12 +23,28 @@ $(document).ready(function () {
             if (currentStaff.roleId == 1) {
                 $("#dropdown-menu-role").html("Admin");
             } else {
-                $("#dropdown-menu-role").html("Staff");
+                $("#dropdown-menu-role").html("Nhân viên");
             }
             //init course data
             initCourseDetail(parseInt(courseId, 10));
 
-            clickButtonUpdate(parseInt(courseId, 10));
+            $.ajax({
+                url: "/account/update/" + currentStaff.id,
+                type: "GET",
+                headers: {
+                    "content-type": "application/json; charset=UTF-8"
+                },
+                dataType: "json",
+                success: function (res) {
+                    if (res.fullname != null) {
+                        $(".navbar-username").html(res.fullname);
+                    } else {
+                        $(".navbar-username").html(res.username);
+                    }
+                }
+            })
+
+            /*lickButtonUpdate(parseInt(courseId, 10));*/
         } else {
             window.location.href = "403.html";
         }
@@ -37,77 +53,50 @@ $(document).ready(function () {
     }
 
 })
-function clickButtonUpdate(courseId) {
+
+/*function clickButtonUpdate(course) {
     $("#btn-course-update").click(function () {
         $("#mUpdateInfo").html("Bạn có muốn thay đổi thông tin!");
         $("#btn-save-change").show();
     })
     $("#btn-save-change").click(function () {
-        editCourseDetail(courseId)
+        editCourseDetail(course)
     })
-}
-function editCourseDetail(courseId) {
+}*/
 
-    console.log('da vao edit course nay ne ');
+function editCourseDetail(course) {
 
-    // $('form').submit(function (event) {
-    //     event.preventDefault();
-        console.log("You pressed OK!");
-        var radioValue = $("input[name='r3-status']").iCheck('update')[0].checked;
+    $.ajax({
+        url: "/course/editCourseByStaffOrAdmin",
+        type: "PUT",
+        data: JSON.stringify(course),
+        headers: {
+            "content-type": "application/json; charset=UTF-8",
+            "Authorization": currentStaff.token
+        },
+        dataType: "json",
 
-        var status = "";
-        if (radioValue) {
-            status = "active"
+    }).done(function (res) {
+        if (res != null) {
+            if (res.message == true) {
+                $("#mUpdateInfo").html("Cập nhật thành công!");
+                setTimeout(function () {
+                    window.location.reload()
+                }, 2000);
+
+            } else {
+                $("#mUpdateInfo").html("Cập nhập thất bại!");
+                /*setTimeout(function () {
+                    $('#modal-info').modal('hide');
+                    $("#btn-save-change").hide();
+                }, 2000);*/
+
+            }
         } else {
-            status = "inactive";
+            console.log("cập nhật thất bại");
         }
-        var formData = {
-            id: courseId,
-            /*
-            coursename: $("#detail-course-name").val(),
-            categoryId: parseInt($('#slt-category option:selected').val(), 10),
-            price: parseInt($("#detail-course-price").val(), 10),
-            */
-            status: status
-        };
 
-            $.ajax({
-                url: "/course/editCourseByStaffOrAdmin",
-                type: "PUT",
-                data: JSON.stringify(formData),
-                headers: {
-                    "content-type": "application/json; charset=UTF-8",
-                    "Authorization": currentStaff.token
-                },
-                dataType: "json",
-
-            }).done(function (res) {
-                console.log(res);
-
-
-                if (res != null) {
-                    if (res == true) {
-                        $("#mUpdateInfo").html("Cập nhật thành công!");
-                        setTimeout(function () {
-                            $('#modal-info').modal('hide');
-                            $("#btn-save-change").hide();
-                            location.reload();
-                        },2000);
-
-                    } else {
-                        $("#mUpdateInfo").html("Cập nhập thất bại!");
-                        setTimeout(function () {
-                            $('#modal-info').modal('hide');
-                            $("#btn-save-change").hide();
-                            location.reload();
-                        },2000);
-
-                    }
-                } else {
-                    console.log("cập nhật thất bại");
-                }
-
-            });
+    });
 
 }
 
@@ -123,35 +112,113 @@ function initCourseDetail(courseId) {
         success: function (res) {
             if (res != null) {
                 console.log(res);
+                var cateId = res.categoryId;
                 $("#detail-course-thumbnailImg").attr('src', res.thumbnail);
-                $("#detail-course-name").val(res.coursename);
-                $("#detail-course-trainer").val(res.accountname);
+                $("#detail-course-name").html(res.coursename);
+                $("#detail-course-trainer").html(res.accountname);
 
                 // Convert to String and add dots every 3 digits
                 var moneyDots = res.price.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
 
-                $("#detail-course-price").val(moneyDots+".000");
-                $("#detail-course-category").val(res.categoryname);
-                if (res.status.toLowerCase() == "active") {
-                    //$("#rdActive").prop("checked", true);
-                    $("#rdActive").iCheck('check');
-                    $("#rdActive").val(res.status);
-                    $("#rdInActive").val("inactive");
-                } else {
-                    //$("#rdInActive").prop("checked", true);
-                    $("#rdInActive").iCheck('check');
-                    $("#rdInActive").val(res.status);
-                    $("#rdActive").val("active");
+                $("#detail-course-price").html(moneyDots + ".000");
+                $("#detail-course-category").html(res.categoryname);
+                if (res.status != null) {
+                    if (res.status.toLowerCase() == "active") {
+                        //$("#rdActive").iCheck('check');
+                        $("#detail-course-status").html("Đang hoạt động").css('color', 'green');
+                    } else {
+                        //$("#rdInActive").iCheck('check');
+                        $("#detail-course-status").html("Ngưng hoạt động").css('color', 'red');
+                    }
                 }
 
-                /*
-                $('#slt-category').html('');
-                //iterate over the data and append a select option
-                // $('#slt-category').append('<option value="0">Chọn danh mục...</option>');
-                $.each(res.categoryList, function (key, val) {
-                    $('#slt-category').append('<option value="' + val.id + '"' + (val.id == res.categoryId ? ' selected' : '') + '>' + val.name + '</option>');
+                $("#btn-profile-change-info").click(function () {
+                    $(".change-info").show();
+                    $(".init-info").hide();
+                    $("#btn-profile-change-info").hide();
+
+                    $("#input-detail-course-name").val(res.coursename);
+                    $("#input-detail-course-price").val(res.price);
+                    $("#div-detail-course-status").css('display', 'inline-block');
+                    if (res.status != null) {
+                        if (res.status.toLowerCase() == "active") {
+                            $("#select-detail-course-status").val("active");
+                        } else {
+                            //$("#rdInActive").iCheck('check');
+                            $("#select-detail-course-status").val("inactive");
+                        }
+                    }
+
+                    var courseEdit = res;
+                    $.ajax({
+                        url: "/category/categories",
+                        type: "GET",
+                        dataType: "json",
+                        success: function (res) {
+                            console.log(res)
+                            // Get select
+                            var select = document.getElementById('select-detail-course-category');
+
+                            // Add options
+                            for (var i in res) {
+                                $(select).append('<option value=' + res[i].id + '>' + res[i].name + '</option>');
+                                if (res[i].id == cateId) {
+                                    $(select).val(res[i].id);
+                                } else {
+                                    $(select).val("");
+                                }
+                            }
+
+
+                            $("#btn-save-change").click(function () {
+                                courseEdit.categoryId = $("#select-detail-course-category").val();
+                                courseEdit.coursename = $("#input-detail-course-name").val();
+                                courseEdit.price = $("#input-detail-course-price").val();
+                                courseEdit.status = $("#select-detail-course-status").val();
+                                editCourseDetail(courseEdit)
+                            })
+                        }
+                    })
+                });
+
+                $("#btn-profile-cancel-update").click(function () {
+                    $(".change-info").hide();
+                    $(".init-info").show();
                 })
-                */
+
+                $("#btn-profile-update").click(function () {
+                    if (validData()) {
+                        $("#mUpdateInfo").html("Bạn có muốn thay đổi thông tin ?");
+                        $("#btn-save-change").show();
+                    }
+                })
+
+                function validData() {
+
+                    if ($("#input-detail-course-name").val().toString().trim() == "") {
+                        $("#mUpdateInfo").html("Lỗi: Tên khóa học không được bỏ trống!");
+                        $("#btn-save-change").hide();
+                        return false;
+                    }
+
+                    if ($("#input-detail-course-price").val().toString().trim() == "") {
+                        $("#mUpdateInfo").html("Lỗi: Giá tiền không được bỏ trống!");
+                        $("#btn-save-change").hide();
+                        return false;
+                    }
+
+                    var price = $("#input-detail-course-price").val().toString().trim();
+                    var isnum = /^\d+$/.test(price);
+                    //console.log(isnum + " = isnum");
+                    if (!isnum) {
+                        $("#mUpdateInfo").html("Lỗi: Giá tiền không đúng định dạng!");
+                        $("#btn-save-change").hide();
+                        return false;
+                    }
+
+                    return true;
+                }
+
             } else {
                 console.log("null");
             }

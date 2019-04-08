@@ -8,6 +8,7 @@ $(document).ready(function () {
             $("#li-video-url").hide();
             $("#course-box-info").hide();
             $("#video-box-info").hide();
+            $("#li-category-url").hide();
         }
         $("#btn-sign-out").click(function () {
             localStorage.removeItem("staff");
