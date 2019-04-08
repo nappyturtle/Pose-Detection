@@ -63,13 +63,13 @@ public class ConfirmationActivity extends AppCompatActivity {
         String moneyDots = decimalFormat.format(dto.getCourse().getPrice())+",000 đồng ";
         txtPrice.setText(moneyDots);
 
-        Enrollment enrollment = new Enrollment(dto.getCourse().getId(), accountId, dto.getCourse().getPrice(), TimeHelper.getCurrentTime());
-        EnrollmentService enrollmentService = new EnrollmentService();
-        if (enrollmentService.createEnrollment(token, enrollment)) {
-            Toast.makeText(this, "Bạn đã đăng kí thành công", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Hệ thống đang gặp sự cố!!!!!", Toast.LENGTH_SHORT).show();
-        }
+//        Enrollment enrollment = new Enrollment(dto.getCourse().getId(), accountId, dto.getCourse().getPrice(), TimeHelper.getCurrentTime());
+//        EnrollmentService enrollmentService = new EnrollmentService();
+//        if (enrollmentService.createEnrollment(token, enrollment)) {
+//            Toast.makeText(this, "Bạn đã đăng kí thành công", Toast.LENGTH_SHORT).show();
+//        } else {
+//            Toast.makeText(this, "Hệ thống đang gặp sự cố!!!!!", Toast.LENGTH_SHORT).show();
+//        }
     }
 
 

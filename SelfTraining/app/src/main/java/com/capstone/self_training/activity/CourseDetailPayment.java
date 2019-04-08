@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import com.capstone.self_training.R;
 import com.capstone.self_training.dto.CourseDTO;
+import com.capstone.self_training.helper.TimeHelper;
+import com.capstone.self_training.model.Enrollment;
 import com.capstone.self_training.service.dataservice.EnrollmentService;
 import com.capstone.self_training.util.CheckConnection;
 import com.capstone.self_training.util.PayPalConfig;
@@ -43,7 +45,7 @@ public class CourseDetailPayment extends AppCompatActivity {
     private CourseDTO dto;
     private Toolbar toolbar;
     private String token;
-    private int traineeId;
+    private int accountId;
     private boolean updatedCourse;
     private SharedPreferences mPerferences;
     public static final int PAYPAL_REQUEST_CODE = 123;
@@ -173,7 +175,7 @@ public class CourseDetailPayment extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar_courseDetail_payment);
         mPerferences = PreferenceManager.getDefaultSharedPreferences(this);
         token = mPerferences.getString(getString(R.string.token), "");
-        traineeId = mPerferences.getInt(getString(R.string.id), 0);
+        accountId = mPerferences.getInt(getString(R.string.id), 0);
     }
 
     @Override
@@ -200,9 +202,19 @@ public class CourseDetailPayment extends AppCompatActivity {
                         Log.e("paymentExample", paymentDetails);
 
                         //Starting a new activity for the payment details and also putting the payment details with intent
-                        startActivity(new Intent(this, ConfirmationActivity.class)
+//                        startActivity(new Intent(this, ConfirmationActivity.class)
+//                                .putExtra("PaymentDetails", paymentDetails)
+//                                .putExtra("courseDTO", dto));
+                        Enrollment enrollment = new Enrollment(dto.getCourse().getId(), accountId, dto.getCourse().getPrice(), TimeHelper.getCurrentTime());
+                        EnrollmentService enrollmentService = new EnrollmentService();
+                        if (enrollmentService.createEnrollment(token, enrollment)) {
+                            Toast.makeText(this, "Bạn đã đăng kí thành công", Toast.LENGTH_SHORT).show();
+                                                    startActivity(new Intent(this, ConfirmationActivity.class)
                                 .putExtra("PaymentDetails", paymentDetails)
                                 .putExtra("courseDTO", dto));
+                        } else {
+                            Toast.makeText(this, "Hệ thống đang gặp sự cố!!!!!", Toast.LENGTH_SHORT).show();
+                        }
 
                     } catch (JSONException e) {
                         Log.e("paymentExample", "an extremely unlikely failure occurred: ", e);

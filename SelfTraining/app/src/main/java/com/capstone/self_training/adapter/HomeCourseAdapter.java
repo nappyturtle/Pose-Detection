@@ -35,10 +35,10 @@ public class HomeCourseAdapter extends RecyclerView.Adapter<HomeCourseAdapter.Co
     String token;
     private static final int REQUEST_CODE_LOGIN = 0x9345;
 
-    public HomeCourseAdapter(List<CourseDTO> list, Context context, int trainerId) {
+    public HomeCourseAdapter(List<CourseDTO> list, Context context, int currentUserId) {
         this.list = list;
         this.context = context;
-        this.trainerId = trainerId;
+        this.currentUserId = currentUserId;
     }
     public HomeCourseAdapter(List<CourseDTO> list, Context context, int trainerId, int currentUserId, String token) {
         this.list = list;
@@ -74,7 +74,7 @@ public class HomeCourseAdapter extends RecyclerView.Adapter<HomeCourseAdapter.Co
             holder.lnCourseItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (currentUserId == 0 && trainerId != 0) {
+                    if ((currentUserId == 0 && trainerId != 0) || (currentUserId == 0)) {
                         Toast.makeText(context, "Bạn chưa đăng nhập!!!", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(context, LoginActivity.class);
                         ((Activity) context).startActivityForResult(intent, REQUEST_CODE_LOGIN);
