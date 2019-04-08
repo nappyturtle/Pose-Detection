@@ -2,7 +2,6 @@ package com.capstone.self_training.activity;
 
 
 import android.annotation.SuppressLint;
-import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
@@ -24,27 +23,18 @@ public class OpenCameraActi extends AppCompatActivity {
         getFragmentManager().beginTransaction()
                 .replace(R.id.OpenCamera, cmr)
                 .commit();
-        AudioManager audioManager;
-        audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
-        audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
-        audioManager.startBluetoothSco();
-        audioManager.setBluetoothScoOn(true);
     }
+    @Override
+    public void onBackPressed() {
 
-    public void OnBackPressed(){
-        finish();
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+
+        if (count == 0) {
+            super.onBackPressed();
+            //additional code
+        } else {
+            getSupportFragmentManager().popBackStack();
+        }
+
     }
-//    public void onDestroy() {
-//
-//        if (bundle == null && getIntent().getExtras() == null) {
-//        } else {
-//            bundle = (Bundle) getIntent().getExtras().get("result");
-//            Intent returnIntent = new Intent();
-//            returnIntent.putExtra("resultVideo", bundle);
-//            setResult(TraineeUploadVideoActi.RESULT_OK, returnIntent);
-//            finish();
-//        }
-//        super.onDestroy();
-//    }
-
 }

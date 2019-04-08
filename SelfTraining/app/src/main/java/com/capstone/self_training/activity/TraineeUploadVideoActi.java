@@ -64,8 +64,10 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
     private Video playingVideo;
 
     private SharedPreferences mPerferences;
+    private SharedPreferences mPerferences2;
     private SharedPreferences.Editor mEditor;
     private CountDownTimer timer;
+    private CountDownTimer timerCheck;
     private String resultVideo;
 
     @Override
@@ -74,7 +76,8 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
         setContentView(R.layout.activity_upload_video);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-
+        mPerferences2 = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        mEditor = mPerferences2.edit();
         playingVideo = (Video) getIntent().getSerializableExtra("PLAYINGVIDEO");
 
         init();
@@ -84,7 +87,7 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
 
         uploadVideo();
 
-        timer = new CountDownTimer(4000, 500) {
+        timer = new CountDownTimer(2000, 500) {
             @Override
             public void onTick(long millisUntilFinished) {
 
@@ -92,10 +95,10 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                if (getIntent().getExtras() == null) {
+                resultVideo = mPerferences2.getString(getString(R.string.resultVideo), "Default");
+                if (resultVideo.equals("Default")){
 
-                } else {
-                    resultVideo = mPerferences.getString(getString(R.string.resultVideo), "");
+                }else{
                     filename = resultVideo.substring(resultVideo.lastIndexOf("/") + 1);
                     txtVideoName.setText(filename);
                     Uri uri = Uri.parse(resultVideo);
@@ -104,13 +107,13 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
                     MediaController mediaController = new MediaController(TraineeUploadVideoActi.this);
                     videoView.setMediaController(mediaController);
                     mediaController.setAnchorView(videoView);
-                    resultVideo = "";
+                    mEditor.putString(getString(R.string.resultVideo), "Default");
+                    mEditor.apply();
                 }
                 this.start();
             }
         };
         timer.start();
-
 
     }
 

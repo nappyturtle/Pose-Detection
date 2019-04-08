@@ -2,6 +2,7 @@ package com.capstone.self_training.fragment;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -22,7 +23,6 @@ import android.speech.SpeechRecognizer;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,13 +89,10 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
     EditText editText_Camera;
     View view;
     List<TrackBox> trackBoxes;
-    CountDownTimer timer;
     CountDownTimer mTimer;
     Handler handler = new Handler(Looper.getMainLooper());
     SpeechRecognizer mSpeechRecognizer;
     Intent mSpeechRecognizerIntent;
-    AudioManager audioManager;
-    Activity context;
 
     public CameraFragment() {
         // Required empty public constructor
@@ -142,33 +139,18 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         checkPermission();
-
+        AudioManager audioManager;
+        Context context = getContext();
+        audioManager = (AudioManager) context.getSystemService(context.AUDIO_SERVICE);
+        audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
+        audioManager.startBluetoothSco();
+        audioManager.setBluetoothScoOn(true);
         mSpeechRecognizer = SpeechRecognizer.createSpeechRecognizer(this.getContext());
         mSpeechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                 RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE,
                 Locale.getDefault());
-
-        timer = new CountDownTimer(1500, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-
-            }
-
-            @Override
-            public void onFinish() {
-                if (getContext() == null) {
-
-                } else {
-                    mPerferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-                    mEditor = mPerferences.edit();
-                }
-
-                this.start();
-            }
-        };
-        timer.start();
 
         mSpeechRecognizer.setRecognitionListener(new RecognitionListener() {
             @Override
@@ -245,7 +227,7 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
 
             @Override
             public void onFinish() {
-                switch (editText_Camera.getText().toString()) {
+                switch (mPerferences.getString(getString(R.string.testSpeech), "")) {
                     case "quay":
                         if (mIsRecordingVideo) {
                             Toast.makeText(getContext(), "Đang quay..", Toast.LENGTH_SHORT).show();
@@ -292,7 +274,6 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
                                 e.printStackTrace();
                             }
                             mRecordVideo.setImageResource(R.drawable.ic_record);
-                            timer.cancel();
                             mTimer.cancel();
                             mSpeechRecognizer.cancel();
                             try {
@@ -300,7 +281,7 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
                             } catch (Exception e) {
                                 Log.e(TAG, "Exception:" + e.toString());
                             }
-                            mEditor2.putString(getString(R.string.resultVideo),mOutputFilePath);
+                            mEditor2.putString(getString(R.string.resultVideo), mOutputFilePath);
                             mEditor2.apply();
                             onBackPressed();
                         } catch (Exception e) {
@@ -317,7 +298,6 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
                                 e.printStackTrace();
                             }
                             mRecordVideo.setImageResource(R.drawable.ic_record);
-                            timer.cancel();
                             mTimer.cancel();
                             mSpeechRecognizer.cancel();
                             try {
@@ -325,7 +305,7 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
                             } catch (Exception e) {
                                 Log.e(TAG, "Exception:" + e.toString());
                             }
-                            mEditor2.putString(getString(R.string.resultVideo),mOutputFilePath);
+                            mEditor2.putString(getString(R.string.resultVideo), mOutputFilePath);
                             mEditor2.apply();
                             onBackPressed();
                         } catch (Exception e) {
@@ -342,7 +322,6 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
                                 e.printStackTrace();
                             }
                             mRecordVideo.setImageResource(R.drawable.ic_record);
-                            timer.cancel();
                             mTimer.cancel();
                             mSpeechRecognizer.cancel();
                             try {
@@ -350,7 +329,7 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
                             } catch (Exception e) {
                                 Log.e(TAG, "Exception:" + e.toString());
                             }
-                            mEditor2.putString(getString(R.string.resultVideo),mOutputFilePath);
+                            mEditor2.putString(getString(R.string.resultVideo), mOutputFilePath);
                             mEditor2.apply();
                             onBackPressed();
                         } catch (Exception e) {
@@ -367,7 +346,6 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
                                 e.printStackTrace();
                             }
                             mRecordVideo.setImageResource(R.drawable.ic_record);
-                            timer.cancel();
                             mTimer.cancel();
                             mSpeechRecognizer.cancel();
                             try {
@@ -375,9 +353,9 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
                             } catch (Exception e) {
                                 Log.e(TAG, "Exception:" + e.toString());
                             }
-                            mEditor2.putString(getString(R.string.resultVideo),mOutputFilePath);
+                            mEditor2.putString(getString(R.string.resultVideo), mOutputFilePath);
                             mEditor2.apply();
-
+                            onBackPressed();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -414,7 +392,6 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
                             e.printStackTrace();
                         }
                         mRecordVideo.setImageResource(R.drawable.ic_record);
-                        timer.cancel();
                         mTimer.cancel();
                         mSpeechRecognizer.cancel();
                         try {
@@ -422,10 +399,8 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
                         } catch (Exception e) {
                             Log.e(TAG, "Exception:" + e.toString());
                         }
-                        mEditor2.putString(getString(R.string.resultVideo),mOutputFilePath);
-                        mEditor2.apply();
-                        Activity activity = new OpenCameraActi();
-                        ((OpenCameraActi) activity).OnBackPressed();
+                        mEditor2.putString(getString(R.string.resultVideo), mOutputFilePath);
+                        mEditor2.commit();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -443,26 +418,6 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
         }
     }
 
-    @Override
-    public void onDestroyView() {
-        AudioManager audioManager;
-        Context context = getContext();
-        audioManager = (AudioManager) context.getSystemService(context.AUDIO_SERVICE);
-        audioManager.setMode(AudioManager.MODE_NORMAL);
-        audioManager.stopBluetoothSco();
-        audioManager.setBluetoothScoOn(false);
-        stopTest();
-        timer.cancel();
-        mTimer.cancel();
-        mSpeechRecognizer.cancel();
-        try {
-            mSpeechRecognizer.destroy();
-        } catch (Exception e) {
-            Log.e(TAG, "Exception:" + e.toString());
-        }
-        super.onDestroyView();
-        unbinder.unbind();
-    }
 
     private String parseVideo(String mFilePath) throws IOException {
         DataSource channel = new FileDataSourceImpl(mFilePath);
@@ -540,6 +495,17 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
 
     @Override
     public void onBackPressed() {
+        closeAll();
+    }
+
+    @Override
+    public void onDestroyView() {
+        closeAll();
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    private void closeAll() {
         AudioManager audioManager;
         Context context = getContext();
         audioManager = (AudioManager) context.getSystemService(context.AUDIO_SERVICE);
@@ -547,7 +513,6 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
         audioManager.stopBluetoothSco();
         audioManager.setBluetoothScoOn(false);
         stopTest();
-        timer.cancel();
         mTimer.cancel();
         mSpeechRecognizer.cancel();
         try {
