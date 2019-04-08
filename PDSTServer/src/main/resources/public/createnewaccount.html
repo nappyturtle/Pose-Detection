@@ -47,7 +47,7 @@
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-mini"><b>S</b>T</span>
             <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b>Self-</b>Training</span>
+            <span class="logo-lg"><img src="images/defaultAppLogo.png" style="width:23px; height:23px; margin: 4px; margin-top: 13px"><b>Self-</b>Training</span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top">
@@ -62,7 +62,7 @@
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <img class="user-image" alt="User Image" id="navbar-nav-imgUrl"/>
-                            <span class="hidden-xs" id="navbar-nav-username">Alexander Pierce</span>
+                            <span class="hidden-xs navbar-username" id="navbar-nav-username">Alexander Pierce</span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
@@ -71,8 +71,9 @@
                                      id="dropdown-menu-imgUrl">
 
                                 <p>
-                                    <span id="dropdown-menu-username">Alexander Pierce</span> - <span
-                                        id="dropdown-menu-role">Web Developer</span>
+                                    <span id="dropdown-menu-username" class="navbar-username">Alexander Pierce</span> -
+                                    <span
+                                            id="dropdown-menu-role">Web Developer</span>
                                     <!--<small>Member since Nov. 2012</small>-->
                                 </p>
                             </li>
@@ -82,7 +83,7 @@
                                     <a href="management/account/profile.html" class="btn btn-default btn-flat">Tài khoản</a>
                                 </div>
                                 <div class="pull-right">
-                                    <a href="#" class="btn btn-default btn-flat" id="btn-sign-out">Sign out</a>
+                                    <a href="#" class="btn btn-default btn-flat" id="btn-sign-out">Đăng xuất</a>
                                 </div>
                             </li>
                         </ul>
@@ -112,12 +113,13 @@
                     <ul class="treeview-menu">
                         <li><a href="management/account/account.html"><i class="fa fa-circle-o"></i> Quản
                             lý tài khoản</a></li>
-                        <li id="li-video-url"><a href="management/video/layout.html"><i class="fa fa-circle-o"></i> Quản lý video</a></li>
-                        <li id="li-course-url"><a href="management/course/layout.html"><i class="fa fa-circle-o"></i> Quản lý khóa học</a>
+                        <li id="li-video-url"><a href="management/video/layout.html"><i class="fa fa-circle-o"></i> Quản
+                            lý video</a></li>
+                        <li id="li-course-url"><a href="management/course/layout.html"><i class="fa fa-circle-o"></i>
+                            Quản lý khóa học</a>
                         </li>
-                        <!--<li><a href="management/suggestion/layout.html"><i class="fa fa-circle-o"></i> Quản lý kết quả
-                            tập</a>
-                        </li>-->
+                        <li id="li-category-url"><a href="management/category/category.html"><i class="fa fa-circle-o"></i> Quản lý danh mục</a>
+                        </li>
 
                     </ul>
                 </li>
@@ -130,6 +132,7 @@
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
+            <div class="col-md-2"></div>
             <h1>
                 Tạo tài khoản
             </h1>
@@ -139,85 +142,87 @@
         <section class="content">
 
             <div class="row">
-                <div class="col-md-1"></div>
-                <div class="col-md-10">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
                     <div class="box box-primary">
                         <div class="box-body">
-
-                            <div class="box-body box-profile">
-                                <h3 class="profile-username text-center">Tạo tài khoản mới</h3>
-                            </div>
-                            <div class="col-md-6">
-
-                                <div class="form-group">
-                                    <label>Tên đăng nhập</label><span>  (4 đến 12 ký tự)</span>
-                                    <div class="input-group">
-                                        <div class="input-group-addon">
-                                            <i class="glyphicon glyphicon-user"></i>
-                                        </div>
-                                        <input class="form-control" placeholder="Tên đăng nhập" minlength="4" maxlength="12"
+                            <div class="col-md-12 form-group">
+                                <div class="col-md-6">
+                                    <!--Username-->
+                                    <div class="form-group">
+                                        <label>Tên đăng nhập</label><span>  (4 đến 12 ký tự): </span><br>
+                                        <input placeholder="Tên đăng nhập" minlength="4" maxlength="12"
+                                               style="padding: 5px;" class="col-md-8"
                                                id="create-username" required>
                                     </div>
                                 </div>
-
-                                <div class="form-group">
-                                    <label>Mật khẩu</label><span>  (ít nhất 6 ký tự)</span>
-                                    <div class="input-group">
-                                        <div class="input-group-addon">
-                                            <i class="glyphicon glyphicon-lock"></i>
-                                        </div>
-                                        <input type="password" class="form-control" placeholder="Mật khẩu" minlength="6"
-                                               name="password"
-                                               id="create-password" required>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Số điện thoại</label>
-                                    <div class="input-group">
-                                        <div class="input-group-addon">
-                                            <i class="glyphicon glyphicon-phone"></i>
-                                        </div>
-                                        <input id="create-phone" type="number" class="form-control"
-                                               placeholder="Số điện thoại"
-                                               maxlength="10">
-                                        <!--<input type="text" class="form-control" data-inputmask='"mask": "(999) 999-9999"' data-mask>-->
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="col-mid-6">
-
-                                <div class="form-group">
-                                    <label>Email</label>
-                                    <div class="input-group">
-                                        <div class="input-group-addon">
-                                            <i class="glyphicon glyphicon-envelope"></i>
-                                        </div>
-                                        <input type="email" class="form-control" placeholder="Email"
-                                               id="create-email"
+                                <div class="col-md-6">
+                                    <!--Email-->
+                                    <div class="form-group ">
+                                        <label>Email</label><span>: </span><br>
+                                        <input type="email" placeholder="Email" class="col-md-12"
+                                               id="create-email" style="padding: 5px;"
                                                required>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div class="form-group">
-                                    <label>Xác nhận mật khẩu</label>
-                                    <div class="input-group">
-                                        <div class="input-group-addon">
-                                            <i class="glyphicon glyphicon-log-in"></i>
-                                        </div>
-                                        <input type="password" class="form-control" placeholder="Xác nhận mật khẩu"
-                                               name="retypePass"
+                            <div class="col-md-12 form-group">
+                                <div class="col-md-6">
+                                    <!--password-->
+                                    <div class="form-group">
+                                        <label>Mật khẩu</label><span>  (ít nhất 6 ký tự): </span><br>
+                                        <input type="password" placeholder="Mật khẩu" minlength="6"
+                                               name="password" style="padding: 5px;" class="col-md-8"
+                                               id="create-password" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <!--comfirm pass-->
+                                    <div class="form-group">
+                                        <label>Xác nhận mật khẩu</label><span>: </span><br>
+                                        <input type="password" placeholder="Xác nhận mật khẩu"
+                                               name="retypePass" style="padding: 5px;" class="col-md-8"
                                                id="create-retype-password" required>
                                     </div>
                                 </div>
-
                             </div>
-                            <div class="row">
-                                <div class="col-xs-8"></div>
-                                <div class="col-xs-4">
-                                    <button type="submit" class="btn btn-primary btn-block btn-flat"
-                                            data-toggle="modal" data-target="#modal-default"
+
+                            <div class="col-md-12 form-group">
+                                <div class="col-md-6">
+                                    <!--fullname-->
+                                    <div class="form-group">
+                                        <label>Họ và tên</label><span>: </span><br>
+                                        <input id="create-fullname" type="text" class="col-md-10"
+                                               placeholder="Họ và tên" style="padding: 5px;">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <!--phone-->
+                                    <div class="form-group">
+                                        <label>Số điện thoại</label><span>: </span><br>
+                                        <input id="create-phone" type="text" class="col-md-7"
+                                               placeholder="Số điện thoại" style="padding: 5px;"
+                                               pattern="\d*"
+                                               maxlength="10">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 form-group">
+                                <!--address-->
+                                <div class="col-md-12">
+                                    <label>Địa chỉ</label><span>: </span><br>
+                                    <input id="create-address" type="text" class="col-md-12"
+                                           placeholder="Địa chỉ" style="padding: 5px;">
+                                </div>
+                            </div>
+
+                            <div class="row form-group">
+                                <div class="col-md-4"></div>
+                                <div class="col-md-4">
+                                    <button type="submit" class="btn btn-success btn-block"
+                                            data-toggle="modal" data-target="#modal-default" style="font-size: 18px;"
                                             id="btn-create-new-account">Tạo tài
                                         khoản
                                     </button>
@@ -226,7 +231,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
 
             <div class="modal fade" id="modal-default">
@@ -242,7 +246,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Đóng</button>
-                            <button type="button" class="btn btn-primary" id="btn-save-change">Cập nhật</button>
+                            <button type="button" class="btn btn-primary" id="btn-save-change">Tạo tài khoản</button>
                         </div>
                     </div>
                     <!-- /.modal-content -->
