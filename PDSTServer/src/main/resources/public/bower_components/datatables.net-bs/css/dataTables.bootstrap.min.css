@@ -187,7 +187,7 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
 table.dataTable th {
     text-align: center;
     color: #fff;
-    background-color: #F27024;
+    background-color: #224a9b;
     vertical-align: middle;
 }
 
@@ -205,11 +205,11 @@ table.dataTable .btn {
 }
 
 table.dataTable tr.even {
-    background-color: #f6f9ff;
+    background-color: #e0ebfc;
 }
 
 table.dataTable tr.odd {
-    background-color: #e0ebfc;
+    background-color: #f6f9ff;
 }
 
 table.dataTable {
