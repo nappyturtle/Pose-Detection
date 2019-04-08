@@ -200,7 +200,7 @@ public class VideoServiceImpl implements VideoService {
         }
         if (totalPriceEnrollment >= course.getPrice()) {
             List<Video> videoUpdated = videoRepository.
-                    findAllByCourseId(PageRequest.of(page, size, Sort.by("createdTime").descending()),courseId);
+                    findAllByCourseId(PageRequest.of(page, size, Sort.by("createdTime").descending()), courseId);
             for (Video video : videoUpdated) {
                 VideoDTO dto = new VideoDTO();
                 dto.setVideo(video);
@@ -403,6 +403,7 @@ public class VideoServiceImpl implements VideoService {
         //video.setTitle(dto.getTitle());
         //video.setNumOfView(dto.getNumOfView());
         video.setStatus(dto.getStatus());
+        video.setTitle(dto.getTitle());
         video.setUpdatedTime(sdf.format(date));
         Video videRes = videoRepository.save(video);
         if (videRes != null) {
@@ -428,6 +429,7 @@ public class VideoServiceImpl implements VideoService {
     public VideoDTOFrontEnd getVideoDetailById(int videoId) {
         Video video = videoRepository.findVideoById(videoId);
         Course course = courseRepository.findCourseById(video.getCourseId());
+        Account account = accountRepository.findAccountById(course.getAccountId());
         VideoDTOFrontEnd dto = new VideoDTOFrontEnd();
         dto.setId(video.getId());
         dto.setTitle(video.getTitle());
@@ -436,6 +438,11 @@ public class VideoServiceImpl implements VideoService {
         dto.setNumOfView(video.getNumOfView());
         dto.setCoursename(course.getName());
         dto.setStatus(video.getStatus());
+        if (account.getFullname() != null) {
+            dto.setTrainerName(account.getFullname());
+        } else {
+            dto.setTrainerName(account.getUsername());
+        }
         return dto;
     }
 
