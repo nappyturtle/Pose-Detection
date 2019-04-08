@@ -22,6 +22,7 @@ import android.speech.SpeechRecognizer;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,7 @@ import android.widget.VideoView;
 
 import com.capstone.self_training.R;
 import com.capstone.self_training.activity.OnBackPressed;
+import com.capstone.self_training.activity.OpenCameraActi;
 import com.capstone.self_training.activity.TraineeUploadVideoActi;
 import com.capstone.self_training.camera.AutoFitTextureView;
 import com.capstone.self_training.camera.CameraVideoFragment;
@@ -65,12 +67,14 @@ import butterknife.Unbinder;
  * Use the {@link CameraFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CameraFragment extends CameraVideoFragment implements OnBackPressed{
+public class CameraFragment extends CameraVideoFragment implements OnBackPressed {
 
     private static final String TAG = "CameraFragment";
     private static final String VIDEO_DIRECTORY_NAME = "Seft_Training";
     private SharedPreferences mPerferences;
     private SharedPreferences.Editor mEditor;
+    private SharedPreferences mPerferences2;
+    private SharedPreferences.Editor mEditor2;
     // @BindView(R.id.mTextureView)
     AutoFitTextureView mTextureView;
     // @BindView(R.id.mRecordVideo)
@@ -91,6 +95,7 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
     SpeechRecognizer mSpeechRecognizer;
     Intent mSpeechRecognizerIntent;
     AudioManager audioManager;
+    Activity context;
 
     public CameraFragment() {
         // Required empty public constructor
@@ -119,7 +124,7 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
                     mEditor.putString(getString(R.string.testSpeech), editText_Camera.getText().toString());
                     mEditor.apply();
                 }
-                handler.postDelayed(test, 6000); //wait 6 sec and run again
+                handler.postDelayed(test, 4000);
             }
         }
     };
@@ -130,20 +135,13 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
     }
 
     public void startTest() {
-        handler.postDelayed(test, 1500); //wait 1.5 ms and run
+        handler.postDelayed(test, 1000);
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         checkPermission();
-//
-//        Context context = getContext();
-//        audioManager = (AudioManager) context.getSystemService(context.AUDIO_SERVICE);
-//        audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
-//        audioManager.startBluetoothSco();
-//        audioManager.setBluetoothScoOn(true);
 
         mSpeechRecognizer = SpeechRecognizer.createSpeechRecognizer(this.getContext());
         mSpeechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
@@ -151,7 +149,6 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
                 RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE,
                 Locale.getDefault());
-
 
         timer = new CountDownTimer(1500, 1000) {
             @Override
@@ -227,7 +224,6 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
     }
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -238,6 +234,8 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
         editText_Camera = (EditText) view.findViewById(R.id.editText_CameraFragment);
         mPerferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         mEditor = mPerferences.edit();
+        mPerferences2 = PreferenceManager.getDefaultSharedPreferences(getContext());
+        mEditor2 = mPerferences2.edit();
         startTest();
         mTimer = new CountDownTimer(2500, 1000) {
             @Override
@@ -254,7 +252,6 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
                         } else {
                             startRecordingVideo();
                             mRecordVideo.setImageResource(R.drawable.ic_stop);
-                            //Receive out put file here
                             mOutputFilePath = getCurrentFile().getAbsolutePath();
                         }
                         break;
@@ -264,7 +261,24 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
                         } else {
                             startRecordingVideo();
                             mRecordVideo.setImageResource(R.drawable.ic_stop);
-                            //Receive out put file here
+                            mOutputFilePath = getCurrentFile().getAbsolutePath();
+                        }
+                        break;
+                    case "thu":
+                        if (mIsRecordingVideo) {
+                            Toast.makeText(getContext(), "Đang quay..", Toast.LENGTH_SHORT).show();
+                        } else {
+                            startRecordingVideo();
+                            mRecordVideo.setImageResource(R.drawable.ic_stop);
+                            mOutputFilePath = getCurrentFile().getAbsolutePath();
+                        }
+                        break;
+                    case "start":
+                        if (mIsRecordingVideo) {
+                            Toast.makeText(getContext(), "Đang quay..", Toast.LENGTH_SHORT).show();
+                        } else {
+                            startRecordingVideo();
+                            mRecordVideo.setImageResource(R.drawable.ic_stop);
                             mOutputFilePath = getCurrentFile().getAbsolutePath();
                         }
                         break;
@@ -286,9 +300,9 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
                             } catch (Exception e) {
                                 Log.e(TAG, "Exception:" + e.toString());
                             }
-                            Intent i = new Intent(getContext(), TraineeUploadVideoActi.class);
-                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(i);
+                            mEditor2.putString(getString(R.string.resultVideo),mOutputFilePath);
+                            mEditor2.apply();
+                            onBackPressed();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -311,9 +325,59 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
                             } catch (Exception e) {
                                 Log.e(TAG, "Exception:" + e.toString());
                             }
-                            Intent i = new Intent(getContext(), TraineeUploadVideoActi.class);
-                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(i);
+                            mEditor2.putString(getString(R.string.resultVideo),mOutputFilePath);
+                            mEditor2.apply();
+                            onBackPressed();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case "ngừng":
+                        try {
+                            stopRecordingVideo();
+                            stopTest();
+                            try {
+                                mOutputFilePath = parseVideo(mOutputFilePath);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            mRecordVideo.setImageResource(R.drawable.ic_record);
+                            timer.cancel();
+                            mTimer.cancel();
+                            mSpeechRecognizer.cancel();
+                            try {
+                                mSpeechRecognizer.destroy();
+                            } catch (Exception e) {
+                                Log.e(TAG, "Exception:" + e.toString());
+                            }
+                            mEditor2.putString(getString(R.string.resultVideo),mOutputFilePath);
+                            mEditor2.apply();
+                            onBackPressed();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case "dừng":
+                        try {
+                            stopRecordingVideo();
+                            stopTest();
+                            try {
+                                mOutputFilePath = parseVideo(mOutputFilePath);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            mRecordVideo.setImageResource(R.drawable.ic_record);
+                            timer.cancel();
+                            mTimer.cancel();
+                            mSpeechRecognizer.cancel();
+                            try {
+                                mSpeechRecognizer.destroy();
+                            } catch (Exception e) {
+                                Log.e(TAG, "Exception:" + e.toString());
+                            }
+                            mEditor2.putString(getString(R.string.resultVideo),mOutputFilePath);
+                            mEditor2.apply();
+
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -340,9 +404,6 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.mRecordVideo:
-                /**
-                 * If media is not recoding then start recording else stop recording
-                 */
                 if (mIsRecordingVideo) {
                     try {
                         stopRecordingVideo();
@@ -361,9 +422,10 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
                         } catch (Exception e) {
                             Log.e(TAG, "Exception:" + e.toString());
                         }
-                        Intent i = new Intent(getContext(), TraineeUploadVideoActi.class);
-                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(i);
+                        mEditor2.putString(getString(R.string.resultVideo),mOutputFilePath);
+                        mEditor2.apply();
+                        Activity activity = new OpenCameraActi();
+                        ((OpenCameraActi) activity).OnBackPressed();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -371,7 +433,6 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
                 } else {
                     startRecordingVideo();
                     mRecordVideo.setImageResource(R.drawable.ic_stop);
-                    //Receive out put file here
                     mOutputFilePath = getCurrentFile().getAbsolutePath();
                 }
                 break;
@@ -382,9 +443,14 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
         }
     }
 
-
     @Override
     public void onDestroyView() {
+        AudioManager audioManager;
+        Context context = getContext();
+        audioManager = (AudioManager) context.getSystemService(context.AUDIO_SERVICE);
+        audioManager.setMode(AudioManager.MODE_NORMAL);
+        audioManager.stopBluetoothSco();
+        audioManager.setBluetoothScoOn(false);
         stopTest();
         timer.cancel();
         mTimer.cancel();
@@ -410,7 +476,7 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
             // 10000 seems sufficient since for 30 fps the normal delta is about 3000
             if (firstEntry.getDelta() > 10000) {
                 isError = true;
-                firstEntry.setDelta(3000);
+                firstEntry.setDelta(6000);
             }
         }
         File file = getOutputMediaFile();
@@ -437,7 +503,7 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
      * Create directory and return file
      * returning video file
      */
-    private File getOutputMediaFile() {
+    public File getOutputMediaFile() {
         // External sdcard file location
         File mediaStorageDir = new File(Environment.getExternalStorageDirectory(),
                 VIDEO_DIRECTORY_NAME);
@@ -455,6 +521,10 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
 
         mediaFile = new File(mediaStorageDir.getPath() + File.separator
                 + "VID_" + timeStamp + ".mp4");
+
+//        Intent intent = new Intent(context, TraineeUploadVideoActi.class);
+//        intent.putExtra("VideoAfterRecord", mediaFile);
+
         return mediaFile;
     }
 
@@ -470,6 +540,12 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
 
     @Override
     public void onBackPressed() {
+        AudioManager audioManager;
+        Context context = getContext();
+        audioManager = (AudioManager) context.getSystemService(context.AUDIO_SERVICE);
+        audioManager.setMode(AudioManager.MODE_NORMAL);
+        audioManager.stopBluetoothSco();
+        audioManager.setBluetoothScoOn(false);
         stopTest();
         timer.cancel();
         mTimer.cancel();

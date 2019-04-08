@@ -1,18 +1,19 @@
 package com.capstone.self_training.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
@@ -21,7 +22,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.ToolbarWidgetWrapper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -29,16 +29,13 @@ import android.widget.FrameLayout;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 import android.widget.VideoView;
 
 import com.capstone.self_training.R;
-import com.capstone.self_training.fragment.CameraFragment;
 import com.capstone.self_training.helper.TimeHelper;
 import com.capstone.self_training.model.Suggestion;
 import com.capstone.self_training.model.Video;
 import com.capstone.self_training.service.dataservice.SuggestionService;
-import com.capstone.self_training.util.MP4Demuxer;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -46,14 +43,11 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import org.jcodec.common.DemuxerTrack;
-import org.jcodec.common.io.NIOUtils;
-
 import java.io.ByteArrayOutputStream;
-import java.nio.channels.SeekableByteChannel;
 
 public class TraineeUploadVideoActi extends AppCompatActivity {
     private static final int SELECT_VIDEO = 3;
+    private static final int OPEN_CAMERA = 4;
     private static final int REQUEST_CODE_LOGIN = 0x9345;
     private Button btnChooseFile;
     private Button btnUploadVideo;
@@ -71,13 +65,13 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
 
     private SharedPreferences mPerferences;
     private SharedPreferences.Editor mEditor;
-
+    private CountDownTimer timer;
+    private String resultVideo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_video);
-
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -89,6 +83,34 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
         requestRead();
 
         uploadVideo();
+
+        timer = new CountDownTimer(4000, 500) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                if (getIntent().getExtras() == null) {
+
+                } else {
+                    resultVideo = mPerferences.getString(getString(R.string.resultVideo), "");
+                    filename = resultVideo.substring(resultVideo.lastIndexOf("/") + 1);
+                    txtVideoName.setText(filename);
+                    Uri uri = Uri.parse(resultVideo);
+                    selectedVideoUri = uri;
+                    videoView.setVideoURI(uri);
+                    MediaController mediaController = new MediaController(TraineeUploadVideoActi.this);
+                    videoView.setMediaController(mediaController);
+                    mediaController.setAnchorView(videoView);
+                    resultVideo = "";
+                }
+                this.start();
+            }
+        };
+        timer.start();
+
 
     }
 
@@ -143,18 +165,7 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
         btnOpenCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                CameraFragment cmr = CameraFragment.newInstance();
-//                getFragmentManager().beginTransaction()
-//                        .replace(R.id.TraineeUploadVideoActi, cmr)
-//                        .commit();
-//                btnChooseFile.setVisibility(View.GONE);
-//                btnUploadVideo.setVisibility(View.GONE);
-//                txtVideoName.setVisibility(View.GONE);
-//                videoView.setVisibility(View.GONE);
-//                btnOpenCamera.setVisibility(View.GONE);
-//                flUploadVideo.setVisibility(View.GONE);
-//                tbUploadVideo.setVisibility(View.GONE);
-                Intent intent = new Intent(TraineeUploadVideoActi.this, OpenCameraActi.class);
+                Intent intent = new Intent(getApplicationContext(), OpenCameraActi.class);
                 startActivity(intent);
             }
         });
@@ -269,6 +280,7 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
                         startActivity(intent);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
+                    @SuppressLint("LongLogTag")
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.e("Upload thumbnail suggestion: ", e.getMessage());
