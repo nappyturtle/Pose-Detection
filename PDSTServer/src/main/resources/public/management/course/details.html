@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Seft Training | Chi tiết khóa học</title>
+    <title>Self-Training | Chi tiết khóa học</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
@@ -50,7 +50,8 @@
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-mini"><b>S</b>T</span>
             <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b>Self-Training</b></span>
+            <span class="logo-lg"><img src="../../images/defaultAppLogo.png"
+                                       style="width:23px; height:23px; margin: 4px; margin-top: -3px"><b>Self-Training</b></span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top">
@@ -65,24 +66,29 @@
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <img class="user-image" alt="User Image" id="navbar-nav-imgUrl"/>
-                            <span class="hidden-xs" id="navbar-nav-username">Alexander Pierce</span>
+                            <span class="hidden-xs navbar-username" id="navbar-nav-username">Alexander Pierce</span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header">
-                                <img src="" class="img-circle" alt="User Image"
+                                <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image"
                                      id="dropdown-menu-imgUrl">
 
                                 <p>
-                                    <span id="dropdown-menu-username">Alexander Pierce</span> - <span
-                                        id="dropdown-menu-role">Web Developer</span>
+                                    <span id="dropdown-menu-username" class="navbar-username">Alexander Pierce</span> -
+                                    <span
+                                            id="dropdown-menu-role">Web Developer</span>
                                     <!--<small>Member since Nov. 2012</small>-->
                                 </p>
                             </li>
                             <!-- Menu Footer-->
                             <li class="user-footer">
+                                <div class="pull-left">
+                                    <a href="../../management/account/profile.html" class="btn btn-default btn-flat">Tài
+                                        khoản</a>
+                                </div>
                                 <div class="pull-right">
-                                    <a href="#" class="btn btn-default btn-flat" id="btn-sign-out">Sign out</a>
+                                    <a href="#" class="btn btn-default btn-flat" id="btn-sign-out">Đăng xuất</a>
                                 </div>
                             </li>
                         </ul>
@@ -95,18 +101,9 @@
     <aside class="main-sidebar">
         <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar">
-            <!--<div class="user-panel">-->
-                <!--<div class="pull-left image">-->
-                    <!--<img src="" class="img-circle" alt="User Image" id="pull-lelf-user-img">-->
-                <!--</div>-->
-                <!--<div class="pull-left info">-->
-                    <!--<p id="pull-lelf-username">Alexander Pierce</p>-->
-                    <!--<i class="fa fa-circle text-success"></i> Online-->
-                <!--</div>-->
-            <!--</div>-->
+
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu" data-widget="tree">
-                <!--<li class="header">MAIN NAVIGATION</li>-->
                 <li>
                     <a href="../../dashboard.html">
                         <i class="fa fa-dashboard"></i> <span>Trang chủ</span>
@@ -126,23 +123,8 @@
                         <li><a href="../video/layout.html"><i class="fa fa-circle-o"></i> Quản lý video</a></li>
                         <li class="active"><a href="../course/layout.html"><i class="fa fa-circle-o"></i> Quản lý khóa
                             học</a></li>
-                        <!--<li><a href="../suggestion/layout.html"><i class="fa fa-circle-o"></i> Quản lý kết quả tập</a>-->
-                        <!--</li>-->
-                        <!--<li><a href="../suggestiondetail/layout.html"><i class="fa fa-circle-o"></i> Quản lý kết quả tập-->
-                            <!--chi tiết</a></li>-->
-                    </ul>
-                </li>
-
-                <li class="treeview">
-                    <a href="createnewaccount.html">
-                        <i class="fa fa-user"></i> <span>Tạo tài khoản mới</span>
-                        <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li><a href="../../createnewaccount.html?roleId=3"><i class="fa fa-circle-o"></i> Tạo tài khoản trainer</a></li>
-                        <li id="admin-authorized"><a href="../../createnewaccount.html?roleId=2"><i class="fa fa-circle-o"></i> Tạo tài khoản nhân viên</a></li>
+                        <li id="li-category-url"><a href="../../management/category/category.html"><i class="fa fa-circle-o"></i> Quản lý danh mục</a>
+                        </li>
                     </ul>
                 </li>
             </ul>
@@ -157,97 +139,53 @@
             <h1>
                 Chi tiết khóa học
             </h1>
-            <!--<ol class="breadcrumb">-->
-                <!--<li><a href="../../dashboard.html"><i class="fa fa-dashboard"></i> Dashboard</a></li>-->
-                <!--<li>Quản lý</a></li>-->
-                <!--<li><a href="../course/layout.html">Quản lý khóa học</a></li>-->
-                <!--<li class="active">Chi tiết khóa học</li>-->
-            <!--</ol>-->
         </section>
 
         <!-- Main content -->
         <section class="content">
-
             <div class="row">
-                <div class="col-md-1"></div>
-                <div class="col-md-10">
-
-                    <div class="box box-primary col-md-12">
-
-                        <!--<div class="box-body box-profile">-->
-                            <!--<img style="width: 160px; height: 160px" class="profile-user-img img-responsive img-thumbnail"-->
-                                 <!--id="detail-course-thumbnailImg"-->
-                                 <!--src="../../dist/img/user4-128x128.jpg" alt="User profile picture">-->
-                        <!--</div>-->
-                        <div class="col-md-1"></div>
-                        <div class="col-md-4">
-                            <label style="margin-top: 50px">Ảnh đại diện</label>
-                            <img style="width: 400px; height: 250px; margin-top: 5px" class="img-responsive img-thumbnail"
-                                 id="detail-course-thumbnailImg"
-                                 src="../../dist/img/user4-128x128.jpg" alt="User profile picture">
-                        </div>
-
-                        <!--<form method="post">-->
-                            <div class="col-md-7" style="margin-top: 50px;">
-
-                                <div class="form-group col-md-12">
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-8">
-                                        <label>Tên khóa học</label>
-                                        <div class="input-group">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-certificate"></i>
-                                            </div>
-                                            <input type="text" class="form-control" id="detail-course-name" readonly>
+                <div class="col-md-12">
+                    <div class="box box-primary" style="padding-top: 2%">
+                        <div class="box-body">
+                            <div class="col-md-12">
+                                <div class="col-md-5" style="margin-top: 1%; padding-right: 4%;">
+                                    <label>Ảnh đại diện:</label>
+                                    <img style="width:100%;height: 250px; border: solid 1px;"
+                                         class="img-responsive img-thumbnail"
+                                         id="detail-course-thumbnailImg"
+                                         src="../../dist/img/user4-128x128.jpg" alt="Hình nền khóa học">
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="form-group">
+                                        <p class="init-info" id="detail-course-name"
+                                           style="font-weight: bold; font-size: 50px">Tên khóa học</p>
+                                        <div class="change-info" hidden style="margin-top: 2%">
+                                            <label>Tên khóa học: </label>
+                                            <input style="padding: 5px; width: 60%" id="input-detail-course-name" maxlength="50">
                                         </div>
                                     </div>
-                                </div>
 
-                                <!-- /.category -->
-                                <div class="form-group col-md-12">
+                                    <!-- /.Trainer -->
+                                    <div class="form-group init-info">
+                                        <label>Huấn luyên viên</label><span>: </span>
+                                        <span id="detail-course-trainer" class="init-info"></span>
 
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Danh mục</label>
-                                            <div class="input-group">
-                                                <div class="input-group-addon">
-                                                    <i class="fa fa-list-alt"></i>
-                                                </div>
-                                                <input type="text" class="form-control" id="detail-course-category" readonly>
-                                                <!--<select class="form-control" id="slt-category"-->
-                                                        <!--name="select-category"></select>-->
-                                            </div>
-
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- /.Trainer -->
-                                <div class="form-group col-md-12">
-
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-6">
-                                        <label>Huấn luyên viên</label>
-
-                                        <div class="input-group">
+                                        <!--<div class="input-group">
                                             <div class="input-group-addon">
                                                 <i class="fa fa-user"></i>
                                             </div>
                                             <input type="text" class="form-control" readonly
                                                    data-mask id="detail-course-trainer" id="detail-course-trainer">
-                                        </div>
+                                        </div>-->
                                     </div>
-                                </div>
 
-                                <!-- Giá -->
-                                <div class="form-group col-md-12">
-
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-10">
-                                        <label>Giá</label>
-                                        <div class="row">
+                                    <!-- Giá -->
+                                    <div class="form-group">
+                                        <label>Giá</label><span>: </span>
+                                        <input class="change-info" hidden
+                                               id="input-detail-course-price" style="padding: 5px; width: 100px"><span class="change-info" hidden> .000 đồng</span>
+                                        <span id="detail-course-price" class="init-info"></span><span class="init-info"> đồng</span>
+                                        <!--<div class="row">
                                             <div class="col-md-6">
                                                 <div class="input-group">
                                                     <div class="input-group-addon">
@@ -259,50 +197,96 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-3"><p style="font-size: 18px">đồng</p></div>
-                                        </div>
-
+                                        </div>-->
                                     </div>
-                                </div>
 
-                                <!-- Trạng thái -->
-                                <div class="form-group col-md-12">
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-11">
-                                        <label>Trạng thái</label>
+                                    <!-- /.category -->
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <label>Danh mục</label> <span>: </span>
+                                            <span id="detail-course-category" class="init-info"></span>
+                                            <!--<div class="input-group">
+                                                <input type="text" class="form-control" id="detail-course-category"
+                                                       readonly>
+                                            </div>-->
+                                            <div class="change-info" id="div-detail-course-category" hidden style="display: inline-block">
+                                                <select style="padding: 5px" id="select-detail-course-category" hidden class="change-info">
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                        <div class="input-group col-md-12">
+                                    <!-- Trạng thái -->
+                                    <div class="form-group">
+                                        <label>Trạng thái</label><span>: </span>
+                                        <span id="detail-course-status" class="init-info"></span>
+                                        <div class="change-info" id="div-detail-course-status" hidden>
+                                            <select style="width: 200px;padding: 5px" id="select-detail-course-status">
+                                                <option value="active" style="color: green">Đang hoạt động</option>
+                                                <option value="inactive" style="color:red;">Ngưng hoạt động</option>
+                                            </select>
+                                        </div>
+                                        <!--<div class="input-group col-md-12">
                                             <label class="col-md-6" style="font-size:17px">
                                                 <input type="radio" name="r3-status" class="flat-red rd-active"
                                                        id="rdActive"/> Đang hoạt động</label>
                                             <label class="col-md-6" style="font-size:17px">
                                                 <input type="radio" name="r3-status" class="flat-red rd-inactive"
                                                        id="rdInActive"/> Ngưng hoạt động</label>
-                                        </div>
-                                    </div>
-                                </div>
+                                        </div>-->
 
-                                <!-- /.button cập nhật -->
-                                <div class="form-group col-md-12">
-                                    <div class="col-md-7"></div>
-                                    <div class="col-md-4">
-                                        <button class="btn btn-info btn-block" type="submit"id="btn-course-update"
-                                                data-toggle="modal" data-target="#modal-info">Cập nhật</button>
                                     </div>
                                 </div>
-                                <!-- /.form group -->
                             </div>
-                        <!--</form>-->
-                    </div>
+                            <div class="col-md-12" style="margin: 2%">
+                                <div class="col-md-12">
+                                    <div class="col-md-4"></div>
+                                    <div class="col-md-4">
+                                        <button type="button" class="btn btn-success btn-sm btn-block init-info"
+                                                style="font-size: 18px" id="btn-profile-change-info">
+                                            Thay đổi thông tin
+                                        </button>
+                                    </div>
 
+                                </div>
+                                <div hidden class="change-info col-md-12">
+                                    <div class="col-md-2"></div>
+                                    <div class="col-md-4">
+                                        <button id="btn-profile-update" data-toggle="modal"
+                                                class="btn btn-block btn-info btn-sm"
+                                                style="font-size: 18px;"
+                                                data-target="#modal-default">Cập nhật
+                                        </button>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button class="btn btn-block btn-sm btn-default" id="btn-profile-cancel-update"
+                                                style="font-size: 18px">Đóng
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- &lt;!&ndash; /.button cập nhật &ndash;&gt;
+                         <div class="form-group col-md-12">
+                             <div class="col-md-7"></div>
+                             <div class="col-md-4">
+                                 <button class="btn btn-info btn-block" type="submit" id="btn-course-update"
+                                         data-toggle="modal" data-target="#modal-info">Cập nhật
+                                 </button>
+                             </div>
+                         </div>-->
+                    </div>
                 </div>
             </div>
             <!-- /.row -->
 
-            <div class="modal modal-info fade" id="modal-info">
+            <!--<div class="modal modal-info fade" id="modal-info">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="font-size: 36px; color: black">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                                    style="font-size: 36px; color: black">
                                 <span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title">Thay đổi thông tin khóa học</h4>
                         </div>
@@ -310,8 +294,29 @@
                             <p id="mUpdateInfo">One fine body&hellip;</p>
                         </div>
                         <div class="modal-footer">
-                            <!--<button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Đóng</button>-->
+                            &lt;!&ndash;<button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Đóng</button>&ndash;&gt;
                             <button type="button" class="btn btn-outline" id="btn-save-change">Thay đổi</button>
+                        </div>
+                    </div>
+                    &lt;!&ndash; /.modal-content &ndash;&gt;
+                </div>
+                &lt;!&ndash; /.modal-dialog &ndash;&gt;
+            </div>-->
+
+            <div class="modal fade" id="modal-default">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Cập nhật khóa học</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p id="mUpdateInfo">One fine body&hellip;</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Đóng</button>
+                            <button type="button" class="btn btn-primary" id="btn-save-change">Cập nhật</button>
                         </div>
                     </div>
                     <!-- /.modal-content -->

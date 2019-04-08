@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Self-Training | Quản lý tài khoản</title>
+    <title>Self-Training | Quản lý danh mục</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
@@ -68,15 +68,16 @@
                                      id="dropdown-menu-imgUrl">
 
                                 <p>
-                                    <span id="dropdown-menu-username" class="navbar-username">Alexander Pierce</span> - <span
-                                        id="dropdown-menu-role">Web Developer</span>
+                                    <span id="dropdown-menu-username" class="navbar-username">Alexander Pierce</span> -
+                                    <span
+                                            id="dropdown-menu-role">Web Developer</span>
                                     <!--<small>Member since Nov. 2012</small>-->
                                 </p>
                             </li>
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href="profile.html" class="btn btn-default btn-flat">Tài khoản</a>
+                                    <a href="../../management/account/profile.html" class="btn btn-default btn-flat">Tài khoản</a>
                                 </div>
                                 <div class="pull-right">
                                     <a href="#" class="btn btn-default btn-flat" id="btn-sign-out">Đăng xuất</a>
@@ -108,11 +109,13 @@
                 </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li class="active"><a href="account.html"><i class="fa fa-circle-o"></i> Quản
+                        <li><a href="../../management/account/account.html"><i class="fa fa-circle-o"></i> Quản
                             lý tài khoản</a></li>
-                        <li id="li-video-url"><a href="../video/layout.html"><i class="fa fa-circle-o"></i> Quản lý video</a></li>
-                        <li id="li-course-url"><a href="../course/layout.html"><i class="fa fa-circle-o"></i> Quản lý khóa học</a></li>
-                        <li id="li-category-url"><a href="../../management/category/category.html"><i class="fa fa-circle-o"></i> Quản lý danh mục</a>
+                        <li id="li-video-url"><a href="../video/layout.html"><i class="fa fa-circle-o"></i> Quản lý
+                            video</a></li>
+                        <li id="li-course-url"><a href="../course/layout.html"><i class="fa fa-circle-o"></i> Quản lý
+                            khóa học</a></li>
+                        <li class="active" id="li-category-url"><a href="category.html"><i class="fa fa-circle-o"></i> Quản lý danh mục</a>
                         </li>
 
                     </ul>
@@ -142,7 +145,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Quản lý tài khoản
+                Quản lý danh mục
             </h1>
         </section>
 
@@ -153,9 +156,10 @@
 
                     <div class="box">
                         <div class="box-header">
-                            <a href="#" class="btn btn-success" id="btn-create-new-account">
-                                <span class="glyphicon glyphicon-plus"></span>  <span id="createNewAccount"
-                                                                                    style="font-weight: bold;font-size: 15px;">Tạo tài khoản</span>
+                            <a href="#" class="btn btn-success" id="btn-create-new-cate" data-toggle="modal"
+                               data-target="#modal-create-category">
+                                <span class="glyphicon glyphicon-plus"></span> <span id="createNewAccount"
+                                                                                     style="font-weight: bold;font-size: 15px;">Tạo tài khoản</span>
                             </a>
                         </div>
                         <!-- /.box-header -->
@@ -165,9 +169,7 @@
                                 <thead>
                                 <tr>
                                     <th>Stt</th>
-                                    <th>Tài khoản</th>
-                                    <th>Email</th>
-                                    <th>Role</th>
+                                    <th>Danh mục</th>
                                     <th>Trạng thái</th>
                                     <th></th>
                                 </tr>
@@ -186,54 +188,23 @@
                 </div>
                 <!-- /.col -->
             </div>
-            <!-- /.row -->
-            <!--<div class="row">
-                <div class="col-xs-12">
 
-                    <div class="box">
-                        <div class="box-header">
-                            <h3 class="box-title">Tài khoản Trainee</h3>
-                        </div>
-                        &lt;!&ndash; /.box-header &ndash;&gt;
-                        <div class="box-body">
-                            <table id="tblTrainee" style="width: 100% !important;" class="table table-bordered table-striped">
-                                <thead>
-                                <tr>
-                                    <th>Stt</th>
-                                    <th>Tài khoản</th>
-                                    <th>Email</th>
-                                    <th>Trạng thái</th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-
-                                </tbody>
-                                <tfoot>
-
-                                </tfoot>
-                            </table>
-                        </div>
-                        &lt;!&ndash; /.box-body &ndash;&gt;
-                    </div>
-                    &lt;!&ndash; /.box &ndash;&gt;
-                </div>
-                &lt;!&ndash; /.col &ndash;&gt;
-            </div>-->
-
-            <div class="modal modal-info fade" id="modal-info">
+            <div class="modal fade" id="modal-default">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title">Cập nhật tài khoản</h4>
+                            <h4 class="modal-title">Cập nhật danh mục</h4>
                         </div>
                         <div class="modal-body">
                             <p id="mUpdateInfo">One fine body&hellip;</p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-default pull-left" data-toggle="modal"
+                                    data-target="#modal-update-category" data-dismiss="modal">Đóng
+                            </button>
+                            <button type="button" class="btn btn-primary" id="btn-save-change">Cập nhật</button>
                         </div>
                     </div>
                     <!-- /.modal-content -->
@@ -241,6 +212,109 @@
                 <!-- /.modal-dialog -->
             </div>
             <!-- /.modal -->
+
+            <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel"
+                 id="modal-update-category">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="gridSystemModalLabel">Cập nhật danh mục</h4>
+                        </div>
+                        <div class="modal-body" style="height: 200px">
+                            <form class="col-md-12">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-11">
+                                    <div class="form-group">
+                                        <label>Tên danh mục: </label><span> </span>
+                                        <input class="change-info" placeholder="Danh mục" autofocus
+                                               id="input-category-name" style="padding: 5px; width: 90%" maxlength="50">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Trạng thái: </label><span> </span>
+                                        <div class="change-info" id="div-category-status">
+                                            <select style="width: 200px;padding: 5px" id="select-category-status">
+                                                <option value="active" style="color: green">Đang hoạt động</option>
+                                                <option value="inactive" style="color:red;">Ngưng hoạt động</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Đóng</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal"
+                                    id="btn-save-categoty-details" data-toggle="modal" data-target="#modal-default">Cập
+                                nhật
+                            </button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+
+            <!--Tao danh muc moi-->
+            <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel"
+                 id="modal-create-category">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Tạo danh mục</h4>
+                        </div>
+                        <div class="modal-body" style="height: 120px">
+                            <form>
+                                <div class="col-md-12">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-11">
+                                        <div class="form-group">
+                                            <label>Tên danh mục: </label><span> </span>
+                                            <input class="change-info" placeholder="Danh mục" autofocus
+                                                   id="input-create-category-name" style="padding: 5px; width: 90%"
+                                                   maxlength="50">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Đóng</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal"
+                                    id="btn-create-categoty" data-toggle="modal" data-target="#modal-create">Tạo danh mục
+                            </button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+
+            <div class="modal fade" id="modal-create">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Tạo danh mục</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p id="mCreateCateMessage">One fine body&hellip;</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default pull-left" data-toggle="modal"
+                                    data-target="#modal-create-category" data-dismiss="modal">Đóng
+                            </button>
+                            <button type="button" class="btn btn-primary" id="btn-save-create-cate">Tạo danh mục</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
+
+            <!--ket thuc tao danh muc moi-->
 
         </section>
         <!-- /.content -->
@@ -270,6 +344,6 @@
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
 
-<script language="JavaScript" src="../../js/account.js"></script>
+<script language="JavaScript" src="../../js/category.js"></script>
 </body>
 </html>
