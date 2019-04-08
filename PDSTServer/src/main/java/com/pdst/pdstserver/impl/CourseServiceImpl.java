@@ -125,20 +125,23 @@ public class CourseServiceImpl implements CourseService {
             //Các course miễn phí được tạo khi tạo tài khoản có category là null
             //nên kiểm tra null và set tên là Miễn Phí
             Integer cateId = c.getCategoryId();
-            if(cateId != null) {
-                Category category = categoryRepository.getOne(cateId);
+            if (cateId != null) {
+                Category category = categoryRepository.findCategoryById(cateId);
                 courseDTOFrontEnd.setCategoryname(category.getName());
-            }
-            else {
-                courseDTOFrontEnd.setCategoryname("Miễn Phí");
+            } else {
+                courseDTOFrontEnd.setCategoryname("");
             }
             //
 //            Category category = categoryRepository.getOne(c.getCategoryId());
-            courseDTOFrontEnd.setStt(count+1);
+            courseDTOFrontEnd.setStt(count + 1);
             courseDTOFrontEnd.setId(c.getId());
             courseDTOFrontEnd.setCoursename(c.getName());
 //            courseDTOFrontEnd.setCategoryname(category.getName());
-            courseDTOFrontEnd.setAccountname(account.getUsername());
+            if (account.getFullname() != null) {
+                courseDTOFrontEnd.setAccountname(account.getFullname());
+            } else {
+                courseDTOFrontEnd.setAccountname(account.getUsername());
+            }
             courseDTOFrontEnd.setPrice(c.getPrice());
             courseDTOFrontEnd.setThumbnail(c.getThumbnail());
             courseDTOFrontEnd.setStatus(c.getStatus());
@@ -149,16 +152,15 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public boolean editCourseByStaffOrAdmin(CourseDTOFrontEnd dto) {
+    public boolean editCourseByStaffOrAdmin(CourseDTOFrontEnd course) {
+        Course courseToedit = courseRepository.findCourseById(course.getId());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date date = Calendar.getInstance().getTime();
-        Course course = courseRepository.findCourseById(dto.getId());
-        course.setStatus(dto.getStatus());
-        //course.setName(dto.getCoursename());
-        course.setUpdatedTime(sdf.format(date));
-        //course.setPrice(dto.getPrice());
-        //course.setCategoryId(dto.getCategoryId());
-        Course courseRes = courseRepository.save(course);
+        courseToedit.setUpdatedTime(sdf.format(date));
+        courseToedit.setName(course.getCoursename());
+        courseToedit.setPrice(course.getPrice());
+        courseToedit.setCategoryId(course.getCategoryId());
+        Course courseRes = courseRepository.save(courseToedit);
         if (courseRes != null) {
             return true;
         }
@@ -174,20 +176,29 @@ public class CourseServiceImpl implements CourseService {
     public CourseDTOFrontEnd getCourseDetailById(int courseId) {
 
         Course course = courseRepository.findCourseById(courseId);
-        Category category = categoryRepository.findCategoryById(course.getCategoryId());
+
         //List<Category> categoryList = categoryRepository.findAll();
         Account account = accountRepository.findAccountById(course.getAccountId());
         CourseDTOFrontEnd dto = new CourseDTOFrontEnd();
 
+        if (course.getCategoryId() != null) {
+            Category category = categoryRepository.findCategoryById(course.getCategoryId());
+            dto.setCategoryname(category.getName());
+        }
+
         dto.setId(course.getId());
         dto.setCoursename(course.getName());
         dto.setThumbnail(course.getThumbnail());
-        dto.setAccountname(account.getUsername());
+        if (account.getFullname() != null) {
+            dto.setAccountname(account.getFullname());
+        } else {
+            dto.setAccountname(account.getUsername());
+        }
         dto.setPrice(course.getPrice());
         dto.setStatus(course.getStatus());
         dto.setCategoryId(course.getCategoryId());
         //dto.setCategoryList(categoryList);
-        dto.setCategoryname(category.getName());
+
         return dto;
     }
 

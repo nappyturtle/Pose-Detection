@@ -1,13 +1,10 @@
 package com.pdst.pdstserver.controller;
 
 import com.pdst.pdstserver.model.Account;
-import com.pdst.pdstserver.service.AccountService;
+import com.pdst.pdstserver.service.*;
 import com.pdst.pdstserver.dto.TrainerInfo;
 import com.pdst.pdstserver.utils.Constant;
 import com.pdst.pdstserver.model.Course;
-import com.pdst.pdstserver.service.CourseService;
-import com.pdst.pdstserver.service.EnrollmentService;
-import com.pdst.pdstserver.service.VideoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,12 +24,14 @@ public class AccountController {
     private final CourseService courseService;
     private final EnrollmentService enrollmentService;
     private final VideoService videoService;
+    private final CategoryService categoryService;
 
-    public AccountController(AccountService accountService, CourseService courseService, EnrollmentService enrollmentService, VideoService videoService) {
+    public AccountController(AccountService accountService, CourseService courseService, EnrollmentService enrollmentService, VideoService videoService, CategoryService categoryService) {
         this.accountService = accountService;
         this.courseService = courseService;
         this.enrollmentService = enrollmentService;
         this.videoService = videoService;
+        this.categoryService = categoryService;
     }
 
 
@@ -106,17 +105,27 @@ public class AccountController {
         return accountService.getAllAccountByRoleId(roleId);
     }
 
-    @GetMapping("getDataForDashboard")
-    public Map<String, Integer> getDataForDashboard() {
-        int totalUser = 0, totalVideo = 0, totalCourse = 0;
-        totalUser = accountService.countTotalUserAccount(3) + accountService.countTotalUserAccount(4);
-        totalVideo = videoService.countAllVideos();
-        totalCourse = courseService.countAllCourses();
+    @GetMapping("getDataForDashboard/{roleId}")
+    public Map<String, Integer> getDataForDashboard(@PathVariable int roleId) {
+        int totalUser = 0, totalVideo = 0, totalCourse = 0, totalCate = 0;
+
         HashMap<String, Integer> map = new HashMap<>();
-        map.put("totalUser", totalUser);
-        map.put("totalVideo", totalVideo);
-        map.put("totalCourse", totalCourse);
-        return map;
+        if (roleId == 1) {
+            totalUser = accountService.countTotalUserAccount(2);
+            map.put("totalUser", totalUser);
+            return map;
+        } else if (roleId == 2) {
+            totalUser = accountService.countTotalUserAccount(3) + accountService.countTotalUserAccount(4);
+            totalVideo = videoService.countAllVideos();
+            totalCourse = courseService.countAllCourses();
+            totalCate = categoryService.countTotalCategories();
+            map.put("totalUser", totalUser);
+            map.put("totalVideo", totalVideo);
+            map.put("totalCourse", totalCourse);
+            map.put("totalCate", totalCate);
+            return map;
+        }
+        return null;
     }
 
     @PostMapping("createNewAccount")

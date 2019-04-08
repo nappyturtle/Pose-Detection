@@ -36,6 +36,8 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/**html")
+                .antMatchers("/**png")
+                .antMatchers("/**jpg")
                 .antMatchers("/**css")
                 .antMatchers("/**js")
                 .antMatchers("/resources/**")
@@ -48,6 +50,8 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
                 .antMatchers("/management/suggestion/**")
                 .antMatchers("/management/account/**")
                 .antMatchers("/management/suggestiondetail/**")
+                .antMatchers("/images/**")
+                .antMatchers("/images/**jpg")
                 .antMatchers("/favicon.*")
                 .antMatchers("/js/**")
                 .antMatchers("/js/**js")

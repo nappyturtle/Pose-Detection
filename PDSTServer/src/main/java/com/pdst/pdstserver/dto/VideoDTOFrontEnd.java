@@ -11,6 +11,15 @@ public class VideoDTOFrontEnd implements Serializable {
     private Integer numOfView;
     private String coursename;
     private String status;
+    private String trainerName;
+
+    public String getTrainerName() {
+        return trainerName;
+    }
+
+    public void setTrainerName(String trainerName) {
+        this.trainerName = trainerName;
+    }
 
     public VideoDTOFrontEnd() {
     }

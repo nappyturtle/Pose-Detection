@@ -20,4 +20,34 @@ public class CategoryServiceImpl implements CategoryService {
     public List<Category> getAllCategories() {
         return categoryRepository.findAll();
     }
+
+    @Override
+    public Category getCateById(int cateId) {
+        return categoryRepository.findCategoryById(cateId);
+    }
+
+    @Override
+    public boolean checkExistCateName(String catename) {
+        Category existedCategory = categoryRepository.findCategoryByName(catename);
+        if (existedCategory == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public Category updateCate(Category category) {
+        return categoryRepository.save(category);
+    }
+
+    @Override
+    public Category createCate(Category category) {
+        return categoryRepository.save(category);
+    }
+
+    @Override
+    public int countTotalCategories() {
+        return categoryRepository.countTotalCategories();
+    }
 }
