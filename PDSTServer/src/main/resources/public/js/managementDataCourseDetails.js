@@ -159,13 +159,21 @@ function initCourseDetail(courseId) {
                             // Get select
                             var select = document.getElementById('select-detail-course-category');
 
+                            $(select).find('option')
+                                .remove()
+                                .end()
+                            $(select).val("");
                             // Add options
                             for (var i in res) {
-                                $(select).append('<option value=' + res[i].id + '>' + res[i].name + '</option>');
-                                if (res[i].id == cateId) {
-                                    $(select).val(res[i].id);
-                                } else {
+                                $(select).append('<option style="width: 100%;" value=' + res[i].id + '>' + res[i].name + '</option>');
+                                console.log("cateId " + cateId);
+
+                                if (cateId == null) {
                                     $(select).val("");
+                                } else if (res[i].id == cateId) {
+                                    console.log("res cateid " + res[i].id);
+                                    //$("#select-detail-course-category").val("2");
+                                    $(select).val(cateId);
                                 }
                             }
 
