@@ -2,7 +2,6 @@ package com.capstone.self_training.fragment;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -33,8 +32,6 @@ import android.widget.VideoView;
 
 import com.capstone.self_training.R;
 import com.capstone.self_training.activity.OnBackPressed;
-import com.capstone.self_training.activity.OpenCameraActi;
-import com.capstone.self_training.activity.TraineeUploadVideoActi;
 import com.capstone.self_training.camera.AutoFitTextureView;
 import com.capstone.self_training.camera.CameraVideoFragment;
 import com.coremedia.iso.IsoFile;
@@ -93,7 +90,7 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
     Handler handler = new Handler(Looper.getMainLooper());
     SpeechRecognizer mSpeechRecognizer;
     Intent mSpeechRecognizerIntent;
-
+    Boolean check = false;
     public CameraFragment() {
         // Required empty public constructor
     }
@@ -229,136 +226,28 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
             public void onFinish() {
                 switch (mPerferences.getString(getString(R.string.testSpeech), "")) {
                     case "quay":
-                        if (mIsRecordingVideo) {
-                            Toast.makeText(getContext(), "Đang quay..", Toast.LENGTH_SHORT).show();
-                        } else {
-                            startRecordingVideo();
-                            mRecordVideo.setImageResource(R.drawable.ic_stop);
-                            mOutputFilePath = getCurrentFile().getAbsolutePath();
-                        }
+                        startVideoRecordByVoice();
                         break;
                     case "bắt đầu":
-                        if (mIsRecordingVideo) {
-                            Toast.makeText(getContext(), "Đang quay..", Toast.LENGTH_SHORT).show();
-                        } else {
-                            startRecordingVideo();
-                            mRecordVideo.setImageResource(R.drawable.ic_stop);
-                            mOutputFilePath = getCurrentFile().getAbsolutePath();
-                        }
+                        startVideoRecordByVoice();
                         break;
                     case "thu":
-                        if (mIsRecordingVideo) {
-                            Toast.makeText(getContext(), "Đang quay..", Toast.LENGTH_SHORT).show();
-                        } else {
-                            startRecordingVideo();
-                            mRecordVideo.setImageResource(R.drawable.ic_stop);
-                            mOutputFilePath = getCurrentFile().getAbsolutePath();
-                        }
+                        startVideoRecordByVoice();
                         break;
                     case "start":
-                        if (mIsRecordingVideo) {
-                            Toast.makeText(getContext(), "Đang quay..", Toast.LENGTH_SHORT).show();
-                        } else {
-                            startRecordingVideo();
-                            mRecordVideo.setImageResource(R.drawable.ic_stop);
-                            mOutputFilePath = getCurrentFile().getAbsolutePath();
-                        }
+                        startVideoRecordByVoice();
                         break;
                     case "dừng lại":
-                        try {
-                            stopRecordingVideo();
-                            stopTest();
-                            try {
-                                mOutputFilePath = parseVideo(mOutputFilePath);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            mRecordVideo.setImageResource(R.drawable.ic_record);
-                            mTimer.cancel();
-                            mSpeechRecognizer.cancel();
-                            try {
-                                mSpeechRecognizer.destroy();
-                            } catch (Exception e) {
-                                Log.e(TAG, "Exception:" + e.toString());
-                            }
-                            mEditor2.putString(getString(R.string.resultVideo), mOutputFilePath);
-                            mEditor2.apply();
-                            onBackPressed();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        stopVideoRecordByVoice();
                         break;
                     case "stop":
-                        try {
-                            stopRecordingVideo();
-                            stopTest();
-                            try {
-                                mOutputFilePath = parseVideo(mOutputFilePath);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            mRecordVideo.setImageResource(R.drawable.ic_record);
-                            mTimer.cancel();
-                            mSpeechRecognizer.cancel();
-                            try {
-                                mSpeechRecognizer.destroy();
-                            } catch (Exception e) {
-                                Log.e(TAG, "Exception:" + e.toString());
-                            }
-                            mEditor2.putString(getString(R.string.resultVideo), mOutputFilePath);
-                            mEditor2.apply();
-                            onBackPressed();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        stopVideoRecordByVoice();
                         break;
                     case "ngừng":
-                        try {
-                            stopRecordingVideo();
-                            stopTest();
-                            try {
-                                mOutputFilePath = parseVideo(mOutputFilePath);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            mRecordVideo.setImageResource(R.drawable.ic_record);
-                            mTimer.cancel();
-                            mSpeechRecognizer.cancel();
-                            try {
-                                mSpeechRecognizer.destroy();
-                            } catch (Exception e) {
-                                Log.e(TAG, "Exception:" + e.toString());
-                            }
-                            mEditor2.putString(getString(R.string.resultVideo), mOutputFilePath);
-                            mEditor2.apply();
-                            onBackPressed();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        stopVideoRecordByVoice();
                         break;
                     case "dừng":
-                        try {
-                            stopRecordingVideo();
-                            stopTest();
-                            try {
-                                mOutputFilePath = parseVideo(mOutputFilePath);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            mRecordVideo.setImageResource(R.drawable.ic_record);
-                            mTimer.cancel();
-                            mSpeechRecognizer.cancel();
-                            try {
-                                mSpeechRecognizer.destroy();
-                            } catch (Exception e) {
-                                Log.e(TAG, "Exception:" + e.toString());
-                            }
-                            mEditor2.putString(getString(R.string.resultVideo), mOutputFilePath);
-                            mEditor2.apply();
-                            onBackPressed();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        stopVideoRecordByVoice();
                         break;
                 }
                 this.start();
@@ -401,6 +290,8 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
                         }
                         mEditor2.putString(getString(R.string.resultVideo), mOutputFilePath);
                         mEditor2.commit();
+                        Activity acti = getActivity();
+                        acti.finish();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -504,6 +395,49 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
         super.onDestroyView();
         unbinder.unbind();
     }
+    private void startVideoRecordByVoice() {
+        if (mIsRecordingVideo) {
+            Toast.makeText(getContext(), "Đang quay..", Toast.LENGTH_SHORT).show();
+        } else {
+            startRecordingVideo();
+            mRecordVideo.setImageResource(R.drawable.ic_stop);
+            mOutputFilePath = getCurrentFile().getAbsolutePath();
+            check = true;
+        }
+    }
+    private void stopVideoRecordByVoice() {
+        if (check == false){
+            Toast.makeText(getContext(), "Chưa bắt đầu quay..", Toast.LENGTH_SHORT).show();
+        }else{
+            try {
+                stopRecordingVideo();
+                stopTest();
+                check = false;
+                try {
+                    mOutputFilePath = parseVideo(mOutputFilePath);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                mRecordVideo.setImageResource(R.drawable.ic_record);
+                mTimer.cancel();
+                mSpeechRecognizer.cancel();
+                try {
+                    mSpeechRecognizer.destroy();
+                } catch (Exception e) {
+                    Log.e(TAG, "Exception:" + e.toString());
+                }
+                mEditor2.putString(getString(R.string.resultVideo), mOutputFilePath);
+                mEditor2.apply();
+                Activity acti = getActivity();
+                acti.finish();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        
+    }
+
+    
 
     private void closeAll() {
         AudioManager audioManager;

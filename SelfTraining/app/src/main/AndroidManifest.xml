@@ -18,51 +18,117 @@
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
-        android:largeHeap="true"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
 
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".activity.MainActivity">
+        <activity
+            android:name=".activity.MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
-        <activity android:name=".activity.TrainerChannelActivity" />
-        <activity android:name=".activity.CreateCourseActivity" />
-        <activity android:name=".activity.VideoInforActivity" />
-        <activity android:name=".activity.TrainerVideoListActivity" />
-        <activity android:name=".activity.UpdateProfileActivity" />
-        <activity android:name=".activity.RegisterActivity" />
-        <activity android:name=".activity.TrainerUploadVideoActi" />
-        <activity android:name=".activity.TraineeUploadVideoActi" />
-        <activity android:name=".activity.OpenCameraActi" />
-        <activity android:name=".activity.SuggestionDetailActi" />
-        <activity android:name=".activity.SuggestionListActi" />
-        <activity android:name=".activity.MainActivity_Home" />
-        <activity android:name=".activity.PlayVideoActivity" />
-        <activity android:name=".activity.TrainerProfileActivity" />
-        <activity android:name=".activity.TraineeProfileActivity" />
-        <activity android:name=".activity.LoginActivity" />
-        <activity android:name=".activity.ChangePasswordActivity" />
-        <activity android:name=".activity.TraineeVideoUploadedActivity" />
-        <activity android:name=".activity.BoughtCourseActivity" />
-        <activity android:name=".activity.PlayBoughtVideoActivity" />
-        <activity android:name=".activity.BoughtVideoListActivity" />
-        <activity android:name=".activity.ManageTraineeActivity" />
-        <activity android:name=".activity.TraineeChannelActivity" />
-        <activity android:name=".activity.SuggestionDetailListByTrainerActivity" />
-        <activity android:name=".activity.CourseDetailPayment" />
-        <activity android:name=".activity.SearchActivity" />
-        <activity android:name=".activity.ConfirmationActivity" />
-        <activity android:name=".activity.TrainerUploadedCourseActivity" />
-        <activity android:name=".activity.CourseInforActivity" />
-        <activity android:name=".activity.SuggestionDetailByTrainerActivity" />
-        <activity android:name=".activity.TrainerVideoUploadedActivity" />
-        <activity android:name=".activity.ManageTrainerActivity"></activity>
+        <activity
+            android:name=".activity.TrainerChannelActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.CreateCourseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.VideoInforActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.TrainerVideoListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.UpdateProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.RegisterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.TrainerUploadVideoActi"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.TraineeUploadVideoActi"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.OpenCameraActi" />
+        <activity
+            android:name=".activity.SuggestionDetailActi"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.SuggestionListActi"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MainActivity_Home"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.PlayVideoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.TrainerProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.TraineeProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ChangePasswordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.TraineeVideoUploadedActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.BoughtCourseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.PlayBoughtVideoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.BoughtVideoListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ManageTraineeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.TraineeChannelActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.SuggestionDetailListByTrainerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.CourseDetailPayment"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.SearchActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ConfirmationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.TrainerUploadedCourseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.CourseInforActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.SuggestionDetailByTrainerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.TrainerVideoUploadedActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ManageTrainerActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
