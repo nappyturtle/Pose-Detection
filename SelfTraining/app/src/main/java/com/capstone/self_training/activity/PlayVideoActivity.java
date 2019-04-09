@@ -28,11 +28,9 @@ import android.widget.Toast;
 import com.capstone.self_training.R;
 import com.capstone.self_training.adapter.RelateVideoAdapter;
 import com.capstone.self_training.dto.VideoDTO;
-import com.capstone.self_training.fragment.Fragment_Home;
 import com.capstone.self_training.model.Account;
 import com.capstone.self_training.model.Video;
 import com.capstone.self_training.service.dataservice.VideoService;
-import com.capstone.self_training.util.TransformDataUtil;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -71,13 +69,13 @@ public class PlayVideoActivity extends AppCompatActivity implements SurfaceHolde
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String token = mSharedPreferences.getString(getString(R.string.token),"");
+        String token = mSharedPreferences.getString(getString(R.string.token), "");
         VideoService videoService = new VideoService();
-        List<VideoDTO> list = videoService.getAllVideosRelatedByCourseId(playingVideo.getCourseId(),playingVideo.getId());
+        List<VideoDTO> list = videoService.getAllVideosRelatedByCourseId(playingVideo.getCourseId(), playingVideo.getId());
 
-        if(videoService.changeNumberOfViewByVideoId(token,playingVideo.getId())){
+        if (videoService.changeNumberOfViewByVideoId(token, playingVideo.getId())) {
             Log.e("Message = ", "true");
-        }else{
+        } else {
             Log.e("Message = ", "false");
         }
         if (isFullScreen() == false) {
@@ -201,7 +199,13 @@ public class PlayVideoActivity extends AppCompatActivity implements SurfaceHolde
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         mediaPlayer.setDisplay(holder);
-        mediaPlayer.prepareAsync();
+        try {
+            mediaPlayer.prepareAsync();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+            finish();
+            startActivity(getIntent());
+        }
     }
 
     @Override
@@ -299,11 +303,13 @@ public class PlayVideoActivity extends AppCompatActivity implements SurfaceHolde
         this.finish();
     }
 
-    //    @Override
+//    @Override
 //    protected void onDestroy() {
-//        super.onDestroy();
+//        mediaPlayer.reset();
 //        mediaPlayer.release();
+//        super.onDestroy();
 //    }
+
     @Override
     protected void onResume() {
         super.onResume();

@@ -204,7 +204,13 @@ public class PlayBoughtVideoActivity extends AppCompatActivity implements Surfac
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         mediaPlayer.setDisplay(holder);
-        mediaPlayer.prepareAsync();
+        try {
+            mediaPlayer.prepareAsync();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+            finish();
+            startActivity(getIntent());
+        }
     }
 
     @Override
