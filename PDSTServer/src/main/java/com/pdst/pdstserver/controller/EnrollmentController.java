@@ -13,7 +13,6 @@ import java.util.List;
 @RequestMapping(EnrollmentController.BASE_URL)
 public class EnrollmentController {
     public static final String BASE_URL = "enrollment";
-
     private final EnrollmentService enrollmentService;
 
     public EnrollmentController(EnrollmentService enrollmentService) {

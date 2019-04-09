@@ -9,6 +9,7 @@ public class Course implements Serializable {
     private int id;
     private String name;
     private String status;
+    private String prevStatus;
     private Integer categoryId;
     private Integer accountId;
     private Integer price;
@@ -55,6 +56,16 @@ public class Course implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    @Basic
+    @Column(name = "prev_status")
+    public String getPrevStatus() {
+        return prevStatus;
+    }
+
+    public void setPrevStatus(String prevStatus) {
+        this.prevStatus = prevStatus;
     }
 
     @Basic
@@ -118,6 +129,7 @@ public class Course implements Serializable {
                 Objects.equals(accountId, course.accountId) &&
                 Objects.equals(price, course.price) &&
                 Objects.equals(status, course.status) &&
+                Objects.equals(prevStatus, course.prevStatus) &&
                 Objects.equals(createdTime, course.createdTime) &&
                 Objects.equals(updatedTime, course.updatedTime) &&
                 Objects.equals(thumbnail, course.thumbnail)
@@ -126,6 +138,6 @@ public class Course implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, categoryId, accountId, price, status, createdTime, updatedTime, thumbnail);
+        return Objects.hash(id, name, categoryId, accountId, price, status, createdTime, updatedTime, thumbnail, prevStatus);
     }
 }

@@ -17,6 +17,7 @@ public class Account implements Serializable {
     private String address;
     private Integer roleId;
     private String status;
+    private String prevStatus;
     private String createdTime;
     private String updatedTime;
 
@@ -131,6 +132,16 @@ public class Account implements Serializable {
         this.status = status;
     }
 
+    @Basic
+    @Column(name = "prev_status")
+    public String getPrevStatus() {
+        return prevStatus;
+    }
+
+    public void setPrevStatus(String prevStatus) {
+        this.prevStatus = prevStatus;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -146,6 +157,7 @@ public class Account implements Serializable {
                 Objects.equals(address, account.address) &&
                 Objects.equals(roleId, account.roleId) &&
                 Objects.equals(status, account.status) &&
+                Objects.equals(prevStatus, account.prevStatus) &&
                 Objects.equals(fullname, account.fullname) &&
                 Objects.equals(createdTime, account.createdTime) &&
                 Objects.equals(updatedTime, account.updatedTime);
@@ -153,7 +165,7 @@ public class Account implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password, email, phone, gender, imgUrl, address, roleId, status, createdTime, updatedTime, fullname);
+        return Objects.hash(id, username, password, email, phone, gender, imgUrl, address, roleId, status, prevStatus, createdTime, updatedTime, fullname);
     }
 
     @Basic

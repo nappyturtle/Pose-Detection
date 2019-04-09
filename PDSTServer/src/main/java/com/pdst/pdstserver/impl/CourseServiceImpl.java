@@ -160,6 +160,7 @@ public class CourseServiceImpl implements CourseService {
         courseToedit.setName(course.getCoursename());
         courseToedit.setPrice(course.getPrice());
         courseToedit.setCategoryId(course.getCategoryId());
+        courseToedit.setStatus(course.getStatus());
         Course courseRes = courseRepository.save(courseToedit);
         if (courseRes != null) {
             return true;

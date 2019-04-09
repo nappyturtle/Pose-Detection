@@ -16,6 +16,7 @@ public class Video implements Serializable {
     private Integer courseId;
     private Integer numOfView;
     private String status;
+    private String prevStatus;
     private String folderName;
     private String createdTime;
     private String updatedTime;
@@ -72,6 +73,16 @@ public class Video implements Serializable {
     }
 
     @Basic
+    @Column(name = "prev_status")
+    public String getPrevStatus() {
+        return prevStatus;
+    }
+
+    public void setPrevStatus(String prevStatus) {
+        this.prevStatus = prevStatus;
+    }
+
+    @Basic
     @Column(name = "status")
     public String getStatus() {
         return status;
@@ -104,13 +115,14 @@ public class Video implements Serializable {
                 Objects.equals(contentUrl, video.contentUrl) &&
                 Objects.equals(numOfView, video.numOfView) &&
                 Objects.equals(status, video.status) &&
+                Objects.equals(prevStatus, video.prevStatus) &&
                 Objects.equals(createdTime, video.createdTime) &&
                 Objects.equals(updatedTime, video.updatedTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, thumnailUrl, contentUrl, numOfView, status, createdTime, updatedTime);
+        return Objects.hash(id, title, thumnailUrl, contentUrl, numOfView, status, createdTime, updatedTime, prevStatus);
     }
 
     @Basic
