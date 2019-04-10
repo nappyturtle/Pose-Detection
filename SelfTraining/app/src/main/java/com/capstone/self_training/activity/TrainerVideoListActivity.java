@@ -33,6 +33,7 @@ public class TrainerVideoListActivity extends AppCompatActivity {
     private VideoService videoService;
     public static final int REQUEST_CODE_EDIT_VIDEO = 0x789;
     int courseId;
+    int trainerId;
     private SharedPreferences mPerferences;
     String token;
     @Override
@@ -47,7 +48,7 @@ public class TrainerVideoListActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         courseId = intent.getIntExtra("courseId",0);
-
+        trainerId = intent.getIntExtra("trainerId",0);
 
         init();
         getDataRecyclerView(courseId);
@@ -76,12 +77,13 @@ public class TrainerVideoListActivity extends AppCompatActivity {
         rcListVideo = findViewById(R.id.rv_trainer_list_video);
         mPerferences = PreferenceManager.getDefaultSharedPreferences(this);
         token = mPerferences.getString(getString(R.string.token),"");
+
         if (videos == null) {
             videos = new ArrayList<>();
         }
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         rcListVideo.setLayoutManager(layoutManager);
-        videoListAdapter = new TrainerVideoListAdpater(videos, TrainerVideoListActivity.this);
+        videoListAdapter = new TrainerVideoListAdpater(videos, trainerId, TrainerVideoListActivity.this);
         rcListVideo.setAdapter(videoListAdapter);
         setupToolbar();
     }

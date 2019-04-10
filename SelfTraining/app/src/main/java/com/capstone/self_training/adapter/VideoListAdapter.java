@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.capstone.self_training.R;
+import com.capstone.self_training.activity.PlayVideoActivity;
 import com.capstone.self_training.activity.TrainerUploadedCourseActivity;
 import com.capstone.self_training.activity.TrainerVideoListActivity;
 import com.capstone.self_training.activity.TrainerVideoUploadedActivity;
@@ -76,11 +77,18 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.Vide
             holder.ln_trainer_video_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(currentUserId != 0 && roleId == 3){
+                    if(currentUserId == trainer.getId()){
+//                    if(currentUserId != 0 && roleId == 3){
                         Intent intent = new Intent(context, VideoInforActivity.class);
                         intent.putExtra("EDIT_VIDEO", video);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         ((Activity)context).startActivityForResult(intent, TrainerVideoListActivity.REQUEST_CODE_EDIT_VIDEO);
+                    }
+                    else {
+                        Intent intent = new Intent(context, PlayVideoActivity.class);
+                        intent.putExtra("PLAYVIDEO", video);
+                        intent.putExtra("ACCOUNT", trainer);
+                        context.startActivity(intent);
                     }
 
                 }
@@ -88,9 +96,17 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.Vide
             holder.img_play.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, TrainerVideoUploadedActivity.class);
-                    intent.putExtra("videoUrl", video.getContentUrl());
-                    context.startActivity(intent);
+                    if(currentUserId == trainer.getId()) {
+                        Intent intent = new Intent(context, TrainerVideoUploadedActivity.class);
+                        intent.putExtra("videoUrl", video.getContentUrl());
+                        context.startActivity(intent);
+                    }
+                    else {
+                        Intent intent = new Intent(context, PlayVideoActivity.class);
+                        intent.putExtra("PLAYVIDEO", video);
+                        intent.putExtra("ACCOUNT", trainer);
+                        context.startActivity(intent);
+                    }
                 }
             });
         }

@@ -172,6 +172,7 @@ public class TrainerUploadedCourseActivity extends AppCompatActivity {
                 }else {
                     Intent intent = new Intent(getApplicationContext(), TrainerVideoListActivity.class);
                     intent.putExtra("courseId", courseList.get(i).getCourse().getId());
+                    intent.putExtra("trainerId", accountId);
                     startActivity(intent);
                 }
             }
@@ -258,9 +259,15 @@ public class TrainerUploadedCourseActivity extends AppCompatActivity {
         }
     }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        loadDataListView(page,size);
-//    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        reflect();
+
+        displayToolBar();
+        getItemCourse();
+        loadDataListView(0,size);
+        loadMoreDataListview();
+        getAllTrainee();
+    }
 }

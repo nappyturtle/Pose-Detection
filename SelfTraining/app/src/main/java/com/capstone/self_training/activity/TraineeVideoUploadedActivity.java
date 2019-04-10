@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.capstone.self_training.R;
+import com.capstone.self_training.dto.SuggestionDTO;
 import com.capstone.self_training.model.Suggestion;
 import com.capstone.self_training.util.CheckConnection;
 
@@ -47,7 +48,7 @@ public class TraineeVideoUploadedActivity extends AppCompatActivity implements S
                 setContentView(R.layout.activity_fullscreen_trainee_video_uploaded);
             }
 
-            Suggestion suggestion = (Suggestion) getIntent().getSerializableExtra("Suggestion");
+            SuggestionDTO suggestion = (SuggestionDTO) getIntent().getSerializableExtra("Suggestion");
             surfaceView = (SurfaceView) findViewById(R.id.surface_video_trainee_uploaded_id);
             SurfaceHolder videoHolder = surfaceView.getHolder();
 

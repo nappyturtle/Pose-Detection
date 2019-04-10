@@ -207,6 +207,8 @@ public class VideoInforActivity extends AppCompatActivity {
             video.setUpdatedTime(TimeHelper.getCurrentTime());
             video.setTitle(edtEditVideoTitle.getText().toString());
             video.setThumnailUrl(videoIntent.getThumnailUrl());
+            //
+            video.setCourseId(videoIntent.getCourseId());
             //video.setCourseId(courseSelected.getId());
 
             VideoService videoService = new VideoService();

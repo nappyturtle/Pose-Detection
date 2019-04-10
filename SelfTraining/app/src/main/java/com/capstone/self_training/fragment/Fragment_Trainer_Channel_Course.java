@@ -55,11 +55,10 @@ public class Fragment_Trainer_Channel_Course extends Fragment {
     public void onResume() {
         super.onResume();
         init();
-        Toast.makeText(getContext(), "VUVG = "+currentUserId, Toast.LENGTH_SHORT).show();
-        currentUserId = mPerferences.getInt(getString(R.string.id),0);
     }
 
     private void init() {
+        currentUserId = mPerferences.getInt(getString(R.string.id),0);
         rc_trainer_channel_course = view.findViewById(R.id.rc_trainer_channel_course);
         courseService = new CourseService();
 //        if (courseDTOList == null) {
@@ -72,6 +71,7 @@ public class Fragment_Trainer_Channel_Course extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         rc_trainer_channel_course.setLayoutManager(layoutManager);
         courseAdapter = new HomeCourseAdapter(courseDTOList, getContext(), trainerId, currentUserId,token);
+//        courseAdapter = new HomeCourseAdapter(courseDTOList, getContext(), currentUserId, trainerId);
         rc_trainer_channel_course.setAdapter(courseAdapter);
 
     }

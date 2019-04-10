@@ -91,16 +91,16 @@
                 <!--android:layout_height="wrap_content"-->
                 <!--tools:layout_editor_absoluteY="59dp">-->
 
-                <!--<ImageView-->
-                    <!--android:id="@+id/trainer_video_status"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginStart="0dp"-->
-                    <!--android:layout_marginTop="8dp"-->
-                    <!--android:layout_marginBottom="8dp"-->
-                    <!--app:layout_constraintBottom_toBottomOf="parent"-->
-                    <!--app:layout_constraintStart_toStartOf="parent"-->
-                    <!--app:layout_constraintTop_toTopOf="parent" />-->
+                <ImageView
+                    android:id="@+id/trainer_video_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/trainer_video_edit"

@@ -64,6 +64,14 @@ public class Fragment_Trending extends Fragment {
         return null;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        init();
+        loadData(0, size);
+        loadMoreData();
+    }
+
     private void loadMoreData() {
         mHandler = new mHandler();
         trending_video_list.addOnScrollListener(new RecyclerView.OnScrollListener() {

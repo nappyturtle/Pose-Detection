@@ -77,6 +77,12 @@ public class CourseInforActivity extends AppCompatActivity {
         clickToSaveButton();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        init();
+    }
+
     private void getDataFromIntent() {
 
         edtCourseName.setText(courseDTO.getCourse().getName());

@@ -45,6 +45,12 @@ public class Fragment_Trainer_Channel_Video extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        init();
+    }
+
     private void init() {
         rc_trainer_channel_video = view.findViewById(R.id.rc_trainer_channel_video);
         videoService = new VideoService();

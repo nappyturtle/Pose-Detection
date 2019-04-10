@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.capstone.self_training.R;
 import com.capstone.self_training.activity.CourseDetailPayment;
 import com.capstone.self_training.activity.LoginActivity;
+import com.capstone.self_training.activity.TrainerVideoListActivity;
 import com.capstone.self_training.dto.CourseDTO;
 import com.capstone.self_training.helper.TimeHelper;
 import com.capstone.self_training.service.dataservice.EnrollmentService;
@@ -48,8 +49,6 @@ public class HomeCourseAdapter extends RecyclerView.Adapter<HomeCourseAdapter.Co
         this.token = token;
     }
 
-
-
     @NonNull
     @Override
     public HomeCourseAdapter.CourseHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -74,20 +73,24 @@ public class HomeCourseAdapter extends RecyclerView.Adapter<HomeCourseAdapter.Co
             holder.lnCourseItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if ((currentUserId == 0 && trainerId != 0) || (currentUserId == 0)) {
+                    if (currentUserId == 0) {
                         Toast.makeText(context, "Bạn chưa đăng nhập!!!", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(context, LoginActivity.class);
                         ((Activity) context).startActivityForResult(intent, REQUEST_CODE_LOGIN);
-                    } else if (trainerId == currentUserId && currentUserId != 0 && trainerId != 0) {
-                        Toast.makeText(context, "Bạn không thể mua khóa học của chính mình", Toast.LENGTH_SHORT).show();
+                    } else if (trainerId == currentUserId || checkEnrollmentExisted(token, currentUserId, courseDto.getCourse().getId())) {
+                        Intent intent = new Intent(context, TrainerVideoListActivity.class);
+                        intent.putExtra("courseId", courseDto.getCourse().getId());
+                        intent.putExtra("trainerId", trainerId);
+                        context.startActivity(intent);
+//                        Toast.makeText(context, "Bạn không thể mua khóa học của chính mình", Toast.LENGTH_SHORT).show();
                     } else {
-                        if(checkEnrollmentExisted(token,currentUserId,courseDto.getCourse().getId())){
-                            Toast.makeText(context, "Bạn đã mua khóa học này", Toast.LENGTH_SHORT).show();
-                        }else {
+//                        if(checkEnrollmentExisted(token,currentUserId,courseDto.getCourse().getId())){
+//                            Toast.makeText(context, "Bạn đã mua khóa học này", Toast.LENGTH_SHORT).show();
+//                        } else {
                             Intent intent = new Intent(context, CourseDetailPayment.class);
                             intent.putExtra("courseDTO", courseDto);
                             context.startActivity(intent);
-                        }
+//                        }
                     }
                 }
             });

@@ -86,6 +86,7 @@ public class CreateCourseActivity extends AppCompatActivity {
         initCategoryListAdapter();
         categoryAdapter = new CategoryAdapter(this, categoryArrayList);
         spnCate.setAdapter(categoryAdapter);
+
     }
 
     private void setupToolbar() {

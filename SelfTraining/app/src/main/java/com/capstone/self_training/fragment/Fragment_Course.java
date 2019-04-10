@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.capstone.self_training.R;
 import com.capstone.self_training.adapter.HomeCourseAdapter;
@@ -35,6 +36,7 @@ public class Fragment_Course extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_course, container, false);
+
         init();
         return view;
     }
@@ -58,9 +60,11 @@ public class Fragment_Course extends Fragment {
         home_course_list.setAdapter(homeCourseAdapter);
     }
     //refresh dữ liệu khi resume (sau khi login hay gì đó)
+
     @Override
     public void onResume() {
         super.onResume();
         init();
+//        Toast.makeText(getContext(), "Account: " + accountId, Toast.LENGTH_SHORT).show();
     }
 }
