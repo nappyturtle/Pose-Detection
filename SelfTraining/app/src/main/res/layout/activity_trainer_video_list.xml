@@ -15,17 +15,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:title="Video"></android.support.v7.widget.Toolbar>
-
-
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        >
+    <TextView
+        android:visibility="invisible"
+        android:id="@+id/txtVideoListTrainerIsEmpty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="Không có kết quả nào"
+        android:textSize="23sp" />
 
         <android.support.v7.widget.RecyclerView
             android:layout_margin="5dp"
             android:id="@+id/rv_trainer_list_video"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
         </android.support.v7.widget.RecyclerView>
-
+    </FrameLayout>
 
 
 </LinearLayout>

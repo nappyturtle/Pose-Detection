@@ -45,6 +45,7 @@ public class RelateVideoAdapter extends RecyclerView.Adapter<RelateVideoAdapter.
         final Account account = new Account();
         account.setUsername(video.getUsername());
         account.setImgUrl(video.getImgUrl());
+        account.setId(video.getAccountId());
 
         //BIND DATA
         Picasso.get().load(video.getVideo().getThumnailUrl()).fit().into(holder.thumbnail);

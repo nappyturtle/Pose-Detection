@@ -13,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TextView;
 
 import com.capstone.self_training.R;
 import com.capstone.self_training.adapter.TrainerVideoListAdpater;
@@ -36,6 +37,7 @@ public class TrainerVideoListActivity extends AppCompatActivity {
     int trainerId;
     private SharedPreferences mPerferences;
     String token;
+    private TextView txtVideoListTrainerIsEmpty;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,12 +45,6 @@ public class TrainerVideoListActivity extends AppCompatActivity {
 
 //        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 //        StrictMode.setThreadPolicy(policy);
-
-
-
-        Intent intent = getIntent();
-        courseId = intent.getIntExtra("courseId",0);
-        trainerId = intent.getIntExtra("trainerId",0);
 
         init();
         getDataRecyclerView(courseId);
@@ -72,12 +68,21 @@ public class TrainerVideoListActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        init();
+    }
+
     private void init() {
+        Intent intent = getIntent();
+        courseId = intent.getIntExtra("courseId",0);
+        trainerId = intent.getIntExtra("trainerId",0);
         toolbar = findViewById(R.id.toolbar_trainer_list_video);
         rcListVideo = findViewById(R.id.rv_trainer_list_video);
         mPerferences = PreferenceManager.getDefaultSharedPreferences(this);
         token = mPerferences.getString(getString(R.string.token),"");
-
+        txtVideoListTrainerIsEmpty = findViewById(R.id.txtVideoListTrainerIsEmpty);
         if (videos == null) {
             videos = new ArrayList<>();
         }
@@ -90,12 +95,18 @@ public class TrainerVideoListActivity extends AppCompatActivity {
     private void getDataRecyclerView(int courseId){
         videoService = new VideoService();
         videoDTOS = videoService.getAllVideoByCourseIdToEdit(token,courseId);
-
-        if(videoDTOS != null){
-            for (VideoDTO v : videoDTOS) {
-                videos.add(v.getVideo());
-                videoListAdapter.notifyDataSetChanged();
+        if(videoDTOS == null || videoDTOS.size() == 0){
+            txtVideoListTrainerIsEmpty.setVisibility(View.VISIBLE);
+            rcListVideo.setVisibility(View.INVISIBLE);
+        }else {
+            if (videoDTOS != null) {
+                for (VideoDTO v : videoDTOS) {
+                    videos.add(v.getVideo());
+                    videoListAdapter.notifyDataSetChanged();
+                }
             }
+            txtVideoListTrainerIsEmpty.setVisibility(View.INVISIBLE);
+            rcListVideo.setVisibility(View.VISIBLE);
         }
     }
 }

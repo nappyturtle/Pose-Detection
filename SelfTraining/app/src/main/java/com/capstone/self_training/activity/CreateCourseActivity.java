@@ -186,6 +186,7 @@ public class CreateCourseActivity extends AppCompatActivity {
                 newCourse.setCreatedTime(TimeHelper.getCurrentTime());
                 newCourse.setName(edtCourseName.getText().toString().trim());
                 newCourse.setStatus("active");
+                newCourse.setPrevStatus("active");
                 newCourse.setThumbnail(taskSnapshot.getDownloadUrl().toString());
                 Category category = (Category) spnCate.getSelectedItem();
                 newCourse.setCategoryId(category.getId());

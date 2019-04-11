@@ -17,6 +17,23 @@ public class Video implements Serializable {
     private String createdTime;
     private String updatedTime;
     private int price;
+    private String prevStatus;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPrevStatus() {
+        return prevStatus;
+    }
+
+    public void setPrevStatus(String prevStatus) {
+        this.prevStatus = prevStatus;
+    }
 
     public Integer getCourseId() {
         return courseId;

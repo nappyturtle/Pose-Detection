@@ -1,5 +1,6 @@
 package com.capstone.self_training.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -31,7 +32,7 @@ public class TrainerChannelActivity extends AppCompatActivity {
     private SharedPreferences mPerferences;
     private int trainerId;
     private String trainerName;
-
+    private static final int REQUEST_CODE_LOGIN = 0x9345;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,16 @@ public class TrainerChannelActivity extends AppCompatActivity {
 //        super.onResume();
 //        init();
 //        Toast.makeText(this, "VUVGGGGGGGGGGGG", Toast.LENGTH_SHORT).show();
+//    }
+
+
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        if (requestCode == REQUEST_CODE_LOGIN && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
+//            Toast.makeText(this, "Đã quay lại TrainerChannelActivity", Toast.LENGTH_SHORT).show();
+//            init();
+//        }
 //    }
 
     private void init() {

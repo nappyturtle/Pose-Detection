@@ -52,7 +52,8 @@ public class CourseInforActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private Button btnCreateCourse;
     private TextView currency_vnd;
-
+    private Spinner spnStatus;
+    private String statusSelected;
     private static int PICK_IMAGE_REQUEST = 1;
 
     private StorageReference storageReference;
@@ -60,7 +61,7 @@ public class CourseInforActivity extends AppCompatActivity {
     private CategoryAdapter categoryAdapter;
     private CategoryService categoryService;
     private Uri courseThumbnailUri;
-    private SharedPreferences sharedPreferences;
+    private SharedPreferences mPerferences;
     private boolean isChooseThumbnail = false;
     private CourseDTO courseDTO;
     Category category;
@@ -77,6 +78,35 @@ public class CourseInforActivity extends AppCompatActivity {
         clickToSaveButton();
     }
 
+    private void initCourseListAdapter() {
+
+        List<String> dataSrc = new ArrayList<String>();
+
+        if(courseDTO.getCourse().getStatus().equals("active")){
+            dataSrc.add("Đang hoạt động");
+            dataSrc.add("Ngừng hoạt động");
+        }else{
+            dataSrc.add("Ngừng hoạt động");
+            dataSrc.add("Đang hoạt động");
+        }
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, dataSrc);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spnStatus.setAdapter(arrayAdapter);
+        spnStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                statusSelected = parent.getItemAtPosition(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -88,14 +118,21 @@ public class CourseInforActivity extends AppCompatActivity {
         edtCourseName.setText(courseDTO.getCourse().getName());
         Picasso.get().load(courseDTO.getCourse().getThumbnail()).into(ivCourseThumbnail);
         edtCoursePrice.setText(String.valueOf(courseDTO.getCourse().getPrice()));
-
+        toolbar.setTitle(courseDTO.getCourse().getName());
     }
 
     private void clickToSaveButton() {
+
         btnCreateCourse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                confirmEditCourse();
+                if (edtCoursePrice.getText().toString().equals("0")) {
+                    Toast.makeText(CourseInforActivity.this, "Xin vui lòng nhập giá tiền lớn hơn 0", Toast.LENGTH_SHORT).show();
+                } else if (edtCourseName.getText().toString().equals("")) {
+                    Toast.makeText(CourseInforActivity.this, "Xin vui lòng điền tên khóa học", Toast.LENGTH_SHORT).show();
+                } else {
+                    confirmEditCourse();
+                }
             }
         });
     }
@@ -103,18 +140,20 @@ public class CourseInforActivity extends AppCompatActivity {
     private void init() {
         edtCourseName = findViewById(R.id.edtCourseName);
         spnCate = findViewById(R.id.spnCate);
+        spnStatus = findViewById(R.id.spnStatusCourse);
         edtCoursePrice = findViewById(R.id.edtCoursePrice);
         ivCourseThumbnail = findViewById(R.id.ivCourseThumbnail);
         toolbar = findViewById(R.id.toolbar_create_course);
+
         currency_vnd = findViewById(R.id.currency_id);
         btnCreateCourse = findViewById(R.id.btnCreateCourse);
-        btnCreateCourse.setText("Lưu");
+        btnCreateCourse.setText("Thay đổi");
         setupToolbar();
 
         storageReference = FirebaseStorage.getInstance().getReference();
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        token = sharedPreferences.getString(getString(R.string.token), "");
-        accountId = sharedPreferences.getInt(getString(R.string.id), 0);
+        mPerferences = PreferenceManager.getDefaultSharedPreferences(this);
+        token = mPerferences.getString(getString(R.string.token), "");
+        accountId = mPerferences.getInt(getString(R.string.id), 0);
         ivCourseThumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,8 +163,7 @@ public class CourseInforActivity extends AppCompatActivity {
 
         getDataFromIntent();
         initCategoryListAdapter();
-
-
+        initCourseListAdapter();
     }
 
     private void initCategoryListAdapter() {
@@ -207,6 +245,13 @@ public class CourseInforActivity extends AppCompatActivity {
             course.setCategoryId(category.getId());
             course.setPrice(Integer.parseInt(edtCoursePrice.getText().toString().trim()));
 
+                if (statusSelected.equals("Đang hoạt động")) {
+                    statusSelected = "active";
+                } else if (statusSelected.equals("Ngừng hoạt động")) {
+                    statusSelected = "inactive";
+                }
+            Log.e("statusSelected = ",statusSelected);
+            course.setStatus(statusSelected);
             CourseService courseService = new CourseService();
             if (courseService.editCourse(token, course)) {
                 Toast.makeText(CourseInforActivity.this, "Thay đổi thông tin khóa học thành công", Toast.LENGTH_SHORT).show();
@@ -218,7 +263,6 @@ public class CourseInforActivity extends AppCompatActivity {
                 Toast.makeText(CourseInforActivity.this, "Thay đổi thông tin khóa học không thành công", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             }
-
 
         } else {
             StorageReference srf = storageReference.child(Constants.COURSE_THUMBNAIL_FIREBASE_FOLDER + "/" + edtCourseName.getText().toString().trim());
@@ -234,6 +278,13 @@ public class CourseInforActivity extends AppCompatActivity {
                     course.setThumbnail(taskSnapshot.getDownloadUrl().toString());
                     course.setPrice(Integer.parseInt(edtCoursePrice.getText().toString().trim()));
 
+                        if (statusSelected.equals("Đang hoạt động")) {
+                            statusSelected = "active";
+                        } else if (statusSelected.equals("Ngừng hoạt động")) {
+                            statusSelected = "inactive";
+                        }
+                    Log.e("statusSelected = ",statusSelected);
+                    course.setStatus(statusSelected);
                     CourseService courseService = new CourseService();
                     if (courseService.editCourse(token, course)) {
                         Toast.makeText(CourseInforActivity.this, "Thay đổi thông tin khóa học thành công", Toast.LENGTH_SHORT).show();

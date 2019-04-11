@@ -23,6 +23,7 @@ import com.capstone.self_training.adapter.HomeCourseAdapter;
 import com.capstone.self_training.dto.CourseDTO;
 import com.capstone.self_training.model.Account;
 import com.capstone.self_training.service.dataservice.CourseService;
+import com.capstone.self_training.service.dataservice.EnrollmentService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,7 @@ public class Fragment_Trainer_Channel_Course extends Fragment {
     private HomeCourseAdapter courseAdapter;
     List<CourseDTO> courseDTOList;
     private CourseService courseService;
+    private EnrollmentService enrollmentService;
     int trainerId;
     int currentUserId;
     String token;
@@ -61,13 +63,22 @@ public class Fragment_Trainer_Channel_Course extends Fragment {
         currentUserId = mPerferences.getInt(getString(R.string.id),0);
         rc_trainer_channel_course = view.findViewById(R.id.rc_trainer_channel_course);
         courseService = new CourseService();
+        enrollmentService = new EnrollmentService();
 //        if (courseDTOList == null) {
             courseDTOList = new ArrayList<>();
         //}
-        List<CourseDTO> list = courseService.getAllCoursesWithPriceByAccountId(trainerId);
-        for (CourseDTO c : list) {
-            courseDTOList.add(c);
+        if(currentUserId == trainerId || currentUserId==0){
+            List<CourseDTO> listAllTrainerCourse = courseService.getAllCoursesWithPriceByAccountId(trainerId);
+            for (CourseDTO c : listAllTrainerCourse) {
+                courseDTOList.add(c);
+            }
+        }else{
+            List<CourseDTO> listUnboughtCourse = courseService.getUnboughtCourses(currentUserId);
+            for (CourseDTO c : listUnboughtCourse) {
+                courseDTOList.add(c);
+            }
         }
+
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         rc_trainer_channel_course.setLayoutManager(layoutManager);
         courseAdapter = new HomeCourseAdapter(courseDTOList, getContext(), trainerId, currentUserId,token);

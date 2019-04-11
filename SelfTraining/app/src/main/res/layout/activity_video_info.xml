@@ -78,30 +78,30 @@
             </android.support.design.widget.TextInputLayout>
 
 
-            <!--<LinearLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:orientation="vertical">-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <!--<TextView-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginHorizontal="50dp"-->
-                    <!--android:layout_marginVertical="10dp"-->
-                    <!--android:text="Khóa học"-->
-                    <!--android:textSize="18sp"-->
-                    <!--android:textStyle="bold" />-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="50dp"
+                    android:layout_marginVertical="10dp"
+                    android:text="Trang thái"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-                <!--<Spinner-->
-                    <!--android:id="@+id/spnEditVideoCourse"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginHorizontal="30dp"-->
-                    <!--android:layout_marginVertical="10dp"-->
-                    <!--android:autofillHints="Chọn danh mục ">-->
+                <Spinner
+                    android:id="@+id/spnEditVideoStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="30dp"
+                    android:layout_marginVertical="10dp"
+                    android:autofillHints="Chọn trang thái">
 
-                <!--</Spinner>-->
-            <!--</LinearLayout>-->
+                </Spinner>
+            </LinearLayout>
 
             <!--<LinearLayout-->
                 <!--android:layout_width="match_parent"-->

@@ -151,7 +151,11 @@ public class BoughtCourseActivity extends AppCompatActivity {
         });
     }
 
-    // hiển thi danh sách các course đã mua
+    /**
+     * @author KietPT
+     * @since 11/4/2019
+         hiển thi danh sách các course đã mua
+     */
     private void loadDataListView(int page, int size) {
 
         enrollmentService = new EnrollmentService();
@@ -180,7 +184,11 @@ public class BoughtCourseActivity extends AppCompatActivity {
 
     }
 
-    // để hiển thị danh sách những trainer của những course đã mua
+    /**
+     * @author KietPT
+     * @since 11/4/2019
+        để hiển thị danh sách những trainer của những course đã mua
+     */
     private void loadDataRecylcerView() {
         enrollmentService = new EnrollmentService();
         List<Account> accountList = enrollmentService.getAllTrainerOfBoughtCourse(token, accountId);
@@ -194,9 +202,7 @@ public class BoughtCourseActivity extends AppCompatActivity {
         boughtCourseListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-//                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
-//                    isLoading = false;
-//                }
+
             }
 
             @Override
@@ -210,7 +216,16 @@ public class BoughtCourseActivity extends AppCompatActivity {
         });
     }
 
-    // lấy courseId chuyển qua màn hình BoughtVideoListActivity để hiển thị danh sách video theo courseId
+    /**
+     * @author KietPT
+     * @since 11/4/2019
+    lấy courseId chuyển qua màn hình BoughtVideoListActivity để hiển thị danh sách video theo courseId
+    kiểm tra xem là course này trainee đã update(thêm tiền) chưa
+            - nếu chưa thì hiển thị danh sách video mới dc cập nhật
+                + nếu cập nhật thì sẽ qua màn hình mua course
+                + nếu hủy thì sẽ qua màn hình những video cũ( ko có video mới )
+            - nếu rồi thì sẽ chuyển qua màn hình hiển thị danh sách tất cả video của course đó
+     */
     private void getItemCourse() {
         boughtCourseListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

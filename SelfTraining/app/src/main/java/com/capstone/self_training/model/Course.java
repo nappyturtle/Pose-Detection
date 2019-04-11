@@ -6,12 +6,21 @@ public class Course implements Serializable {
     private int id;
     private String name;
     private String status;
+    private String prevStatus;
     private Integer categoryId;
     private Integer accountId;
     private Integer price;
     private String createdTime;
     private String updatedTime;
     private String thumbnail;
+
+    public String getPrevStatus() {
+        return prevStatus;
+    }
+
+    public void setPrevStatus(String prevStatus) {
+        this.prevStatus = prevStatus;
+    }
 
     public String getThumbnail() {
         return thumbnail;

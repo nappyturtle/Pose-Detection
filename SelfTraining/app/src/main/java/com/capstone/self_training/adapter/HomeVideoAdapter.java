@@ -80,6 +80,7 @@ public class HomeVideoAdapter extends RecyclerView.Adapter<HomeVideoAdapter.Vide
                 Intent intent = new Intent(context, PlayVideoActivity.class);
                 intent.putExtra("PLAYVIDEO", model);
                 intent.putExtra("ACCOUNT", account);
+                //intent.putExtra("FirstChecked",1);
                 context.startActivity(intent);
 
             }

@@ -31,6 +31,7 @@ import com.capstone.self_training.dto.VideoDTO;
 import com.capstone.self_training.model.Account;
 import com.capstone.self_training.model.Video;
 import com.capstone.self_training.service.dataservice.VideoService;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -53,23 +54,48 @@ public class PlayVideoActivity extends AppCompatActivity implements SurfaceHolde
     Button user_sub_btn;
     private Button btnUpSelfTrainVideo;
 
-    private SharedPreferences mSharedPreferences;
+
     private RecyclerView relate_video_list;
     private RecyclerView.Adapter relateVideoAdapter;
     private List<Video> videos;
-
+    Video playingVideo;
+    Account account;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         isPauseMedia = false;
         super.onCreate(savedInstanceState);
 
-        final Video playingVideo = (Video) getIntent().getSerializableExtra("PLAYVIDEO");
-        Account account = (Account) getIntent().getSerializableExtra("ACCOUNT");
-
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor mEditor = mSharedPreferences.edit();
         String token = mSharedPreferences.getString(getString(R.string.token), "");
+
+        playingVideo = (Video) getIntent().getSerializableExtra("PLAYVIDEO");
+        account = (Account) getIntent().getSerializableExtra("ACCOUNT");
+//        String jsonPlayingVideo = "",jsonAccount="",jsonPlayingVideoPre="",jsonAccountPre="";
+//        Gson gson = new Gson();
+//        if(playingVideo == null || account == null){
+//            Log.e("playVideo = null ",String.valueOf(playingVideo.getId()));
+//            Log.e("account = null ",String.valueOf(account.getId()));
+//            jsonPlayingVideoPre = mSharedPreferences.getString("PLAYVIDEO", "");
+//            jsonAccountPre = mSharedPreferences.getString("ACCOUNT", "");
+//
+//            playingVideo = gson.fromJson(jsonPlayingVideoPre, Video.class);
+//            account = gson.fromJson(jsonAccountPre, Account.class);
+//
+//        }else{
+//            Log.e("playVideo != null ",String.valueOf(playingVideo.getId()));
+//            Log.e("account != null ",String.valueOf(account.getId()));
+//            jsonPlayingVideo = gson.toJson(playingVideo);
+//            mEditor.putString("PLAYVIDEO", jsonPlayingVideo);
+//            mEditor.commit();
+//
+//            jsonAccount = gson.toJson(account);
+//            mEditor.putString("ACCOUNT", jsonAccount);
+//            mEditor.commit();
+//        }
+
         VideoService videoService = new VideoService();
         List<VideoDTO> list = videoService.getAllVideosRelatedByCourseId(playingVideo.getCourseId(), playingVideo.getId());
 

@@ -305,6 +305,7 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
                 videoUploadedToFirebase.setNumOfView(0);
                 videoUploadedToFirebase.setFolderName(foldername);
                 videoUploadedToFirebase.setStatus("active");
+                videoUploadedToFirebase.setPrevStatus("active");
                 videoUploadedToFirebase.setTitle(edtTitle.getText().toString());
                 videoUploadedToFirebase.setContentUrl(taskSnapshot.getDownloadUrl().toString());
                 videoUploadedToFirebase.setCreatedTime(TimeHelper.getCurrentTime());

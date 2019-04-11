@@ -77,15 +77,17 @@ public class HomeCourseAdapter extends RecyclerView.Adapter<HomeCourseAdapter.Co
                         Toast.makeText(context, "Bạn chưa đăng nhập!!!", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(context, LoginActivity.class);
                         ((Activity) context).startActivityForResult(intent, REQUEST_CODE_LOGIN);
-                    } else if (trainerId == currentUserId || checkEnrollmentExisted(token, currentUserId, courseDto.getCourse().getId())) {
+                    } else if (trainerId == currentUserId) {
                         Intent intent = new Intent(context, TrainerVideoListActivity.class);
                         intent.putExtra("courseId", courseDto.getCourse().getId());
                         intent.putExtra("trainerId", trainerId);
                         context.startActivity(intent);
 //                        Toast.makeText(context, "Bạn không thể mua khóa học của chính mình", Toast.LENGTH_SHORT).show();
+                    }else if(checkEnrollmentExisted(token, currentUserId, courseDto.getCourse().getId())){
+                        Toast.makeText(context, "Bạn đã mua khóa học này ", Toast.LENGTH_SHORT).show();
                     } else {
 //                        if(checkEnrollmentExisted(token,currentUserId,courseDto.getCourse().getId())){
-//                            Toast.makeText(context, "Bạn đã mua khóa học này", Toast.LENGTH_SHORT).show();
+//
 //                        } else {
                             Intent intent = new Intent(context, CourseDetailPayment.class);
                             intent.putExtra("courseDTO", courseDto);

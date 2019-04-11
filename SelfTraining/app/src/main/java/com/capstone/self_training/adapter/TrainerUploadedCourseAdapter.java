@@ -91,10 +91,14 @@ public class TrainerUploadedCourseAdapter extends BaseAdapter {
         courseViewHolder.imgEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context,CourseInforActivity.class);
-                intent.putExtra("courseDTO",courseDTO);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                ((Activity)context).startActivityForResult(intent, TrainerUploadedCourseActivity.REQUEST_CODE_EDIT_COURSE);
+                if(courseDTO.getCourse().getPrice() == 0){
+                    Toast.makeText(context, "Bạn không thể chỉnh sửa khóa học này", Toast.LENGTH_SHORT).show();
+                }else {
+                    Intent intent = new Intent(context, CourseInforActivity.class);
+                    intent.putExtra("courseDTO", courseDTO);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    ((Activity) context).startActivityForResult(intent, TrainerUploadedCourseActivity.REQUEST_CODE_EDIT_COURSE);
+                }
             }
         });
         return convertView;
