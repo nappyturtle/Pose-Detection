@@ -43,7 +43,8 @@
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-mini">ST</span>
             <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><img src="../../images/logo.png" style="width:72px; height:72px; margin: -12px 0px 0px -10px"><b>Self-Training</b></span>
+            <span class="logo-lg"><img src="../../images/logo.png"
+                                       style="width:72px; height:72px; margin: -12px 0px 0px -10px"><b>Self-Training</b></span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top">
@@ -67,8 +68,9 @@
                                      id="dropdown-menu-imgUrl">
 
                                 <p>
-                                    <span id="dropdown-menu-username" class="navbar-username">Alexander Pierce</span> - <span
-                                        id="dropdown-menu-role">Web Developer</span>
+                                    <span id="dropdown-menu-username" class="navbar-username">Alexander Pierce</span> -
+                                    <span
+                                            id="dropdown-menu-role">Web Developer</span>
                                     <!--<small>Member since Nov. 2012</small>-->
                                 </p>
                             </li>
@@ -85,7 +87,9 @@
                     </li>
                 </ul>
             </div>
+
         </nav>
+
     </header>
     <!-- Left side column. contains the logo and sidebar -->
     <aside class="main-sidebar" Dashboard>
@@ -93,11 +97,11 @@
         <section class="sidebar">
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu" data-widget="tree">
-                <li>
+                <!--<li>
                     <a href="../../dashboard.html">
                         <i class="fa fa-dashboard"></i> <span>Trang chủ</span>
                     </a>
-                </li>
+                </li>-->
 
                 <li class="treeview active">
                     <a href="#">
@@ -109,28 +113,14 @@
                     <ul class="treeview-menu">
                         <li class="active"><a href="account.html"><i class="fa fa-circle-o"></i> Quản
                             lý tài khoản</a></li>
-                        <li id="li-video-url"><a href="../video/layout.html"><i class="fa fa-circle-o"></i> Quản lý video</a></li>
-                        <li id="li-course-url"><a href="../course/layout.html"><i class="fa fa-circle-o"></i> Quản lý khóa học</a></li>
-                        <li id="li-category-url"><a href="../../management/category/category.html"><i class="fa fa-circle-o"></i> Quản lý danh mục</a>
+                        <!--<li id="li-video-url"><a href="../video/layout.html"><i class="fa fa-circle-o"></i> Quản lý video</a></li>
+                        <li id="li-course-url"><a href="../course/layout.html"><i class="fa fa-circle-o"></i> Quản lý khóa học</a></li>-->
+                        <li id="li-category-url"><a href="../../management/category/category.html"><i
+                                class="fa fa-circle-o"></i> Quản lý danh mục</a>
                         </li>
 
                     </ul>
                 </li>
-
-                <!-- <li class="treeview">
-                     <a href="createnewaccount.html">
-                         <i class="fa fa-user"></i> <span>Tạo tài khoản mới</span>
-                         <span class="pull-right-container">
-               <i class="fa fa-angle-left pull-right"></i>
-             </span>
-                     </a>
-                     <ul class="treeview-menu">
-                         <li><a href="../../createnewaccount.html?roleId=3"><i class="fa fa-circle-o"></i> Tạo tài khoản
-                             trainer</a></li>
-                         <li id="admin-authorized"><a href="../../createnewaccount.html?roleId=2"><i
-                                 class="fa fa-circle-o"></i> Tạo tài khoản nhân viên</a></li>
-                     </ul>
-                 </li>-->
             </ul>
         </section>
         <!-- /.sidebar -->
@@ -152,9 +142,10 @@
 
                     <div class="box">
                         <div class="box-header">
-                            <a href="#" class="btn btn-success" id="btn-create-new-account">
-                                <span class="glyphicon glyphicon-plus"></span>  <span id="createNewAccount"
-                                                                                    style="font-weight: bold;font-size: 15px;">Tạo tài khoản</span>
+                            <a href="#" class="btn btn-success" id="btn-create-new-account" data-toggle="modal"
+                               data-target="#modal-create-new-account">
+                                <span class="glyphicon glyphicon-plus"></span> <span id="createNewAccount"
+                                                                                     style="font-weight: bold;font-size: 15px;">Tạo tài khoản</span>
                             </a>
                         </div>
                         <!-- /.box-header -->
@@ -185,54 +176,83 @@
                 </div>
                 <!-- /.col -->
             </div>
-            <!-- /.row -->
-            <!--<div class="row">
-                <div class="col-xs-12">
 
-                    <div class="box">
-                        <div class="box-header">
-                            <h3 class="box-title">Tài khoản Trainee</h3>
+            <!--Tao danh muc moi-->
+            <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel"
+                 id="modal-create-new-account">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Tạo tài khoản</h4>
                         </div>
-                        &lt;!&ndash; /.box-header &ndash;&gt;
-                        <div class="box-body">
-                            <table id="tblTrainee" style="width: 100% !important;" class="table table-bordered table-striped">
-                                <thead>
-                                <tr>
-                                    <th>Stt</th>
-                                    <th>Tài khoản</th>
-                                    <th>Email</th>
-                                    <th>Trạng thái</th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
+                        <div class="modal-body" style="height: 150px">
+                            <form>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-4">
+                                                <label style="float: right">Tên đăng nhập: </label>
+                                            </div>
+                                            <div class="col-md-7">
+                                                <input placeholder="Tên đăng nhập" minlength="4" maxlength="12"
+                                                       style="padding: 5px;"
+                                                       id="create-username" required><span style="color: red">(*bắt buộc)</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-5"></div>
+                                            <div class="col-md-7"><span>(4 đến 12 ký tự)</span></div>
+                                        </div>
+                                    </div>
 
-                                </tbody>
-                                <tfoot>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-4">
+                                                <label style="float: right">Email:</label>
+                                            </div>
+                                            <div class="col-md-7">
+                                                <input type="email" placeholder="Email"
+                                                       id="create-email" style="padding: 5px;"
+                                                       required><span style="color: red">(*)bắt buộc</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
 
-                                </tfoot>
-                            </table>
                         </div>
-                        &lt;!&ndash; /.box-body &ndash;&gt;
-                    </div>
-                    &lt;!&ndash; /.box &ndash;&gt;
-                </div>
-                &lt;!&ndash; /.col &ndash;&gt;
-            </div>-->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Đóng</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal"
+                                    id="btn-create-account" data-toggle="modal" data-target="#modal-create">Tạo tài
+                                khoản
+                            </button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
 
-            <div class="modal modal-info fade" id="modal-info">
+            <div class="modal fade" id="modal-create">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title">Cập nhật tài khoản</h4>
+                            <h4 class="modal-title">Tạo tài khoản</h4>
                         </div>
                         <div class="modal-body">
-                            <p id="mUpdateInfo">One fine body&hellip;</p>
+                            <p id="mCreateCateMessage">One fine body&hellip;</p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-default pull-left" data-toggle="modal"
+                                    data-target="#modal-create-new-account" data-dismiss="modal">Đóng
+                            </button>
+                            <button type="button" class="btn btn-primary" id="btn-save-create-account">Tạo tài khoản
+                            </button>
                         </div>
                     </div>
                     <!-- /.modal-content -->
