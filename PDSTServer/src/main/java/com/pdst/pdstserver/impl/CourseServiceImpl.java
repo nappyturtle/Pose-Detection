@@ -40,13 +40,14 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public List<Course> getAllCourseByAccountId(int id) {
-        return courseRepository.findAllByAccountIdOrderByCreatedTimeAsc(id);
+        return courseRepository.findAllByAccountIdAndStatusOrderByCreatedTimeAsc(id,"active");
     }
 
     @Override
     public List<CourseDTO> getAllCourseByTrainerId(int page, int size, int accountId) {
         System.out.println("page - size = " + page + " - " + size);
-        List<Course> courseList = courseRepository.findAllByAccountIdOrderByCreatedTimeDesc(new PageRequest(page, size), accountId);
+        List<Course> courseList = courseRepository.findAllByAccountIdAndStatusOrderByCreatedTimeDesc
+                (PageRequest.of(page, size), accountId,"active");
         List<CourseDTO> dtoList = new ArrayList<>();
         List<Account> traineeList = null;
         for (Course courseTemp : courseList) {
@@ -82,12 +83,21 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public boolean editCourse(Course course) {
         Course temp = courseRepository.findCourseById(course.getId());
-        temp.setId(course.getId());
-        temp.setUpdatedTime(course.getUpdatedTime());
-        temp.setName(course.getName());
-        temp.setCategoryId(course.getCategoryId());
-        temp.setThumbnail(course.getThumbnail());
-        temp.setPrice(course.getPrice());
+        if(temp.getStatus().equals(course.getStatus())){
+            temp.setUpdatedTime(course.getUpdatedTime());
+            temp.setName(course.getName());
+            temp.setCategoryId(course.getCategoryId());
+            temp.setThumbnail(course.getThumbnail());
+            temp.setPrice(course.getPrice());
+        }else{
+            temp.setUpdatedTime(course.getUpdatedTime());
+            temp.setName(course.getName());
+            temp.setCategoryId(course.getCategoryId());
+            temp.setThumbnail(course.getThumbnail());
+            temp.setPrevStatus(temp.getStatus());
+            temp.setStatus(course.getStatus());
+            temp.setPrice(course.getPrice());
+        }
         Course res = courseRepository.save(temp);
         if (res != null) {
             return true;
@@ -97,7 +107,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public List<Course> getAllCourseOrderByCreatedTime() {
-        return courseRepository.findAllByOrderByCreatedTimeDesc();
+        return courseRepository.findAllByStatusOrderByCreatedTimeDesc("active");
     }
 
     @Override

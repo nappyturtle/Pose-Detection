@@ -109,13 +109,15 @@ public class CourseController {
         if (courses != null) {
             for (Course course : courses) {
                 if (course.getPrice() != 0) {
-                    Account account = accountService.getAccountById(course.getAccountId());
-                    CourseDTO courseDTO = new CourseDTO();
-                    courseDTO.setCourse(course);
-                    courseDTO.setTrainerName(account.getUsername());
-                    courseDTO.setNumberOfRegister(enrollmentService.countRegisterByCourseId(courseDTO.getCourse().getId()));
-                    courseDTO.setNumberOfVideoInCourse(videoService.countVideosByCourseId(courseDTO.getCourse().getId()));
-                    courseDTOS.add(courseDTO);
+                    if(videoService.countVideosByCourseId(course.getId()) > 0) {
+                        Account account = accountService.getAccountById(course.getAccountId());
+                        CourseDTO courseDTO = new CourseDTO();
+                        courseDTO.setCourse(course);
+                        courseDTO.setTrainerName(account.getUsername());
+                        courseDTO.setNumberOfRegister(enrollmentService.countRegisterByCourseId(courseDTO.getCourse().getId()));
+                        courseDTO.setNumberOfVideoInCourse(videoService.countVideosByCourseId(courseDTO.getCourse().getId()));
+                        courseDTOS.add(courseDTO);
+                    }
                 }
             }
         }
@@ -140,13 +142,15 @@ public class CourseController {
                     }
                 }
                 if (course.getPrice() != 0 && !isBought && course.getAccountId() != accountId) {
-                    Account account = accountService.getAccountById(course.getAccountId());
-                    CourseDTO courseDTO = new CourseDTO();
-                    courseDTO.setCourse(course);
-                    courseDTO.setTrainerName(account.getUsername());
-                    courseDTO.setNumberOfRegister(enrollmentService.countRegisterByCourseId(courseDTO.getCourse().getId()));
-                    courseDTO.setNumberOfVideoInCourse(videoService.countVideosByCourseId(courseDTO.getCourse().getId()));
-                    courseDTOS.add(courseDTO);
+                    if(videoService.countVideosByCourseId(course.getId()) >0) {
+                        Account account = accountService.getAccountById(course.getAccountId());
+                        CourseDTO courseDTO = new CourseDTO();
+                        courseDTO.setCourse(course);
+                        courseDTO.setTrainerName(account.getUsername());
+                        courseDTO.setNumberOfRegister(enrollmentService.countRegisterByCourseId(courseDTO.getCourse().getId()));
+                        courseDTO.setNumberOfVideoInCourse(videoService.countVideosByCourseId(courseDTO.getCourse().getId()));
+                        courseDTOS.add(courseDTO);
+                    }
                 }
             }
         }

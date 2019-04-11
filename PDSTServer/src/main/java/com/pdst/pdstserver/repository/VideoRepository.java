@@ -12,21 +12,21 @@ import java.util.List;
 public interface VideoRepository extends JpaRepository<Video, Integer>{
     Video findVideoById(Integer id);
 //    List<Video> findAllByAccountIdOrderByCreatedTimeDesc(int accountId);
-    List<Video> findAllByCourseId(Pageable pageable,Integer courseId);
+    List<Video> findAllByCourseIdAndStatus(Pageable pageable,Integer courseId,String status);
+    List<Video> findAllByCourseIdAndStatus(Integer courseId, String status);
     List<Video> findAllByCourseId(Integer courseId);
     Integer countVideoByCourseId(Integer courseId);
-    Integer countVideoByCourseId(int courseId);
+    Integer countVideoByCourseIdAndStatus(int courseId,String status);
 
-    List<Video> findTop6ByCourseIdOrderByCreatedTimeDesc(int courseId);
+    List<Video> findTop6ByCourseIdAndStatusOrderByCreatedTimeDesc(int courseId, String status);
 
-    List<Video> findAllByCourseIdOrderByCreatedTimeDesc(int courseId);
+    List<Video> findAllByCourseIdAndStatusOrderByCreatedTimeDesc(int courseId,String status);
 
 
     @Query(value = "select v " +
             "from Video v join Course c " +
             "on v.courseId = c.id " +
-            "where c.price = 0 "
-
+            "where c.price = 0 and v.status = 'active'"
     )
     List<Video> getAllVideoByCourseFree(Pageable pageable);
 
