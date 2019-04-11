@@ -231,6 +231,14 @@ $(document).ready(function () {
                     $("#btn-save-change").hide();
                     return false;
                 }
+                var phoneNumber = $("#input-detail-profile-phone").val().toString().trim();
+                var isnum = /^\d+$/.test(phoneNumber);
+                //console.log(isnum + " = isnum");
+                if (!isnum) {
+                    $("#mUpdateInfo").html("Lỗi: Số điện thoại không đúng định dạng!");
+                    $("#btn-save-change").hide();
+                    return false;
+                }
                 return true;
             }
 
