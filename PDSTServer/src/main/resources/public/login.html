@@ -37,19 +37,28 @@
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
-        <p class="login-box-msg">Sign in</p>
-
-        <div class="form-group has-feedback">
-            <input type="text" class="form-control" placeholder="Username" id="username">
-            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+        <!-- <p class="login-box-msg">Sign in</p>-->
+        <div class="col-md-12" style="text-align: center">
+            <span class="logo-lg"><img src="images/logo.png"
+                                       style="width:72px; height:72px; margin: -12px 0px 0px -10px"><b style="font-size: 25px; color: indianred">Self-Training</b></span>
         </div>
-        <div class="form-group has-feedback">
-            <input type="password" class="form-control" placeholder="Password" id="password">
-            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+
+
+        <div class="form-group has-feedback col-md-12">
+            <label>Tên đăng nhập</label>
+            <input type="text" class="form-control" placeholder="Tên đăng nhập" id="username">
+        </div>
+        <div class="form-group has-feedback col-md-12">
+            <label>Mật khẩu</label>
+            <input type="password" class="form-control" placeholder="Mật khẩu" id="password">
+        </div>
+        <div class="form-group has-feedback col-md-12" hidden id="errorMess">
+            <p style="color: red">Tên dăng nhập hoặc mật khẩu không đúng</p>
         </div>
         <div class="form-group text-center">
-            <button type="submit" class="btn btn-primary btn-flat" id="btnSignin" onclick="signin()">
-                Sign In
+            <button type="submit" class="btn btn-primary" style="width: 150px; margin-top: 10px" id="btnSignin"
+                    onclick="signin()">
+                Đăng nhập
             </button>
         </div>
     </div>
