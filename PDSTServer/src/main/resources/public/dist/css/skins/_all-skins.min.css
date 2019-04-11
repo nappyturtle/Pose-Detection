@@ -16,7 +16,8 @@
 }
 
 .skin-blue .main-header .navbar .sidebar-toggle {
-    color: #fff
+    color: #fff;
+    height: 100%
 }
 
 .skin-blue .main-header .navbar .sidebar-toggle:hover {
