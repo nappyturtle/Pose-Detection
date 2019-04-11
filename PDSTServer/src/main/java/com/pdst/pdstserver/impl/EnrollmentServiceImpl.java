@@ -209,4 +209,9 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 
         return true;
     }
+
+    @Override
+    public List<Enrollment> getEnrollmentByAccountId(int accountId) {
+        return enrollmentRepository.findAllByAccountId(accountId);
+    }
 }

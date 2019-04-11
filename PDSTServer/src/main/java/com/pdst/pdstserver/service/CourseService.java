@@ -21,4 +21,6 @@ public interface CourseService {
     boolean editCourseByStaffOrAdmin(CourseDTOFrontEnd dto);
     int countAllCourses();
     CourseDTOFrontEnd getCourseDetailById(int courseId);
+
+    Course getCourseById(int courseId);
 }

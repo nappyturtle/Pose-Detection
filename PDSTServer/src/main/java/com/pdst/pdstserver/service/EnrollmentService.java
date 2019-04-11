@@ -17,4 +17,5 @@ public interface EnrollmentService {
     List<Account> getAllTrainerOfBoughtCourse(int accountId);
     CourseDTO checkBoughtCourseUpdatedByTrainer(int traineeId, int courseId);
     boolean checkEnrollmentExistedOrNot(int traineeId, int courseId);
+    List<Enrollment> getEnrollmentByAccountId(int accountId);
 }

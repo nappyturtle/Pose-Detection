@@ -30,11 +30,11 @@ public class VideoController {
     }
 
     /**
-     @author  KietPT
-     @since   6/4/2019
-
-     - api này dùng để video detail
-     - dùng cho web
+     * @author KietPT
+     * @since 6/4/2019
+     * <p>
+     * - api này dùng để video detail
+     * - dùng cho web
      */
     @GetMapping("getVideoDetailById/{videoId}")
     public VideoDTOFrontEnd getVideoDetailById(@PathVariable(value = "videoId") int videoId) {
@@ -42,11 +42,11 @@ public class VideoController {
     }
 
     /**
-     @author  KietPT
-     @since   6/4/2019
-
-     - api này dùng để tăng số lượt xem cho video
-     - dùng cho mobile
+     * @author KietPT
+     * @since 6/4/2019
+     * <p>
+     * - api này dùng để tăng số lượt xem cho video
+     * - dùng cho mobile
      */
     @PutMapping("changeNumberOfViewByVideoId/{videoId}")
     public boolean changeNumberOfViewByVideoId(@PathVariable(value = "videoId") int videoId) {
@@ -54,11 +54,11 @@ public class VideoController {
     }
 
     /**
-     @author  KietPT
-     @since   6/4/2019
-
-     - api này dùng để lấy danh sách video
-     - dùng cho web
+     * @author KietPT
+     * @since 6/4/2019
+     * <p>
+     * - api này dùng để lấy danh sách video
+     * - dùng cho web
      */
     @GetMapping("getAllVideoByStaffOrAdmin")
     public List<VideoDTOFrontEnd> getAllVideoByStaffOrAdmin() {
@@ -66,11 +66,11 @@ public class VideoController {
     }
 
     /**
-     @author  KietPT
-     @since   6/4/2019
-
-     - api này dùng để edit video
-     - dùng cho web
+     * @author KietPT
+     * @since 6/4/2019
+     * <p>
+     * - api này dùng để edit video
+     * - dùng cho web
      */
     @PutMapping("editVideoStatusByStaffOrAdmin")
     public boolean editVideoStatusByStaffOrAdmin(@RequestBody VideoDTOFrontEnd dto) {
@@ -78,11 +78,11 @@ public class VideoController {
     }
 
     /**
-     @author  KietPT
-     @since   6/4/2019
-
-     - api này dùng để lấy danh sách video free, sort theo createTime giảm dần, cho trang home
-     - dùng cho mobile
+     * @author KietPT
+     * @since 6/4/2019
+     * <p>
+     * - api này dùng để lấy danh sách video free, sort theo createTime giảm dần, cho trang home
+     * - dùng cho mobile
      */
     @GetMapping("getAllVideosByDate")
     public List<VideoDTO> getAllVideoByDate(@RequestParam(value = "page") int page,
@@ -92,26 +92,26 @@ public class VideoController {
     }
 
     /**
-     @author  KietPT
-     @since   6/4/2019
-
-     - api này dùng để lấy danh sách video liên quan( màn hình PlayVideoActivity, list video related bên dưới)
-     - lấy top 6 video free
-     - dùng cho mobile
+     * @author KietPT
+     * @since 6/4/2019
+     * <p>
+     * - api này dùng để lấy danh sách video liên quan( màn hình PlayVideoActivity, list video related bên dưới)
+     * - lấy top 6 video free
+     * - dùng cho mobile
      */
     @GetMapping("getAllVideosRelatedByCourseId")
     public List<VideoDTO> getAllVideosRelatedByCourseId(@RequestParam(value = "courseId") int courseId,
-                                               @RequestParam(value = "currentVideoId") int currentVideoId) {
-        List<VideoDTO> resultPage = videoService.getAllVideosRelatedByCourseId(courseId,currentVideoId);
+                                                        @RequestParam(value = "currentVideoId") int currentVideoId) {
+        List<VideoDTO> resultPage = videoService.getAllVideosRelatedByCourseId(courseId, currentVideoId);
         return resultPage;
     }
 
     /**
-     @author  KietPT
-     @since   6/4/2019
-
-     - api này dùng để lấy danh sách video free, sort by só lượt xem
-     - dùng cho mobile
+     * @author KietPT
+     * @since 6/4/2019
+     * <p>
+     * - api này dùng để lấy danh sách video free, sort by só lượt xem
+     * - dùng cho mobile
      */
     @GetMapping("getAllVideosByTopNumOfView")
     public List<VideoDTO> getAllVideosByTopNumOfView(@RequestParam(value = "page") int page,
@@ -127,11 +127,11 @@ public class VideoController {
     }
 
     /**
-     @author  KietPT
-     @since   6/4/2019
-
-     - api này dùng để tạo video và send request đến service để tiến hành tạo dataset
-     - dùng cho mobile
+     * @author KietPT
+     * @since 6/4/2019
+     * <p>
+     * - api này dùng để tạo video và send request đến service để tiến hành tạo dataset
+     * - dùng cho mobile
      */
     @PostMapping(value = "/create")
     public ResponseEntity<Void> createVideo(@RequestBody Video video, UriComponentsBuilder builder) {
@@ -145,43 +145,43 @@ public class VideoController {
     }
 
     /**
-     @author  KietPT
-     @since   6/4/2019
-
-     - api này dùng để lấy danh sách video đã mua
-     - dùng cho mobile
+     * @author KietPT
+     * @since 6/4/2019
+     * <p>
+     * - api này dùng để lấy danh sách video đã mua
+     * - dùng cho mobile
      */
     @GetMapping("getAllBoughtVideosByCourseId")
     public List<VideoDTO> getAllBoughtVideosByCourseId(@RequestParam(value = "page") int page,
                                                        @RequestParam(value = "size") int size,
                                                        @RequestParam(value = "traineeId") int traineeId,
                                                        @RequestParam(value = "courseId") int courseId) {
-        List<VideoDTO> resultPage = videoService.getAllBoughtVideosByCourseId(page, size, traineeId,courseId);
+        List<VideoDTO> resultPage = videoService.getAllBoughtVideosByCourseId(page, size, traineeId, courseId);
         return resultPage;
     }
 
     /**
-     @author  KietPT
-     @since   6/4/2019
-
-     - api này dùng để lấy danh sách video đã chưa mua(trainer cập nhật thêm những video mới)
-     - dùng cho mobile
+     * @author KietPT
+     * @since 6/4/2019
+     * <p>
+     * - api này dùng để lấy danh sách video đã chưa mua(trainer cập nhật thêm những video mới)
+     * - dùng cho mobile
      */
     @GetMapping("getAllUnBoughtVideoByCourseId")
     public List<VideoDTO> getAllUnBoughtVideoByCourseId(@RequestParam(value = "page") int page,
                                                         @RequestParam(value = "size") int size,
                                                         @RequestParam(value = "traineeId") int traineeId,
                                                         @RequestParam(value = "courseId") int courseId) {
-        List<VideoDTO> resultPage = videoService.getAllUnBoughtVideoByCourseId(page, size, traineeId,courseId);
+        List<VideoDTO> resultPage = videoService.getAllUnBoughtVideoByCourseId(page, size, traineeId, courseId);
         return resultPage;
     }
 
     /**
-     @author  KietPT
-     @since   6/4/2019
-
-     - api này dùng để lấy danh sách video để edit
-     - dùng cho mobile
+     * @author KietPT
+     * @since 6/4/2019
+     * <p>
+     * - api này dùng để lấy danh sách video để edit
+     * - dùng cho mobile
      */
     @GetMapping("getAllVideoByCourseIdToEdit")
     public List<VideoDTO> getAllVideoByCourseIdToEdit(@RequestParam(value = "courseId") int courseId) {
@@ -190,59 +190,64 @@ public class VideoController {
     }
 
     /**
-     @author  KietPT
-     @since   6/4/2019
-
-     - api này dùng để lấy danh sách video đã mua
-     - dùng cho mobile
+     * @author KietPT
+     * @since 6/4/2019
+     * <p>
+     * - api này dùng để lấy danh sách video đã mua
+     * - dùng cho mobile
      */
     @GetMapping("getAllBoughtVideoRelated")
     public List<VideoDTO> getAllBoughtVideoRelated(@RequestParam(value = "traineeId") int traineeId,
-                                                       @RequestParam(value = "courseId") int courseId,
+                                                   @RequestParam(value = "courseId") int courseId,
                                                    @RequestParam(value = "videoId") int videoId) {
-        List<VideoDTO> resultPage = videoService.getAllBoughtVideoRelated(traineeId,courseId, videoId);
+        List<VideoDTO> resultPage = videoService.getAllBoughtVideoRelated(traineeId, courseId, videoId);
         return resultPage;
     }
 
     /**
-     @author  KietPT
-     @since   6/4/2019
-
-     - api này dùng để search video cho trang home
-     - dùng cho mobile
+     * @author KietPT
+     * @since 6/4/2019
+     * <p>
+     * - api này dùng để search video cho trang home
+     * - dùng cho mobile
      */
     @GetMapping("searchOrderByDate")
     public List<VideoDTO> searchVideoOrderByDate(@RequestParam(value = "searchValue") String searchValue) {
         List<VideoDTO> videoDTOList = searchVideo(searchValue);
-        Collections.sort(videoDTOList, (videoDTO, t1) -> {return t1.getVideo().getCreatedTime().compareTo(videoDTO.getVideo().getCreatedTime());});
+        Collections.sort(videoDTOList, (videoDTO, t1) -> {
+            return t1.getVideo().getCreatedTime().compareTo(videoDTO.getVideo().getCreatedTime());
+        });
         return videoDTOList;
     }
 
     /**
-     @author  KietPT
-     @since   6/4/2019
-
-     - api này dùng để search video cho trang thịnh hành
-     - dùng cho mobile
+     * @author KietPT
+     * @since 6/4/2019
+     * <p>
+     * - api này dùng để search video cho trang thịnh hành
+     * - dùng cho mobile
      */
     @GetMapping("searchOrderByView")
     public List<VideoDTO> searchVideoOrderByView(@RequestParam(value = "searchValue") String searchValue) {
         List<VideoDTO> videoDTOList = searchVideo(searchValue);
-        Collections.sort(videoDTOList, (videoDTO, t1) -> {return t1.getVideo().getNumOfView().compareTo(videoDTO.getVideo().getNumOfView());});
+        Collections.sort(videoDTOList, (videoDTO, t1) -> {
+            return t1.getVideo().getNumOfView().compareTo(videoDTO.getVideo().getNumOfView());
+        });
         return videoDTOList;
     }
 
     /**
-     @author  KietPT
-     @since   6/4/2019
-
-     -
+     * @author KietPT
+     * @since 6/4/2019
+     * <p>
+     * -
      */
     @GetMapping("getAllFreeVideosByAccount")
-    public List<Video> getAllFreeVideosByAccount(@RequestParam(value = "accountId")int accountId){
+    public List<Video> getAllFreeVideosByAccount(@RequestParam(value = "accountId") int accountId) {
         List<Video> videos = videoService.getAllFreeVideosByAccount(accountId);
         return videos;
     }
+
     private List<VideoDTO> searchVideo(String searchValue) {
         List<VideoDTO> videoDTOList = videoService.getAllFreeVideos();
         Map<VideoDTO, Double> videoMap = new HashMap<>();
@@ -265,15 +270,29 @@ public class VideoController {
     }
 
     /**
-     @author  KietPT
-     @since   6/4/2019
-
-     - hàm này dùng để edit video
-     - dùng cho mobile
+     * @author KietPT
+     * @since 6/4/2019
+     * <p>
+     * - hàm này dùng để edit video
+     * - dùng cho mobile
      */
     @PutMapping(value = "editVideo")
-    public boolean editVideo(@RequestBody Video video){
+    public boolean editVideo(@RequestBody Video video) {
         return videoService.editVideo(video);
+    }
+
+    @GetMapping("getVideoByCourseId/{courseId}")
+    public List<Video> getVideoByCourseId(@PathVariable int courseId) {
+        List<VideoDTO> videoDTOS = videoService.getAllVideoByCourseIdToEdit(courseId);
+        List<Video> videos = new ArrayList<>();
+        if (videoDTOS != null) {
+            for (VideoDTO dto : videoDTOS) {
+                videos.add(dto.getVideo());
+            }
+            return videos;
+        } else {
+            return null;
+        }
     }
 
 }

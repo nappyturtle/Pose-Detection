@@ -16,4 +16,6 @@ public interface CategoryService {
     Category createCate(Category category);
 
     int countTotalCategories();
+
+    Category getCateByCateName(String catename);
 }

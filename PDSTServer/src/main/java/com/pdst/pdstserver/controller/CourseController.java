@@ -51,7 +51,7 @@ public class CourseController {
 
     @PutMapping("editCourseByStaffOrAdmin")
     public boolean editCourseByStaffOrAdmin(@RequestBody CourseDTOFrontEnd dto) {
-        System.out.println(dto.getId() + " - "+dto.getStatus());
+        System.out.println(dto.getId() + " - " + dto.getStatus());
         return courseService.editCourseByStaffOrAdmin(dto);
     }
 
@@ -65,7 +65,7 @@ public class CourseController {
     public List<CourseDTO> getAllCourseByTrainerId(@RequestParam(value = "page") int page,
                                                    @RequestParam(value = "size") int size,
                                                    @RequestParam(value = "accountId") int id) {
-        return courseService.getAllCourseByTrainerId(page,size,id);
+        return courseService.getAllCourseByTrainerId(page, size, id);
     }
 
     @PostMapping("create")
@@ -133,13 +133,13 @@ public class CourseController {
         if (courses != null) {
             for (Course course : courses) {
                 isBought = false;
-                for(EnrollmentDTO enrollmentDTO : enrollments) {
-                    if(course.getId() == enrollmentDTO.getCourseId()) {
+                for (EnrollmentDTO enrollmentDTO : enrollments) {
+                    if (course.getId() == enrollmentDTO.getCourseId()) {
                         isBought = true;
                         break;
                     }
                 }
-                if(course.getPrice() != 0 && !isBought && course.getAccountId() != accountId){
+                if (course.getPrice() != 0 && !isBought && course.getAccountId() != accountId) {
                     Account account = accountService.getAccountById(course.getAccountId());
                     CourseDTO courseDTO = new CourseDTO();
                     courseDTO.setCourse(course);
@@ -165,13 +165,13 @@ public class CourseController {
         if (courses != null) {
             for (Course course : courses) {
                 isBought = false;
-                for(EnrollmentDTO enrollmentDTO : enrollments) {
-                    if(course.getId() == enrollmentDTO.getCourseId()) {
+                for (EnrollmentDTO enrollmentDTO : enrollments) {
+                    if (course.getId() == enrollmentDTO.getCourseId()) {
                         isBought = true;
                         break;
                     }
                 }
-                if(course.getPrice() != 0 && !isBought) {
+                if (course.getPrice() != 0 && !isBought) {
                     courseMap.put(course, SearchUtil.searchMatchingPercentage(tokens, course.getName().toLowerCase()));
                 }
             }
@@ -198,7 +198,7 @@ public class CourseController {
     }
 
     @PutMapping(value = "edit")
-    public boolean editCourse(@RequestBody Course course){
+    public boolean editCourse(@RequestBody Course course) {
 
         return courseService.editCourse(course);
     }

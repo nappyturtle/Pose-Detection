@@ -132,6 +132,7 @@ public class AccountController {
     public Map<String, String> createNewAccount(@RequestBody Account account) {
         HashMap<String, String> res = new HashMap<>();
         account.setImgUrl(Constant.DEFAULT_USER_LOGO_URL);
+        account.setPassword("123456");
         boolean result = accountService.createAccount(account);
         if (result) {
             res.put("message", "success");
@@ -140,6 +141,7 @@ public class AccountController {
                 Course freeCourseOfNewTrainer = new Course();
                 freeCourseOfNewTrainer.setAccountId(newAccount.getId());
                 freeCourseOfNewTrainer.setStatus("active");
+                freeCourseOfNewTrainer.setPrevStatus("active");
                 freeCourseOfNewTrainer.setName("Miễn phí");
                 freeCourseOfNewTrainer.setCreatedTime(newAccount.getCreatedTime());
                 freeCourseOfNewTrainer.setPrice(0);

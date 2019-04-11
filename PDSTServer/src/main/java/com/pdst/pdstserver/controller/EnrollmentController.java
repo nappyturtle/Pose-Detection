@@ -1,22 +1,34 @@
 package com.pdst.pdstserver.controller;
 
+import com.pdst.pdstserver.dto.CourseDTOFrontEnd;
+import com.pdst.pdstserver.dto.EnrollmentDTOFrontEnd;
 import com.pdst.pdstserver.model.Account;
 import com.pdst.pdstserver.dto.CourseDTO;
+import com.pdst.pdstserver.model.Course;
 import com.pdst.pdstserver.model.Enrollment;
 import com.pdst.pdstserver.dto.EnrollmentDTO;
+import com.pdst.pdstserver.service.AccountService;
+import com.pdst.pdstserver.service.CourseService;
 import com.pdst.pdstserver.service.EnrollmentService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(EnrollmentController.BASE_URL)
 public class EnrollmentController {
     public static final String BASE_URL = "enrollment";
     private final EnrollmentService enrollmentService;
+    private final CourseService courseService;
+    private final AccountService accountService;
 
-    public EnrollmentController(EnrollmentService enrollmentService) {
+    public EnrollmentController(EnrollmentService enrollmentService, CourseService courseService, AccountService accountService) {
         this.enrollmentService = enrollmentService;
+        this.courseService = courseService;
+        this.accountService = accountService;
     }
 
     @GetMapping("enrollments")
@@ -52,7 +64,43 @@ public class EnrollmentController {
 
     @GetMapping("checkEnrollmentExistedOrNot")
     public boolean checkEnrollmentExistedOrNot(@RequestParam(value = "traineeId") int traineeId,
-                                                       @RequestParam(value = "courseId") int courseId) {
+                                               @RequestParam(value = "courseId") int courseId) {
         return enrollmentService.checkEnrollmentExistedOrNot(traineeId, courseId);
+    }
+
+    @GetMapping("enrollmentstats")
+    public List<EnrollmentDTOFrontEnd> getEnrollmentForStats() {
+        List<EnrollmentDTOFrontEnd> response = new ArrayList<>();
+        List<Enrollment> enrollments = enrollmentService.getAllEnrollments();
+        for (Enrollment enroll : enrollments) {
+            EnrollmentDTOFrontEnd enrollmentDTOFrontEnd = new EnrollmentDTOFrontEnd();
+            enrollmentDTOFrontEnd.setEnrollment(enroll);
+
+            CourseDTOFrontEnd course = courseService.getCourseDetailById(enroll.getCourseId());
+            enrollmentDTOFrontEnd.setCoursename(course.getCoursename());
+
+            Account account = accountService.getAccountById(enroll.getAccountId());
+            enrollmentDTOFrontEnd.setUsername(account.getUsername());
+
+            response.add(enrollmentDTOFrontEnd);
+        }
+        return response;
+    }
+
+    @GetMapping("getBoughtCourseByAccountId/{accountId}")
+    public List<Course> getBoughtCourseByAccountId(@PathVariable int accountId) {
+        List<Enrollment> enrollments = enrollmentService.getEnrollmentByAccountId(accountId);
+        List<Course> boughtCourseByAccountId = new ArrayList<>();
+        if (enrollments != null) {
+            for (Enrollment enroll : enrollments) {
+                Course course = courseService.getCourseById(enroll.getCourseId());
+                if (!boughtCourseByAccountId.contains(course)) {
+                    boughtCourseByAccountId.add(course);
+                }
+            }
+            return boughtCourseByAccountId;
+        } else {
+            return null;
+        }
     }
 }

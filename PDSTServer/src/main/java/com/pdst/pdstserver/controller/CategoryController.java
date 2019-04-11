@@ -32,14 +32,21 @@ public class CategoryController {
     @PostMapping("update")
     public Map<String, String> updateCate(@RequestBody Category category) {
         Map map = new HashMap();
-        Category updatedCate = categoryService.updateCate(category);
-        if (updatedCate != null) {
-            map.put("message", "success");
+        Category sameNameCate = categoryService.getCateByCateName(category.getName());
+        if (category.getId() != sameNameCate.getId()) {
+            map.put("message", "existed");
             return map;
         } else {
-            map.put("message", "fail");
-            return map;
+            Category updatedCate = categoryService.updateCate(category);
+            if (updatedCate != null) {
+                map.put("message", "success");
+                return map;
+            } else {
+                map.put("message", "fail");
+                return map;
+            }
         }
+
         //boolean isExistedCate = categoryService.checkExistCateName(category.getName());
         /*if (isExistedCate) {
             map.put("message", "existed");
@@ -57,7 +64,7 @@ public class CategoryController {
     }
 
     @PostMapping("create")
-    public Map<String, String> createCate(@RequestBody Category category){
+    public Map<String, String> createCate(@RequestBody Category category) {
         boolean isExistedCate = categoryService.checkExistCateName(category.getName());
         Map map = new HashMap();
         if (isExistedCate) {

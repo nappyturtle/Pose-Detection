@@ -1,7 +1,11 @@
 package com.pdst.pdstserver.impl;
 
 import com.pdst.pdstserver.model.Account;
+import com.pdst.pdstserver.model.Course;
+import com.pdst.pdstserver.model.Video;
 import com.pdst.pdstserver.repository.AccountRepository;
+import com.pdst.pdstserver.repository.CourseRepository;
+import com.pdst.pdstserver.repository.VideoRepository;
 import com.pdst.pdstserver.service.AccountService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,12 +17,17 @@ import java.util.List;
 public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository accountRepository;
+    private final CourseRepository courseRepository;
+    private final VideoRepository videoRepository;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public AccountServiceImpl(AccountRepository accountRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public AccountServiceImpl(AccountRepository accountRepository, BCryptPasswordEncoder bCryptPasswordEncoder,
+                              CourseRepository courseRepository, VideoRepository videoRepository) {
         this.accountRepository = accountRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.courseRepository = courseRepository;
+        this.videoRepository = videoRepository;
     }
 
     @Override
@@ -86,6 +95,41 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account updateAccount(Account account) {
+        Account accountToEdit = accountRepository.findAccountById(account.getId());
+        if (accountToEdit != null) {
+            if (account.getStatus() != accountToEdit.getStatus()) {
+                List<Course> courses = courseRepository.findAllByAccountIdOrderByCreatedTimeAsc(account.getId());
+                if (courses != null) {
+                    if (account.getStatus().equalsIgnoreCase("inactive")) {
+                        for (Course c : courses) {
+                            c.setPrevStatus(c.getStatus());
+                            c.setStatus("inactive");
+                            courseRepository.save(c);
+                            List<Video> videos = videoRepository.findAllByCourseId(c.getId());
+                            if (videos != null) {
+                                for (Video v : videos) {
+                                    v.setPrevStatus(v.getStatus());
+                                    v.setStatus("inactive");
+                                    videoRepository.save(v);
+                                }
+                            }
+                        }
+                    } else if (account.getStatus().equals("active")) {
+                        for (Course c : courses) {
+                            c.setStatus(c.getPrevStatus());
+                            courseRepository.save(c);
+                            List<Video> videos = videoRepository.findAllByCourseId(c.getId());
+                            if (videos != null) {
+                                for (Video v : videos) {
+                                    v.setStatus(v.getPrevStatus());
+                                    videoRepository.save(v);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
         return accountRepository.save(account);
     }
 

@@ -50,4 +50,9 @@ public class CategoryServiceImpl implements CategoryService {
     public int countTotalCategories() {
         return categoryRepository.countTotalCategories();
     }
+
+    @Override
+    public Category getCateByCateName(String catename) {
+        return categoryRepository.findCategoryByName(catename);
+    }
 }

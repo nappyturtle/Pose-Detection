@@ -3,11 +3,8 @@ package com.pdst.pdstserver.impl;
 
 import com.pdst.pdstserver.dto.CourseDTO;
 import com.pdst.pdstserver.dto.CourseDTOFrontEnd;
-import com.pdst.pdstserver.model.Course;
+import com.pdst.pdstserver.model.*;
 import com.pdst.pdstserver.repository.*;
-import com.pdst.pdstserver.model.Account;
-import com.pdst.pdstserver.model.Category;
-import com.pdst.pdstserver.model.Enrollment;
 import com.pdst.pdstserver.service.CourseService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -154,6 +151,23 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public boolean editCourseByStaffOrAdmin(CourseDTOFrontEnd course) {
         Course courseToedit = courseRepository.findCourseById(course.getId());
+        if (course.getStatus() != courseToedit.getStatus()) {
+            List<Video> videos = videoRepository.findAllByCourseId(course.getId());
+            if (videos != null) {
+                if (course.getStatus().equalsIgnoreCase("inactive")) {
+                    for (Video v : videos) {
+                        v.setPrevStatus(v.getStatus());
+                        v.setStatus("inactive");
+                        videoRepository.save(v);
+                    }
+                } else if (course.getStatus().equalsIgnoreCase("active")) {
+                    for (Video v : videos) {
+                        v.setStatus(v.getPrevStatus());
+                        videoRepository.save(v);
+                    }
+                }
+            }
+        }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date date = Calendar.getInstance().getTime();
         courseToedit.setUpdatedTime(sdf.format(date));
@@ -161,6 +175,7 @@ public class CourseServiceImpl implements CourseService {
         courseToedit.setPrice(course.getPrice());
         courseToedit.setCategoryId(course.getCategoryId());
         courseToedit.setStatus(course.getStatus());
+        System.out.println(courseToedit);
         Course courseRes = courseRepository.save(courseToedit);
         if (courseRes != null) {
             return true;
@@ -201,6 +216,11 @@ public class CourseServiceImpl implements CourseService {
         //dto.setCategoryList(categoryList);
 
         return dto;
+    }
+
+    @Override
+    public Course getCourseById(int courseId) {
+        return courseRepository.findCourseById(courseId);
     }
 
 }
