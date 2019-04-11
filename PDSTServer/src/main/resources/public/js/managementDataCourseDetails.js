@@ -28,6 +28,7 @@ $(document).ready(function () {
             //init course data
             initCourseDetail(parseInt(courseId, 10));
 
+            //staff's fullname
             $.ajax({
                 url: "/account/update/" + currentStaff.id,
                 type: "GET",
@@ -43,8 +44,7 @@ $(document).ready(function () {
                     }
                 }
             })
-
-            /*lickButtonUpdate(parseInt(courseId, 10));*/
+            initVideoTable(courseId);
         } else {
             window.location.href = "403.html";
         }
@@ -54,15 +54,71 @@ $(document).ready(function () {
 
 })
 
-/*function clickButtonUpdate(course) {
-    $("#btn-course-update").click(function () {
-        $("#mUpdateInfo").html("Bạn có muốn thay đổi thông tin!");
-        $("#btn-save-change").show();
+function initVideoTable(courseId) {
+    var dataSrc;
+    $.ajax({
+        url: "/video/getVideoByCourseId/" + courseId,
+        type: "GET",
+        headers: {
+            "Authorization": currentStaff.token
+        },
+        success: function (res) {
+            console.log(res)
+            dataSrc = $('#tblVideo').DataTable({
+                paging: true,
+                lengthChange: false,
+                pageLength: 5,
+                searching: true,
+                ordering: true,
+                info: true,
+                //autoWidth: true,
+                data: res
+                ,
+                columns: [
+                    {
+                        data: null,
+                        sortable: true,
+                        width: 30,
+                        orderable: true,
+                        className: 'row-index'
+                    },
+                    {data: "title"},
+                    {
+                        data: "id",
+                        searchable: false,
+                        orderable: false,
+                        className: "text-center",
+                        render: function (data, type, row) {
+                            if (type === 'display') {
+                                data = '<i class="fa fa-fw fa-eye" id="' + data + '"></i>';
+                            }
+                            return data;
+                        }
+                    }
+                ],
+                rowCallback: function (row, data, index) {
+                    $('.row-index', row).html(index + 1);
+                },
+                buttons: [
+                    {extend: "edit"},
+                ],
+                select: {
+                    style: 'os',
+                    selector: 'td:first-child'
+                }
+            });
+            getCourseDtail($('#tblVideo'));
+        }
     })
-    $("#btn-save-change").click(function () {
-        editCourseDetail(course)
+}
+
+function getCourseDtail($table) {
+    $table.on('click', 'tbody .fa-eye', function (e) {
+        var iconElement = $(this).closest('tr').find('.fa-eye')
+        var videoId = iconElement.attr('id');
+        window.location.href = "../../management/video/details.html?videoId=" + videoId;
     })
-}*/
+}
 
 function editCourseDetail(course) {
 
@@ -186,6 +242,7 @@ function initCourseDetail(courseId) {
                                 courseEdit.coursename = $("#input-detail-course-name").val();
                                 courseEdit.price = $("#input-detail-course-price").val();
                                 courseEdit.status = $("#select-detail-course-status").val();
+                                console.log(courseEdit);
                                 editCourseDetail(courseEdit)
                             })
                         }

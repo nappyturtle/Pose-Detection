@@ -15,20 +15,24 @@ function signin() {
         },
         dataType: "json",
         success: function (res) {
+            console.log(res)
             if (res != null) {
                 if (res.roleId == 1 || res.roleId == 2) {
                     console.log(res.roleId)
                     if (typeof (Storage) != undefined) {
                         localStorage.setItem('staff', JSON.stringify(res));
                     }
-                    window.location.href = "dashboard.html";
+                    window.location.href = "management/account/account.html";
                 } else {
                     window.location.href = "403.html";
                 }
 
             } else {
-                console.log("null");
+                $("#errorMess").show();
             }
+        },
+        fail: function () {
+            $("#errorMess").show();
         }
     })
 }

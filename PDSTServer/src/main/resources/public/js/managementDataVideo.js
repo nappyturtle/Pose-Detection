@@ -106,12 +106,7 @@ $(document).ready(function () {
         })
     }
 
-
     function getCourseDtail($table, dataSrc) {
-        /*$table.on('click', 'tbody .btn-get-details', function (e) {
-            var videoId = $(this).closest('tr').find('.btn-get-details').val().replace("btnVideo", "");
-            window.location.href = "details.html?videoId=" + videoId;
-        })*/
         $table.on('click', 'tbody .fa-eye', function (e) {
             var iconElement = $(this).closest('tr').find('.fa-eye')
             var videoId = iconElement.attr('id');

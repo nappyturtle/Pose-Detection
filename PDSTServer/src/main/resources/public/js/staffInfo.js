@@ -145,8 +145,8 @@ $(document).ready(function () {
                         if(res.roleId == 4){
                             $("#div-tbl-created-course").hide();
                         }
-                        initCreatedCourseTable(res.id);
-                        initBoughtCourseTable(res.id);
+                        /*initCreatedCourseTable(res.id);
+                        initBoughtCourseTable(res.id);*/
                     } else {
                         console.log("null");
                     }

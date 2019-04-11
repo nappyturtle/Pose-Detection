@@ -50,12 +50,105 @@ $(document).ready(function () {
             var _data;
             if (currentStaff.roleId == 1) {
                 getData(2);
-                $("#createNewAccount").html("Tạo nhân viên");
-                $("#btn-create-new-account").attr('href', "../../createnewaccount.html?roleId=2");
+                $("#createNewAccount").html("Tạo tài khoản nhân viên");
+                /*$("#btn-create-new-account").attr('href', "staffInfo.html");*/
             } else if (currentStaff.roleId == 2) {
                 getData(3);
-                $("#createNewAccount").html("Tạo trainer");
-                $("#btn-create-new-account").attr('href', "../../createnewaccount.html?roleId=3");
+                $("#createNewAccount").html("Tạo tài khoản huấn luyện viên");
+                /*$("#btn-create-new-account").attr('href', "../../createnewaccount.html?roleId=3");*/
+            }
+
+            $("#btn-create-account").click(function () {
+                if (validData()) {
+                    $("#mCreateCateMessage").html("Bạn có muốn tạo tài khoản này ?");
+                    $("#btn-save-create-account").show();
+                }
+            })
+
+            function validData() {
+                if ($("#create-username").val().toString() == "") {
+                    $("#mCreateCateMessage").html("Lỗi: Tên tài khoản không được bỏ trống!");
+                    $("#btn-save-create-account").hide();
+                    return false;
+                } else if ($("#create-username").val().toString().indexOf(' ') !== -1) {
+                    $("#mCreateCateMessage").html("Lỗi: Tên tài khoản không được có khoảng trắng!");
+                    $("#btn-save-create-account").hide();
+                    return false;
+                } else if ($("#create-username").val().toString().length < 4) {
+                    $("#mCreateCateMessage").html("Lỗi: Tên tài khoản có ít nhất 4 ký tự!");
+                    $("#btn-save-create-account").hide();
+                    return false;
+                }
+
+                var $result = $("#result");
+                var email = $("#create-email").val();
+                $result.text("");
+                if ($("#create-email").val().toString() == "") {
+                    $("#mCreateCateMessage").html("Lỗi: Email không được bỏ trống!");
+                    $("#btn-save-create-account").hide();
+                    return false;
+                } else if (!validateEmail(email)) {
+                    $("#mCreateCateMessage").html("Lỗi: Email không đúng định dạng!");
+                    $("#btn-save-create-account").hide();
+                    return false;
+                }
+
+                return true;
+            }
+
+            function validateEmail(email) {
+                var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                return re.test(email);
+            }
+
+            $("#btn-save-create-account").click(function () {
+                createNewAccount();
+
+            })
+
+            function createNewAccount() {
+                var $account = {}
+                $account.email = $("#create-email").val();
+                $account.username = $("#create-username").val().toString().trim();
+                if (currentStaff.roleId == 1) {
+                    $account.roleId = 2;
+                } else if (currentStaff.roleId == 2) {
+                    $account.roleId = 3;
+                }
+                $account.status = "active";
+                $account.prev_status = "active"
+                console.log($account);
+
+                $.ajax({
+                    url: "/account/createNewAccount",
+                    type: "POST",
+                    data: JSON.stringify($account),
+                    headers: {
+                        "content-type": "application/json; charset=UTF-8"
+                    },
+                    dataType: "json",
+                    success: function (res) {
+                        console.log(res)
+                        if (res != null) {
+                            if (res.message == "success") {
+                                $("#mCreateCateMessage").html("Tạo tài khoản thành công!");
+                                $("#btn-save-create-account").hide();
+                                setTimeout(function () {
+                                    location.reload();
+                                }, 2000);
+                            } else {
+                                $("#mCreateCateMessage").html("Tạo tài khoản thất bại: Tên đăng nhật đã tồn tại!");
+                                $("#btn-save-create-account").hide();
+                            }
+                        } else {
+                            console.log("update thất bại");
+                        }
+                    },
+                    fail: function () {
+                        $("#mCreateCateMessage").html("Có lỗi xảy ra");
+                        $("#btn-save-create-account").hide();
+                    }
+                })
             }
 
         } else {
@@ -197,7 +290,12 @@ $(document).ready(function () {
         $table.on('click', 'tbody .fa-eye', function (e) {
             var iconElement = $(this).closest('tr').find('.fa-eye')
             var accountId = iconElement.attr('id');
-            window.location.href = "details.html?accountId=" + accountId;
+            if (currentStaff.roleId == 2){
+                window.location.href = "details.html?accountId=" + accountId;
+            } else if(currentStaff.roleId == 1){
+                window.location.href = "staffInfo.html?accountId=" + accountId;
+            }
+
         })
     }
 

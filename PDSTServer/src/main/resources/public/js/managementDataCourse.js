@@ -42,7 +42,6 @@ $(document).ready(function () {
 
             initTable();
 
-
         } else {
             window.location.href = "403.html";
         }
@@ -111,7 +110,6 @@ $(document).ready(function () {
             }
         })
     }
-
 
     function getCourseDtail($table) {
         $table.on('click', 'tbody .fa-eye', function (e) {
