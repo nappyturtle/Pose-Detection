@@ -9,6 +9,7 @@ $(document).ready(function () {
             $("#course-box-info").hide();
             $("#video-box-info").hide();
             $("#li-category-url").hide();
+            $("#li-enrollment").show();
         }
         $("#btn-sign-out").click(function () {
             localStorage.removeItem("staff");
