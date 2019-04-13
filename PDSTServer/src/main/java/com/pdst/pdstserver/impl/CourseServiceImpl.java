@@ -46,8 +46,8 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<CourseDTO> getAllCourseByTrainerId(int page, int size, int accountId) {
         System.out.println("page - size = " + page + " - " + size);
-        List<Course> courseList = courseRepository.findAllByAccountIdAndStatusOrderByCreatedTimeDesc
-                (PageRequest.of(page, size), accountId,"active");
+        List<Course> courseList = courseRepository.findAllByAccountIdOrderByCreatedTimeDesc
+                (PageRequest.of(page, size), accountId);
         List<CourseDTO> dtoList = new ArrayList<>();
         List<Account> traineeList = null;
         for (Course courseTemp : courseList) {

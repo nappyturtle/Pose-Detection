@@ -74,6 +74,7 @@ public class VideoServiceImpl implements VideoService {
             VideoDTO dto = new VideoDTO();
             dto.setVideo(video);
             dto.setUsername(account.getUsername());
+            dto.setFullname(account.getFullname());
             dto.setImgUrl(account.getImgUrl());
             dto.setAccountId(account.getId());
             dtos.add(dto);
@@ -183,6 +184,7 @@ public class VideoServiceImpl implements VideoService {
             VideoDTO dto = new VideoDTO();
             dto.setVideo(video);
             dto.setUsername(account.getUsername());
+            dto.setFullname(account.getFullname());
             dto.setImgUrl(account.getImgUrl());
             dto.setAccountId(account.getId());
             dtoList.add(dto);
@@ -234,11 +236,11 @@ public class VideoServiceImpl implements VideoService {
      */
     @Override
     public List<VideoDTO> getAllVideoByCourseIdToEdit(int courseId) {
-        List<Video> videos = videoRepository.findAllByCourseIdAndStatus(courseId,"active");
+        List<Video> videos = videoRepository.findAllByCourseId(courseId);
         List<VideoDTO> dtos = new ArrayList<>();
+        Course course = courseRepository.findCourseById(courseId);
+        Account account = accountRepository.findAccountById(course.getAccountId());
         for (Video video : videos) {
-            Course course = courseRepository.findCourseById(video.getCourseId());
-            Account account = accountRepository.findAccountById(course.getAccountId());
             VideoDTO dto = new VideoDTO();
             dto.setVideo(video);
             dto.setUsername(account.getUsername());
@@ -288,6 +290,7 @@ public class VideoServiceImpl implements VideoService {
                 VideoDTO dto = new VideoDTO();
                 dto.setVideo(video);
                 dto.setUsername(trainer.getUsername());
+                dto.setFullname(trainer.getFullname());
                 dto.setImgUrl(trainer.getImgUrl());
                 dto.setAccountId(trainer.getId());
                 dtos.add(dto);
@@ -304,6 +307,7 @@ public class VideoServiceImpl implements VideoService {
                 VideoDTO dto = new VideoDTO();
                 dto.setVideo(video);
                 dto.setUsername(trainer.getUsername());
+                dto.setFullname(trainer.getFullname());
                 dto.setImgUrl(trainer.getImgUrl());
                 dto.setAccountId(trainer.getId());
                 dtos.add(dto);
@@ -352,6 +356,7 @@ public class VideoServiceImpl implements VideoService {
             dto.setVideo(video);
             dto.setUsername(account.getUsername());
             dto.setImgUrl(account.getImgUrl());
+            dto.setFullname(account.getFullname());
             dto.setAccountId(account.getId());
             dtos.add(dto);
             //}
