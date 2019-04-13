@@ -71,8 +71,6 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.Vide
             }*/
 
 
-            holder.ivVideoEdit.setVisibility(View.INVISIBLE);
-
 
             holder.ln_trainer_video_item.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -127,12 +125,9 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.Vide
         public VideoHolder(View itemView) {
             super(itemView);
             ivVideoThumbnail = itemView.findViewById(R.id.iv_video_thumbnail);
-            //ivVideoStatus = itemView.findViewById(R.id.trainer_video_status);
-            ivVideoEdit = itemView.findViewById(R.id.trainer_video_edit);
             tvVideoName = itemView.findViewById(R.id.trainer_video_name);
             tvVideoCreatedTime = itemView.findViewById(R.id.tv_trainer_video_created_time);
             tvVideoViewNumber = itemView.findViewById(R.id.tv_trainer_video_view_number);
-            ivVideoEdit = itemView.findViewById(R.id.trainer_video_edit);
             ln_trainer_video_item = itemView.findViewById(R.id.ln_trainer_video_item);
             img_play = itemView.findViewById(R.id.iv_video_thumbnail_play_video);
         }

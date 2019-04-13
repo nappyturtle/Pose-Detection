@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -38,7 +39,7 @@ public class Fragment_Trainer_Channel_Course extends Fragment {
     int trainerId;
     int currentUserId;
     String token;
-    //Account accountExsited;
+    private TextView txtEmpty;
     private SharedPreferences mPerferences;
     @Nullable
     @Override
@@ -62,6 +63,7 @@ public class Fragment_Trainer_Channel_Course extends Fragment {
     private void init() {
         currentUserId = mPerferences.getInt(getString(R.string.id),0);
         rc_trainer_channel_course = view.findViewById(R.id.rc_trainer_channel_course);
+        txtEmpty = view.findViewById(R.id.fragmenttrainerChannel_course_txtVideoIsEmpty);
         courseService = new CourseService();
         enrollmentService = new EnrollmentService();
 //        if (courseDTOList == null) {
@@ -78,26 +80,20 @@ public class Fragment_Trainer_Channel_Course extends Fragment {
                 courseDTOList.add(c);
             }
         }
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        rc_trainer_channel_course.setLayoutManager(layoutManager);
-        courseAdapter = new HomeCourseAdapter(courseDTOList, getContext(), trainerId, currentUserId,token);
+        if(courseDTOList != null || courseDTOList.size() != 0) {
+            rc_trainer_channel_course.setVisibility(View.VISIBLE);
+            txtEmpty.setVisibility(View.INVISIBLE);
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+            rc_trainer_channel_course.setLayoutManager(layoutManager);
+            courseAdapter = new HomeCourseAdapter(courseDTOList, getContext(), trainerId, currentUserId, token);
 //        courseAdapter = new HomeCourseAdapter(courseDTOList, getContext(), currentUserId, trainerId);
-        rc_trainer_channel_course.setAdapter(courseAdapter);
+            rc_trainer_channel_course.setAdapter(courseAdapter);
+        }else{
+            rc_trainer_channel_course.setVisibility(View.INVISIBLE);
+            txtEmpty.setVisibility(View.VISIBLE);
+        }
 
     }
-
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        if(resultCode == -1 && data != null && data.getData() != null){
-//            accountExsited = (Account) data.getSerializableExtra("Account");
-//            currentUserId = accountExsited.getId();
-//            Log.e("da quay lai fragment-course-trainer-channel", String.valueOf(currentUserId));
-//        }
-//    }
-
 
     public void getTrainerId(int accountId, int currentUserId) {
         trainerId = accountId;

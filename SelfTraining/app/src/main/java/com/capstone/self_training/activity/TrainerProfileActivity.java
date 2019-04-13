@@ -138,6 +138,16 @@ public class TrainerProfileActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        reflect();
+        displayToolBar();
+        getAllSuggestion();
+        getAllUploadedCourse();
+        uploadVideoToStorage();
+        getAllBoughtVideo();
+    }
 
     private void reflect() {
         toolbar = (Toolbar) findViewById(R.id.toolbar_trainer_profile_id);
@@ -173,8 +183,11 @@ public class TrainerProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(TrainerProfileActivity.this, TrainerChannelActivity.class);
-                intent.putExtra("ACCOUNID_FROM_TRAINER_PROFILE", mPerferences.getInt(getString(R.string.id), 0));
-                intent.putExtra("ACCONTNAME_FROM_TRAINER_PROFILE", mPerferences.getString(getString(R.string.fullname), ""));
+                Account account = new Account();
+                account.setId(mPerferences.getInt(getString(R.string.id), 0));
+                account.setFullname(mPerferences.getString(getString(R.string.fullname),""));
+                intent.putExtra("accountTemp", account);
+
                 startActivity(intent);
             }
         });

@@ -86,33 +86,43 @@
                 android:text="view number"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
 
-            <!--<android.support.constraint.ConstraintLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--tools:layout_editor_absoluteY="59dp">-->
+            <LinearLayout
 
-                <ImageView
-                    android:id="@+id/trainer_video_status"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/trainer_video_edit"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/ic_edit"
-
-                android:visibility="visible" />
-
-            <!--</android.support.constraint.ConstraintLayout>-->
+                android:orientation="horizontal"
+                android:weightSum="10"
+                >
+                <TextView
+                    android:visibility="invisible"
+                    android:layout_weight="8"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="10dp"
+                    android:text="view number"
+                     />
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    >
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:background="@drawable/ic_small_lock"
+                        android:id="@+id/edit_img_inactive_video_by_trainer"
+                        android:visibility="invisible"
+                        />
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:background="@drawable/ic_small_earth"
+                        android:id="@+id/edit_img_active_video_by_trainer"
+                        android:visibility="invisible"
+                        />
+                </FrameLayout>
+            </LinearLayout>
 
 
         </LinearLayout>

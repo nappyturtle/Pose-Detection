@@ -92,9 +92,7 @@ public class HomeVideoAdapter extends RecyclerView.Adapter<HomeVideoAdapter.Vide
                 //Intend to Profile Activity here
                 Toast.makeText(context, "View Profile Clicked", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(context, TrainerChannelActivity.class);
-                intent.putExtra("ACCOUNID_FROM_TRAINER_PROFILE", account.getId());
-                Log.e("ACCOUNID_FROM_TRAINER_PROFILE_Fragment_home", String.valueOf(account.getId()));
-                intent.putExtra("ACCONTNAME_FROM_TRAINER_PROFILE", account.getUsername());
+                intent.putExtra("accountTemp",account);
                 context.startActivity(intent);
             }
         });

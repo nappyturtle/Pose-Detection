@@ -72,7 +72,7 @@ public class VideoInforActivity extends AppCompatActivity {
     public String statusSelected;
     private SharedPreferences mPerferences;
     private static int PICK_IMAGE_REQUEST = 1;
-    private Uri courseThumbnailUri;
+    private Uri videoThumbnailUri;
     private boolean isChooseThumbnail = false;
     private Toolbar toolbar;
     private StorageReference storageReference;
@@ -90,7 +90,7 @@ public class VideoInforActivity extends AppCompatActivity {
         setupToolbar();
 
         getDataFromIntent();
-        initCourseListAdapter();
+        initStatusListAdapter();
         openFileChooser();
         clickToEditVideoButton();
 
@@ -118,7 +118,7 @@ public class VideoInforActivity extends AppCompatActivity {
     }
 
 
-    private void initCourseListAdapter() {
+    private void initStatusListAdapter() {
 
         List<String> dataSrc = new ArrayList<String>();
 
@@ -165,8 +165,8 @@ public class VideoInforActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
                 && data != null && data.getData() != null) {
-            courseThumbnailUri = data.getData();
-            Picasso.get().load(courseThumbnailUri).into(ivVideoThumbnail);
+            videoThumbnailUri = data.getData();
+            Picasso.get().load(videoThumbnailUri).into(ivVideoThumbnail);
             isChooseThumbnail = true;
         }
     }
@@ -181,6 +181,7 @@ public class VideoInforActivity extends AppCompatActivity {
                 finish();
             }
         });
+        toolbar.setTitle(videoIntent.getTitle());
     }
 
     private void clickToEditVideoButton() {
@@ -228,7 +229,7 @@ public class VideoInforActivity extends AppCompatActivity {
 
         } else {
             StorageReference srf = storageReference.child(videoIntent.getFolderName() + "/" + edtEditVideoTitle.getText().toString().trim() + "-thumbnail");
-            srf.putFile(courseThumbnailUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            srf.putFile(videoThumbnailUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Video video = new Video();

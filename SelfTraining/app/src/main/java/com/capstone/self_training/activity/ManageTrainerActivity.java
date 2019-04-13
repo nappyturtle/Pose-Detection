@@ -41,8 +41,7 @@ public class ManageTrainerActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getApplicationContext(),TrainerChannelActivity.class);
                 //intent.putExtra("accountTemp",dtoList.get(i).getId()+"_-/-_"+dtoList.get(i).getUsername());
-                intent.putExtra("ACCOUNID_FROM_TRAINER_PROFILE",dtoList.get(i).getId());
-                intent.putExtra("ACCONTNAME_FROM_TRAINER_PROFILE",dtoList.get(i).getUsername());
+                intent.putExtra("accountTemp",dtoList.get(i));
                 startActivity(intent);
             }
         });

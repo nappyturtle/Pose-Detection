@@ -75,6 +75,10 @@ public class CourseInforActivity extends AppCompatActivity {
         Intent intent = getIntent();
         courseDTO = (CourseDTO) intent.getSerializableExtra("courseDTO");
         init();
+        openFileChooser();
+        getDataFromIntent();
+        initCategoryListAdapter();
+        initCourseListAdapter();
         clickToSaveButton();
     }
 
@@ -107,11 +111,11 @@ public class CourseInforActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        init();
-    }
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        init();
+//    }
 
     private void getDataFromIntent() {
 
@@ -121,16 +125,28 @@ public class CourseInforActivity extends AppCompatActivity {
         toolbar.setTitle(courseDTO.getCourse().getName());
     }
 
+    private boolean validateCourse() {
+        if (edtCourseName.getText().toString().equals("") || edtCourseName.getText().toString() == null) {
+            Toast.makeText(this, "Bạn chưa điền tên khóa học!", Toast.LENGTH_LONG).show();
+            return false;
+        } else if (edtCoursePrice.getText().toString().trim().equals("") || edtCoursePrice.getText().toString() == null) {
+            Toast.makeText(this, "Bạn chưa nhập giá tiền!", Toast.LENGTH_LONG).show();
+            return false;
+        } else if (Integer.parseInt(edtCoursePrice.getText().toString().trim()) < 1) {
+            Toast.makeText(this, "Giá tiền nhỏ nhất" +
+                    " 1.000 đ", Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     private void clickToSaveButton() {
 
         btnCreateCourse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (edtCoursePrice.getText().toString().equals("0")) {
-                    Toast.makeText(CourseInforActivity.this, "Xin vui lòng nhập giá tiền lớn hơn 0", Toast.LENGTH_SHORT).show();
-                } else if (edtCourseName.getText().toString().equals("")) {
-                    Toast.makeText(CourseInforActivity.this, "Xin vui lòng điền tên khóa học", Toast.LENGTH_SHORT).show();
-                } else {
+                if(validateCourse()){
                     confirmEditCourse();
                 }
             }
@@ -154,18 +170,26 @@ public class CourseInforActivity extends AppCompatActivity {
         mPerferences = PreferenceManager.getDefaultSharedPreferences(this);
         token = mPerferences.getString(getString(R.string.token), "");
         accountId = mPerferences.getInt(getString(R.string.id), 0);
+//        ivCourseThumbnail.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                openFileChooser();
+//            }
+//        });
+
+
+    }
+    private void openFileChooser() {
         ivCourseThumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openFileChooser();
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(intent, PICK_IMAGE_REQUEST);
             }
         });
-
-        getDataFromIntent();
-        initCategoryListAdapter();
-        initCourseListAdapter();
     }
-
     private void initCategoryListAdapter() {
         categoryService = new CategoryService();
         List<Category> categories = new ArrayList<>();
@@ -210,13 +234,6 @@ public class CourseInforActivity extends AppCompatActivity {
             Picasso.get().load(courseThumbnailUri).into(ivCourseThumbnail);
             isChooseThumbnail = true;
         }
-    }
-
-    private void openFileChooser() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, PICK_IMAGE_REQUEST);
     }
 
     private void setupToolbar() {

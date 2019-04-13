@@ -60,20 +60,24 @@ public class PlayBoughtVideoActivity extends AppCompatActivity implements Surfac
     private List<Video> videos;
     private SharedPreferences mPerferences;
     private SharedPreferences.Editor mEditor;
+    Video playingVideo;
+    Account account;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         isPauseMedia = false;
         super.onCreate(savedInstanceState);
 
-        final Video playingVideo = (Video) getIntent().getSerializableExtra("PLAYVIDEO");
-        Account account = (Account) getIntent().getSerializableExtra("ACCOUNT");
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        playingVideo = (Video) getIntent().getSerializableExtra("PLAYVIDEO");
+        account = (Account) getIntent().getSerializableExtra("ACCOUNT");
         mPerferences = PreferenceManager.getDefaultSharedPreferences(this);
         mEditor = mPerferences.edit();
         String token = mPerferences.getString(getString(R.string.token),"");
         int traineeId = mPerferences.getInt(getString(R.string.id),0);
 
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
+
 
         VideoService videoService = new VideoService();
         List<VideoDTO> list = videoService.getAllBoughtVideoRelated(token,traineeId,playingVideo.getCourseId(),playingVideo.getId());
@@ -113,7 +117,9 @@ public class PlayBoughtVideoActivity extends AppCompatActivity implements Surfac
             user_img.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(PlayBoughtVideoActivity.this, "View Profile Clicked", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(PlayBoughtVideoActivity.this,TrainerChannelActivity.class);
+                    intent.putExtra("accountTemp",account);
+                    startActivity(intent);
                 }
             });
 

@@ -68,6 +68,8 @@ public class TrainerUploadedCourseAdapter extends BaseAdapter {
             courseViewHolder.postTime = (TextView) convertView.findViewById(R.id.tv_uploaded_by_trainer_course_created_time);
             courseViewHolder.price = (TextView) convertView.findViewById(R.id.txtPrice_course_uploaded_by_trainer_course);
             courseViewHolder.imgEdit = (ImageView) convertView.findViewById(R.id.edit_img_course_upload_by_trainer);
+            courseViewHolder.imgActive = (ImageView) convertView.findViewById(R.id.edit_img_active_upload_by_trainer);
+            courseViewHolder.imgInactive = (ImageView) convertView.findViewById(R.id.edit_img_inactive_upload_by_trainer);
             convertView.setTag(courseViewHolder);
         }else{
             courseViewHolder = (CourseViewHolder)convertView.getTag();
@@ -88,6 +90,13 @@ public class TrainerUploadedCourseAdapter extends BaseAdapter {
             courseViewHolder.price.setText(courseDTO.getCourse().getPrice() + ".000đ");
             courseViewHolder.price.setTextColor(Color.RED);
         }
+        if(courseDTO.getCourse().getStatus().equals("active")){
+            courseViewHolder.imgActive.setVisibility(View.VISIBLE);
+            courseViewHolder.imgInactive.setVisibility(View.GONE);
+        }else{
+            courseViewHolder.imgActive.setVisibility(View.GONE);
+            courseViewHolder.imgInactive.setVisibility(View.VISIBLE);
+        }
         courseViewHolder.imgEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,6 +110,7 @@ public class TrainerUploadedCourseAdapter extends BaseAdapter {
                 }
             }
         });
+
         return convertView;
     }
 
@@ -112,6 +122,8 @@ public class TrainerUploadedCourseAdapter extends BaseAdapter {
         public TextView postTime;
         public TextView price;
         public ImageView imgEdit;
+        public ImageView imgActive;
+        public ImageView imgInactive;
     }
 
 }

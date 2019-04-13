@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.capstone.self_training.R;
 import com.capstone.self_training.adapter.VideoListAdapter;
@@ -33,6 +34,7 @@ public class Fragment_Trainer_Channel_Video extends Fragment {
     private Account trainer;
     private int currentUserId;
     private int roleId;
+    private TextView txtEmpty;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -42,6 +44,7 @@ public class Fragment_Trainer_Channel_Video extends Fragment {
         trainerAccountId = savedInstanceState.getInt("trainerAccountId");
         roleId = savedInstanceState.getInt("roleId");
         init();
+
         return view;
     }
 
@@ -53,6 +56,7 @@ public class Fragment_Trainer_Channel_Video extends Fragment {
 
     private void init() {
         rc_trainer_channel_video = view.findViewById(R.id.rc_trainer_channel_video);
+        txtEmpty = view.findViewById(R.id.fragmenttrainerChannel_video_txtVideoIsEmpty);
         videoService = new VideoService();
         if (videoList == null) {
             videoList = new ArrayList<>();
@@ -62,11 +66,16 @@ public class Fragment_Trainer_Channel_Video extends Fragment {
         accountService = new AccountService(getContext());
         trainer = accountService.getAccount(trainerAccountId);
 
-        if (videoList != null) {
+        if (videoList != null && videoList.size() != 0) {
+            rc_trainer_channel_video.setVisibility(View.VISIBLE);
+            txtEmpty.setVisibility(View.INVISIBLE);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
             rc_trainer_channel_video.setLayoutManager(layoutManager);
             videoListAdapter = new VideoListAdapter(videoList, getContext(), trainer,currentUserId,roleId);
             rc_trainer_channel_video.setAdapter(videoListAdapter);
+        }else{
+            rc_trainer_channel_video.setVisibility(View.INVISIBLE);
+            txtEmpty.setVisibility(View.VISIBLE);
         }
     }
 

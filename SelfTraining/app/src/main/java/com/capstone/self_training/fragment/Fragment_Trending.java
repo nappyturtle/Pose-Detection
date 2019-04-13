@@ -134,9 +134,10 @@ public class Fragment_Trending extends Fragment {
                 Account account = new Account();
                 account.setUsername(dto.getUsername());
                 account.setImgUrl(dto.getImgUrl());
+                account.setFullname(dto.getFullname());
                 account.setId(dto.getAccountId());
                 accounts.add(account);
-                //trendingVideoAdapter.notifyDataSetChanged();
+                trendingVideoAdapter.notifyDataSetChanged();
             }
         }
     }

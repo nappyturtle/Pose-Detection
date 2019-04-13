@@ -55,7 +55,6 @@ public class BoughtVideoAdapter extends BaseAdapter {
             videoViewHolder.videoName = (TextView) convertView.findViewById(R.id.trainer_video_name);
             videoViewHolder.createdTime = (TextView) convertView.findViewById(R.id.tv_trainer_video_created_time);
             videoViewHolder.numberOfView = (TextView) convertView.findViewById(R.id.tv_trainer_video_view_number);
-            videoViewHolder.trainer_video_edit = (ImageView) convertView.findViewById(R.id.trainer_video_edit);
             convertView.setTag(videoViewHolder);
         } else {
             videoViewHolder = (VideoViewHolder) convertView.getTag();
@@ -65,7 +64,6 @@ public class BoughtVideoAdapter extends BaseAdapter {
         videoViewHolder.videoName.setText(model.getTitle());
         videoViewHolder.createdTime.setText(TimeHelper.showPeriodOfTime(model.getCreatedTime()));
         videoViewHolder.numberOfView.setText(model.getNumOfView() + " lượt xem");
-        videoViewHolder.trainer_video_edit.setVisibility(View.INVISIBLE);
         return convertView;
     }
 
@@ -74,7 +72,6 @@ public class BoughtVideoAdapter extends BaseAdapter {
         public TextView videoName;
         public TextView createdTime;
         public TextView numberOfView;
-        public ImageView trainer_video_edit;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.capstone.self_training.activity;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -7,14 +8,17 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -26,6 +30,7 @@ import com.capstone.self_training.model.Course;
 import com.capstone.self_training.service.dataservice.CategoryService;
 import com.capstone.self_training.service.dataservice.CourseService;
 import com.capstone.self_training.util.Constants;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
@@ -43,7 +48,7 @@ public class CreateCourseActivity extends AppCompatActivity {
     private EditText edtCoursePrice;
     private ImageView ivCourseThumbnail;
     private Toolbar toolbar;
-
+    private LinearLayout lnStatus;
     private static int PICK_IMAGE_REQUEST = 1;
 
     private StorageReference storageReference;
@@ -59,8 +64,8 @@ public class CreateCourseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_course);
 
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
+//        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+//        StrictMode.setThreadPolicy(policy);
 
         init();
     }
@@ -68,6 +73,8 @@ public class CreateCourseActivity extends AppCompatActivity {
     private void init() {
         edtCourseName = findViewById(R.id.edtCourseName);
         spnCate = findViewById(R.id.spnCate);
+        lnStatus = findViewById(R.id.lnStatusCourse);
+        lnStatus.setVisibility(View.GONE);
         edtCoursePrice = findViewById(R.id.edtCoursePrice);
         ivCourseThumbnail = findViewById(R.id.ivCourseThumbnail);
         toolbar = findViewById(R.id.toolbar_create_course);
@@ -133,13 +140,7 @@ public class CreateCourseActivity extends AppCompatActivity {
     }
 
     public void createCours(View view) {
-        /*if (edtCourseName.getText().toString().trim().equalsIgnoreCase("") || edtCourseName.getText().toString().trim() == null) {
-            Toast.makeText(this, "Bạn chưa nhập tên khóa học.", Toast.LENGTH_LONG).show();
-        }
 
-        if (!isChooseThumbnail) {
-            Toast.makeText(this, "Bạn chưa chọn hình nền cho khóa học.", Toast.LENGTH_LONG).show();
-        }*/
         if (validateNewCourse()) {
             confirmCreateCourse();
         }
@@ -154,8 +155,7 @@ public class CreateCourseActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 createCourse();
-                Intent intent = new Intent(getApplicationContext(),TrainerProfileActivity.class);
-                startActivity(intent);
+
             }
         });
         alertDialog.setNegativeButton("Không", new DialogInterface.OnClickListener() {
@@ -192,19 +192,25 @@ public class CreateCourseActivity extends AppCompatActivity {
                 newCourse.setCategoryId(category.getId());
                 newCourse.setPrice(Integer.parseInt(edtCoursePrice.getText().toString().trim()));
 
-                String token = sharedPreferences.getString(getString(R.string.token), "");
-
                 CourseService courseService = new CourseService();
-                courseService.createCourse(token, newCourse);
+                courseService.createCourse(sharedPreferences.getString(getString(R.string.token), ""), newCourse);
 
                 Toast.makeText(CreateCourseActivity.this, "Tạo khóa học thành công!", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(CreateCourseActivity.this,TrainerProfileActivity.class);
+                startActivity(intent);
             }
+        }).addOnFailureListener(new OnFailureListener() {
+                @SuppressLint("LongLogTag")
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.e("Upload thumbnail course: ", e.getMessage());
+                }
         }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                 double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
                 progressDialog.setMessage("Hoàn thành " + (int) progress + "%...");
-                if (progress == 100) {
+                if ((int) progress == 100) {
                     progressDialog.dismiss();
                 }
             }

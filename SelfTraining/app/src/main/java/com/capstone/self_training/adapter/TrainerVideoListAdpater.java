@@ -34,6 +34,7 @@ public class TrainerVideoListAdpater extends RecyclerView.Adapter<TrainerVideoLi
     private SharedPreferences mPerferences;
     private int currentUserId;
     private AccountService accountService;
+
     public TrainerVideoListAdpater(List<Video> listVideo, int trainerId, Context context) {
         this.trainerId = trainerId;
         this.listVideo = listVideo;
@@ -59,38 +60,25 @@ public class TrainerVideoListAdpater extends RecyclerView.Adapter<TrainerVideoLi
             holder.tvVideoCreatedTime.setText(TimeHelper.showPeriodOfTime(video.getCreatedTime()));
             holder.tvVideoViewNumber.setText(video.getNumOfView() + " lượt xem");
 
-            holder.ivVideoEdit.setVisibility(View.INVISIBLE);
             accountService = new AccountService(context);
-//            holder.ln_trainer_video_item.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//
-//                    Intent intent = new Intent(context, VideoInforActivity.class);
-//                    intent.putExtra("EDIT_VIDEO", video);
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                    ((Activity) context).startActivityForResult(intent, TrainerVideoListActivity.REQUEST_CODE_EDIT_VIDEO);
-//
-//                }
-//            });
-//            holder.img_play.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Intent intent = new Intent(context, TrainerVideoUploadedActivity.class);
-//                    intent.putExtra("videoUrl", video.getContentUrl());
-//                    context.startActivity(intent);
-//                }
-//            });
+            if (video.getStatus().equals("active")) {
+                holder.imgActive.setVisibility(View.VISIBLE);
+                holder.imgInactive.setVisibility(View.INVISIBLE);
+            } else {
+                holder.imgActive.setVisibility(View.INVISIBLE);
+                holder.imgInactive.setVisibility(View.VISIBLE);
+            }
+
             holder.ln_trainer_video_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(currentUserId == trainerId){
+                    if (currentUserId == trainerId) {
 //                    if(currentUserId != 0 && roleId == 3){
                         Intent intent = new Intent(context, VideoInforActivity.class);
                         intent.putExtra("EDIT_VIDEO", video);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        ((Activity)context).startActivityForResult(intent, TrainerVideoListActivity.REQUEST_CODE_EDIT_VIDEO);
-                    }
-                    else {
+                        ((Activity) context).startActivityForResult(intent, TrainerVideoListActivity.REQUEST_CODE_EDIT_VIDEO);
+                    } else {
                         Intent intent = new Intent(context, PlayVideoActivity.class);
                         intent.putExtra("PLAYVIDEO", video);
                         intent.putExtra("ACCOUNT", accountService.getAccount(trainerId));
@@ -102,12 +90,11 @@ public class TrainerVideoListAdpater extends RecyclerView.Adapter<TrainerVideoLi
             holder.img_play.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(currentUserId == trainerId) {
+                    if (currentUserId == trainerId) {
                         Intent intent = new Intent(context, TrainerVideoUploadedActivity.class);
                         intent.putExtra("videoUrl", video.getContentUrl());
                         context.startActivity(intent);
-                    }
-                    else {
+                    } else {
                         Intent intent = new Intent(context, PlayVideoActivity.class);
                         intent.putExtra("PLAYVIDEO", video);
                         intent.putExtra("ACCOUNT", accountService.getAccount(trainerId));
@@ -126,7 +113,7 @@ public class TrainerVideoListAdpater extends RecyclerView.Adapter<TrainerVideoLi
 
     public class VideoHolder extends RecyclerView.ViewHolder {
 
-        private ImageView ivVideoThumbnail, img_play, ivVideoEdit;
+        private ImageView ivVideoThumbnail, img_play, ivVideoEdit, imgActive, imgInactive;
         private TextView tvVideoName, tvVideoCreatedTime, tvVideoViewNumber;
         private LinearLayout ln_trainer_video_item;
 
@@ -134,13 +121,13 @@ public class TrainerVideoListAdpater extends RecyclerView.Adapter<TrainerVideoLi
             super(itemView);
             ivVideoThumbnail = itemView.findViewById(R.id.iv_video_thumbnail);
             //ivVideoStatus = itemView.findViewById(R.id.trainer_video_status);
-            ivVideoEdit = itemView.findViewById(R.id.trainer_video_edit);
             tvVideoName = itemView.findViewById(R.id.trainer_video_name);
             tvVideoCreatedTime = itemView.findViewById(R.id.tv_trainer_video_created_time);
             tvVideoViewNumber = itemView.findViewById(R.id.tv_trainer_video_view_number);
-            ivVideoEdit = itemView.findViewById(R.id.trainer_video_edit);
             ln_trainer_video_item = itemView.findViewById(R.id.ln_trainer_video_item);
             img_play = itemView.findViewById(R.id.iv_video_thumbnail_play_video);
+            imgActive = itemView.findViewById(R.id.edit_img_active_video_by_trainer);
+            imgInactive = itemView.findViewById(R.id.edit_img_inactive_video_by_trainer);
         }
     }
 }

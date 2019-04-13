@@ -46,8 +46,8 @@ public class TrainerUploadedCourseActivity extends AppCompatActivity {
     private TraineeRegisteredActivityAdapter traineeRegisteredActivityAdapter;
     private List<CourseDTO> courseList;
     private List<Account> traineeList;
-    private int page = 0;
-    private int size = 4;
+    private int page;
+    private int size;
     boolean limitedData = false;
     boolean isLoading = false;
     private LinearLayoutManager linearLayoutManager;
@@ -70,7 +70,8 @@ public class TrainerUploadedCourseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_trainer_uploaded_course);
         if (CheckConnection.haveNetworkConnection(this)) {
             reflect();
-
+            page = 0;
+            size = 5;
             displayToolBar();
             getItemCourse();
             loadDataListView(page,size);
@@ -205,6 +206,14 @@ public class TrainerUploadedCourseActivity extends AppCompatActivity {
             traineeList = loadRecyclerView(courseList);
         }
     }
+    /**
+     * @author KietPT
+     * @since 13/4/2019
+     *
+     * - lấy danh sách các traiee đã mua khóa học của trainer này
+     * - for đầu tiên để lấy hết tất cả các record trong bảng enrollment, ứng với những courseId mà trainer đó sỡ hữu
+     * - for thứ 2 dùng để xóa đi những record có account trùng nhau
+     */
     private List<Account> loadRecyclerView(List<CourseDTO> courseList){
         for(CourseDTO dto : courseList){
             List<Account> accountList = dto.getTraineeList();
@@ -266,7 +275,7 @@ public class TrainerUploadedCourseActivity extends AppCompatActivity {
 
         displayToolBar();
         getItemCourse();
-        loadDataListView(0,size);
+        loadDataListView(0,5);
         loadMoreDataListview();
         getAllTrainee();
     }

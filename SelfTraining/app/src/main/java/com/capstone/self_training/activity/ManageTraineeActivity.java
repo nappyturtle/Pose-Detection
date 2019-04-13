@@ -40,7 +40,7 @@ public class ManageTraineeActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getApplicationContext(),TraineeChannelActivity.class);
-                intent.putExtra("accountTemp",dtoList.get(i).getId()+"_-/-_"+dtoList.get(i).getUsername());
+                intent.putExtra("accountTemp",dtoList.get(i));
                 startActivity(intent);
             }
         });

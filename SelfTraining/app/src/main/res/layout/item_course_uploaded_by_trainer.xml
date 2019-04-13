@@ -7,7 +7,7 @@
 
     <FrameLayout
         android:layout_width="170dp"
-        android:layout_height="120dp"
+        android:layout_height="110dp"
         android:layout_margin="5dp"
         android:background="@android:color/black"
         android:padding="1dp">
@@ -71,49 +71,41 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:ellipsize="end"
-            android:maxLines="2"
+            android:maxLines="1"
             android:text="Course Name is too long to fix in this space!"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
             android:textStyle="bold"
             />
 
-        <TextView
-            android:id="@+id/tv_uploaded_by_trainer_trainer_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="1dp"
-            android:gravity="center_vertical"
-            android:text="vuvg"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
+            android:orientation="horizontal"
+            android:weightSum="10"
+            >
             <TextView
+                android:id="@+id/tv_uploaded_by_trainer_trainer_name"
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="1dp"
+                android:gravity="center_vertical"
+                android:text="vuvg"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                 />
+            <TextView
+                android:layout_weight="6"
                 android:id="@+id/tv_uploaded_by_trainer_course_created_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_marginVertical="1dp"
                 android:gravity="center_vertical"
                 android:text="10 ngày trước"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
-
-            <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginHorizontal="10dp"-->
-            <!--android:text="-" />-->
-
-            <!--<TextView-->
-            <!--android:id="@+id/tv_bought_course_regis_quantity"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginVertical="1dp"-->
-            <!--android:gravity="center_vertical"-->
-            <!--android:text="20 lượt đăng kí"-->
-            <!--android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />-->
+                android:textSize="14sp"
+                android:textStyle="bold"
+                 />
 
         </LinearLayout>
 
@@ -123,7 +115,6 @@
             android:orientation="horizontal"
             android:weightSum="10"
             >
-
             <TextView
                 android:layout_weight="8"
                 android:id="@+id/txtPrice_course_uploaded_by_trainer_course"
@@ -136,10 +127,40 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="10"
+            >
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="8"
+                >
+                <ImageView
+                    android:visibility="invisible"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/ic_small_lock"
+                    android:id="@+id/edit_img_inactive_upload_by_trainer"
+                    />
+                <ImageView
+                    android:visibility="invisible"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/ic_small_earth"
+                    android:id="@+id/edit_img_active_upload_by_trainer"
+                    />
+            </FrameLayout>
+
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:background="@drawable/ic_edit"
                 android:id="@+id/edit_img_course_upload_by_trainer"
                 />

@@ -55,6 +55,15 @@ public class TraineeProfileActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        reflect();
+        displayToolBar();
+        getAllSuggestion();
+        getAllBoughtCourse();
+    }
+
     public void updateProfileTrainee(View view) {
         Intent intent = new Intent(getApplicationContext(), UpdateProfileActivity.class);
         intent.putExtra("USER_ID", mPerferences.getInt(getString(R.string.id),0));

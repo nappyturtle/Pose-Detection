@@ -22,6 +22,7 @@ import com.capstone.self_training.fragment.Fragment_Home;
 import com.capstone.self_training.fragment.Fragment_Trainer_Channel_Course;
 import com.capstone.self_training.fragment.Fragment_Trainer_Channel_Intro;
 import com.capstone.self_training.fragment.Fragment_Trainer_Channel_Video;
+import com.capstone.self_training.model.Account;
 
 
 public class TrainerChannelActivity extends AppCompatActivity {
@@ -30,8 +31,7 @@ public class TrainerChannelActivity extends AppCompatActivity {
     private TabLayout tabLayout_trainer_channel;
     private ViewPager viewPager_trainer_channel;
     private SharedPreferences mPerferences;
-    private int trainerId;
-    private String trainerName;
+    private Account accountTemp;
     private static final int REQUEST_CODE_LOGIN = 0x9345;
 
     @Override
@@ -61,14 +61,13 @@ public class TrainerChannelActivity extends AppCompatActivity {
 //    }
 
     private void init() {
+        accountTemp = (Account) getIntent().getSerializableExtra("accountTemp");
 
-        trainerId = getIntent().getIntExtra("ACCOUNID_FROM_TRAINER_PROFILE", 0);
-        trainerName = getIntent().getStringExtra("ACCONTNAME_FROM_TRAINER_PROFILE");
         mPerferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         //toolbar
         toolbar_trainer_channel = findViewById(R.id.toolbar_trainer_channel);
-        toolbar_trainer_channel.setTitle(trainerName);
+        toolbar_trainer_channel.setTitle(accountTemp.getFullname());
         displayToolBar();
 
         tabLayout_trainer_channel = findViewById(R.id.tabLayout_trainer_channel);
@@ -77,17 +76,17 @@ public class TrainerChannelActivity extends AppCompatActivity {
         MainViewPager mainViewPager = new MainViewPager(getSupportFragmentManager());
 
         Fragment_Trainer_Channel_Video fragment_trainer_channel_video = Fragment_Trainer_Channel_Video.newInstance
-                (trainerId, mPerferences.getInt(getString(R.string.id), 0), mPerferences.getInt(getString(R.string.roleId), 0));
+                (accountTemp.getId(), mPerferences.getInt(getString(R.string.id), 0), mPerferences.getInt(getString(R.string.roleId), 0));
         //fragment_trainer_channel_video.getTrainerId(trainerId);
         mainViewPager.addFragment(fragment_trainer_channel_video, "Video", TrainerChannelActivity.this);
 
-        Fragment_Trainer_Channel_Course fragment_trainer_channel_course = Fragment_Trainer_Channel_Course.newInstance(trainerId,
+        Fragment_Trainer_Channel_Course fragment_trainer_channel_course = Fragment_Trainer_Channel_Course.newInstance(accountTemp.getId(),
                 mPerferences.getInt(getString(R.string.id), 0),mPerferences.getString(getString(R.string.token),""));
         //fragment_trainer_channel_course.getTrainerId(trainerId, mPerferences.getInt(getString(R.string.id), 0));
         mainViewPager.addFragment(fragment_trainer_channel_course, "Khóa học", TrainerChannelActivity.this);
 
         Fragment_Trainer_Channel_Intro fragment_trainer_channel_intro = new Fragment_Trainer_Channel_Intro();
-        fragment_trainer_channel_intro.getTrainerId(trainerId);
+        fragment_trainer_channel_intro.getTrainerId(accountTemp.getId());
         mainViewPager.addFragment(fragment_trainer_channel_intro, "Giới thiệu", TrainerChannelActivity.this);
 
         viewPager_trainer_channel.setAdapter(mainViewPager);

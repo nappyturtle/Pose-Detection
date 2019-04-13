@@ -84,6 +84,7 @@
             android:layout_marginVertical="1dp"
             android:gravity="center_vertical"
             android:text="vuvg"
+            android:textStyle="bold"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
 
         <LinearLayout
@@ -98,6 +99,7 @@
                 android:layout_marginVertical="1dp"
                 android:gravity="center_vertical"
                 android:text="10 ngày trước"
+                android:textStyle="bold"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
 
             <!--<TextView-->

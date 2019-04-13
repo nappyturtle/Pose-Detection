@@ -113,7 +113,7 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
                 this.start();
             }
         };
-        timer.start();
+//        timer.start();
 
     }
 

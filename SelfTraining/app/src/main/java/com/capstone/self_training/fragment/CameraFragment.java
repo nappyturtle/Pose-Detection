@@ -91,6 +91,7 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
     SpeechRecognizer mSpeechRecognizer;
     Intent mSpeechRecognizerIntent;
     Boolean check = false;
+
     public CameraFragment() {
         // Required empty public constructor
     }
@@ -148,7 +149,7 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
                 RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE,
                 Locale.getDefault());
-
+        startTest();
         mSpeechRecognizer.setRecognitionListener(new RecognitionListener() {
             @Override
             public void onReadyForSpeech(Bundle params) {
@@ -215,7 +216,6 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
         mEditor = mPerferences.edit();
         mPerferences2 = PreferenceManager.getDefaultSharedPreferences(getContext());
         mEditor2 = mPerferences2.edit();
-        startTest();
         mTimer = new CountDownTimer(2500, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -395,6 +395,7 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
         super.onDestroyView();
         unbinder.unbind();
     }
+
     private void startVideoRecordByVoice() {
         if (mIsRecordingVideo) {
             Toast.makeText(getContext(), "Đang quay..", Toast.LENGTH_SHORT).show();
@@ -405,10 +406,11 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
             check = true;
         }
     }
+
     private void stopVideoRecordByVoice() {
-        if (check == false){
+        if (check == false) {
             Toast.makeText(getContext(), "Chưa bắt đầu quay..", Toast.LENGTH_SHORT).show();
-        }else{
+        } else {
             try {
                 stopRecordingVideo();
                 stopTest();
@@ -434,10 +436,9 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
                 e.printStackTrace();
             }
         }
-        
+
     }
 
-    
 
     private void closeAll() {
         AudioManager audioManager;

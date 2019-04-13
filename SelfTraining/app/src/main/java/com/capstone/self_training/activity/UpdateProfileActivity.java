@@ -183,7 +183,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
                     Log.e("imgAccountda commit = ", mPerferences.getString(getString(R.string.imgAccount), ""));
                     Account accountToEdit = setAccountToEdit(taskSnapshot.getDownloadUrl().toString());
                     accountService.updateProfile(mPerferences.getString(getString(R.string.token), ""),accountToEdit);
-
+                    progressDialog.dismiss();
                     Toast.makeText(UpdateProfileActivity.this, "Cập nhập thành công!", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent();
                     intent.putExtra("imgAccount", mPerferences.getString(getString(R.string.imgAccount), ""));
@@ -205,6 +205,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
         } else {
             Account accountToEdit = setAccountToEdit(currentUser.getImgUrl());
             accountService.updateProfile(mPerferences.getString(getString(R.string.token),""),accountToEdit);
+            progressDialog.dismiss();
             Intent intent = new Intent();
             intent.putExtra("imgAccount", mPerferences.getString(getString(R.string.imgAccount), ""));
             intent.putExtra("fullname", mPerferences.getString(getString(R.string.fullname), ""));

@@ -9,6 +9,15 @@ public class VideoDTO implements Serializable {
     private String username;
     private String imgUrl;
     private int accountId;
+    private String fullname;
+
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
+    }
 
     public int getAccountId() {
         return accountId;

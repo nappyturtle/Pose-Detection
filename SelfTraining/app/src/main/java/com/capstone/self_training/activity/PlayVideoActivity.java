@@ -73,28 +73,7 @@ public class PlayVideoActivity extends AppCompatActivity implements SurfaceHolde
 
         playingVideo = (Video) getIntent().getSerializableExtra("PLAYVIDEO");
         account = (Account) getIntent().getSerializableExtra("ACCOUNT");
-//        String jsonPlayingVideo = "",jsonAccount="",jsonPlayingVideoPre="",jsonAccountPre="";
-//        Gson gson = new Gson();
-//        if(playingVideo == null || account == null){
-//            Log.e("playVideo = null ",String.valueOf(playingVideo.getId()));
-//            Log.e("account = null ",String.valueOf(account.getId()));
-//            jsonPlayingVideoPre = mSharedPreferences.getString("PLAYVIDEO", "");
-//            jsonAccountPre = mSharedPreferences.getString("ACCOUNT", "");
-//
-//            playingVideo = gson.fromJson(jsonPlayingVideoPre, Video.class);
-//            account = gson.fromJson(jsonAccountPre, Account.class);
-//
-//        }else{
-//            Log.e("playVideo != null ",String.valueOf(playingVideo.getId()));
-//            Log.e("account != null ",String.valueOf(account.getId()));
-//            jsonPlayingVideo = gson.toJson(playingVideo);
-//            mEditor.putString("PLAYVIDEO", jsonPlayingVideo);
-//            mEditor.commit();
-//
-//            jsonAccount = gson.toJson(account);
-//            mEditor.putString("ACCOUNT", jsonAccount);
-//            mEditor.commit();
-//        }
+
 
         VideoService videoService = new VideoService();
         List<VideoDTO> list = videoService.getAllVideosRelatedByCourseId(playingVideo.getCourseId(), playingVideo.getId());
@@ -134,7 +113,9 @@ public class PlayVideoActivity extends AppCompatActivity implements SurfaceHolde
             user_img.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(PlayVideoActivity.this, "View Profile Clicked", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(PlayVideoActivity.this,TrainerChannelActivity.class);
+                    intent.putExtra("accountTemp",account);
+                    startActivity(intent);
                 }
             });
 

@@ -143,10 +143,11 @@ public class Fragment_Home extends Fragment {
                 videos.add(dto.getVideo());
                 Account account = new Account();
                 account.setUsername(dto.getUsername());
+                account.setFullname(dto.getFullname());
                 account.setImgUrl(dto.getImgUrl());
                 account.setId(dto.getAccountId());
                 accounts.add(account);
-                //homeVideoAdapter.notifyDataSetChanged();
+                homeVideoAdapter.notifyDataSetChanged();
             }
         }
     }

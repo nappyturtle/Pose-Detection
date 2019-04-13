@@ -45,9 +45,12 @@ public class TrainerVideoListActivity extends AppCompatActivity {
 
 //        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 //        StrictMode.setThreadPolicy(policy);
-
+        Intent intent = getIntent();
+        courseId = intent.getIntExtra("courseId",0);
+        trainerId = intent.getIntExtra("trainerId",0);
         init();
         getDataRecyclerView(courseId);
+        setupToolbar();
     }
 
     private void setupToolbar() {
@@ -72,6 +75,8 @@ public class TrainerVideoListActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         init();
+        getDataRecyclerView(courseId);
+        setupToolbar();
     }
 
     private void init() {
@@ -83,14 +88,14 @@ public class TrainerVideoListActivity extends AppCompatActivity {
         mPerferences = PreferenceManager.getDefaultSharedPreferences(this);
         token = mPerferences.getString(getString(R.string.token),"");
         txtVideoListTrainerIsEmpty = findViewById(R.id.txtVideoListTrainerIsEmpty);
-        if (videos == null) {
+        //if (videos == null) {
             videos = new ArrayList<>();
-        }
+        //}
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         rcListVideo.setLayoutManager(layoutManager);
         videoListAdapter = new TrainerVideoListAdpater(videos, trainerId, TrainerVideoListActivity.this);
         rcListVideo.setAdapter(videoListAdapter);
-        setupToolbar();
+
     }
     private void getDataRecyclerView(int courseId){
         videoService = new VideoService();

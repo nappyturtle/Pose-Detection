@@ -50,8 +50,7 @@ public class BoughtTrainerCourseAdapter extends RecyclerView.Adapter<BoughtTrain
             public void onClick(View v) {
                 Intent intent = new Intent(context,TrainerChannelActivity.class);
                 //intent.putExtra("accountTemp",account.getId()+"_-/-_"+account.getUsername());
-                intent.putExtra("ACCOUNID_FROM_TRAINER_PROFILE",account.getId());
-                intent.putExtra("ACCONTNAME_FROM_TRAINER_PROFILE",account.getUsername());
+                intent.putExtra("accountTemp",account);
                 context.startActivity(intent);
             }
         });

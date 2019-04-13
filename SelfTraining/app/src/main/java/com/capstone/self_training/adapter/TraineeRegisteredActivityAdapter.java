@@ -50,7 +50,7 @@ public class TraineeRegisteredActivityAdapter extends RecyclerView.Adapter<Train
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, TraineeChannelActivity.class);
-                intent.putExtra("accountTemp", account.getId() + "_-/-_" + account.getUsername());
+                intent.putExtra("accountTemp", account);
                 context.startActivity(intent);
             }
         });

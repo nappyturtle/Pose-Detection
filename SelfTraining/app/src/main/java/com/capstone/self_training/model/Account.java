@@ -51,6 +51,17 @@ public class Account implements Serializable {
     @SerializedName("fullname")
     @Expose
     private String fullname;
+    @SerializedName("prevStatus")
+    @Expose
+    private String prevStatus;
+
+    public String getPrevStatus() {
+        return prevStatus;
+    }
+
+    public void setPrevStatus(String prevStatus) {
+        this.prevStatus = prevStatus;
+    }
 
     public String getFullname() {
         return fullname;
