@@ -70,8 +70,6 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
     private static final String VIDEO_DIRECTORY_NAME = "Seft_Training";
     private SharedPreferences mPerferences;
     private SharedPreferences.Editor mEditor;
-    private SharedPreferences mPerferences2;
-    private SharedPreferences.Editor mEditor2;
     // @BindView(R.id.mTextureView)
     AutoFitTextureView mTextureView;
     // @BindView(R.id.mRecordVideo)
@@ -95,7 +93,6 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
     public CameraFragment() {
         // Required empty public constructor
     }
-
 
     public static CameraFragment newInstance() {
         CameraFragment fragment = new CameraFragment();
@@ -214,8 +211,6 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
         editText_Camera = (EditText) view.findViewById(R.id.editText_CameraFragment);
         mPerferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         mEditor = mPerferences.edit();
-        mPerferences2 = PreferenceManager.getDefaultSharedPreferences(getContext());
-        mEditor2 = mPerferences2.edit();
         mTimer = new CountDownTimer(1500, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -288,8 +283,8 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
                         } catch (Exception e) {
                             Log.e(TAG, "Exception:" + e.toString());
                         }
-                        mEditor2.putString(getString(R.string.resultVideo), mOutputFilePath);
-                        mEditor2.commit();
+                        mEditor.putString(getString(R.string.resultVideo), mOutputFilePath);
+                        mEditor.commit();
                         Activity acti = getActivity();
                         acti.finish();
                     } catch (Exception e) {
@@ -428,15 +423,14 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
                 } catch (Exception e) {
                     Log.e(TAG, "Exception:" + e.toString());
                 }
-                mEditor2.putString(getString(R.string.resultVideo), mOutputFilePath);
-                mEditor2.apply();
+                mEditor.putString(getString(R.string.resultVideo), mOutputFilePath);
+                mEditor .apply();
                 Activity acti = getActivity();
                 acti.finish();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
     }
 
 
