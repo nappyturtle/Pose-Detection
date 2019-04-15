@@ -119,7 +119,7 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
                     mEditor.putString(getString(R.string.testSpeech), editText_Camera.getText().toString());
                     mEditor.apply();
                 }
-                handler.postDelayed(test, 4000);
+                handler.postDelayed(test, 2500);
             }
         }
     };
@@ -130,7 +130,7 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
     }
 
     public void startTest() {
-        handler.postDelayed(test, 1000);
+        handler.postDelayed(test, 0);
     }
 
     @Override
@@ -216,7 +216,7 @@ public class CameraFragment extends CameraVideoFragment implements OnBackPressed
         mEditor = mPerferences.edit();
         mPerferences2 = PreferenceManager.getDefaultSharedPreferences(getContext());
         mEditor2 = mPerferences2.edit();
-        mTimer = new CountDownTimer(2500, 1000) {
+        mTimer = new CountDownTimer(1500, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
 

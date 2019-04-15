@@ -121,6 +121,21 @@ public class UpdateProfileActivity extends AppCompatActivity {
         }
     }
 
+    private boolean validateInfo() {
+        if (edtFullname.getText().toString().equals("") || edtFullname.getText().toString() == null) {
+            Toast.makeText(this, "Bạn chưa điền tên đầy đủ!", Toast.LENGTH_LONG).show();
+            return false;
+        } else if (edtEmail.getText().toString().equals("") || edtEmail.getText().toString() == null) {
+            Toast.makeText(this, "Bạn chưa điền email!", Toast.LENGTH_LONG).show();
+            return false;
+        } else if (edtPhone.getText().toString().equals("") || edtPhone.getText().toString() == null) {
+            Toast.makeText(this, "Bạn chưa điền số điện thoại!", Toast.LENGTH_LONG).show();
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     private static final int READ_REQUEST_CODE = 42;
 
     public void openImageChooser(View view) {
@@ -162,7 +177,11 @@ public class UpdateProfileActivity extends AppCompatActivity {
     }
 
     public void updateProfileInfo(View view) {
-        confirmUpdateProfile();
+        if(validateInfo()) {
+            confirmUpdateProfile();
+        }else{
+            Toast.makeText(this, "Xin vui lòng điền những thông tin cần thiết", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void clickYesButton() {
@@ -182,7 +201,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
                     mEditor.commit();
                     Log.e("imgAccountda commit = ", mPerferences.getString(getString(R.string.imgAccount), ""));
                     Account accountToEdit = setAccountToEdit(taskSnapshot.getDownloadUrl().toString());
-                    accountService.updateProfile(mPerferences.getString(getString(R.string.token), ""),accountToEdit);
+                    accountService.updateProfile(mPerferences.getString(getString(R.string.token), ""), accountToEdit);
                     progressDialog.dismiss();
                     Toast.makeText(UpdateProfileActivity.this, "Cập nhập thành công!", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent();
@@ -204,7 +223,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
             });
         } else {
             Account accountToEdit = setAccountToEdit(currentUser.getImgUrl());
-            accountService.updateProfile(mPerferences.getString(getString(R.string.token),""),accountToEdit);
+            accountService.updateProfile(mPerferences.getString(getString(R.string.token), ""), accountToEdit);
             progressDialog.dismiss();
             Intent intent = new Intent();
             intent.putExtra("imgAccount", mPerferences.getString(getString(R.string.imgAccount), ""));

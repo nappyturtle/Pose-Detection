@@ -188,7 +188,12 @@ public class VideoInforActivity extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                confirmEditVideo();
+                if(validateVideo()){
+                    confirmEditVideo();
+                }else{
+                    Toast.makeText(VideoInforActivity.this, "Xin vui lòng nhập những thông tin cần thiết", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }
@@ -295,6 +300,15 @@ public class VideoInforActivity extends AppCompatActivity {
             }
         });
         alertDialog.show();
+    }
+
+    private boolean validateVideo() {
+        if (edtEditVideoTitle.getText().toString().equals("") || edtEditVideoTitle.getText().toString() == null) {
+            Toast.makeText(this, "Bạn chưa điền tên khóa học!", Toast.LENGTH_LONG).show();
+            return false;
+        } else {
+            return true;
+        }
     }
 
 }

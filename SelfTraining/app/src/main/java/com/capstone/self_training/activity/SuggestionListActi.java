@@ -120,7 +120,7 @@ public class SuggestionListActi extends AppCompatActivity {
         });
     }
 
-    private void getData(int page, int size) {
+    private void  getData(int page, int size) {
 
 //        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 //        StrictMode.setThreadPolicy(policy);

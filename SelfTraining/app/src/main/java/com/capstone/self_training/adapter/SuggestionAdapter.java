@@ -46,7 +46,7 @@ public class SuggestionAdapter extends BaseAdapter {
         return position;
     }
 
-    private class ViewHolder {
+    public class ViewHolder {
         ImageView suggestion_image;
         TextView suggestion_name;
         TextView suggestion_date;

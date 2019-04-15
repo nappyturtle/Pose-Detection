@@ -289,7 +289,7 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
 
     private void uploadFileToFirebase() {
         final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Uploading");
+        progressDialog.setTitle("Đang xử lí");
         progressDialog.show();
 
         String username = mPerferences.getString(getString(R.string.username), "");
