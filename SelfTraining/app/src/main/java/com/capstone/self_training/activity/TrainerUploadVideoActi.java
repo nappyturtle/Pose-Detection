@@ -58,7 +58,7 @@ import org.jcodec.common.io.NIOUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.channels.SeekableByteChannel;
+import org.jcodec.common.io.SeekableByteChannel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -237,9 +237,9 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
                     Toast.makeText(TrainerUploadVideoActi.this, "Xin vui lòng điền đầy đủ thông tin video trước khi đăng", Toast.LENGTH_SHORT).show();
                 }
                 if (checked) {
-                    Toast.makeText(TrainerUploadVideoActi.this, "da vao upload video", Toast.LENGTH_SHORT).show();
-                    //checkVideoLength();
-                    confirmUploadingVideo();
+                    if(checkVideoLength()){
+                        confirmUploadingVideo();
+                    }
                 }
             }
         });
@@ -263,25 +263,27 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
         startActivityForResult(Intent.createChooser(intent, "Select a Video "), SELECT_VIDEO);
     }
 
-//    private void checkVideoLength() {
-//        double frameRate = 0;
-//        try {
-//            SeekableByteChannel bc = (SeekableByteChannel) NIOUtils.readableFileChannel(String.valueOf(selectedPath));
-//            DemuxerTrack vt;
-//            try (MP4Demuxer dm = new MP4Demuxer((org.jcodec.common.io.SeekableByteChannel) bc)) {
-//                vt = dm.getVideoTrack();
-//            }
-//            frameRate = vt.getMeta().getTotalDuration();
-//            if (frameRate > 30) {
-//                Toast.makeText(this, "Please input again ", Toast.LENGTH_SHORT).show();
-//            } else {
-//                Toast.makeText(this, "Okkkkk ", Toast.LENGTH_SHORT).show();
-//            }
-//            System.out.println("frame rate ===== " + frameRate);
-//        } catch (Exception e) {
-//
-//        }
-//    }
+    private boolean checkVideoLength() {
+        try {
+            double frameRate = 0;
+            SeekableByteChannel bc = NIOUtils.readableFileChannel(String.valueOf(selectedPath));
+            MP4Demuxer dm = new MP4Demuxer(bc);
+            DemuxerTrack vt = dm.getVideoTrack();
+            frameRate = vt.getMeta().getTotalDuration();
+            //Toast.makeText(this, String.valueOf(frameRate), Toast.LENGTH_SHORT).show();
+            if (frameRate > 60) {
+                Toast.makeText(this, "Video của bạn quá 60 giây!!!", Toast.LENGTH_SHORT).show();
+                return false;
+            } else {
+                Toast.makeText(this, "Okkkkk ", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+
+        } catch (Exception e) {
+
+        }
+        return false;
+    }
 
     private String createFolderName(String username) {
         return username + "-" + System.currentTimeMillis();

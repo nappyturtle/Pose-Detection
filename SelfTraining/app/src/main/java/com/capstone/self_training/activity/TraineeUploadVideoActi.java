@@ -36,12 +36,17 @@ import com.capstone.self_training.helper.TimeHelper;
 import com.capstone.self_training.model.Suggestion;
 import com.capstone.self_training.model.Video;
 import com.capstone.self_training.service.dataservice.SuggestionService;
+import com.capstone.self_training.util.MP4Demuxer;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import org.jcodec.common.DemuxerTrack;
+import org.jcodec.common.io.NIOUtils;
+import org.jcodec.common.io.SeekableByteChannel;
 
 import java.io.ByteArrayOutputStream;
 
@@ -76,8 +81,8 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
         setContentView(R.layout.activity_upload_video);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        mPerferences2 = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        mEditor = mPerferences2.edit();
+//        mPerferences2 = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//        mEditor = mPerferences2.edit();
         playingVideo = (Video) getIntent().getSerializableExtra("PLAYINGVIDEO");
 
         init();
@@ -87,32 +92,32 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
 
         uploadVideo();
 
-        timer = new CountDownTimer(2000, 500) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-
-            }
-
-            @Override
-            public void onFinish() {
-                resultVideo = mPerferences2.getString(getString(R.string.resultVideo), "Default");
-                if (resultVideo.equals("Default")){
-
-                }else{
-                    filename = resultVideo.substring(resultVideo.lastIndexOf("/") + 1);
-                    txtVideoName.setText(filename);
-                    Uri uri = Uri.parse(resultVideo);
-                    selectedVideoUri = uri;
-                    videoView.setVideoURI(uri);
-                    MediaController mediaController = new MediaController(TraineeUploadVideoActi.this);
-                    videoView.setMediaController(mediaController);
-                    mediaController.setAnchorView(videoView);
-                    mEditor.putString(getString(R.string.resultVideo), "Default");
-                    mEditor.apply();
-                }
-                this.start();
-            }
-        };
+//        timer = new CountDownTimer(2000, 500) {
+//            @Override
+//            public void onTick(long millisUntilFinished) {
+//
+//            }
+//
+//            @Override
+//            public void onFinish() {
+//                resultVideo = mPerferences2.getString(getString(R.string.resultVideo), "Default");
+//                if (resultVideo.equals("Default")){
+//
+//                }else{
+//                    filename = resultVideo.substring(resultVideo.lastIndexOf("/") + 1);
+//                    txtVideoName.setText(filename);
+//                    Uri uri = Uri.parse(resultVideo);
+//                    selectedVideoUri = uri;
+//                    videoView.setVideoURI(uri);
+//                    MediaController mediaController = new MediaController(TraineeUploadVideoActi.this);
+//                    videoView.setMediaController(mediaController);
+//                    mediaController.setAnchorView(videoView);
+//                    mEditor.putString(getString(R.string.resultVideo), "Default");
+//                    mEditor.apply();
+//                }
+//                this.start();
+//            }
+//        };
 //        timer.start();
 
     }
@@ -204,32 +209,36 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
                 }
                 if (checked) {
                     Toast.makeText(TraineeUploadVideoActi.this, "da vao upload video", Toast.LENGTH_SHORT).show();
-                    //checkVideoLength();
-                    confirmUploadingVideo();
+                    if(checkVideoLength()){
+                        confirmUploadingVideo();
+                    }
+
                 }
             }
         });
     }
 
-//    private void checkVideoLength() {
-//        double frameRate = 0;
-//        try {
-//            SeekableByteChannel bc = (SeekableByteChannel) NIOUtils.readableFileChannel(String.valueOf(selectedPath));
-//            DemuxerTrack vt;
-//            try (MP4Demuxer dm = new MP4Demuxer((org.jcodec.common.io.SeekableByteChannel) bc)) {
-//                vt = dm.getVideoTrack();
-//            }
-//            frameRate = vt.getMeta().getTotalDuration();
-//            if (frameRate > 30) {
-//                Toast.makeText(this, "Please input again ", Toast.LENGTH_SHORT).show();
-//            } else {
-//                Toast.makeText(this, "Okkkkk ", Toast.LENGTH_SHORT).show();
-//            }
-//            System.out.println("frame rate ===== " + frameRate);
-//        } catch (Exception e) {
-//
-//        }
-//    }
+    private boolean checkVideoLength() {
+        try {
+            double frameRate = 0;
+            SeekableByteChannel bc = NIOUtils.readableFileChannel(String.valueOf(selectedPath));
+            MP4Demuxer dm = new MP4Demuxer(bc);
+            DemuxerTrack vt = dm.getVideoTrack();
+            frameRate = vt.getMeta().getTotalDuration();
+            //Toast.makeText(this, String.valueOf(frameRate), Toast.LENGTH_SHORT).show();
+            if (frameRate > 60) {
+                Toast.makeText(this, "Video của bạn quá 60 giây!!!", Toast.LENGTH_SHORT).show();
+                return false;
+            } else {
+                Toast.makeText(this, "Okkkkk ", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+
+        } catch (Exception e) {
+
+        }
+        return false;
+    }
 
     private String createFolderName(String username) {
         return username + "-" + System.currentTimeMillis();
