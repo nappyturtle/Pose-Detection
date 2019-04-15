@@ -38,7 +38,7 @@
 
     <header class="main-header">
         <!-- Logo -->
-        <a href="../../dashboard.html" class="logo">
+        <a href="#" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-mini"><b>S</b>T</span>
             <!-- logo for regular state and mobile devices -->
@@ -138,22 +138,23 @@
         <section class="content">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="col-md-5">
                         <div class="box box-primary" style="padding-top: 2%">
                             <div class="box-body">
                                 <div class="col-md-12">
-                                    <label>Ảnh đại diện:</label>
-                                    <img style="width:100%;height: 250px; border: solid 1px;"
-                                         class="img-responsive img-thumbnail"
-                                         id="detail-course-thumbnailImg"
-                                         src="" alt="Hình nền khóa học">
+                                    <div class="col-md-5">
+                                        <label>Ảnh đại diện:</label>
+                                        <img style="width:100%;height: 250px; border: solid 1px;"
+                                             class="img-responsive img-thumbnail"
+                                             id="detail-course-thumbnailImg"
+                                             src="" alt="Hình nền khóa học">
+                                    </div>
                                     <!-- <div class="col-md-5" style="margin: 1% 1% 0px 9%;  ">
 
                                      </div>-->
-                                    <div class="col-md-12">
+                                    <div class="col-md-7">
                                         <div class="form-group">
                                             <p class="init-info" id="detail-course-name"
-                                               style="font-weight: bold; font-size: 30px; text-align: center; margin-top: 5%">
+                                               style="font-weight: bold; font-size: 30px; text-align: center;">
                                                 Tên khóa học</p>
                                             <div class="change-info" hidden style="margin-top: 5%">
                                                 <label>Tên khóa học: </label>
@@ -171,7 +172,7 @@
                                         <!-- Giá -->
                                         <div class="form-group">
                                             <label>Giá</label><span>: </span>
-                                        <input class="change-info" hidden type="text" pattern="\d*" maxlength="9"
+                                            <input class="change-info" hidden type="text" pattern="\d*" maxlength="9"
                                                    id="input-detail-course-price"
                                                    style="padding: 5px; width: 100px"><span class="change-info" hidden> .000 đồng</span>
                                             <span id="detail-course-price" class="init-info"></span><span
@@ -209,37 +210,39 @@
                                                     <option value="inactive" style="color:red;">Ngưng hoạt động</option>
                                                 </select>
                                             </div>
-                                            <!--<div class="input-group col-md-12">
-                                                <label class="col-md-6" style="font-size:17px">
-                                                    <input type="radio" name="r3-status" class="flat-red rd-active"
-                                                           id="rdActive"/> Đang hoạt động</label>
-                                                <label class="col-md-6" style="font-size:17px">
-                                                    <input type="radio" name="r3-status" class="flat-red rd-inactive"
-                                                           id="rdInActive"/> Ngưng hoạt động</label>
-                                            </div>-->
 
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="col-md-12" style="margin: 2%">
-                                    <div class="col-md-12">
-                                        <button type="button" class="btn btn-success btn-sm btn-block init-info"
-                                                style="font-size: 18px" id="btn-profile-change-info">
-                                            Thay đổi thông tin
-                                        </button>
+                                    <div class="init-info">
+                                        <div class="col-md-6">
+                                            <button type="button" class="btn btn-success btn-sm init-info"
+                                                    style="font-size: 18px; width: 60%;float: right" id="btn-profile-change-info">
+                                                Thay đổi thông tin
+                                            </button>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <button type="button" class="btn btn-sm init-info"
+                                                    style="font-size: 18px; width: 60%;" id="btn-goto-video-in-course">
+                                                Quản lý video trong khóa học
+                                            </button>
+                                        </div>
                                     </div>
+
                                     <div hidden class="change-info">
                                         <div class="col-md-6">
                                             <button id="btn-profile-update" data-toggle="modal"
-                                                    class="btn btn-block btn-info btn-sm"
-                                                    style="font-size: 18px;"
+                                                    class="btn btn-info btn-sm"
+                                                    style="font-size: 18px; width: 60%;float: right"
                                                     data-target="#modal-default">Cập nhật
                                             </button>
                                         </div>
                                         <div class="col-md-6">
-                                            <button class="btn btn-block btn-sm btn-default"
+                                            <button class="btn btn-sm btn-default"
                                                     id="btn-profile-cancel-update"
-                                                    style="font-size: 18px">Đóng
+                                                    style="font-size: 18px;width: 60%">Đóng
                                             </button>
                                         </div>
                                     </div>
@@ -256,8 +259,8 @@
                                  </div>
                              </div>-->
                         </div>
-                    </div>
-                    <div class="col-md-7">
+
+                    <!--<div class="col-md-7">
                         <div class="box box-primary">
                             <div class="box-body">
                                 <h2 style="text-align: center">Video trong khóa học</h2>
@@ -277,36 +280,13 @@
                                     </tfoot>
                                 </table>
                             </div>
-                            <!-- /.box-body -->
+                            &lt;!&ndash; /.box-body &ndash;&gt;
                         </div>
-                        <!-- /.box -->
-                    </div>
-
+                        &lt;!&ndash; /.box &ndash;&gt;
+                    </div>-->
                 </div>
             </div>
             <!-- /.row -->
-
-            <!--<div class="modal modal-info fade" id="modal-info">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-                                    style="font-size: 36px; color: black">
-                                <span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title">Thay đổi thông tin khóa học</h4>
-                        </div>
-                        <div class="modal-body">
-                            <p id="mUpdateInfo">One fine body&hellip;</p>
-                        </div>
-                        <div class="modal-footer">
-                            &lt;!&ndash;<button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Đóng</button>&ndash;&gt;
-                            <button type="button" class="btn btn-outline" id="btn-save-change">Thay đổi</button>
-                        </div>
-                    </div>
-                    &lt;!&ndash; /.modal-content &ndash;&gt;
-                </div>
-                &lt;!&ndash; /.modal-dialog &ndash;&gt;
-            </div>-->
 
             <div class="modal fade" id="modal-default">
                 <div class="modal-dialog">

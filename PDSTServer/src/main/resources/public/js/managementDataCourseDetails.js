@@ -45,6 +45,9 @@ $(document).ready(function () {
                 }
             })
             initVideoTable(courseId);
+            $("#btn-goto-video-in-course").click(function () {
+                window.location.href = "../../management/video/layout.html?courseId=" + courseId;
+            })
         } else {
             window.location.href = "403.html";
         }
@@ -136,21 +139,17 @@ function editCourseDetail(course) {
         if (res != null) {
             if (res == true) {
                 $("#mUpdateInfo").html("Cập nhật thành công!");
+                $("#btn-save-change").hide();
                 setTimeout(function () {
                     window.location.reload()
                 }, 2000);
 
             } else {
                 $("#mUpdateInfo").html("Cập nhập thất bại!");
+                $("#btn-save-change").hide();
                 setTimeout(function () {
                     window.location.reload()
-                }, 2000);
-                /*setTimeout(function () {
-                    $('#modal-info').modal('hide');
-                    $("#btn-save-change").hide();
-                }, 2000);*/
-
-            }
+                }, 2000);            }
         } else {
             console.log("cập nhật thất bại");
         }
@@ -210,8 +209,12 @@ function initCourseDetail(courseId) {
 
                     var courseEdit = res;
                     $.ajax({
-                        url: "/category/categories",
+                        url: "/category/getActiveCategory",
                         type: "GET",
+                        headers: {
+                            "Authorization": currentStaff.token,
+                            "Content-Type": "application/json"
+                        },
                         dataType: "json",
                         success: function (res) {
                             console.log(res)

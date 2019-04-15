@@ -39,7 +39,7 @@
 
     <header class="main-header">
         <!-- Logo -->
-        <a href="../../dashboard.html" class="logo">
+        <a href="#" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-mini">ST</span>
             <!-- logo for regular state and mobile devices -->
@@ -193,28 +193,29 @@
                                     aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title">Tạo tài khoản</h4>
                         </div>
-                        <div class="modal-body" style="height: 150px">
-                            <form>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-md-1"></div>
-                                            <div class="col-md-4">
-                                                <label style="float: right">Tên đăng nhập <span style="color: red;">*</span>: </label>
+                        <div class="modal-body">
+                            <div class="box-body">
+                                <form>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-4">
+                                                    <label style="float: right">Tên đăng nhập <span style="color: red;">*</span>: </label>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <input placeholder="Tên đăng nhập" minlength="4" maxlength="12"
+                                                           style="padding: 5px; width: 60%"
+                                                           id="create-username" required>
+                                                </div>
                                             </div>
-                                            <div class="col-md-7">
-                                                <input placeholder="Tên đăng nhập" minlength="4" maxlength="12"
-                                                       style="padding: 5px; width: 60%"
-                                                       id="create-username" required>
+                                            <div class="row">
+                                                <div class="col-md-5"></div>
+                                                <div class="col-md-7"><span>(4 đến 12 ký tự)</span></div>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-5"></div>
-                                            <div class="col-md-7"><span>(4 đến 12 ký tự)</span></div>
-                                        </div>
-                                    </div>
 
-                                    <div class="form-group">
+                                        <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-1"></div>
                                             <div class="col-md-4">
@@ -227,8 +228,24 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </form>
+
+                                        <div class="form-group" style="margin-top: 30px;margin-bottom: -10px">
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-4">
+                                                    <label style="float: right">Họ tên <span style="color: red;">*</span>:</label>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <input type="email" placeholder="Họ tên"
+                                                           id="create-fullname" style="padding: 5px; width: 70%"; maxlength="50"
+                                                           required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
 
                         </div>
                         <div class="modal-footer">

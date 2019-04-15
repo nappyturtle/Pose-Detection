@@ -55,4 +55,9 @@ public class CategoryServiceImpl implements CategoryService {
     public Category getCateByCateName(String catename) {
         return categoryRepository.findCategoryByName(catename);
     }
+
+    @Override
+    public List<Category> getActiveCategory() {
+        return categoryRepository.findAllByStatus("active");
+    }
 }

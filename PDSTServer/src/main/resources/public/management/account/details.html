@@ -38,7 +38,7 @@
 
     <header class="main-header">
         <!-- Logo -->
-        <a href="../../dashboard.html" class="logo">
+        <a href="#" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-mini">ST</span>
             <!-- logo for regular state and mobile devices -->
@@ -139,106 +139,115 @@
         <section class="content">
 
             <div class="row" style="margin-left: 0px !important;margin-right: 0px !important;">
-                <div class="col-md-5">
-                    <div class="box box-primary">
-                        <div class="box-body" style="width: 100%">
-                            <div class="col-md-12">
-                                <div class="box-body box-profile">
-                                    <img style="width: 200px; height: 200px;"
-                                         class="profile-user-img img-responsive img-circle"
-                                         id="detail-profile-user-img"
-                                         src="../../dist/img/user4-128x128.jpg" alt="User profile picture">
+                <div class="box box-primary">
+                    <div class="box-body" style="width: 100%">
+                        <div class="col-md-5">
+                            <div class="box-body box-profile">
+                                <img style="width: 230px; height: 230px;"
+                                     class="profile-user-img img-responsive img-circle"
+                                     id="detail-profile-user-img"
+                                     src="../../dist/img/user4-128x128.jpg" alt="User profile picture">
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="form-group" style="text-align: center">
+                                <p style="font-weight: bold; font-size: 30px" id="detail-profile-fullname">Le
+                                    Thinh Phat</p>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Email: </label><span> </span>
+                                <input class="change-info" hidden value="email@mail.com"
+                                       id="input-detail-profile-email" style="padding: 5px">
+                                <span id="detail-profile-email"
+                                      class="init-info">phat@mail.com</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Giới tính: </label><span> </span>
+                                <!--<input type="checkbox" class="change-info" hidden id="chk-detail-profile-gender">-->
+                                <div class="change-info" id="div-detail-profile-gender" hidden>
+                                    <select style="width: 100px;padding: 5px" id="select-detail-profile-gender">
+                                        <option value="male">Nam</option>
+                                        <option value="female">Nữ</option>
+                                    </select>
+                                </div>
+                                <span id="detail-profile-gender" class="init-info">Nam</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Số điện thoại: </label><span> </span>
+                                <input class="change-info" hidden value="email@mail.com" type="text"
+                                       id="input-detail-profile-phone" style="width: 120px; padding: 5px"
+                                       maxlength="10"/>
+                                <!--data-inputmask='"mask": "9999999999"'
+                                data-mask>-->
+                                <span id="detail-profile-phone" class="init-info">0312412424</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Địa chỉ: </label><span> </span>
+                                <span id="detail-profile-address"
+                                      class="init-info">23 Tạ Quang Bửu, quận 8, tphcm</span>
+                                <input class="change-info" hidden value="email@mail.com"
+                                          id="input-detail-profile-address"
+                                          style="padding: 5px; width: 80%; resize: none;" rows="2"></input>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Trạng thái: </label><span> </span>
+                                <span id="detail-profile-status" class="init-info">Đang hoạt động</span>
+                                <div class="change-info" id="div-detail-profile-status" hidden>
+                                    <select style="width: 200px;padding: 5px" id="select-detail-profile-status">
+                                        <option value="active" style="color: green">Đang hoạt động</option>
+                                        <option value="inactive" style="color:red;">Ngưng hoạt động</option>
+                                    </select>
                                 </div>
                             </div>
-                            <div class="col-md-12">
-                                <div class="form-group" style="text-align: center">
-                                    <p style="font-weight: bold; font-size: 30px" id="detail-profile-fullname">Le
-                                        Thinh Phat</p>
-                                </div>
 
-                                <div class="form-group">
-                                    <label>Email: </label><span> </span>
-                                    <input class="change-info" hidden value="email@mail.com"
-                                           id="input-detail-profile-email" style="padding: 5px">
-                                    <span id="detail-profile-email"
-                                          class="init-info">phat@mail.com</span>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Giới tính: </label><span> </span>
-                                    <!--<input type="checkbox" class="change-info" hidden id="chk-detail-profile-gender">-->
-                                    <div class="change-info" id="div-detail-profile-gender" hidden>
-                                        <select style="width: 100px;padding: 5px" id="select-detail-profile-gender">
-                                            <option value="male">Nam</option>
-                                            <option value="female">Nữ</option>
-                                        </select>
-                                    </div>
-                                    <span id="detail-profile-gender" class="init-info">Nam</span>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Số điện thoại: </label><span> </span>
-                                    <input class="change-info" hidden value="email@mail.com" type="text"
-                                           id="input-detail-profile-phone" style="width: 120px; padding: 5px"
-                                           maxlength="10"/>
-                                    <!--data-inputmask='"mask": "9999999999"'
-                                    data-mask>-->
-                                    <span id="detail-profile-phone" class="init-info">0312412424</span>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Địa chỉ: </label><span> </span>
-                                    <span id="detail-profile-address"
-                                          class="init-info">23 Tạ Quang Bửu, quận 8, tphcm</span>
-                                    <textarea class="change-info" hidden value="email@mail.com"
-                                              id="input-detail-profile-address"
-                                              style="padding: 5px; width: 100%; resize: none;" rows="2"></textarea>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Trạng thái: </label><span> </span>
-                                    <span id="detail-profile-status" class="init-info">Đang hoạt động</span>
-                                    <div class="change-info" id="div-detail-profile-status" hidden>
-                                        <select style="width: 200px;padding: 5px" id="select-detail-profile-status">
-                                            <option value="active" style="color: green">Đang hoạt động</option>
-                                            <option value="inactive" style="color:red;">Ngưng hoạt động</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="form-group init-info">
-                                    <label>Vị trí: </label><span> </span>
-                                    <span id="detail-profile-role">
+                            <div class="form-group init-info">
+                                <label>Vị trí: </label><span> </span>
+                                <span id="detail-profile-role">
                                             Trainer</span>
-                                </div>
                             </div>
-                            <!--</div>-->
-                            <div style="width: 100%">
-                                <button type="button" class="btn btn-success btn-sm btn-block init-info"
-                                        style="font-size: 18px" id="btn-profile-change-info">
+                        </div>
+                        <!--</div>-->
+                        <div class="init-info" style="width: 100%">
+                            <div class="col-md-6">
+                                <button type="button" class="btn btn-success btn-sm init-info col-md-6"
+                                        style="font-size: 18px; float: right; width: 50%" id="btn-profile-change-info">
                                     Thay đổi thông tin
                                 </button>
                             </div>
-                            <div hidden class="change-info" style="width: 100%">
-                                <div class="col-md-6">
-                                    <button id="btn-profile-update" data-toggle="modal"
-                                            class="btn btn-block btn-info btn-sm"
-                                            style="font-size: 18px;"
-                                            data-target="#modal-default">Cập nhật
-                                    </button>
-                                </div>
-                                <div class="col-md-6">
-                                    <button class="btn btn-block btn-sm btn-default" id="btn-profile-cancel-update"
-                                            style="font-size: 18px">Đóng
-                                    </button>
-                                </div>
+                            <div class="col-md-6">
+                                <button type="button" class="btn btn-sm init-info col-md-6"
+                                        style="font-size: 18px;width: 50%" id="btn-go-to-course">
+                                    Quản lý khóa học
+                                </button>
                             </div>
-
                         </div>
+                        <div hidden class="change-info" style="width: 100%">
+                            <div class="col-md-6">
+                                <button id="btn-profile-update" data-toggle="modal"
+                                        class="btn btn-info btn-sm"
+                                        style="font-size: 18px; float: right; width: 50%"
+                                        data-target="#modal-default">Cập nhật
+                                </button>
+                            </div>
+                            <div class="col-md-6">
+                                <button class="btn btn-sm btn-default" id="btn-profile-cancel-update"
+                                        style="font-size: 18px;width: 50%">Đóng
+                                </button>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
+                <!--<div class="col-md-5">
 
-                <div class="col-md-7">
+                </div>-->
+
+                <!--<div class="col-md-7">
                     <div class="box box-primary" id="div-tbl-created-course">
                         <div class="box-body" style="width: 100%">
                             <h2 style="text-align: center">Các khóa học đã tạo</h2>
@@ -280,7 +289,7 @@
                             </table>
                         </div>
                     </div>
-                </div>
+                </div>-->
             </div>
         </section>
     </div>

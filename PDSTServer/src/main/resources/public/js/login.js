@@ -1,3 +1,10 @@
+$(document).ready(function () {
+    $("#password").keyup(function(event) {
+        if (event.keyCode === 13) {
+            signin();
+        }
+    });
+})
 function signin() {
     var username = $("#username").val();
     var password = $("#password").val();
@@ -36,3 +43,4 @@ function signin() {
         }
     })
 }
+

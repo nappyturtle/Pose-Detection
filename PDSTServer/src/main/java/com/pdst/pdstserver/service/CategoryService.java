@@ -18,4 +18,6 @@ public interface CategoryService {
     int countTotalCategories();
 
     Category getCateByCateName(String catename);
+
+    List<Category> getActiveCategory();
 }

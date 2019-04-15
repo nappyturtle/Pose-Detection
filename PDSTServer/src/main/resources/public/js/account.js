@@ -94,6 +94,11 @@ $(document).ready(function () {
                     return false;
                 }
 
+                if($("#create-fullname").val().toString().trim() == ""){
+                    $("#mCreateCateMessage").html("Lỗi: Họ tên không được bỏ trống!");
+                    $("#btn-save-create-account").hide();
+                    return false;
+                }
                 return true;
             }
 
@@ -111,6 +116,7 @@ $(document).ready(function () {
                 var $account = {}
                 $account.email = $("#create-email").val();
                 $account.username = $("#create-username").val().toString().trim();
+                $account.fullname = $("#create-fullname").val().toString().trim();
                 if (currentStaff.roleId == 1) {
                     $account.roleId = 2;
                 } else if (currentStaff.roleId == 2) {

@@ -38,11 +38,12 @@
 
     <header class="main-header">
         <!-- Logo -->
-        <a href="../../dashboard.html" class="logo">
+        <a href="#" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-mini">ST</span>
             <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><img src="../../images/logo.png" style="width:72px; height:72px; margin: -12px 0px 0px -10px"><b>Self-Training</b></span>
+            <span class="logo-lg"><img src="../../images/logo.png"
+                                       style="width:72px; height:72px; margin: -12px 0px 0px -10px"><b>Self-Training</b></span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top">
@@ -75,7 +76,8 @@
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href="../../management/account/profile.html" class="btn btn-default btn-flat">Tài khoản</a>
+                                    <a href="../../management/account/profile.html" class="btn btn-default btn-flat">Tài
+                                        khoản</a>
                                 </div>
                                 <div class="pull-right">
                                     <a href="#" class="btn btn-default btn-flat" id="btn-sign-out">Đăng xuất</a>
@@ -93,12 +95,6 @@
         <section class="sidebar">
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu" data-widget="tree">
-                <!--<li class="header">MAIN NAVIGATION</li>-->
-                <li>
-                    <a href="../../dashboard.html">
-                        <i class="fa fa-dashboard"></i> <span>Trang chủ</span>
-                    </a>
-                </li>
 
                 <li class="treeview active">
                     <a href="#">
@@ -110,9 +106,8 @@
                     <ul class="treeview-menu">
                         <li><a href="../account/account.html"><i class="fa fa-circle-o"></i> Quản
                             lý tài khoản</a></li>
-                        <li><a href="../video/layout.html"><i class="fa fa-circle-o"></i> Quản lý video</a></li>
-                        <li class="active"><a href="../course/layout.html"><i class="fa fa-circle-o"></i> Quản lý khóa học</a></li>
-                        <li id="li-category-url"><a href="../../management/category/category.html"><i class="fa fa-circle-o"></i> Quản lý danh mục</a>
+                        <li id="li-category-url"><a href="../../management/category/category.html"><i
+                                class="fa fa-circle-o"></i> Quản lý danh mục</a>
                         </li>
                     </ul>
                 </li>
@@ -130,24 +125,89 @@
                 Quản lý khóa học
             </h1>
             <!--<ol class="breadcrumb">-->
-                <!--<li><a href="../../dashboard.html"><i class="fa fa-dashboard"></i> Trang chủ</a></li>-->
-                <!--<li>Quản lý</li>-->
-                <!--<li class="active">Quản lý khóa học</li>-->
+            <!--<li><a href="../../dashboard.html"><i class="fa fa-dashboard"></i> Trang chủ</a></li>-->
+            <!--<li>Quản lý</li>-->
+            <!--<li class="active">Quản lý khóa học</li>-->
             <!--</ol>-->
         </section>
 
         <!-- Main content -->
         <section class="content">
             <div class="row">
-                <div class="col-xs-12">
+                <div class="col-md-12">
+                    <div class="nav-tabs-custom">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#tab-bought-course" data-toggle="tab">Các khóa học đã mua</a></li>
+                            <li class="for-trainer"><a href="#tab-created-course" data-toggle="tab">Các khóa học đã tạo</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="active tab-pane" id="tab-bought-course">
+                                <div class="box-body" style="width: 100%">
+                                    <table id="tblBoughtCourse" class="table table-bordered table-striped" style="width: 100%">
+                                        <thead>
+                                        <tr>
+                                            <th>Stt</th>
+                                            <th>Tên khóa học</th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                        <tfoot>
+
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- /.tab-pane -->
+
+                            <div class="tab-pane for-trainer" id="tab-created-course">
+                                <div class="box-body" style="width: 100%">
+                                    <table id="tblCreatedCourse" class="table table-bordered table-striped" style="width: 100%">
+                                        <thead>
+                                        <tr>
+                                            <th>Stt</th>
+                                            <th>Tên khóa học</th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                        <tfoot>
+
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.tab-content -->
+                    </div>
+                    <!-- /.nav-tabs-custom -->
+                </div>
+                <!--<div class="col-xs-12">
 
                     <div class="box">
-                        <!--<div class="box-header">-->
-                            <!--<h3 class="box-title">Danh sách khóa học</h3>-->
-                        <!--</div>-->
-                        <!-- /.box-header -->
+                        &lt;!&ndash;<div class="box-header">&ndash;&gt;
+                        &lt;!&ndash;<h3 class="box-title">Danh sách khóa học</h3>&ndash;&gt;
+                        &lt;!&ndash;</div>&ndash;&gt;
+                        &lt;!&ndash; /.box-header &ndash;&gt;
                         <div class="box-body">
-                            <table id="tblCourse" class="table table-bordered table-striped">
+                            <div class="box box-primary" id="div-tbl-created-course">
+                                <div class="box-body" style="width: 100%">
+                                    <h2 style="text-align: center"></h2>
+
+                                </div>
+                            </div>
+
+                            <div class="box box-primary">
+                                <div class="box-body" style="width: 100%">
+                                    <h2 style="text-align: center"></h2>
+
+                                </div>
+                            </div>
+                            &lt;!&ndash;<table id="tblCourse" class="table table-bordered table-striped">
                                 <thead>
                                 <tr>
                                     <th>Stt</th>
@@ -163,12 +223,12 @@
                                 <tfoot>
 
                                 </tfoot>
-                            </table>
+                            </table>&ndash;&gt;
                         </div>
-                        <!-- /.box-body -->
+                        &lt;!&ndash; /.box-body &ndash;&gt;
                     </div>
-                    <!-- /.box -->
-                </div>
+                    &lt;!&ndash; /.box &ndash;&gt;
+                </div>-->
                 <!-- /.col -->
             </div>
             <!-- /.row -->

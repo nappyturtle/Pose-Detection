@@ -127,6 +127,7 @@ $(document).ready(function () {
                         });
 
                         $("#btn-save-change").click(function () {
+                            $("#btn-save-change").hide();
                             update(res);
                         })
 
@@ -142,7 +143,11 @@ $(document).ready(function () {
                             $(".init-info").show();
                         })
 
-                        if(res.roleId == 4){
+                        $("#btn-go-to-course").click(function () {
+                            window.location.href = "../../management/course/layout.html?accountId=" + res.id + "&accountRoleId=" + res.roleId;
+                        })
+
+                        if (res.roleId == 4) {
                             $("#div-tbl-created-course").hide();
                         }
                         initCreatedCourseTable(res.id);

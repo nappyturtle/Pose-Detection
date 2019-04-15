@@ -63,6 +63,11 @@ public class CategoryController {
         }*/
     }
 
+    @GetMapping("getActiveCategory")
+    public List<Category> getActiveCategory(){
+        return categoryService.getActiveCategory();
+    }
+
     @PostMapping("create")
     public Map<String, String> createCate(@RequestBody Category category) {
         boolean isExistedCate = categoryService.checkExistCateName(category.getName());
