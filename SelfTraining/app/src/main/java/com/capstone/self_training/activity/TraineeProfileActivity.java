@@ -155,10 +155,10 @@ public class TraineeProfileActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menuChangePassword:
-                Intent intentChangePassword = new Intent(getApplicationContext(),ChangePasswordActivity.class);
-                startActivity(intentChangePassword);
-                break;
+//            case R.id.menuChangePassword:
+//                Intent intentChangePassword = new Intent(getApplicationContext(),ChangePasswordActivity.class);
+//                startActivity(intentChangePassword);
+//                break;
             case R.id.menuLogout:
                 confirmLogout();
                 break;

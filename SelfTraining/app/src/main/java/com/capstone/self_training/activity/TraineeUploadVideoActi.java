@@ -22,6 +22,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -59,8 +60,7 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
     private TextView txtVideoName;
     private VideoView videoView;
     private Button btnOpenCamera;
-    private android.support.v7.widget.Toolbar tbUploadVideo;
-    private FrameLayout flUploadVideo;
+    private Toolbar toolbar;
     private StorageReference storageReference;
 
     private Uri selectedVideoUri;
@@ -69,11 +69,7 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
     private Video playingVideo;
 
     private SharedPreferences mPerferences;
-    private SharedPreferences mPerferences2;
-    private SharedPreferences.Editor mEditor;
-    private CountDownTimer timer;
-    private CountDownTimer timerCheck;
-    private String resultVideo;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,44 +77,15 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
         setContentView(R.layout.activity_upload_video);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-//        mPerferences2 = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-//        mEditor = mPerferences2.edit();
+
         playingVideo = (Video) getIntent().getSerializableExtra("PLAYINGVIDEO");
 
         init();
-
+        displayToolBar();
         clickToOpenCamera();
         requestRead();
 
         uploadVideo();
-
-//        timer = new CountDownTimer(2000, 500) {
-//            @Override
-//            public void onTick(long millisUntilFinished) {
-//
-//            }
-//
-//            @Override
-//            public void onFinish() {
-//                resultVideo = mPerferences2.getString(getString(R.string.resultVideo), "Default");
-//                if (resultVideo.equals("Default")){
-//
-//                }else{
-//                    filename = resultVideo.substring(resultVideo.lastIndexOf("/") + 1);
-//                    txtVideoName.setText(filename);
-//                    Uri uri = Uri.parse(resultVideo);
-//                    selectedVideoUri = uri;
-//                    videoView.setVideoURI(uri);
-//                    MediaController mediaController = new MediaController(TraineeUploadVideoActi.this);
-//                    videoView.setMediaController(mediaController);
-//                    mediaController.setAnchorView(videoView);
-//                    mEditor.putString(getString(R.string.resultVideo), "Default");
-//                    mEditor.apply();
-//                }
-//                this.start();
-//            }
-//        };
-//        timer.start();
 
     }
 
@@ -164,11 +131,20 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
         btnOpenCamera = (Button) findViewById(R.id.btnUploadVideoOpenCamera);
         storageReference = FirebaseStorage.getInstance().getReference();
         mPerferences = PreferenceManager.getDefaultSharedPreferences(this);
-        mEditor = mPerferences.edit();
-        flUploadVideo = (FrameLayout) findViewById(R.id.frmViewVideo);
-        tbUploadVideo = (android.support.v7.widget.Toolbar) findViewById(R.id.textView);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar_uploadVideo_id);
     }
 
+    private void displayToolBar() {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
     private void clickToOpenCamera() {
         btnOpenCamera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -288,7 +264,7 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
                         suggestionService.createSuggestion(token, suggestion);
                         //progressDialog.dismiss();
                         Toast.makeText(TraineeUploadVideoActi.this, "Video đã được đăng", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(getApplicationContext(), MainActivity_Home.class);
+                        Intent intent = new Intent(getApplicationContext(), SuggestionListActi.class);
                         startActivity(intent);
                     }
                 }).addOnFailureListener(new OnFailureListener() {

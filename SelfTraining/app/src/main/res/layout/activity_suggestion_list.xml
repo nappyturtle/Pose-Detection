@@ -12,8 +12,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/suggestionList_toolbar_id"
         android:minHeight="?attr/actionBarSize"
-        app:titleTextColor="#868683"
+        app:titleTextColor="#ffffff"
         app:title="Kết quả tự tập"
+        android:background="#ff9c11"
         >
     </android.support.v7.widget.Toolbar>
 
@@ -34,10 +35,11 @@
 
             <ListView
                 android:scrollbars="none"
-
                 android:id="@+id/suggestionList_listview"
-                android:divider="#ffffff"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="10.0sp"
                 android:layout_width="match_parent"
+
                 android:layout_height="match_parent"></ListView>
         </FrameLayout>
 

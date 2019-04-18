@@ -10,17 +10,16 @@
     >
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="36sp"
-        android:textStyle="bold"
+        android:minHeight="?attr/actionBarSize"
+        app:titleTextColor="#ffffff"
         app:title="Đăng video"
-        app:titleTextColor="#868683" />
+        android:id="@+id/toolbar_uploadVideo_id"
+        android:background="#ff9c11"
+        >
+
+    </android.support.v7.widget.Toolbar>
 
     <FrameLayout
         android:id="@+id/frmViewVideo"

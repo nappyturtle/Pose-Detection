@@ -7,10 +7,19 @@
     android:orientation="vertical"
     tools:context=".activity.MainActivity_Home">
 
-    <include
-        android:id="@+id/toolbar_main_home"
-        layout="@layout/app_bar"></include>
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_main_home"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        android:background="#ff9c11"
+        app:titleTextColor="#ffffff"
+        app:titleTextAppearance="@style/Toolbar.TitleText"
+
+        >
+
+    </android.support.v7.widget.Toolbar>
     <android.support.v4.view.ViewPager
         android:id="@+id/myViewPager"
         android:layout_width="match_parent"
@@ -25,8 +34,8 @@
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         app:tabGravity="fill"
-        app:tabIndicatorColor="#E91E63"
+        app:tabIndicatorColor="#ff9c11"
         app:tabMode="fixed"
-        app:tabSelectedTextColor="#E91E63"
+        app:tabSelectedTextColor="#ff9c11"
         app:tabTextColor="#070707"></android.support.design.widget.TabLayout>
 </LinearLayout>

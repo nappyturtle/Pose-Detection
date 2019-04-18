@@ -16,7 +16,9 @@
             android:layout_marginTop="15sp"
             android:text="Hình từ video của bạn"
             android:textAlignment="center"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textColor="#000000"
+            />
 
         <ImageView
             android:id="@+id/suggestionDetail_imageView_id_trainee"
@@ -32,7 +34,9 @@
             android:layout_marginTop="15sp"
             android:text="Hình từ video mẫu của chúng tôi"
             android:textAlignment="center"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textColor="#000000"
+            />
 
         <ImageView
             android:id="@+id/suggestionDetail_imageView_id_trainer"

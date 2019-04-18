@@ -13,7 +13,10 @@
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
         app:title="Thông tin tài khoản"
-        app:titleTextColor="#868683">
+        app:titleTextColor="#ffffff"
+        android:background="#ff8011"
+
+        >
 
     </android.support.v7.widget.Toolbar>
 

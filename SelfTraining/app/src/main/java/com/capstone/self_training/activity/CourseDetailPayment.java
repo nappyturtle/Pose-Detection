@@ -79,7 +79,7 @@ public class CourseDetailPayment extends AppCompatActivity {
 
 
         //Creating a paypalpayment
-        PayPalPayment payment = new PayPalPayment(new BigDecimal(String.valueOf(dto.getCourse().getPrice())), "USD", "Self-Training",
+        PayPalPayment payment = new PayPalPayment(new BigDecimal(String.valueOf(dto.getCourse().getPrice())), "VNĐ", "Self-Training",
                 PayPalPayment.PAYMENT_INTENT_SALE);
 
         //Creating Paypal Payment activity intent

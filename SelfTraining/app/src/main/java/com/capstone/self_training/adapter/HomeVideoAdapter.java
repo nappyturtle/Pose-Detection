@@ -64,7 +64,7 @@ public class HomeVideoAdapter extends RecyclerView.Adapter<HomeVideoAdapter.Vide
 
         //BIND TEXT
         holder.title.setText(model.getTitle());
-        holder.userName.setText(account.getUsername());
+        holder.fullname.setText(account.getFullname());
 
         holder.postTime.setText(TimeHelper.showPeriodOfTime(model.getCreatedTime()));
 
@@ -109,7 +109,7 @@ public class HomeVideoAdapter extends RecyclerView.Adapter<HomeVideoAdapter.Vide
     public class VideoViewHolder extends RecyclerView.ViewHolder {
         public ImageView thumbnail;
         public CircleImageView userImg;
-        public TextView userName;
+        public TextView fullname;
         public TextView title;
         public TextView postTime;
         public TextView totalView;
@@ -120,7 +120,7 @@ public class HomeVideoAdapter extends RecyclerView.Adapter<HomeVideoAdapter.Vide
 
             thumbnail = (ImageView) itemView.findViewById(R.id.home_video_thumbnail);
             userImg = (CircleImageView) itemView.findViewById(R.id.home_video_userImg);
-            userName = (TextView) itemView.findViewById(R.id.home_video_username);
+            fullname = (TextView) itemView.findViewById(R.id.home_video_username);
             title = (TextView) itemView.findViewById(R.id.home_video_title);
             postTime = (TextView) itemView.findViewById(R.id.home_video_time);
             totalView = (TextView) itemView.findViewById(R.id.home_video_view);

@@ -43,22 +43,6 @@ public class TrainerChannelActivity extends AppCompatActivity {
 
     }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        init();
-//        Toast.makeText(this, "VUVGGGGGGGGGGGG", Toast.LENGTH_SHORT).show();
-//    }
-
-
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (requestCode == REQUEST_CODE_LOGIN && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
-//            Toast.makeText(this, "Đã quay lại TrainerChannelActivity", Toast.LENGTH_SHORT).show();
-//            init();
-//        }
-//    }
 
     private void init() {
         accountTemp = (Account) getIntent().getSerializableExtra("accountTemp");

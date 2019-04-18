@@ -49,7 +49,7 @@ public class PlayVideoActivity extends AppCompatActivity implements SurfaceHolde
     private boolean isPauseMedia;
     private Toolbar toolbar;
 
-    TextView video_title, video_view, username;
+    TextView video_title, video_view, fullname;
     CircleImageView user_img;
     Button user_sub_btn;
     private Button btnUpSelfTrainVideo;
@@ -88,12 +88,12 @@ public class PlayVideoActivity extends AppCompatActivity implements SurfaceHolde
 
             video_title = (TextView) findViewById(R.id.play_video_title);
             video_view = (TextView) findViewById(R.id.play_video_view);
-            username = (TextView) findViewById(R.id.play_video_username);
+            fullname = (TextView) findViewById(R.id.play_video_username);
             toolbar = (Toolbar) findViewById(R.id.playVideo_toolbar_id);
             video_title.setText(playingVideo.getTitle());
             video_view.setText(playingVideo.getNumOfView() + " lượt xem");
-            if (account.getUsername() != null) {
-                username.setText(account.getUsername());
+            if (account.getFullname() != null) {
+                fullname.setText(account.getFullname());
             }
 
 

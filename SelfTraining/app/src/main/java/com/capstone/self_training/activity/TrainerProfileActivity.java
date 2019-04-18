@@ -219,10 +219,10 @@ public class TrainerProfileActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menuChangePassword:
-                Intent intentChangePassword = new Intent(TrainerProfileActivity.this, ChangePasswordActivity.class);
-                startActivity(intentChangePassword);
-                break;
+//            case R.id.menuChangePassword:
+//                Intent intentChangePassword = new Intent(TrainerProfileActivity.this, ChangePasswordActivity.class);
+//                startActivity(intentChangePassword);
+//                break;
             case R.id.menuLogout:
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
                 preferences.edit().clear().commit();

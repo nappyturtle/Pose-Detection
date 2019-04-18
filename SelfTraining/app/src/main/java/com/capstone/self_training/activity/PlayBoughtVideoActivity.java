@@ -96,8 +96,8 @@ public class PlayBoughtVideoActivity extends AppCompatActivity implements Surfac
             toolbar = (Toolbar) findViewById(R.id.playVideo_toolbar_id);
             video_title.setText(playingVideo.getTitle());
             video_view.setText(playingVideo.getNumOfView() + " lượt xem");
-            if (account.getUsername() != null) {
-                username.setText(account.getUsername());
+            if (account.getFullname() != null) {
+                username.setText(account.getFullname());
             }
 
 

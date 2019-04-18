@@ -10,8 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
-        app:titleTextColor="#868683"
+        app:titleTextColor="#ffffff"
         app:title="Thông tin khóa học"
+        android:background="#ff8b1e"
         android:id="@+id/toolbar_courseDetail_payment"
         >
     </android.support.v7.widget.Toolbar>

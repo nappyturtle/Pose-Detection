@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/bought_course_toolbar_id"
         android:minHeight="?attr/actionBarSize"
-        app:titleTextColor="#868683"
+        app:titleTextColor="#ffffff"
+        android:background="#ff9411"
         app:title="Các khoá học đã mua"
         >
     </android.support.v7.widget.Toolbar>
@@ -49,6 +50,10 @@
             android:layout_height="match_parent"
             android:orientation="horizontal"
             ></android.support.v7.widget.RecyclerView>
+            <View
+                android:layout_width="1dp"
+                android:layout_height="fill_parent"
+                android:background="#c1c1c1" />
             <TextView
                 android:id="@+id/bought_course_totalTextView_id"
                 android:layout_width="0dp"
@@ -70,7 +75,8 @@
             <ListView
                 android:scrollbars="none"
                 android:id="@+id/bought_course_listview"
-                android:divider="#ffffff"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="10.0sp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"></ListView>
 

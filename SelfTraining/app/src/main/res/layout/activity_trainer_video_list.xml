@@ -14,7 +14,10 @@
         android:id="@+id/toolbar_trainer_list_video"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="Video"></android.support.v7.widget.Toolbar>
+        app:title="Video"
+        app:titleTextColor="#ffffff"
+        android:background="#ff9c11"
+        ></android.support.v7.widget.Toolbar>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -12,6 +12,8 @@
         android:id="@+id/trainer_upload_toolbar_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#ff9c11"
+        app:titleTextColor="#ffffff"
         app:title="Đăng Video"></android.support.v7.widget.Toolbar>
 
     <ScrollView

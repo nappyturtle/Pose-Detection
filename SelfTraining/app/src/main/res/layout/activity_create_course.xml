@@ -11,7 +11,10 @@
         android:id="@+id/toolbar_create_course"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="Tạo khóa học"></android.support.v7.widget.Toolbar>
+        app:title="Tạo khóa học"
+        android:background="#ff8c11"
+        app:titleTextColor="#ffffff"
+        ></android.support.v7.widget.Toolbar>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -60,7 +63,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Danh muc"
-                    android:textSize="20sp" />
+                    android:textSize="18sp"
+
+                    />
 
                 <Spinner
                     android:id="@+id/spnCate"
@@ -112,7 +117,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:text="Hình nền"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
                 <ImageView
                     android:id="@+id/ivCourseThumbnail"
@@ -133,7 +138,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Trang thái"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
                 <Spinner
                     android:id="@+id/spnStatusCourse"

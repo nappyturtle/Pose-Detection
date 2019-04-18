@@ -2,6 +2,8 @@ package com.capstone.self_training.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
@@ -13,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.capstone.self_training.R;
@@ -52,6 +55,17 @@ public class MainActivity_Home extends AppCompatActivity {
         //toolbar.setLogo(R.drawable.logoyoga);
     }
 
+    private void displayToolBar() {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
     private void init() {
         mainViewPager = new MainViewPager(getSupportFragmentManager());
 
@@ -68,10 +82,11 @@ public class MainActivity_Home extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar_main_home);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
+        getSupportActionBar().setTitle("Self-Training");
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.drawable.ic_logo);
+        //getSupportActionBar().setLogo(R.drawable.ic_logo);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
+
 
         mPerferences = PreferenceManager.getDefaultSharedPreferences(this);
         mEditor = mPerferences.edit();

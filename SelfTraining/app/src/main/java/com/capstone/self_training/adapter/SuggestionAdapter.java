@@ -83,10 +83,10 @@ public class SuggestionAdapter extends BaseAdapter {
             String status = suggestion.getStatus();
             if (status.equals("active")) {
                 viewHolder.suggestion_status.setText("Hoàn tất");
-                viewHolder.suggestion_status.setTextColor(Color.parseColor("#ff0000"));
+                viewHolder.suggestion_status.setTextColor(Color.parseColor("#2fef21"));
             } else if (status.equals("processing")) {
                 viewHolder.suggestion_status.setText("Đang xử lí");
-                viewHolder.suggestion_status.setTextColor(Color.parseColor("#7FFF00"));
+                viewHolder.suggestion_status.setTextColor(Color.parseColor("#f9ef20"));
             }
             viewHolder.suggestion_image_play.setOnClickListener(new View.OnClickListener() {
                 @Override

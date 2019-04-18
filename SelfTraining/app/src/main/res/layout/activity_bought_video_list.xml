@@ -13,8 +13,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/boughtVideo_toolbar_id"
         android:minHeight="?attr/actionBarSize"
-        app:titleTextColor="#868683"
+        app:titleTextColor="#ffffff"
         app:title="Danh sách video"
+        android:background="#ff8811"
         >
     </android.support.v7.widget.Toolbar>
     <FrameLayout

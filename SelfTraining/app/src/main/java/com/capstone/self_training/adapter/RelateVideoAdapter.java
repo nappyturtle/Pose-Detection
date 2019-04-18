@@ -46,12 +46,13 @@ public class RelateVideoAdapter extends RecyclerView.Adapter<RelateVideoAdapter.
         account.setUsername(video.getUsername());
         account.setImgUrl(video.getImgUrl());
         account.setId(video.getAccountId());
+        account.setFullname(video.getFullname());
 
         //BIND DATA
         Picasso.get().load(video.getVideo().getThumnailUrl()).fit().into(holder.thumbnail);
 
         holder.title.setText(video.getVideo().getTitle());
-        holder.username.setText(video.getUsername());
+        holder.username.setText(video.getFullname());
         holder.totalView.setText(video.getVideo().getNumOfView()+" lượt xem");
 
         holder.title.setOnClickListener(new View.OnClickListener() {

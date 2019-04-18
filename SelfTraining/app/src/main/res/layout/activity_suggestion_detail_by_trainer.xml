@@ -18,7 +18,9 @@
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
             app:title="Kết quả chi tiết"
-            app:titleTextColor="#868683">
+            app:titleTextColor="#ffffff"
+            android:background="#ff9c11"
+            >
 
         </android.support.v7.widget.Toolbar>
         <TextView

@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/manageTrainer_toolbar_id"
         android:minHeight="?attr/actionBarSize"
-        app:titleTextColor="#868683"
+        app:titleTextColor="#ffffff"
+        android:background="#ff9411"
         app:title="Danh sách quản lí"
         >
     </android.support.v7.widget.Toolbar>

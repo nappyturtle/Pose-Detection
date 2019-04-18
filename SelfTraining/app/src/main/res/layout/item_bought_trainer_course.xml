@@ -6,33 +6,36 @@
     android:layout_margin="3dp"
     >
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp"
-            >
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_marginTop="5dp"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:scaleType="centerCrop"
-                android:layout_centerHorizontal="true"
-                android:id="@+id/trainer_bought_course_thumbnail"
-                />
-            <TextView
-                android:id="@+id/txtTrainerName_bought_course"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="abcedf"
-                android:singleLine="true"
-                android:layout_below="@+id/trainer_bought_course_thumbnail"
-                android:layout_centerHorizontal="true"
-                android:gravity="center"
-                android:layout_marginTop="5dp"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        >
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_marginTop="2dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:scaleType="centerCrop"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/trainer_bought_course_thumbnail"
+            app:civ_border_color="#48ff42"
+            app:civ_border_width="2dp"
+            />
+        <TextView
+            android:id="@+id/txtTrainerName_bought_course"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="abcedf"
+            android:singleLine="true"
+            android:layout_below="@+id/trainer_bought_course_thumbnail"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:layout_marginTop="2dp"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            />
 
-                />
-
-        </RelativeLayout>
+    </RelativeLayout>
 
 </RelativeLayout>
