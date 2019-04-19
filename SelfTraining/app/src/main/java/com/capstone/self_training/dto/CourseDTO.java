@@ -14,6 +14,15 @@ public class CourseDTO implements Serializable {
     private int numberOfVideoInCourse;
     private List<Account> traineeList;
     private List<Video> videoUpdated;
+    private int createCourseFee;
+
+    public int getCreateCourseFee() {
+        return createCourseFee;
+    }
+
+    public void setCreateCourseFee(int createCourseFee) {
+        this.createCourseFee = createCourseFee;
+    }
 
     public List<Video> getVideoUpdated() {
         return videoUpdated;

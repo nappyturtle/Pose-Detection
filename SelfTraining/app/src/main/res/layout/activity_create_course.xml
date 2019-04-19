@@ -23,20 +23,16 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
+            android:layout_marginHorizontal="10dp"
+            android:orientation="vertical">
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="10dp">
+                android:layout_height="wrap_content">
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginEnd="30dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
@@ -46,7 +42,7 @@
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/edtCourseName"
                         android:layout_width="match_parent"
-                        android:layout_height="62dp"
+                        android:layout_height="wrap_content"
                         android:hint="Tên khóa học"
                         android:inputType="text" />
                 </android.support.design.widget.TextInputLayout>
@@ -56,13 +52,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="30dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Danh muc"
+                    android:text="Danh mục"
                     android:textSize="18sp"
 
                     />
@@ -71,33 +66,114 @@
                     android:id="@+id/spnCate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:scrollbarSize="10sp"
-                    android:layout_marginVertical="10dp"></Spinner>
+                    android:scrollbarSize="20sp"></Spinner>
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="30dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Hình nền"
+                    android:textSize="20sp" />
+
+                <ImageView
+                    android:id="@+id/ivCourseThumbnail"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    app:srcCompat="@android:drawable/ic_menu_camera" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lnStatusCourse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Trang thái"
+                    android:textSize="20sp" />
+
+                <Spinner
+                    android:id="@+id/spnStatusCourse"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbarSize="20sp"></Spinner>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Giá"
+                    android:text="Số lượng học viên nhiều nhất: "
                     android:textSize="20sp" />
 
                 <EditText
-                    android:id="@+id/edtCoursePrice"
-                    android:layout_width="160dp"
+                    android:id="@+id/edtMaxNumberTrainee"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20dp"
                     android:hint="0"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/currency_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Số lượng video nhiều nhất: "
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/edtMaxNumberOfVideo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="0"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_fee_to_create_course_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Phí tạo khóa học: "
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_fee_to_create_course"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:maxLines="1"
+                    android:textSize="20sp" />
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=".000 đ"
@@ -108,44 +184,30 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="30dp"
-                android:layout_marginVertical="10dp"
-                android:orientation="vertical">
+                android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:text="Hình nền"
+                    android:text="Giá khóa học: "
                     android:textSize="18sp" />
 
-                <ImageView
-                    android:id="@+id/ivCourseThumbnail"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_marginHorizontal="30dp"
-                    app:srcCompat="@android:drawable/ic_menu_camera" />
-            </LinearLayout>
+                <EditText
+                    android:id="@+id/edtCoursePrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="0                 "
+                    android:inputType="number"
+                    android:maxLength="9"
+                    android:maxLines="1"
+                    android:textSize="20sp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="30dp"
-                android:orientation="vertical"
-                android:id="@+id/lnStatusCourse"
-                >
                 <TextView
-                    android:layout_width="match_parent"
+                    android:id="@+id/currency_id"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Trang thái"
-                    android:textSize="18sp" />
-
-                <Spinner
-                    android:id="@+id/spnStatusCourse"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scrollbarSize="10sp"
-                    android:layout_marginVertical="10dp"></Spinner>
+                    android:text=".000 đ"
+                    android:textSize="20sp" />
 
             </LinearLayout>
 
@@ -160,11 +222,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="createCours"
-                    android:text="Tạo khóa học"
-                    android:textSize="18sp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="15dp"
-                    />
+                    android:text="Thanh toán phí"
+                    android:textSize="20sp" />
             </LinearLayout>
 
         </LinearLayout>

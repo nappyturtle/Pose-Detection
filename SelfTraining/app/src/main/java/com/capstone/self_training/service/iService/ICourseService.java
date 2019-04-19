@@ -25,7 +25,7 @@ public interface ICourseService {
                                                    @Query("accountId") int accountId);
 
     @POST("course/create")
-    Call<Void> createCourse(@Header(Constants.header_string) String token, @Body Course course);
+    Call<Void> createCourse(@Header(Constants.header_string) String token, @Body CourseDTO course);
 
     @PUT("course/edit")
     Call<Boolean> editCourse(@Header(Constants.header_string) String token, @Body Course course);

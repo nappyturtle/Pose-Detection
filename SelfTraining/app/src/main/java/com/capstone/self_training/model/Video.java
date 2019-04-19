@@ -7,17 +7,15 @@ public class Video implements Serializable {
     private String title;
     private String thumnailUrl;
     private String contentUrl;
-    private Integer accountId;
-    private Integer categoryId;
+    private Integer courseId;
     private Integer numOfView;
     private String status;
-    private Integer courseId;
-    private String username;
-    private String folderName;
     private String createdTime;
     private String updatedTime;
-    private int price;
+    private String folderName;
     private String prevStatus;
+    private String username;
+    private int price;
 
     public String getUsername() {
         return username;
@@ -59,18 +57,6 @@ public class Video implements Serializable {
     public Video() {
     }
 
-    public void setAccountId(Integer accountId) {
-        this.accountId = accountId;
-    }
-
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public void setNumOfView(Integer numOfView) {
-        this.numOfView = numOfView;
-    }
-
     public int getId() {
         return id;
     }
@@ -103,27 +89,11 @@ public class Video implements Serializable {
         this.contentUrl = contentUrl;
     }
 
-    public int getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(int accountId) {
-        this.accountId = accountId;
-    }
-
-    public int getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public int getNumOfView() {
+    public Integer getNumOfView() {
         return numOfView;
     }
 
-    public void setNumOfView(int numOfView) {
+    public void setNumOfView(Integer numOfView) {
         this.numOfView = numOfView;
     }
 
@@ -133,14 +103,6 @@ public class Video implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public String getFolderName() {
-        return folderName;
-    }
-
-    public void setFolderName(String folderName) {
-        this.folderName = folderName;
     }
 
     public String getCreatedTime() {
@@ -157,5 +119,13 @@ public class Video implements Serializable {
 
     public void setUpdatedTime(String updatedTime) {
         this.updatedTime = updatedTime;
+    }
+
+    public String getFolderName() {
+        return folderName;
+    }
+
+    public void setFolderName(String folderName) {
+        this.folderName = folderName;
     }
 }

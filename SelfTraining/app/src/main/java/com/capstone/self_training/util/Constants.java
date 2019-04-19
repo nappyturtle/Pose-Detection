@@ -2,7 +2,7 @@ package com.capstone.self_training.util;
 
 public class Constants {
     public static final String port = ":8080/";
-    public static final String domain = "192.168.2.92";
+    public static final String domain = "192.168.1.32";
     public static final String header_string = "Authorization";
     public static final int Status_Ok = 200;
     public static final int Status_Conflit = 409;
@@ -18,8 +18,10 @@ public class Constants {
     //status
     public static final String STATUS_ACTIVE = "active";
     public static final String SUB_STATUS_ACTIVE = "Everyone";
-
     public static final String STATUS_UNACTIVE = "unactive";
     public static final String SUB_STATUS_UNACTIVE = "Just me";
 
+    //course fee
+    public static final int PRICE_OF_A_SUGGESTION_TURN = 12;
+    public static final int FREE_SUGGESTION_TURN_FOR_TRAINEE = 3;
 }

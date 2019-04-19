@@ -40,12 +40,12 @@ public class CourseService {
         return courses;
     }
 
-    public Call<Void> createCourse(String token, Course course) {
+    public Call<Void> createCourse(String token, CourseDTO course) {
         Call<Void> call = iCourseService.createCourse(token, course);
         try {
             call.execute().body();
         } catch (Exception e) {
-            Log.e("CourseService createCourse = ", e.getMessage());
+            Log.e("CourseService = ", e.getMessage());
         }
         return null;
     }
@@ -56,7 +56,7 @@ public class CourseService {
         try {
             checked = call.execute().body();
         } catch (Exception e) {
-            Log.e("CourseService editCourse = ", e.getMessage());
+            Log.e("CourseService = ", e.getMessage());
         }
         return checked;
     }
