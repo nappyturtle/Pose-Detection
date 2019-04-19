@@ -71,13 +71,9 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public boolean createCourse(Course course) {
+    public Course createCourse(Course course) {
         Course resCourse = courseRepository.save(course);
-        if (resCourse != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return resCourse;
     }
 
     @Override
@@ -89,6 +85,8 @@ public class CourseServiceImpl implements CourseService {
             temp.setCategoryId(course.getCategoryId());
             temp.setThumbnail(course.getThumbnail());
             temp.setPrice(course.getPrice());
+            temp.setVideoLimit(course.getVideoLimit());
+            temp.setEnrollmentLimit(course.getEnrollmentLimit());
         }else{
             temp.setUpdatedTime(course.getUpdatedTime());
             temp.setName(course.getName());
@@ -97,6 +95,8 @@ public class CourseServiceImpl implements CourseService {
             temp.setPrevStatus(temp.getStatus());
             temp.setStatus(course.getStatus());
             temp.setPrice(course.getPrice());
+            temp.setVideoLimit(course.getVideoLimit());
+            temp.setEnrollmentLimit(course.getEnrollmentLimit());
         }
         Course res = courseRepository.save(temp);
         if (res != null) {

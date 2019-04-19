@@ -16,6 +16,8 @@ public class Course implements Serializable {
     private String createdTime;
     private String updatedTime;
     private String thumbnail;
+    private Integer videoLimit;
+    private Integer enrollmentLimit;
 
     @Basic
     @Column(name = "thumbnail")
@@ -139,5 +141,25 @@ public class Course implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, categoryId, accountId, price, status, createdTime, updatedTime, thumbnail, prevStatus);
+    }
+
+    @Basic
+    @Column(name = "video_limit")
+    public Integer getVideoLimit() {
+        return videoLimit;
+    }
+
+    public void setVideoLimit(Integer videoLimit) {
+        this.videoLimit = videoLimit;
+    }
+
+    @Basic
+    @Column(name = "enrollment_limit")
+    public Integer getEnrollmentLimit() {
+        return enrollmentLimit;
+    }
+
+    public void setEnrollmentLimit(Integer enrollmentLimit) {
+        this.enrollmentLimit = enrollmentLimit;
     }
 }

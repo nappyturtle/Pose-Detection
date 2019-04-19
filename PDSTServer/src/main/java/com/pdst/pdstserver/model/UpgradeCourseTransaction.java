@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
+@Table(name = "upgradecoursetransaction")
 public class UpgradeCourseTransaction implements Serializable {
     private int id;
     private String createdTime;
@@ -30,7 +31,7 @@ public class UpgradeCourseTransaction implements Serializable {
         return courseId;
     }
 
-    public void setCourseId(Integer videoId) {
+    public void setCourseId(Integer courseId) {
         this.courseId = courseId;
     }
 
