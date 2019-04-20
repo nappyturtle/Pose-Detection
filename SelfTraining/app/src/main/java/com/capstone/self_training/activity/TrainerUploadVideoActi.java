@@ -1,6 +1,7 @@
 package com.capstone.self_training.activity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,6 +21,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -44,13 +47,20 @@ import com.capstone.self_training.model.Video;
 import com.capstone.self_training.service.dataservice.CategoryService;
 import com.capstone.self_training.service.dataservice.CourseService;
 import com.capstone.self_training.service.dataservice.VideoService;
+import com.capstone.self_training.util.Constants;
 import com.capstone.self_training.util.MP4Demuxer;
+import com.capstone.self_training.util.PayPalConfig;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.paypal.android.sdk.payments.PayPalConfiguration;
+import com.paypal.android.sdk.payments.PayPalPayment;
+import com.paypal.android.sdk.payments.PayPalService;
+import com.paypal.android.sdk.payments.PaymentActivity;
+import com.paypal.android.sdk.payments.PaymentConfirmation;
 import com.squareup.picasso.Picasso;
 
 import org.jcodec.common.DemuxerTrack;
@@ -58,12 +68,18 @@ import org.jcodec.common.io.NIOUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+
 import org.jcodec.common.io.SeekableByteChannel;
+import org.json.JSONException;
+
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 
@@ -101,11 +117,24 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
     private ArrayList<Course> courseArrayList;
     private CourseByNameAdapter courseByNameAdapter;
     private String token;
+    private Map responseCreateVideo;
+    private VideoService videoService;
+    private EditText edt_extra_video_limit, edt_price_extra_video_limit;
+    private TextView fee_extra_video_limit;
+    private Course editedCourse;
+
+    public static final int PAYPAL_REQUEST_CODE = 123;
+    private static PayPalConfiguration config = new PayPalConfiguration()
+            // Start with mock environment.  When ready, switch to sandbox (ENVIRONMENT_SANDBOX)
+            // or live (ENVIRONMENT_PRODUCTION)
+            .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
+            .clientId(PayPalConfig.PAYPAL_CLIENT_ID);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trainer_upload_video);
+        videoService = new VideoService();
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -121,6 +150,17 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
                 openFileChooser();
             }
         });
+        responseCreateVideo = new HashMap();
+
+        Intent intentPaypal = new Intent(this, PayPalService.class);
+        intentPaypal.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
+        startService(intentPaypal);
+    }
+
+    @Override
+    public void onDestroy() {
+        stopService(new Intent(this, PayPalService.class));
+        super.onDestroy();
     }
 
     private void openFileChooser() {
@@ -223,6 +263,43 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
             checkedThumnail = false;
             imageUri = null;
         }
+
+        //If the result is from paypal
+        if (requestCode == PAYPAL_REQUEST_CODE) {
+
+            //If the result is OK i.e. user has not canceled the payment
+            if (resultCode == Activity.RESULT_OK) {
+                //Getting the payment confirmation
+                PaymentConfirmation confirm = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
+                //if confirmation is not null
+                if (confirm != null) {
+                    try {
+                        //Getting the payment details
+                        String paymentDetails = confirm.toJSONObject().toString(4);
+                        Log.e("paymentExample", paymentDetails);
+                        editCourse();
+
+                    } catch (JSONException e) {
+                        Log.e("paymentExample", "an extremely unlikely failure occurred: ", e);
+                    }
+                }
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                Log.i("paymentExample", "The user canceled.");
+            } else if (resultCode == PaymentActivity.RESULT_EXTRAS_INVALID) {
+                Log.i("paymentExample", "An invalid Payment or PayPalConfiguration was submitted. Please see the docs.");
+            }
+        }
+    }
+
+    private void editCourse() {
+        String token = mPerferences.getString(getString(R.string.token), "");
+        editedCourse.setUpdatedTime(TimeHelper.getCurrentTime());
+        boolean result = courseService.editCourse(token, editedCourse);
+        if (result) {
+            Toast.makeText(this, "Thay đổi thông tin thành công", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "Thay đổi thất bại", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void uploadVideo() {
@@ -237,7 +314,7 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
                     Toast.makeText(TrainerUploadVideoActi.this, "Xin vui lòng điền đầy đủ thông tin video trước khi đăng", Toast.LENGTH_SHORT).show();
                 }
                 if (checked) {
-                    if(checkVideoLength()){
+                    if (checkVideoLength()) {
                         confirmUploadingVideo();
                     }
                 }
@@ -290,111 +367,202 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
     }
 
     private void uploadFileToFirebase() {
+        boolean permitUpload = false;
+
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Đang xử lí");
         progressDialog.show();
 
-        String username = mPerferences.getString(getString(R.string.username), "");
-
-        final String foldername = createFolderName(username);
-        final StorageReference stR = storageReference.child(foldername + "/" + edtTitle.getText().toString());
-
-        stR.putFile(selectedVideoUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                final Video videoUploadedToFirebase = new Video();
-                //videoUploadedToFirebase.setAccountId(mPerferences.getInt(getString(R.string.id), 0));
-                videoUploadedToFirebase.setNumOfView(0);
-                videoUploadedToFirebase.setFolderName(foldername);
-                videoUploadedToFirebase.setStatus("active");
-                videoUploadedToFirebase.setPrevStatus("active");
-                videoUploadedToFirebase.setTitle(edtTitle.getText().toString());
-                videoUploadedToFirebase.setContentUrl(taskSnapshot.getDownloadUrl().toString());
-                videoUploadedToFirebase.setCreatedTime(TimeHelper.getCurrentTime());
-                Course seletedCourse = (Course) spnCourse.getSelectedItem();
-                videoUploadedToFirebase.setCourseId(seletedCourse.getId());
-
-                // add thumbnail được chọn trong bộ sưu tập
-                if (checkedThumnail && imageUri != null && !imageUri.equals("")) {
-                    Log.e("thumbnail bo suu tập = ", "đã vào bộ suu tập");
-                    StorageReference srImg = storageReference.child(foldername + "/" + edtTitle.getText().toString() + "-thumbnail");
-                    srImg.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            videoUploadedToFirebase.setThumnailUrl(taskSnapshot.getDownloadUrl().toString());
-
-                            VideoService videoService = new VideoService();
-                            videoService.createVideo(mPerferences.getString(getString(R.string.token), ""),
-                                    videoUploadedToFirebase);
-
-                            Intent intent = new Intent(TrainerUploadVideoActi.this, MainActivity_Home.class);
-                            startActivity(intent);
-                        }
-                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (50.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                            progressDialog.setMessage("Hoàn thành " + (int) progress + "%...");
-                            if ((int) progress == 50) {
-                                progressDialog.dismiss();
-                            }
-                        }
-                    });
-                }
-
-                Toast.makeText(TrainerUploadVideoActi.this, "Đăng video thành công", Toast.LENGTH_LONG).show();
-
-                // add thumbnail mặc định từ video
-                if (!checkedThumnail) {
-                    Log.e("thumbnail default = ", "đã vào thumbnail default");
-                    StorageReference thumbnailDefault = storageReference.child(foldername + "/" + edtTitle.getText().toString() + "- video thumbnail");
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    bitmap_thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                    byte[] data = baos.toByteArray();
-                    thumbnailDefault.putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            videoUploadedToFirebase.setThumnailUrl(taskSnapshot.getDownloadUrl().toString());
-
-                            VideoService videoService = new VideoService();
-
-                            videoService.createVideo(mPerferences.getString(getString(R.string.token), ""),
-                                    videoUploadedToFirebase);
-                            Toast.makeText(TrainerUploadVideoActi.this, "upload image success", Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(TrainerUploadVideoActi.this, MainActivity_Home.class);
-                            startActivity(intent);
-                        }
-                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                            progressDialog.setMessage("Hoàn thành " + (int) progress + "%...");
-                            if ((int) progress == 100) {
-                                progressDialog.dismiss();
-                            }
-                        }
-                    });
-                }
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
+        Course selectedCourse = (Course) spnCourse.getSelectedItem();
+        if (selectedCourse.getPrice() == 0) {
+            permitUpload = true;
+        } else {
+            String token = mPerferences.getString(getString(R.string.token), "");
+            boolean isReachVideoLimit = videoService.checkVideoLimitedByCourseId(token, selectedCourse.getId());
+            if (isReachVideoLimit) {
+                permitUpload = false;
                 progressDialog.dismiss();
-                Toast.makeText(TrainerUploadVideoActi
-                        .this, e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                progressDialog.setMessage("Hoàn thành " + (int) progress + "%...");
-//                if ((int) progress == 100) {
-//                    progressDialog.dismiss();
-//                }
-            }
-        });
+                AlertDialog.Builder builder = new AlertDialog.Builder(TrainerUploadVideoActi.this);
+                View view = getLayoutInflater().inflate(R.layout.dialog_extra_video_limit, null);
+                edt_extra_video_limit = view.findViewById(R.id.edt_extra_video_limit);
+                fee_extra_video_limit = view.findViewById(R.id.fee_extra_video_limit);
+                edt_price_extra_video_limit = view.findViewById(R.id.edt_price_extra_video_limit);
+                edt_price_extra_video_limit.setText(selectedCourse.getPrice() + "");
 
+                edt_extra_video_limit.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        int extraVideoLimit = 0;
+                        if (!edt_extra_video_limit.getText().toString().isEmpty()) {
+                            extraVideoLimit = Integer.parseInt(edt_extra_video_limit.getText().toString().trim());
+                        }
+                        int courseFeeExtra = selectedCourse.getEnrollmentLimit() * extraVideoLimit * Constants.PRICE_OF_A_SUGGESTION_TURN * Constants.FREE_SUGGESTION_TURN_FOR_TRAINEE;
+                        fee_extra_video_limit.setText(courseFeeExtra + "");
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+
+                    }
+                });
+
+                builder.setView(view);
+                builder.setPositiveButton("Thanh toán phí", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (edt_extra_video_limit.getText().toString().isEmpty()) {
+                            Toast.makeText(TrainerUploadVideoActi.this, "Bạn chưa nhập video tăng thêm!", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        if (edt_price_extra_video_limit.getText().toString().isEmpty()) {
+                            Toast.makeText(TrainerUploadVideoActi.this, "Bạn chưa nhập giá khóa học", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        //selectedCourse.setPrice(Integer.parseInt(edt_price_extra_video_limit.getText().toString().trim()));
+                        //selectedCourse.setVideoLimit(selectedCourse.getVideoLimit() + Integer.parseInt(edt_extra_video_limit.getText().toString().trim()));
+                        editedCourse = selectedCourse;
+                        editedCourse.setPrice(Integer.parseInt(edt_price_extra_video_limit.getText().toString().trim()));
+                        editedCourse.setVideoLimit(selectedCourse.getVideoLimit() + Integer.parseInt(edt_extra_video_limit.getText().toString().trim()));
+                        getPayment();
+                    }
+                });
+                builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                                dialog.dismiss();
+                            }
+                        });
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.setTitle("Thông báo");
+                dialog.show();
+            } else {
+                permitUpload = true;
+            }
+        }
+
+        if (permitUpload) {
+            String username = mPerferences.getString(getString(R.string.username), "");
+
+            final String foldername = createFolderName(username);
+            final StorageReference stR = storageReference.child(foldername + "/" + edtTitle.getText().toString());
+
+            stR.putFile(selectedVideoUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    final Video videoUploadedToFirebase = new Video();
+                    //videoUploadedToFirebase.setAccountId(mPerferences.getInt(getString(R.string.id), 0));
+                    videoUploadedToFirebase.setNumOfView(0);
+                    videoUploadedToFirebase.setFolderName(foldername);
+                    videoUploadedToFirebase.setStatus("active");
+                    videoUploadedToFirebase.setPrevStatus("active");
+                    videoUploadedToFirebase.setTitle(edtTitle.getText().toString());
+                    videoUploadedToFirebase.setContentUrl(taskSnapshot.getDownloadUrl().toString());
+                    videoUploadedToFirebase.setCreatedTime(TimeHelper.getCurrentTime());
+                    Course seletedCourse = (Course) spnCourse.getSelectedItem();
+                    videoUploadedToFirebase.setCourseId(seletedCourse.getId());
+
+                    // add thumbnail được chọn trong bộ sưu tập
+                    if (checkedThumnail && imageUri != null && !imageUri.equals("")) {
+                        Log.e("thumbnail bo suu tập = ", "đã vào bộ suu tập");
+                        StorageReference srImg = storageReference.child(foldername + "/" + edtTitle.getText().toString() + "-thumbnail");
+                        srImg.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                videoUploadedToFirebase.setThumnailUrl(taskSnapshot.getDownloadUrl().toString());
+
+                                VideoService videoService = new VideoService();
+                                videoService.createVideo(mPerferences.getString(getString(R.string.token), ""),
+                                        videoUploadedToFirebase);
+                                Intent intent = new Intent(TrainerUploadVideoActi.this, MainActivity_Home.class);
+                                startActivity(intent);
+                            }
+                        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                                double progress = (50.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                                progressDialog.setMessage("Hoàn thành " + (int) progress + "%...");
+                                if ((int) progress == 50) {
+                                    progressDialog.dismiss();
+                                }
+                            }
+                        });
+                    }
+
+                    // add thumbnail mặc định từ video
+                    if (!checkedThumnail) {
+                        Log.e("thumbnail default = ", "đã vào thumbnail default");
+                        StorageReference thumbnailDefault = storageReference.child(foldername + "/" + edtTitle.getText().toString() + "- video thumbnail");
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        bitmap_thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                        byte[] data = baos.toByteArray();
+                        thumbnailDefault.putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                videoUploadedToFirebase.setThumnailUrl(taskSnapshot.getDownloadUrl().toString());
+                                VideoService videoService = new VideoService();
+                                videoService.createVideo(mPerferences.getString(getString(R.string.token), ""),
+                                        videoUploadedToFirebase);
+                                Toast.makeText(TrainerUploadVideoActi.this, "Đăng video thành công!", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(TrainerUploadVideoActi.this, MainActivity_Home.class);
+                                startActivity(intent);
+                            }
+                        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                                double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                                progressDialog.setMessage("Hoàn thành " + (int) progress + "%...");
+                                if ((int) progress == 100) {
+                                    progressDialog.dismiss();
+                                }
+                            }
+                        });
+                    }
+                    //Toast.makeText(TrainerUploadVideoActi.this, "Đăng video thành công", Toast.LENGTH_LONG).show();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    progressDialog.dismiss();
+                    Toast.makeText(TrainerUploadVideoActi
+                            .this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                    double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                    progressDialog.setMessage("Hoàn thành " + (int) progress + "%...");
+                }
+            });
+        }
+    }
+
+    private void getPayment() {
+        //Creating a paypalpayment
+        PayPalPayment payment = new PayPalPayment(new BigDecimal(fee_extra_video_limit.getText().toString().trim()), "USD", "Self-Training",
+                PayPalPayment.PAYMENT_INTENT_SALE);
+
+        //Creating Paypal Payment activity intent
+        Intent intent = new Intent(this, PaymentActivity.class);
+
+        //putting the paypal configuration to the intent
+        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
+
+        //Puting paypal payment to the intent
+        intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
+
+        //Starting the intent activity for result
+        //the request code will be used on the method onActivityResult
+        startActivityForResult(intent, PAYPAL_REQUEST_CODE);
     }
 
     public void confirmUploadingVideo() {

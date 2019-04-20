@@ -5,6 +5,7 @@ import com.capstone.self_training.model.Video;
 import com.capstone.self_training.util.Constants;
 
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -17,7 +18,7 @@ import retrofit2.http.Query;
 
 public interface IVideoService {
     @POST("video/create")
-    Call<Void> createVideo(@Header(Constants.header_string) String token, @Body Video video);
+    Call<Map> createVideo(@Header(Constants.header_string) String token, @Body Video video);
 
     @GET("video/getAllVideosByDate")
     Call<List<VideoDTO>> getVideosByDate(@Query("page") int page, @Query("size") int size);
@@ -35,9 +36,10 @@ public interface IVideoService {
                                                       @Query("page") int page, @Query("size") int size,
                                                       @Query("traineeId") int traineeId,
                                                       @Query("courseId") int courseId);
+
     @GET("video/getAllUnBoughtVideoByCourseId")
     Call<List<VideoDTO>> getAllUnBoughtVideoByCourseId(@Header(Constants.header_string) String token,
-                                                      @Query("page") int page, @Query("size") int size,
+                                                       @Query("page") int page, @Query("size") int size,
                                                        @Query("traineeId") int traineeId,
                                                        @Query("courseId") int courseId);
 
@@ -52,17 +54,22 @@ public interface IVideoService {
 
     @GET("video/getAllFreeVideosByAccount")
     Call<List<Video>> getAllFreeVideosByAccount(@Query("accountId") int accountId);
+
     @GET("video/searchOrderByDate")
     Call<List<VideoDTO>> searchVideoOrderByDate(@Query("searchValue") String searchValue);
+
     @GET("video/searchOrderByView")
     Call<List<VideoDTO>> searchVideoOrderByView(@Query("searchValue") String searchValue);
 
     @GET("video/getAllVideoByCourseIdToEdit")
-    Call<List<VideoDTO>> getAllVideoByCourseIdToEdit(@Header(Constants.header_string) String token,@Query("courseId") int courseId);
+    Call<List<VideoDTO>> getAllVideoByCourseIdToEdit(@Header(Constants.header_string) String token, @Query("courseId") int courseId);
 
     @PUT("video/editVideo")
-    Call<Boolean> editVideo(@Header(Constants.header_string) String token,@Body Video video);
+    Call<Boolean> editVideo(@Header(Constants.header_string) String token, @Body Video video);
 
     @PUT("video/changeNumberOfViewByVideoId/{videoId}")
-    Call<Boolean> changeNumberOfViewByVideoId(@Header(Constants.header_string) String token,@Path("videoId") long videoId);
+    Call<Boolean> changeNumberOfViewByVideoId(@Header(Constants.header_string) String token, @Path("videoId") long videoId);
+
+    @GET("video/checkVideoLimitedByCourseId/{courseId}")
+    Call<Boolean> checkVideoLimitedByCourseId(@Header(Constants.header_string) String token, @Path("courseId") int courseId);
 }

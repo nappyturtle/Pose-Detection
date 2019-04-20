@@ -7,7 +7,9 @@ import com.capstone.self_training.model.Video;
 import com.capstone.self_training.service.iService.IVideoService;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 
@@ -15,11 +17,13 @@ public class VideoService {
 
     private IVideoService iVideoService;
 
-    public Call<Void> createVideo(String token, Video video) {
+    public Map createVideo(String token, Video video) {
         iVideoService = DataService.getVideoService();
-        Call<Void> call = iVideoService.createVideo(token, video);
+        Call<Map> call = iVideoService.createVideo(token, video);
+        Map response = new HashMap();
         try {
-            call.execute().body();
+            response = call.execute().body();
+            return response;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -62,9 +66,9 @@ public class VideoService {
         return videoDTOS;
     }
 
-    public List<VideoDTO> getAllVideosRelatedByCourseId(int courseId,int currentVideoId) {
+    public List<VideoDTO> getAllVideosRelatedByCourseId(int courseId, int currentVideoId) {
         iVideoService = DataService.getVideoService();
-        Call<List<VideoDTO>> call = iVideoService.getAllVideosRelatedByCourseId(courseId,currentVideoId);
+        Call<List<VideoDTO>> call = iVideoService.getAllVideosRelatedByCourseId(courseId, currentVideoId);
         List<VideoDTO> videoDTOS = null;
         try {
             videoDTOS = call.execute().body();
@@ -76,7 +80,7 @@ public class VideoService {
 
     public List<VideoDTO> getAllVideoByCourseIdToEdit(String token, int id) {
         iVideoService = DataService.getVideoService();
-        Call<List<VideoDTO>> call = iVideoService.getAllVideoByCourseIdToEdit(token,id);
+        Call<List<VideoDTO>> call = iVideoService.getAllVideoByCourseIdToEdit(token, id);
         List<VideoDTO> videoDTOS = null;
         try {
             videoDTOS = call.execute().body();
@@ -98,9 +102,9 @@ public class VideoService {
         return videoDTOS;
     }
 
-    public List<VideoDTO> getAllBoughtVideosByCourseId(String token, int page, int size, int traineeId,int courseId) {
+    public List<VideoDTO> getAllBoughtVideosByCourseId(String token, int page, int size, int traineeId, int courseId) {
         iVideoService = DataService.getVideoService();
-        Call<List<VideoDTO>> call = iVideoService.getAllBoughtVideosByCourseId(token, page, size, traineeId,courseId);
+        Call<List<VideoDTO>> call = iVideoService.getAllBoughtVideosByCourseId(token, page, size, traineeId, courseId);
         List<VideoDTO> videoDTOS = null;
         try {
             videoDTOS = call.execute().body();
@@ -112,7 +116,7 @@ public class VideoService {
 
     public List<VideoDTO> getAllUnBoughtVideoByCourseId(String token, int page, int size, int traineeId, int courseId) {
         iVideoService = DataService.getVideoService();
-        Call<List<VideoDTO>> call = iVideoService.getAllUnBoughtVideoByCourseId(token, page, size, traineeId,courseId);
+        Call<List<VideoDTO>> call = iVideoService.getAllUnBoughtVideoByCourseId(token, page, size, traineeId, courseId);
         List<VideoDTO> videoDTOS = null;
         try {
             videoDTOS = call.execute().body();
@@ -122,9 +126,9 @@ public class VideoService {
         return videoDTOS;
     }
 
-    public List<VideoDTO> getAllBoughtVideoRelated(String token, int traineeId,int courseId, int videoId) {
+    public List<VideoDTO> getAllBoughtVideoRelated(String token, int traineeId, int courseId, int videoId) {
         iVideoService = DataService.getVideoService();
-        Call<List<VideoDTO>> call = iVideoService.getAllBoughtVideoRelated(token, traineeId,courseId, videoId);
+        Call<List<VideoDTO>> call = iVideoService.getAllBoughtVideoRelated(token, traineeId, courseId, videoId);
         List<VideoDTO> videoDTOS = null;
         try {
             videoDTOS = call.execute().body();
@@ -157,6 +161,7 @@ public class VideoService {
         }
         return videos;
     }
+
     public List<VideoDTO> searchVideoOrderByView(String searchValue) {
         iVideoService = DataService.getVideoService();
         List<VideoDTO> videos = null;
@@ -167,5 +172,17 @@ public class VideoService {
             e.printStackTrace();
         }
         return videos;
+    }
+
+    public boolean checkVideoLimitedByCourseId(String token, int courseId) {
+        iVideoService = DataService.getVideoService();
+        Call<Boolean> call = iVideoService.checkVideoLimitedByCourseId(token, courseId);
+        boolean isReachVideoLimit = false;
+        try {
+            isReachVideoLimit = call.execute().body();
+        } catch (Exception e) {
+            Log.e("videoService checkLimit ", e.getMessage());
+        }
+        return isReachVideoLimit;
     }
 }
