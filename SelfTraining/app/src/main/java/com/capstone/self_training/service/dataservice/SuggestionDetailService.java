@@ -16,7 +16,7 @@ public class SuggestionDetailService {
     public List<SuggestionDetail> getSuggestionDetailList(String token, int suggestionId) {
         iSuggestionDetailService = DataService.getSuggestionDetailService();
         List<SuggestionDetail> detailList = null;
-        Call<List<SuggestionDetail>> listCall = iSuggestionDetailService.getSuggestionDetail(token, suggestionId);
+        Call<List<SuggestionDetail>> listCall = iSuggestionDetailService.getSuggestionDetailForTrainee(token, suggestionId);
         try {
             detailList = listCall.execute().body();
         } catch (Exception e) {
