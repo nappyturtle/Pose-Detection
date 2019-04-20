@@ -1,5 +1,7 @@
 package com.pdst.pdstserver.controller;
 
+import com.pdst.pdstserver.model.Course;
+import com.pdst.pdstserver.service.CourseService;
 import com.pdst.pdstserver.utils.SearchUtil;
 import com.pdst.pdstserver.model.Video;
 import com.pdst.pdstserver.dto.VideoDTO;
@@ -19,9 +21,11 @@ import java.util.stream.Collectors;
 public class VideoController {
     public static final String BASE_URL = "video";
     private final VideoService videoService;
+    private final CourseService courseService;
 
-    public VideoController(VideoService videoService) {
+    public VideoController(VideoService videoService, CourseService courseService) {
         this.videoService = videoService;
+        this.courseService = courseService;
     }
 
     @GetMapping("getAllVideos")
@@ -134,14 +138,31 @@ public class VideoController {
      * - dùng cho mobile
      */
     @PostMapping(value = "/create")
-    public ResponseEntity<Void> createVideo(@RequestBody Video video, UriComponentsBuilder builder) {
+    public Map createVideo(@RequestBody Video video, UriComponentsBuilder builder) {
+        Map response = new HashMap();
         boolean flag = videoService.createVideo(video);
         if (flag == false) {
-            return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+            response.put("message", HttpStatus.CONFLICT);
+            return response;
+        } else {
+            response.put("message", HttpStatus.CREATED);
+            return response;
         }
-        HttpHeaders headers = new HttpHeaders();
+        /*HttpHeaders headers = new HttpHeaders();
         headers.setLocation(builder.path("create/{title}").buildAndExpand(video.getTitle()).toUri());
-        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);*/
+    }
+
+    @GetMapping("checkVideoLimitedByCourseId/{courseId}")
+    public boolean checkVideoLimitedByCourseId(@PathVariable(value = "courseId") int courseId) {
+        Course courseToAddVideo = courseService.getCourseById(courseId);
+        int videoLimitInCourse = courseToAddVideo.getVideoLimit();
+        int currentNumberOfVideoInCourse = videoService.countVideosByCourseId(courseId);
+        if (currentNumberOfVideoInCourse < videoLimitInCourse) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     /**
