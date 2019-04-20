@@ -47,6 +47,11 @@ public class SuggestionDetailController {
         return suggestionDetailService.getSuggestionDetails("suggestionId", suggestionId);
     }
 
+    @GetMapping("getSuggestionDetailsBySuggestionForTrainee")
+    public List<SuggestionDetail> getSuggestionDetailsForTrainee(int suggestionId) {
+        return suggestionDetailService.getSuggestionDetailsForTrainee("suggestionId", suggestionId);
+    }
+
     @PostMapping("createSuggestionDetails")
     public String createSuggestionDetails(@RequestBody List<SuggestionDetail> suggestionDetails) {
         if(suggestionDetails.size() != 0) {

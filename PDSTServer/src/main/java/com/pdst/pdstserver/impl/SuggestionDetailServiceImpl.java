@@ -48,6 +48,23 @@ public class SuggestionDetailServiceImpl implements SuggestionDetailService {
         List<SuggestionDetail> suggestionDetails = suggestionDetailRepository.findAll(suggestionDetailExample, new Sort(Sort.Direction.ASC, "createdTime"));
         return suggestionDetails;
     }
+    public List<SuggestionDetail> getSuggestionDetailsForTrainee(String field, Object value) {
+        List<SuggestionDetail> suggestionDetails = getSuggestionDetails(field, value);
+        List<SuggestionDetail> tmp = new ArrayList<>(suggestionDetails);
+        boolean hasComment = false;
+        int i = 0;
+        while(i < suggestionDetails.size()) {
+            SuggestionDetail suggestionDetail = suggestionDetails.get(i);
+            if(suggestionDetail.getComment() == null) {
+                suggestionDetails.remove(suggestionDetail);
+            }
+            else {
+                hasComment = true;
+                i++;
+            }
+        }
+        return hasComment ? suggestionDetails : tmp;
+    }
 
     /**
      @author  KietPT
