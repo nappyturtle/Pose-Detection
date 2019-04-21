@@ -14,4 +14,5 @@ public interface SuggestionService {
     List<SuggestionDTOFrontEnd> getAllSuggestionByStaffOrAdmin();
     boolean editStatusSuggestionByStaffOrAdmin(SuggestionDTOFrontEnd dto);
     SuggestionDTOFrontEnd getSuggestionById(int suggestionId);
+    int countAllSuggestionByAccountIdAndVideoId(int accountId, int videoId);
 }

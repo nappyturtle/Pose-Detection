@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
+@Table(name = "suggestionturntransaction")
 public class SuggestionTurnTransaction implements Serializable {
     private int id;
     private String createdTime;

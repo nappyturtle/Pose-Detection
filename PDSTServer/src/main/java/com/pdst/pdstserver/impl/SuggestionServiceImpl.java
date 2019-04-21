@@ -28,7 +28,7 @@ public class SuggestionServiceImpl implements SuggestionService {
     private final CourseRepository courseRepository;
 
     public SuggestionServiceImpl(SuggestionRepository suggestionRepository, VideoRepository videoRepository
-    ,AccountRepository accountRepository,CourseRepository courseRepository) {
+            , AccountRepository accountRepository, CourseRepository courseRepository) {
         this.suggestionRepository = suggestionRepository;
         this.videoRepository = videoRepository;
         this.accountRepository = accountRepository;
@@ -64,11 +64,11 @@ public class SuggestionServiceImpl implements SuggestionService {
     }
 
     /**
-     @author  KietPT
-     @since   6/4/2019
-
-     - hàm này dùng để update status của suggestion (proccessing => active) khi tạo suggeston detail xong
-     - dùng cho service
+     * @author KietPT
+     * @since 6/4/2019
+     * <p>
+     * - hàm này dùng để update status của suggestion (proccessing => active) khi tạo suggeston detail xong
+     * - dùng cho service
      */
     @Override
     public boolean updateSuggestionStatus(int id, String status) {
@@ -79,16 +79,16 @@ public class SuggestionServiceImpl implements SuggestionService {
     }
 
     /**
-     @author  KietPT
-     @since   6/4/2019
-
-     - hàm này dùng để lấy danh sách suggestion của trainee được quản lí bởi trainer thông qua course và video
-     - dùng cho mobile
+     * @author KietPT
+     * @since 6/4/2019
+     * <p>
+     * - hàm này dùng để lấy danh sách suggestion của trainee được quản lí bởi trainer thông qua course và video
+     * - dùng cho mobile
      */
     @Override
     public List<SuggestionDTO> getSuggestionByTrainer(int page, int size, int trainerId, int traineeId) {
-        System.out.println("page - size : "+page + " - "+size);
-        List<Suggestion> list = suggestionRepository.findAllByAccountId(PageRequest.of(page,size,Sort.Direction.DESC,"createdTime"),traineeId);
+        System.out.println("page - size : " + page + " - " + size);
+        List<Suggestion> list = suggestionRepository.findAllByAccountId(PageRequest.of(page, size, Sort.Direction.DESC, "createdTime"), traineeId);
         List<SuggestionDTO> listDTO = new ArrayList<>();
 
         try {
@@ -99,7 +99,7 @@ public class SuggestionServiceImpl implements SuggestionService {
                 Video video = videoRepository.findVideoById(suggestion.getVideoId());
                 Course course = courseRepository.findCourseById(video.getCourseId());
                 Account account = accountRepository.findAccountById(course.getAccountId());
-                if(account.getId() == trainerId) {
+                if (account.getId() == trainerId) {
                     SuggestionDTO dto = new SuggestionDTO();
                     dto.setId(suggestion.getId());
                     dto.setAccountId(suggestion.getAccountId());
@@ -119,22 +119,22 @@ public class SuggestionServiceImpl implements SuggestionService {
     }
 
     /**
-     @author  KietPT
-     @since   6/4/2019
-
-     - hàm này dùng để lấy danh sách suggestion
-     - dùng cho web
+     * @author KietPT
+     * @since 6/4/2019
+     * <p>
+     * - hàm này dùng để lấy danh sách suggestion
+     * - dùng cho web
      */
     @Override
     public List<SuggestionDTOFrontEnd> getAllSuggestionByStaffOrAdmin() {
         List<Suggestion> suggestions = suggestionRepository.findAllByOrderByCreatedTimeDesc();
         List<SuggestionDTOFrontEnd> suggestionDTOFrontEnds = new ArrayList<>();
         int count = 0;
-        for(Suggestion su : suggestions){
+        for (Suggestion su : suggestions) {
             SuggestionDTOFrontEnd suggestionDTOFrontEnd = new SuggestionDTOFrontEnd();
             Account account = accountRepository.findAccountById(su.getAccountId());
             Video video = videoRepository.findVideoById(su.getVideoId());
-            suggestionDTOFrontEnd.setStt(count+1);
+            suggestionDTOFrontEnd.setStt(count + 1);
             suggestionDTOFrontEnd.setId(su.getId());
             suggestionDTOFrontEnd.setVideoname(video.getTitle());
             suggestionDTOFrontEnd.setAccountname(account.getUsername());
@@ -145,35 +145,35 @@ public class SuggestionServiceImpl implements SuggestionService {
     }
 
     /**
-     @author  KietPT
-     @since   6/4/2019
-
-     - hàm này dùng để edit status suggestion(active,inactive, processing)
-     - dùng cho web
+     * @author KietPT
+     * @since 6/4/2019
+     * <p>
+     * - hàm này dùng để edit status suggestion(active,inactive, processing)
+     * - dùng cho web
      */
     @Override
     public boolean editStatusSuggestionByStaffOrAdmin(SuggestionDTOFrontEnd dto) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date date = Calendar.getInstance().getTime();
         Suggestion suggestion = suggestionRepository.getOne(dto.getId());
-        if(!dto.getStatus().equals("on")){
+        if (!dto.getStatus().equals("on")) {
             suggestion.setStatus(dto.getStatus());
         }
 
         suggestion.setUpdatedTime(sdf.format(date));
         Suggestion suggestionRes = suggestionRepository.save(suggestion);
-        if(suggestionRes != null){
+        if (suggestionRes != null) {
             return true;
         }
         return false;
     }
 
     /**
-     @author  KietPT
-     @since   6/4/2019
-
-     - hàm này dùng để lấy thông tin suggestion
-     - dùng cho web
+     * @author KietPT
+     * @since 6/4/2019
+     * <p>
+     * - hàm này dùng để lấy thông tin suggestion
+     * - dùng cho web
      */
     @Override
     public SuggestionDTOFrontEnd getSuggestionById(int suggestionId) {
@@ -189,18 +189,23 @@ public class SuggestionServiceImpl implements SuggestionService {
         return dto;
     }
 
-    /**
-     @author  KietPT
-     @since   6/4/2019
+    @Override
+    public int countAllSuggestionByAccountIdAndVideoId(int accountId, int videoId) {
+        return suggestionRepository.countAllByAccountIdAndVideoId(accountId, videoId);
+    }
 
-     - hàm này dùng để tao suggestion khi trainee/trainer tập theo 1 video nào đó, gửi video đó
-     - dùng cho mobile
+    /**
+     * @author KietPT
+     * @since 6/4/2019
+     * <p>
+     * - hàm này dùng để tao suggestion khi trainee/trainer tập theo 1 video nào đó, gửi video đó
+     * - dùng cho mobile
      */
     @Override
     public boolean createSuggestion(SuggestionDTO suggestion) {
 
-        System.out.println("traine: = "+suggestion.getFoldernameTrainee());
-        System.out.println("url = "+suggestion.getUrlVideoTrainee());
+        System.out.println("traine: = " + suggestion.getFoldernameTrainee());
+        System.out.println("url = " + suggestion.getUrlVideoTrainee());
         Suggestion dbInserted = new Suggestion();
         dbInserted.setAccountId(suggestion.getAccountId());
         dbInserted.setVideoId(suggestion.getVideoId());
@@ -209,7 +214,7 @@ public class SuggestionServiceImpl implements SuggestionService {
         dbInserted.setThumnailUrl(suggestion.getThumnailUrl());
         dbInserted.setTraineeVideo(suggestion.getUrlVideoTrainee());
         Suggestion savedSuggestion = suggestionRepository.save(dbInserted);
-        System.out.println("videoId = "+savedSuggestion.getVideoId());
+        System.out.println("videoId = " + savedSuggestion.getVideoId());
         Video videoRequest = videoRepository.findVideoById(savedSuggestion.getVideoId());
 
         // gửi request đến service để cắt video
@@ -220,7 +225,7 @@ public class SuggestionServiceImpl implements SuggestionService {
                     Thread.sleep(3000);
                     SendRequest sendRequest = new SendRequest();
                     sendRequest.sendRequestToSuggest(videoRequest, suggestion.getFoldernameTrainee(),
-                            savedSuggestion.getId(),suggestion.getUrlVideoTrainee());
+                            savedSuggestion.getId(), suggestion.getUrlVideoTrainee());
                     System.out.println("da goi request to make suggestion");
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -237,17 +242,17 @@ public class SuggestionServiceImpl implements SuggestionService {
     }
 
     /**
-     @author  KietPT
-     @since   6/4/2019
-
-     - hàm này dùng để lấy danh sách suggestion
-     - dùng cho mobile
+     * @author KietPT
+     * @since 6/4/2019
+     * <p>
+     * - hàm này dùng để lấy danh sách suggestion
+     * - dùng cho mobile
      */
     @Override
     public List<SuggestionDTO> getSuggestionListById(int page, int size, int id) {
-        System.out.println("page - size : "+page + " - "+size);
-        List<Suggestion> list = suggestionRepository.findAllByAccountId(PageRequest.of(page,size,Sort.Direction.DESC,"createdTime"),id);
-        System.out.println("list = "+list.isEmpty());
+        System.out.println("page - size : " + page + " - " + size);
+        List<Suggestion> list = suggestionRepository.findAllByAccountId(PageRequest.of(page, size, Sort.Direction.DESC, "createdTime"), id);
+        System.out.println("list = " + list.isEmpty());
 //
         List<SuggestionDTO> listDTO = new ArrayList<>();
 

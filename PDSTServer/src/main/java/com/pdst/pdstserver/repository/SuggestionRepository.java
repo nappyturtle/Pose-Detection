@@ -13,4 +13,5 @@ public interface SuggestionRepository extends JpaRepository<Suggestion, Integer>
     List<Suggestion> findAllByAccountId(Pageable pageable,int id);
     Suggestion findSuggestionById(int suggestionId);
     List<Suggestion> findAllByOrderByCreatedTimeDesc();
+    int countAllByAccountIdAndVideoId(int accountId, int videoId);
 }
