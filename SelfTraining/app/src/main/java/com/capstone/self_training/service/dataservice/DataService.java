@@ -6,6 +6,7 @@ import com.capstone.self_training.service.iService.ICourseService;
 import com.capstone.self_training.service.iService.ISuggestionDetailService;
 import com.capstone.self_training.service.iService.ICategoryService;
 import com.capstone.self_training.service.iService.ISuggestionService;
+import com.capstone.self_training.service.iService.ISuggestionTurnTransactionService;
 import com.capstone.self_training.service.iService.IUpgradeCourseTransactionService;
 import com.capstone.self_training.service.iService.IVideoService;
 import com.capstone.self_training.service.iService.IEnrollmentService;
@@ -45,5 +46,9 @@ public class DataService {
 
     public static IUpgradeCourseTransactionService getUpgradeCourseTransactionService(){
         return ApiRetrofitClient.getClient(baseUrl).create(IUpgradeCourseTransactionService.class);
+    }
+
+    public static ISuggestionTurnTransactionService getSuggestionTurnTransactionService(){
+        return ApiRetrofitClient.getClient(baseUrl).create(ISuggestionTurnTransactionService.class);
     }
 }

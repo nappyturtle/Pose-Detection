@@ -14,13 +14,13 @@ import retrofit2.Call;
 public class SuggestionService {
     private ISuggestionService iSuggestionService;
 
-    public Call<Void> createSuggestion(String token,Suggestion suggestion) {
+    public Call<Void> createSuggestion(String token, Suggestion suggestion) {
         iSuggestionService = DataService.getSuggestionService();
-        Call<Void> call = iSuggestionService.createSuggestion(token,suggestion);
+        Call<Void> call = iSuggestionService.createSuggestion(token, suggestion);
         try {
             call.execute().body();
         } catch (Exception e) {
-            Log.e("SuggestionService createSuggestion = ",e.getMessage());
+            Log.e("SuggestionService createSuggestion = ", e.getMessage());
         }
         return null;
     }
@@ -28,24 +28,36 @@ public class SuggestionService {
     public List<SuggestionDTO> getSuggestionList(String token, int page, int size, int accountId) {
         iSuggestionService = DataService.getSuggestionService();
         List<SuggestionDTO> suggestionList = null;
-        Call<List<SuggestionDTO>> callBack = iSuggestionService.getSuggestionList(token,page,size,accountId);
-        try{
+        Call<List<SuggestionDTO>> callBack = iSuggestionService.getSuggestionList(token, page, size, accountId);
+        try {
             suggestionList = callBack.execute().body();
-        }catch (Exception e){
-            Log.e("SuggestionService getSuggestionList = ",e.getMessage());
+        } catch (Exception e) {
+            Log.e("SuggestionService getSuggestionList = ", e.getMessage());
         }
         return suggestionList;
     }
 
-    public List<SuggestionDTO> getSuggestionListByTrainer(String token,int page, int size,  int trainerId, int traineeId) {
+    public List<SuggestionDTO> getSuggestionListByTrainer(String token, int page, int size, int trainerId, int traineeId) {
         iSuggestionService = DataService.getSuggestionService();
         List<SuggestionDTO> suggestionList = null;
-        Call<List<SuggestionDTO>> callBack = iSuggestionService.getSuggestionByTrainer(token,page,size,trainerId,traineeId);
-        try{
+        Call<List<SuggestionDTO>> callBack = iSuggestionService.getSuggestionByTrainer(token, page, size, trainerId, traineeId);
+        try {
             suggestionList = callBack.execute().body();
-        }catch (Exception e){
-            Log.e("SuggestionService getSuggestionList = ",e.getMessage());
+        } catch (Exception e) {
+            Log.e("SuggestionService getSuggestionList = ", e.getMessage());
         }
         return suggestionList;
+    }
+
+    public boolean isAvailableTurn(String token, int accountId, int videoId) {
+        iSuggestionService = DataService.getSuggestionService();
+        boolean result = false;
+        Call<Boolean> call = iSuggestionService.isAvailableTurn(token, accountId, videoId);
+        try {
+            result = call.execute().body();
+        } catch (Exception e) {
+            Log.e("SuggestionService isAvailableTurn: ", e.getMessage());
+        }
+        return result;
     }
 }

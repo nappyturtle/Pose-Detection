@@ -15,7 +15,7 @@ import retrofit2.http.Query;
 
 public interface ISuggestionService {
     @POST("suggestion/create")
-    Call<Void> createSuggestion(@Header(Constants.header_string) String token,@Body Suggestion suggestion);
+    Call<Void> createSuggestion(@Header(Constants.header_string) String token, @Body Suggestion suggestion);
 
     @GET("suggestion/getSuggestionListById")
     Call<List<SuggestionDTO>> getSuggestionList(@Header(Constants.header_string) String token,
@@ -25,6 +25,11 @@ public interface ISuggestionService {
     @GET("suggestion/getSuggestionByTrainer")
     Call<List<SuggestionDTO>> getSuggestionByTrainer(@Header(Constants.header_string) String token,
                                                      @Query("page") int page,
-                                                    @Query("size") int size,@Query("trainerId") int trainerId
-                                                    ,@Query("traineeId") int traineeId);
+                                                     @Query("size") int size, @Query("trainerId") int trainerId
+            , @Query("traineeId") int traineeId);
+
+    @GET("suggestionturn/isAvailableTurn")
+    Call<Boolean> isAvailableTurn(@Header(Constants.header_string) String token,
+                                  @Query("accountId") int accountId,
+                                  @Query("videoId") int videoId);
 }

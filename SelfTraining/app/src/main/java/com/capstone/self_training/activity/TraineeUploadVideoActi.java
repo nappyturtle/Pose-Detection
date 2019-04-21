@@ -23,9 +23,12 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.MediaController;
 import android.widget.TextView;
@@ -35,21 +38,32 @@ import android.widget.VideoView;
 import com.capstone.self_training.R;
 import com.capstone.self_training.helper.TimeHelper;
 import com.capstone.self_training.model.Suggestion;
+import com.capstone.self_training.model.SuggestionTurnTransaction;
 import com.capstone.self_training.model.Video;
 import com.capstone.self_training.service.dataservice.SuggestionService;
+import com.capstone.self_training.service.dataservice.SuggestionTurnTransactionService;
+import com.capstone.self_training.util.Constants;
 import com.capstone.self_training.util.MP4Demuxer;
+import com.capstone.self_training.util.PayPalConfig;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.paypal.android.sdk.payments.PayPalConfiguration;
+import com.paypal.android.sdk.payments.PayPalPayment;
+import com.paypal.android.sdk.payments.PayPalService;
+import com.paypal.android.sdk.payments.PaymentActivity;
+import com.paypal.android.sdk.payments.PaymentConfirmation;
 
 import org.jcodec.common.DemuxerTrack;
 import org.jcodec.common.io.NIOUtils;
 import org.jcodec.common.io.SeekableByteChannel;
+import org.json.JSONException;
 
 import java.io.ByteArrayOutputStream;
+import java.math.BigDecimal;
 
 public class TraineeUploadVideoActi extends AppCompatActivity {
     private static final int SELECT_VIDEO = 3;
@@ -59,6 +73,8 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
     private Button btnUploadVideo;
     private TextView txtVideoName;
     private VideoView videoView;
+    private EditText edt_fee_extra_suggestion_turn;
+    private TextView tv_fee_extra_suggestion_turn;
     private Button btnOpenCamera;
     private Toolbar toolbar;
     private StorageReference storageReference;
@@ -69,6 +85,15 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
     private Video playingVideo;
 
     private SharedPreferences mPerferences;
+    private SuggestionService suggestionService;
+    private SuggestionTurnTransactionService suggestionTurnTransactionService;
+
+    public static final int PAYPAL_REQUEST_CODE = 123;
+    private static PayPalConfiguration config = new PayPalConfiguration()
+            // Start with mock environment.  When ready, switch to sandbox (ENVIRONMENT_SANDBOX)
+            // or live (ENVIRONMENT_PRODUCTION)
+            .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
+            .clientId(PayPalConfig.PAYPAL_CLIENT_ID);
 
 
     @Override
@@ -87,6 +112,16 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
 
         uploadVideo();
 
+        Intent intentPaypal = new Intent(this, PayPalService.class);
+        intentPaypal.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
+        startService(intentPaypal);
+
+    }
+
+    @Override
+    public void onDestroy() {
+        stopService(new Intent(this, PayPalService.class));
+        super.onDestroy();
     }
 
     @Override
@@ -106,6 +141,50 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
         if (requestCode == REQUEST_CODE_LOGIN && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
             System.out.println("Trainee upload");
 
+        }
+        if (requestCode == PAYPAL_REQUEST_CODE) {
+
+            //If the result is OK i.e. user has not canceled the payment
+            if (resultCode == Activity.RESULT_OK) {
+                //Getting the payment confirmation
+                PaymentConfirmation confirm = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
+                //if confirmation is not null
+                if (confirm != null) {
+                    try {
+                        //Getting the payment details
+                        String paymentDetails = confirm.toJSONObject().toString(4);
+                        Log.e("paymentExample", paymentDetails);
+
+                        int accountId = mPerferences.getInt(getString(R.string.id), 0);
+                        int videoId = playingVideo.getId();
+                        int extraTurn = Integer.parseInt(edt_fee_extra_suggestion_turn.getText().toString().trim());
+                        int price = Integer.parseInt(tv_fee_extra_suggestion_turn.getText().toString().trim());
+                        String token = mPerferences.getString(getString(R.string.token), "");
+
+                        SuggestionTurnTransaction newTransaction = new SuggestionTurnTransaction();
+                        newTransaction.setAccountId(accountId);
+                        newTransaction.setCreatedTime(TimeHelper.getCurrentTime());
+                        newTransaction.setVideoId(playingVideo.getId());
+                        newTransaction.setPrice(Integer.parseInt(tv_fee_extra_suggestion_turn.getText().toString().trim()));
+                        newTransaction.setSuggestionTurn(Integer.parseInt(edt_fee_extra_suggestion_turn.getText().toString().trim()));
+
+                        boolean isCreated = suggestionTurnTransactionService.buySuggestionTurn(token, newTransaction);
+                        if (isCreated) {
+                            Toast.makeText(this, "Thanh toán phí thành công", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(this, "Thanh toán phí thất bại", Toast.LENGTH_SHORT).show();
+                        }
+                        confirmUploadingVideo();
+
+                    } catch (JSONException e) {
+                        Log.e("paymentExample", "an extremely unlikely failure occurred: ", e);
+                    }
+                }
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                Log.i("paymentExample", "The user canceled.");
+            } else if (resultCode == PaymentActivity.RESULT_EXTRAS_INVALID) {
+                Log.i("paymentExample", "An invalid Payment or PayPalConfiguration was submitted. Please see the docs.");
+            }
         }
     }
 
@@ -131,6 +210,8 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
         btnOpenCamera = (Button) findViewById(R.id.btnUploadVideoOpenCamera);
         storageReference = FirebaseStorage.getInstance().getReference();
         mPerferences = PreferenceManager.getDefaultSharedPreferences(this);
+        suggestionService = new SuggestionService();
+        suggestionTurnTransactionService = new SuggestionTurnTransactionService();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar_uploadVideo_id);
     }
@@ -145,6 +226,7 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
             }
         });
     }
+
     private void clickToOpenCamera() {
         btnOpenCamera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,8 +266,8 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
                     Toast.makeText(TraineeUploadVideoActi.this, "Xin vui lòng chọn video trước khi đăng", Toast.LENGTH_SHORT).show();
                 }
                 if (checked) {
-                    Toast.makeText(TraineeUploadVideoActi.this, "da vao upload video", Toast.LENGTH_SHORT).show();
-                    if(checkVideoLength()){
+                    //Toast.makeText(TraineeUploadVideoActi.this, "da vao upload video", Toast.LENGTH_SHORT).show();
+                    if (checkVideoLength()) {
                         confirmUploadingVideo();
                     }
 
@@ -206,7 +288,7 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
                 Toast.makeText(this, "Video của bạn quá 60 giây!!!", Toast.LENGTH_SHORT).show();
                 return false;
             } else {
-                Toast.makeText(this, "Okkkkk ", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Okkkkk ", Toast.LENGTH_SHORT).show();
                 return true;
             }
 
@@ -220,11 +302,18 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
         return username + "-" + System.currentTimeMillis();
     }
 
+    private boolean isAvailableTurn() {
+        String token = mPerferences.getString(getString(R.string.token), "");
+        int currentAccountId = mPerferences.getInt(getString(R.string.id), 0);
+        boolean result = suggestionService.isAvailableTurn(token, currentAccountId, playingVideo.getId());
+        return result;
+    }
+
     private void uploadFileToFirebase() {
 
         final ProgressDialog progressDialog = new ProgressDialog(this);
         //final Video uploadedVideo = new Video();
-        progressDialog.setTitle("Uploading");
+        progressDialog.setTitle("Đang xử lý");
         progressDialog.show();
         Log.e("TextView = ", txtVideoName.getText().toString());
 
@@ -318,7 +407,63 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
                     startActivityForResult(intent, REQUEST_CODE_LOGIN);
                 }
                 if (id != 0 && accountExisted) {
-                    uploadFileToFirebase();
+                    if (isAvailableTurn()) {
+                        uploadFileToFirebase();
+                    } else {
+                        //Toast.makeText(TraineeUploadVideoActi.this, "Da het luot", Toast.LENGTH_LONG).show();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(TraineeUploadVideoActi.this);
+                        //builder.setTitle("Thông báo");
+                        View view = getLayoutInflater().inflate(R.layout.dialog_buy_suggestion_turn, null);
+                        edt_fee_extra_suggestion_turn = view.findViewById(R.id.edt_fee_extra_suggestion_turn);
+                        tv_fee_extra_suggestion_turn = view.findViewById(R.id.tv_fee_extra_suggestion_turn);
+
+                        edt_fee_extra_suggestion_turn.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                            }
+
+                            @Override
+                            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                if (!edt_fee_extra_suggestion_turn.getText().toString().isEmpty()) {
+                                    int fee = Integer.parseInt(edt_fee_extra_suggestion_turn.getText().toString().trim()) * Constants.PRICE_OF_A_SUGGESTION_TURN;
+                                    tv_fee_extra_suggestion_turn.setText(fee + "");
+                                }
+                            }
+
+                            @Override
+                            public void afterTextChanged(Editable s) {
+
+                            }
+                        });
+
+                        builder.setView(view);
+                        builder.setPositiveButton("Thanh toán phí", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (edt_fee_extra_suggestion_turn.getText().toString().isEmpty()) {
+                                    Toast.makeText(TraineeUploadVideoActi.this, "Bạn chưa nhập số lượt!", Toast.LENGTH_LONG).show();
+                                    return;
+                                }
+
+                                getPayment();
+                            }
+                        });
+                        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                    @Override
+                                    public void onDismiss(DialogInterface dialog) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                            }
+                        });
+                        AlertDialog buySuggestionTurnDialog = builder.create();
+                        buySuggestionTurnDialog.setTitle("Thông báo");
+                        buySuggestionTurnDialog.show();
+                    }
                 }
             }
         });
@@ -336,6 +481,24 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
         alertDialog.show();
     }
 
+    private void getPayment() {
+        //Creating a paypalpayment
+        PayPalPayment payment = new PayPalPayment(new BigDecimal(tv_fee_extra_suggestion_turn.getText().toString().trim()), "USD", "Self-Training",
+                PayPalPayment.PAYMENT_INTENT_SALE);
+
+        //Creating Paypal Payment activity intent
+        Intent intent = new Intent(this, PaymentActivity.class);
+
+        //putting the paypal configuration to the intent
+        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
+
+        //Puting paypal payment to the intent
+        intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
+
+        //Starting the intent activity for result
+        //the request code will be used on the method onActivityResult
+        startActivityForResult(intent, PAYPAL_REQUEST_CODE);
+    }
 
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
 
