@@ -46,7 +46,6 @@ public class CourseDetailPayment extends AppCompatActivity {
     private Toolbar toolbar;
     private String token;
     private int accountId;
-    private boolean updatedCourse;
     private SharedPreferences mPerferences;
     public static final int PAYPAL_REQUEST_CODE = 123;
     private static PayPalConfiguration config = new PayPalConfiguration()
@@ -79,7 +78,7 @@ public class CourseDetailPayment extends AppCompatActivity {
 
 
         //Creating a paypalpayment
-        PayPalPayment payment = new PayPalPayment(new BigDecimal(String.valueOf(dto.getCourse().getPrice())), "VNĐ", "Self-Training",
+        PayPalPayment payment = new PayPalPayment(new BigDecimal(String.valueOf(dto.getCourse().getPrice())), "USD", "Self-Training",
                 PayPalPayment.PAYMENT_INTENT_SALE);
 
         //Creating Paypal Payment activity intent
@@ -124,11 +123,7 @@ public class CourseDetailPayment extends AppCompatActivity {
         alertDialog.setPositiveButton("Có", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-//                if(checkEnrollmentExisted(token,traineeId,dto.getCourse().getId())){
-//                    Toast.makeText(CourseDetailPayment.this, "Bạn đã mua khóa học này rồi", Toast.LENGTH_SHORT).show();
-//                }else {
                     getPayment();
-                //}
             }
         });
         alertDialog.setNegativeButton("Không", new DialogInterface.OnClickListener() {
@@ -144,20 +139,12 @@ public class CourseDetailPayment extends AppCompatActivity {
         });
         alertDialog.show();
     }
-    private boolean checkEnrollmentExisted(String token, int traineeId, int courseId){
-        EnrollmentService enrollmentService = new EnrollmentService();
-        return enrollmentService.checkEnrollmentExistedOrNot(token,traineeId,courseId);
-    }
+
 
     private void getDataFromIntent() {
         Intent intent = getIntent();
         dto = (CourseDTO) intent.getSerializableExtra("courseDTO");
-        updatedCourse = intent.getBooleanExtra("updatedCourse",false);
-//        if(updatedCourse){
-//            saveToPayment();
-//        }else{
-//            Toast.makeText(this, "Bạn đã mua khóa học này rồi", Toast.LENGTH_SHORT).show();
-//        }
+
         Picasso.get().load(dto.getCourse().getThumbnail()).fit().into(imgCourse);
         txtTitle.setText(dto.getCourse().getName());
         txtTrainername.setText(dto.getTrainerName());
