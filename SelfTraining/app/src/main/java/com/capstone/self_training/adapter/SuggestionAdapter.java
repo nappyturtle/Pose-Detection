@@ -86,7 +86,7 @@ public class SuggestionAdapter extends BaseAdapter {
                 viewHolder.suggestion_status.setTextColor(Color.parseColor("#2fef21"));
             } else if (status.equals("processing")) {
                 viewHolder.suggestion_status.setText("Đang xử lí");
-                viewHolder.suggestion_status.setTextColor(Color.parseColor("#f9ef20"));
+                viewHolder.suggestion_status.setTextColor(Color.parseColor("#ffee00"));
             }
             viewHolder.suggestion_image_play.setOnClickListener(new View.OnClickListener() {
                 @Override
