@@ -443,7 +443,6 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
                     }
                 });
                 AlertDialog dialog = builder.create();
-                dialog.setTitle("Thông báo");
                 dialog.show();
             } else {
                 permitUpload = true;

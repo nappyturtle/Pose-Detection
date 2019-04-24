@@ -461,7 +461,7 @@ public class TraineeUploadVideoActi extends AppCompatActivity {
                             }
                         });
                         AlertDialog buySuggestionTurnDialog = builder.create();
-                        buySuggestionTurnDialog.setTitle("Thông báo");
+                        //buySuggestionTurnDialog.setTitle("Thông báo");
                         buySuggestionTurnDialog.show();
                     }
                 }

@@ -141,7 +141,7 @@
                     android:id="@+id/btnEditVideo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Cập nhập" />
+                    android:text="Cập nhật" />
 
             </LinearLayout>
 

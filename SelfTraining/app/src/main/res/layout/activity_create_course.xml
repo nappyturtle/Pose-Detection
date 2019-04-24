@@ -11,10 +11,9 @@
         android:id="@+id/toolbar_create_course"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="Tạo khóa học"
         android:background="#ff8c11"
-        app:titleTextColor="#ffffff"
-        ></android.support.v7.widget.Toolbar>
+        app:title="Tạo khóa học"
+        app:titleTextColor="#ffffff"></android.support.v7.widget.Toolbar>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -125,6 +124,7 @@
                     android:layout_height="wrap_content"
                     android:hint="0"
                     android:inputType="number"
+                    android:maxLength="4"
                     android:maxLines="1"
                     android:textSize="20sp" />
 
@@ -147,6 +147,7 @@
                     android:layout_height="wrap_content"
                     android:hint="0"
                     android:inputType="number"
+                    android:maxLength="4"
                     android:maxLines="1"
                     android:textSize="20sp" />
 
@@ -169,8 +170,8 @@
                     android:id="@+id/tv_fee_to_create_course"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0"
                     android:maxLines="1"
+                    android:text="0"
                     android:textSize="20sp" />
 
                 <TextView

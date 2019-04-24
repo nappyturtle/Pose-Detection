@@ -339,8 +339,14 @@ public class CreateCourseActivity extends AppCompatActivity {
         } else if (edtMaxNumberTrainee.getText().toString().trim().equalsIgnoreCase("") || edtMaxNumberTrainee.getText() == null) {
             Toast.makeText(this, "Bạn chưa nhập số lượng học viên lớn nhất!", Toast.LENGTH_LONG).show();
             return false;
+        } else if (Integer.parseInt(edtMaxNumberTrainee.getText().toString().trim()) > 5000) {
+            Toast.makeText(this, "Số lượng học viên lớn nhất phải ít hơn 5000 ngưới!", Toast.LENGTH_LONG).show();
+            return false;
         } else if (edtMaxNumberOfVideo.getText().toString().trim().equalsIgnoreCase("") || edtMaxNumberOfVideo.getText() == null) {
             Toast.makeText(this, "Bạn chưa nhập số lượng video lớn nhất!", Toast.LENGTH_LONG).show();
+            return false;
+        } else if (Integer.parseInt(edtMaxNumberOfVideo.getText().toString().trim()) > 5000) {
+            Toast.makeText(this, "Số lượng video lớn nhất phải ít hơn 5000 video!", Toast.LENGTH_LONG).show();
             return false;
         } else {
             return true;
