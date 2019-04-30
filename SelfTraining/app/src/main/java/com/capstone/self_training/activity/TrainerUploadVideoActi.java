@@ -352,7 +352,7 @@ public class TrainerUploadVideoActi extends AppCompatActivity {
                 Toast.makeText(this, "Video của bạn quá 60 giây!!!", Toast.LENGTH_SHORT).show();
                 return false;
             } else {
-                Toast.makeText(this, "Okkkkk ", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Okkkkk ", Toast.LENGTH_SHORT).show();
                 return true;
             }
 
