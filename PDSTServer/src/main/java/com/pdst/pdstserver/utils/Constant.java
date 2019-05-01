@@ -6,5 +6,5 @@ public class Constant {
 
     //course fee
     public static final int PRICE_OF_A_SUGGESTION_TURN = 12;
-    public static final int FREE_SUGGESTION_TURN_FOR_TRAINEE = 3;
+    public static final int FREE_SUGGESTION_TURN_FOR_TRAINEE = 100;
 }

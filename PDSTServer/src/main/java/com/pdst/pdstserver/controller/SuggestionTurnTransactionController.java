@@ -3,6 +3,7 @@ package com.pdst.pdstserver.controller;
 import com.pdst.pdstserver.model.SuggestionTurnTransaction;
 import com.pdst.pdstserver.service.SuggestionService;
 import com.pdst.pdstserver.service.SuggestionTurnTransactionService;
+import com.pdst.pdstserver.utils.Constant;
 import com.pdst.pdstserver.utils.TimeHelper;
 import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +32,7 @@ public class SuggestionTurnTransactionController {
             freeSuggestionTurn.setPrice(0);
             freeSuggestionTurn.setVideoId(videoId);
             freeSuggestionTurn.setCreatedTime(TimeHelper.getCurrentTime());
-            freeSuggestionTurn.setSuggestionTurn(3);
+            freeSuggestionTurn.setSuggestionTurn(Constant.FREE_SUGGESTION_TURN_FOR_TRAINEE);
             SuggestionTurnTransaction newFreeSuggestionTurn = suggestionTurnTransactionService.createFreeSuggestionTurnTransactionByAccountIdAndVideoId(freeSuggestionTurn);
             if (newFreeSuggestionTurn != null) {
                 return true;

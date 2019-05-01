@@ -27,6 +27,8 @@ public class SendRequest {
 
             fileInfo.put("foldernameTrainer", videoRequest.getFolderName());
             fileInfo.put("videoUrl", videoRequest.getContentUrl());
+            //
+            fileInfo.put("videoTrainerId", videoRequest.getId());
 
 
             OutputStream os = con.getOutputStream();
@@ -70,7 +72,7 @@ public class SendRequest {
 
             JSONObject fileInfo = new JSONObject();
 
-            fileInfo.put("foldernameTrainer", videoRequest.getFolderName());
+            fileInfo.put("videoTrainerId", videoRequest.getId());
             fileInfo.put("foldernameTrainee", foldernameTrainee);
             fileInfo.put("suggestionId", suggestionId);
             fileInfo.put("videoUrl", traineeVideoUrl);

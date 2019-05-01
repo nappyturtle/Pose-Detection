@@ -87,6 +87,8 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
                 .antMatchers(HttpMethod.POST, UPDATE_ACCOUNT).permitAll()
                 .antMatchers(HttpMethod.GET, GET_DATAFORDASHBOARD).permitAll()
                 .antMatchers(HttpMethod.POST, CREATE_NEW_ACCOUNT).permitAll()
+                .antMatchers(HttpMethod.POST, CREATE_DATASET).permitAll()
+                .antMatchers(HttpMethod.GET, GET_DATASET).permitAll()
                 //.antMatchers(HttpMethod.GET, GET_ALL_ACCOUNT_BY_ROLE).hasAnyAuthority("Staff")
                 .anyRequest().authenticated()
                 .and()
