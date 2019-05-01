@@ -26,14 +26,14 @@
 
     <script language="JavaScript" type="text/javascript">
         var poses = new Map();
-        var suggestionId = getParams("suggestionId");
-        var traineeFolder = getParams("traineeFolder");
+        var videoId = getParams("videoId");
+        var trainerFolder = getParams("trainerFolder");
         imgName = getParams("img");
-        simgUrl = getParams("simgUrl");
+        simgName = getParams("simg");
         imgSize = getParams("imgSize");
         function getPoses() {
             getImageFromStorage(imgName, false);
-            getImageFromStorage(simgUrl, true)
+            getImageFromStorage(simgName, true);
             var readyStateCheckInterval = setInterval(function () {
                 if (poses.size === 2) {
                     clearInterval(readyStateCheckInterval);
@@ -48,8 +48,14 @@
             return key?params[key]:params;
         }
 
-        function getImageFromStorage(imgName, isUrl) {
-
+        function getImageFromStorage(imgName, standard) {
+            // var folder;
+            // if(standard) {
+            //     folder = trainerFolder;
+            // }
+            // else {
+            //     folder = traineeFolder;
+            // }
             var storage = firebase.storage();
             var storageRef = storage.ref();
             var imageElement = document.createElement("img");
@@ -62,31 +68,19 @@
             imageElement.id = imgName;
             // var divArr = document.getElementsByClassName("imgDiv");
             // var position = divArr.length-1;
-            if(isUrl) {
-                imageElement.src = simgUrl;
+            storageRef.child(trainerFolder + "/Image/" + imgName).getDownloadURL().then(function (url) {
+                imageElement.src = url;
+                // divArr[position].appendChild(imageElement);
+                // document.getElementsByTagName('body')[0].appendChild(imageElement);
                 var readyStateCheckInterval = setInterval(function () {
                     if (imageElement.complete === true) {
                         clearInterval(readyStateCheckInterval);
-                        getPoseOfImage(imageElement, true, simgUrl)
+                        getPoseOfImage(imageElement, standard, url);
                     }
                 }, 10);
-
-            }
-            else {
-                storageRef.child(traineeFolder + "/Image/" + imgName).getDownloadURL().then(function (url) {
-                    imageElement.src = url;
-                    // divArr[position].appendChild(imageElement);
-                    // document.getElementsByTagName('body')[0].appendChild(imageElement);
-                    var readyStateCheckInterval = setInterval(function () {
-                        if (imageElement.complete === true) {
-                            clearInterval(readyStateCheckInterval);
-                            getPoseOfImage(imageElement, false, url);
-                        }
-                    }, 10);
-                }).catch(function (error) {
-                    console.log("Firebase get image error: " + error.message);
-                });
-            }
+            }).catch(function (error) {
+                console.log("Firebase get image error: " + error.message);
+            });
         }
 
         function getPoseOfImage(imageElement, standard, url) {
@@ -109,7 +103,7 @@
                 //     count++;
                 // }
 
-                    myPose = {keypoints: pose.keypoints, url: url};
+                    myPose = {keypoints: pose.keypoints, url: url, name: simgName};
                     if (standard) {
                         poses.set("standard", myPose);
                     } else {
@@ -133,7 +127,7 @@
             // else {
             //     var poseArr = [suggestionId];
             // }
-            var poseArr = [JSON.stringify(poses.get("standard")), JSON.stringify(poses.get("normal")), suggestionId, "true"];
+            var poseArr = [JSON.stringify(poses.get("standard")), JSON.stringify(poses.get("normal")), videoId, "false"];
             xhttp.send(JSON.stringify(poseArr));
         }
     </script>

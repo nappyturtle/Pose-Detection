@@ -41,7 +41,7 @@ public class FileController {
 
             // lấy danh sách các file trong thư mục filestorage/KietPT-123456
             //list = fileStorageService.getFileFromLocalStorage(folderName);
-            OpenBrowserUtilities.openBrowser(ConstantUtilities.domain + "uploadImage.html?name=" + fileInfo.getFoldernameTrainer());
+            OpenBrowserUtilities.openBrowser(ConstantUtilities.domain + "uploadImage.html?name=" + fileInfo.getFoldernameTrainer() + "&videoId=" + fileInfo.getVideoTrainerId());
         } catch (Exception e) {
             logger.info("Something Wrong in /sliceVideo !!!! " + e.getMessage());
         }
@@ -77,8 +77,8 @@ public class FileController {
 
             // lấy danh sách các file trong thư mục filestorage/KietPT-123456
             //list = fileStorageService.getFileFromLocalStorage(folderName);
-            OpenBrowserUtilities.openBrowser(ConstantUtilities.domain + "uploadImageToSuggest.html?trainer=" +
-                    fileInfo.getFoldernameTrainer()+"&trainee="+fileInfo.getFoldernameTrainee()
+            OpenBrowserUtilities.openBrowser(ConstantUtilities.domain + "uploadImageToSuggest.html?videoTrainerId=" +
+                    fileInfo.getVideoTrainerId()+"&trainee="+fileInfo.getFoldernameTrainee()
             +"&suggestionId="+fileInfo.getSuggestionId());
         } catch (Exception e) {
             logger.info("Something Wrong in /sliceVideoToSuggest !!!! " + e.getMessage());

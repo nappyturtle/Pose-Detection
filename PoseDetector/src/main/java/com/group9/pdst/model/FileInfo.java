@@ -12,7 +12,15 @@ public class FileInfo {
 	private String foldernameTrainee;
 	private String suggestionId;
 	private String foldername;
+	private String videoTrainerId;
 
+	public String getVideoTrainerId() {
+		return videoTrainerId;
+	}
+
+	public void setVideoTrainerId(String videoTrainerId) {
+		this.videoTrainerId = videoTrainerId;
+	}
 
 	public String getFoldername() {
 		return foldername;

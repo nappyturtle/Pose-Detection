@@ -20,9 +20,9 @@
 
     <script language="JavaScript" type="text/javascript">
         var listImgKey = new Array();
-        var videoTrainerId = getParams("videoTrainerId");
+
         listImg = getParams("listImg");
-        var suggestionId = getParams("suggestionId");
+        var videoId = getParams("videoId");
         function getParams(key) {
             var params = {};
             location.search.replace(/[?&;]+([^=]+)=([^&;]*)/gi, function (s, key, value) {
@@ -56,10 +56,10 @@
                     window.close();
                 }
             };
-            xhttp.open("POST", "http://localhost:8090/matchVideo", true);
+            xhttp.open("POST", "http://localhost:8090/createDataset", true);
             xhttp.setRequestHeader("Content-type", "application/json");
             //listSimg is Trainer folder name; listImg is Trainee folder
-            var imageListArr  = [listImgKey, suggestionId, videoTrainerId, listImg];
+            var imageListArr  = [listImgKey, videoId, listImg];
             xhttp.send(JSON.stringify(imageListArr));
         }
     </script>

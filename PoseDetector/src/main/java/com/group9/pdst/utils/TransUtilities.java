@@ -38,9 +38,9 @@ public class TransUtilities {
         }
         return "";
     }
-    public static double getWeight (double maxPercentage) {
+    public static int getWeight (double maxPercentage) {
         if(maxPercentage > 0) {
-            return (1-maxPercentage)*9+1;
+            return (int)Math.round((1-maxPercentage)*9+1);
         }
         return 10;
     }

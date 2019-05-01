@@ -8,18 +8,13 @@ public class CalculationUtilities {
     }
     public static double calculateVectorDistanceMatchingPercentage(KeyPointVector a, KeyPointVector b) {
         double standardDeviation = calculateStandardDeviation(0, ConstantUtilities.imgSize);
-//        double scalar = a.getPosition().getX() * b.getPosition().getX() + a.getPosition().getY() * b.getPosition().getY();
         double length1 = calculateEuclideanDistance(a.getPosition().getX(), a.getPosition().getY());
         double length2 = calculateEuclideanDistance(b.getPosition().getX(), b.getPosition().getY());
-        if(length1 < Math.sqrt(2) || length2 < Math.sqrt(2)) {
-            length1 = length2;
-        }
+//        if(length1 < Math.sqrt(2) || length2 < Math.sqrt(2)) {
+//            length1 = length2;
+//        }
         double percentage = (1 - Math.abs(length1 - length2)/standardDeviation);
-//        double percentage = calculateCosine(scalar, length1, length2);
-//        if(scalar < 0) scalar = 0;
-//        scalar = scalar/(length1 * length2);
-//        percentage = (percentage + (1 - Math.abs(length1 - length2)/standardDeviation))/2;
-//        System.out.println("Cos cua goc: " + scalar/(length1 * length2));
+        if(percentage < 0) return 0;
         return percentage;
     }
     public static double calculateCosine(KeyPointVector a, KeyPointVector b) {
@@ -29,6 +24,7 @@ public class CalculationUtilities {
         if(scalar < 0) return 0;
         if(length1 < Math.sqrt(2) || length2 < Math.sqrt(2)) return 1;
         scalar = scalar/(length1 * length2);
+        if(scalar > 1) return 1;
         return scalar;
     }
     public static double calculateStandardDeviation(double a, double b) {

@@ -20,9 +20,12 @@
     </script>
 
     <script language="JavaScript" type="text/javascript">
+        var folderName = getParams('name');
+        var videoId = getParams('videoId');
+        var count = 0;
         function uploadImage() {
 
-            var folderName = getParams('name');
+
             console.log('abc = ' + folderName);
 
             sendVideoUrl(folderName);
@@ -83,6 +86,16 @@
                         document.body.appendChild(x);
                         uploadToStorage(blob, fileImage.filename, fileImage.foldername);
                     }
+                    //
+                    var readyStateCheckInterval = setInterval(function () {
+                        console.log(jsonArray.length);
+                        console.log(count);
+                        if (count === jsonArray.length) {
+                            clearInterval(readyStateCheckInterval);
+                            window.location = "http://localhost:8090/getDataset?listImg=" + folderName +
+                                "&videoId=" + videoId;
+                        }
+                    }, 10);
                 }
             };
             xhttp.open("GET", "/uploadImage?name="+folderName, true);
@@ -174,8 +187,9 @@
 
             refDir.update({
                 [filename]:imageUrl
+            }).then(function () {
+                count++;
             })
-
         }
 
     </script>
