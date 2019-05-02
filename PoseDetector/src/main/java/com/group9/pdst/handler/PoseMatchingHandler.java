@@ -64,13 +64,49 @@ public class PoseMatchingHandler {
         return dataset;
     }
 
+    public List<String> preMakingSuggestion(List<String>imgList, String suggestionId, String traineeFolder) {
+        List<String> solvedImgList = new ArrayList<>();
+        ObjectMapper mapper = new ObjectMapper();
+        int i = 0;
+        int j = 1;
+        while(j < imgList.size()) {
+            String simgName = imgList.get(i);
+            String uri = ConstantUtilities.domain + "poseDetectForPreSuggest.html";
+            String imgName = imgList.get(j);
+            uri += "?img=" + imgName + "&simg=" + simgName
+                    + "&imgSize=" + ConstantUtilities.imgSize
+                    + "&suggestionId=" + suggestionId
+                    + "&traineeFolder=" + traineeFolder;
+            OpenBrowserUtilities.openBrowser(uri);
+            while (true) {
+                try {
+                    Thread.sleep(2000);
+                    String solvedImgName = ConstantUtilities.jedis.lpop("preSuggestion_" + suggestionId);
+                    if (solvedImgName != null) {
+                        if (!solvedImgName.equals("none")) {
+                            solvedImgList.add(solvedImgName);
+                            i = j;
+                            j++;
+                        } else {
+                            j++;
+                        }
+                        break;
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return solvedImgList;
+    }
+
     //duyet tung frame trong 2 list va thuc hien matching, kt kq tra ve trong redis voi key la suggestionid
     //tra ve danh sach cac suggestion details
     public List<SuggestionDetail> makeSuggestionDetails(List<Frame> dataset, List<String> imgList, String suggestionId, String traineeFolder) throws JsonProcessingException {
         List<SuggestionDetail> finalResult = new ArrayList<>();
         ObjectMapper mapper = new ObjectMapper();
         String matchingResultJSON;
-
+        List<String> solvedImgList = preMakingSuggestion(imgList, suggestionId, traineeFolder);
         for (int i = 1; i < dataset.size(); i++) {
             Frame datasetFrame = dataset.get(i);
             MatchingPoseResult finalPoseResult = null;
@@ -81,9 +117,9 @@ public class PoseMatchingHandler {
 //            boolean flag = checkMatchingPrecondition(simgList.get(trainerFrame), simgName, trainerFolder, suggestionId);
 //            if (flag) {
 //                ConstantUtilities.jedis.set(suggestionId + "_isCompare", "true");
-                for (int j = 0; j < imgList.size(); j++) {
+                for (int j = 0; j < solvedImgList.size(); j++) {
                     String uri = ConstantUtilities.domain + "poseDetect.html";
-                    String imgName = imgList.get(j);
+                    String imgName = solvedImgList.get(j);
                     uri += "?img=" + imgName + "&simgUrl=" + datasetFrame.getUrl()
                             + "&imgSize=" + ConstantUtilities.imgSize
                             + "&suggestionId=" + suggestionId
@@ -126,7 +162,7 @@ public class PoseMatchingHandler {
         }
         return finalResult;
     }
-
+    //
     public Frame matchPoseForDataset(Pose previousPose, Pose currentPose, String id) throws IOException {
         List<KeyPoint> currentPoints = currentPose.getKeypoints();
         List<KeyPoint> previousPoints = previousPose.getKeypoints();
@@ -228,6 +264,110 @@ public class PoseMatchingHandler {
         maxPosePercentage = maxPosePercentage / currentPoints.size();
 
         if(maxPosePercentage < 0.75) return currentFrame;
+        else return null;
+    }
+    //
+    public String matchPoseForPreSuggest(Pose previousPose, Pose currentPose) throws IOException {
+        List<KeyPoint> currentPoints = currentPose.getKeypoints();
+        List<KeyPoint> previousPoints = previousPose.getKeypoints();
+//        Frame currentFrame = new Frame();
+//        currentFrame.setVideoId(Integer.parseInt(id));
+//        currentFrame.setUrl(currentPose.getUrl());
+        PretreatmentHandler handler = new PretreatmentHandler();
+
+        double maxPosePercentage = 0;
+
+        handler.pretreatment(currentPoints, previousPoints);
+        int i = 0;
+        while(i < currentPoints.size()) {
+            double partLRMatchingPercentage = 1;
+            KeyPoint currentPoint = currentPoints.get(i);
+            KeyPoint previousPoint = previousPoints.get(i);
+            if (!"torso".equals(currentPoint.getPart())) {
+                System.out.println("=============================");
+                System.out.println("Part: " + previousPoint.getPart());
+                KeyPointVector currentPointVector = TransUtilities.createVectorFromKeypoint(currentPoints, currentPoint, "torso");
+                KeyPointVector previousPointVector = TransUtilities.createVectorFromKeypoint(previousPoints, previousPoint, "torso");
+                if(currentPoint.getPart().contains("left")) {
+                    //get right part
+                    i++;
+                    KeyPoint currentRightPoint = currentPoints.get(i);
+                    KeyPoint previousRightPoint = previousPoints.get(i);
+                    //different of Trainer left part - right part
+                    double x = currentRightPoint.getPosition().getX() - previousRightPoint.getPosition().getX();
+                    double y = currentRightPoint.getPosition().getY() - previousRightPoint.getPosition().getY();
+                    //vector between left part - right part of Trainer
+                    KeyPointVector v1 = new KeyPointVector(new Position(x, y));
+
+                    //different of Trainee left part - right part
+                    x = previousRightPoint.getPosition().getX() - previousPoint.getPosition().getX();
+                    y = previousRightPoint.getPosition().getY() - previousPoint.getPosition().getY();
+                    //vector between left part - right part of Trainee
+                    KeyPointVector v2 = new KeyPointVector(new Position(x, y));
+
+                    partLRMatchingPercentage = CalculationUtilities.calculateVectorDistanceMatchingPercentage(v1, v2);
+                    System.out.println("LR Percentage: " + partLRMatchingPercentage);
+                    //Matching right part between Trainer - Trainee
+                    KeyPointVector currentRightPointVector = TransUtilities.createVectorFromKeypoint(currentPoints, currentRightPoint, "torso");
+                    KeyPointVector previousRightPointVector = TransUtilities.createVectorFromKeypoint(previousPoints, previousRightPoint, "torso");
+                    double maxPointPercentage = CalculationUtilities.calculateCosine(currentRightPointVector, previousRightPointVector) ;
+                    System.out.println("Right cos: " + maxPointPercentage);
+                    maxPointPercentage = 1 - (Math.toDegrees(Math.acos(maxPointPercentage)) / 90);
+
+                    System.out.println("Right: " + maxPointPercentage);
+//                    maxPointPercentage = maxPointPercentage + partLRMatchingPercentage;
+                    maxPointPercentage = (maxPointPercentage + partLRMatchingPercentage)/2;
+                    double maxScore = Math.max(previousRightPoint.getScore(), currentRightPoint.getScore());
+                    double minScore = Math.min(previousRightPoint.getScore(), currentRightPoint.getScore());
+                    double confidenceRatio = minScore / maxScore;
+                    System.out.println("Confidence: " + confidenceRatio);
+                    double minPointPercentage = maxPointPercentage * confidenceRatio;
+                    if(maxPointPercentage - minPointPercentage > 0.1) {
+                        maxPointPercentage = (maxPointPercentage + minPointPercentage)/2;
+                    }
+                    if (confidenceRatio < 0.8 && confidenceRatio > 0.5) {
+                        maxPointPercentage = maxPointPercentage * confidenceRatio;
+                        minPointPercentage = minPointPercentage * confidenceRatio;
+                    }
+                    MatchingPointResult point = new MatchingPointResult(currentRightPoint.getPart(), maxPointPercentage, minPointPercentage);
+//                    int weight = TransUtilities.getWeight(point.getMaxMatchingPercentage());
+//                    System.out.println("Part: " + point.getPart() + " - Weight: " + weight);
+//                    currentFrame.assignWeight(point.getPart(), weight);
+                    maxPosePercentage += point.getMaxMatchingPercentage();
+
+                }
+                //Matching left part between Trainer - Trainee
+                double maxPointPercentage = CalculationUtilities.calculateCosine(currentPointVector, previousPointVector);
+                System.out.println("Left cos: " + maxPointPercentage);
+                System.out.println();
+                maxPointPercentage = 1 - (Math.toDegrees(Math.acos(maxPointPercentage)) / 90);
+                System.out.println("Left: " + maxPointPercentage);
+                maxPointPercentage = (maxPointPercentage + partLRMatchingPercentage)/2;
+                double maxScore = Math.max(previousPoint.getScore(), currentPoint.getScore());
+                double minScore = Math.min(previousPoint.getScore(), currentPoint.getScore());
+                double confidenceRatio = minScore / maxScore;
+                System.out.println("Confidence: " + confidenceRatio);
+                double minPointPercentage = maxPointPercentage * confidenceRatio;
+                //
+                if(maxPointPercentage - minPointPercentage > 0.1) {
+                    maxPointPercentage = (maxPointPercentage + minPointPercentage)/2;
+                }
+                if (confidenceRatio < 0.8 && confidenceRatio > 0.5) {
+                    maxPointPercentage = maxPointPercentage * confidenceRatio;
+                    minPointPercentage = minPointPercentage * confidenceRatio;
+                }
+
+                MatchingPointResult point = new MatchingPointResult(currentPoint.getPart(), maxPointPercentage, minPointPercentage);
+//                int weight = TransUtilities.getWeight(point.getMaxMatchingPercentage());
+//                System.out.println("Part: " + point.getPart() + " - Weight: " + weight);
+//                currentFrame.assignWeight(point.getPart(), weight);
+                maxPosePercentage += point.getMaxMatchingPercentage();
+            }
+            i++;
+        }
+        maxPosePercentage = maxPosePercentage / currentPoints.size();
+
+        if(maxPosePercentage < 0.85) return currentPose.getName();
         else return null;
     }
 

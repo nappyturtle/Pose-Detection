@@ -43,18 +43,15 @@ public class PoseMatchingController {
                 Pose trainerPose = mapper.readValue(poses.get(0), Pose.class);
                 Pose traineePose = mapper.readValue(poses.get(1), Pose.class);
                 String id = poses.get(2);
-                boolean isCompare = false;
-                if("true".equals(poses.get(3))) {
-                    isCompare = true;
-                }
+                String type = poses.get(3);
 
                 PoseMatchingHandler handler = new PoseMatchingHandler();
 
-                if(isCompare) {
+                if("makeSuggestion".equals(type)) {
                     poseResult = handler.matchPose(trainerPose, traineePose, id);
                     ConstantUtilities.jedis.lpush("suggestion_" + id, mapper.writeValueAsString(poseResult));
                 }
-                else {
+                else if("createDataset".equals(type)){
                     frameResult = handler.matchPoseForDataset(trainerPose, traineePose, id);
                     if(frameResult != null) {
                         ConstantUtilities.jedis.lpush("video_" + id, mapper.writeValueAsString(frameResult));
@@ -62,7 +59,15 @@ public class PoseMatchingController {
                     else {
                         ConstantUtilities.jedis.lpush("video_" + id, "none");
                     }
-
+                }
+                else {
+                    String poseForSuggestion = handler.matchPoseForPreSuggest(trainerPose, traineePose);
+                    if(poseForSuggestion != null) {
+                        ConstantUtilities.jedis.lpush("preSuggestion_" + id, poseForSuggestion);
+                    }
+                    else {
+                        ConstantUtilities.jedis.lpush("preSuggestion_" + id, "none");
+                    }
                 }
 
                 //Luu ket qua so sanh 2 frame vao jedis

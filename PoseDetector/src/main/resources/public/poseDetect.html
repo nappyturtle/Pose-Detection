@@ -133,7 +133,7 @@
             // else {
             //     var poseArr = [suggestionId];
             // }
-            var poseArr = [JSON.stringify(poses.get("standard")), JSON.stringify(poses.get("normal")), suggestionId, "true"];
+            var poseArr = [JSON.stringify(poses.get("standard")), JSON.stringify(poses.get("normal")), suggestionId, "makeSuggestion"];
             xhttp.send(JSON.stringify(poseArr));
         }
     </script>

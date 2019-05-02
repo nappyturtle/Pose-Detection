@@ -26,8 +26,8 @@
 
     <script language="JavaScript" type="text/javascript">
         var poses = new Map();
-        var videoId = getParams("videoId");
-        var trainerFolder = getParams("trainerFolder");
+        var suggestionId = getParams("suggestionId");
+        var traineeFolder = getParams("traineeFolder");
         imgName = getParams("img");
         simgName = getParams("simg");
         imgSize = getParams("imgSize");
@@ -68,7 +68,7 @@
             imageElement.id = imgName;
             // var divArr = document.getElementsByClassName("imgDiv");
             // var position = divArr.length-1;
-            storageRef.child(trainerFolder + "/Image/" + imgName).getDownloadURL().then(function (url) {
+            storageRef.child(traineeFolder + "/Image/" + imgName).getDownloadURL().then(function (url) {
                 imageElement.src = url;
                 // divArr[position].appendChild(imageElement);
                 // document.getElementsByTagName('body')[0].appendChild(imageElement);
@@ -103,11 +103,12 @@
                 //     count++;
                 // }
 
-                    // myPose = {keypoints: pose.keypoints, url: url, name: simgName};
-                    myPose = {keypoints: pose.keypoints, url: url};
+
                     if (standard) {
+                        myPose = {keypoints: pose.keypoints, url: url, name: simgName};
                         poses.set("standard", myPose);
                     } else {
+                        myPose = {keypoints: pose.keypoints, url: url, name: imgName};
                         poses.set("normal", myPose);
                     }
             });
@@ -128,7 +129,7 @@
             // else {
             //     var poseArr = [suggestionId];
             // }
-            var poseArr = [JSON.stringify(poses.get("standard")), JSON.stringify(poses.get("normal")), videoId, "createDataset"];
+            var poseArr = [JSON.stringify(poses.get("standard")), JSON.stringify(poses.get("normal")), suggestionId, "preSuggest"];
             xhttp.send(JSON.stringify(poseArr));
         }
     </script>
